@@ -1,5 +1,5 @@
 <template>
-	<div class="r-goo-animated" @click="move">
+	<div class="r-goo-animated">
 		<!-- <object data="img/goo.svg" type="image/svg+xml"></object> -->
 
 		<svg
@@ -301,8 +301,21 @@
 					);
 				});
 			},
+			goToDefault() {
+				const img = this.$refs.image;
+				const paths = img.querySelectorAll("path");
+
+				paths.forEach((path) => {
+					path.removeAttribute("style");
+				});
+			},
 		},
-		mounted() {},
+		mounted() {
+			this.move();
+			setTimeout(() => {
+				this.goToDefault();
+			}, 2000);
+		},
 	};
 </script>
 
@@ -315,10 +328,10 @@
 		}
 		&__dot {
 			&-primary {
-				transition: all 0.2s ease;
+				transition: all 2s ease;
 			}
 			&-secondary {
-				transition: all 0.2s ease;
+				transition: all 2s ease;
 			}
 		}
 	}
