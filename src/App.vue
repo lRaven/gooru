@@ -54,6 +54,10 @@
 		padding: 0 1.5rem;
 	}
 
+	section {
+		overflow: hidden;
+	}
+
 	.the-footer {
 		flex: 0 0 auto;
 	}
@@ -63,6 +67,7 @@
 	}
 	h2 {
 		font-size: 3.6rem;
+		font-weight: 700;
 	}
 	h3 {
 		font-size: 3rem;

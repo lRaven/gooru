@@ -1,9 +1,9 @@
 <template>
-	<div class="the-header" id="header">
+	<div class="the-header" id="header" ref="header">
 		<div class="the-header__container center-wide">
 			<div class="the-header__col">
 				<router-link to="/" class="the-header__logo">
-					COMPASS
+					GOORU
 					<span class="the-header__logo-secondary">PARSER</span>
 				</router-link>
 			</div>
@@ -34,6 +34,32 @@
 		components: {
 			rButton,
 		},
+		watch: {
+			scrollTop() {
+				if (this.scrollTop <= this.headerHeight)
+					this.resetPaintHeaderWhenPageScrolled();
+				else this.paintHeaderWhenPageScrolled();
+			},
+		},
+		data: () => ({ scrollTop: document.documentElement.scrollTop }),
+		computed: {
+			headerHeight() {
+				return this.$refs.header.clientHeight;
+			},
+		},
+		methods: {
+			paintHeaderWhenPageScrolled() {
+				this.$refs.header.classList.add("bg");
+			},
+			resetPaintHeaderWhenPageScrolled() {
+				this.$refs.header.classList.remove("bg");
+			},
+		},
+		mounted() {
+			window.addEventListener("scroll", () => {
+				this.scrollTop = document.documentElement.scrollTop;
+			});
+		},
 	};
 </script>
 
@@ -44,7 +70,14 @@
 		left: 0;
 		right: 0;
 		padding: 4rem 1.5rem;
-		z-index: 2;
+		z-index: 3;
+		transition: all 0.2s ease;
+		&.bg {
+			background-color: #fff;
+			box-shadow: 0 0 1rem 0 var(--gray);
+			padding: 2rem 1.5rem;
+			transition: all 0.5s ease;
+		}
 
 		&__container {
 			display: flex;
@@ -104,6 +137,9 @@
 			display: flex;
 			align-items: center;
 			gap: 1rem;
+			.r-button {
+				padding: 1.2rem 3rem;
+			}
 		}
 	}
 </style>

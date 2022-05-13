@@ -22,7 +22,7 @@
 	.r-button {
 		font-size: 1.6rem;
 		font-weight: 700;
-		padding: 1.2rem 3rem;
+		padding: 2rem 3rem;
 		border-radius: 0.5rem;
 		transition: all 0.2s ease;
 		&:hover {
