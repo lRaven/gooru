@@ -4,6 +4,10 @@
 		<main class="main">
 			<the-banner />
 			<the-benefits />
+			<the-requests />
+			<the-rates />
+			<the-how-it-works />
+			<the-sample-parser />
 		</main>
 		<!-- <the-footer /> -->
 	</div>
@@ -14,6 +18,10 @@
 
 	import TheBanner from "@/components/TheBanner";
 	import TheBenefits from "@/components/TheBenefits";
+	import TheRequests from "@/components/TheRequests";
+	import TheRates from "@/components/TheRates";
+	import TheHowItWorks from "@/components/TheHowItWorks";
+	import TheSampleParser from "@/components/TheSampleParser";
 
 	export default {
 		name: "PageHome",
@@ -22,6 +30,10 @@
 
 			TheBanner,
 			TheBenefits,
+			TheRequests,
+			TheRates,
+			TheHowItWorks,
+			TheSampleParser,
 		},
 	};
 </script>

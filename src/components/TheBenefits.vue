@@ -854,4 +854,11 @@ class="r-animated-svg__dot-secondary r-animated-svg__dot"
 	};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+	.the-benefits {
+		padding: 12rem 1.5rem;
+		.r-benefit + .r-benefit {
+			margin-top: 14rem;
+		}
+	}
+</style>

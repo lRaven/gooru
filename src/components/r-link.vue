@@ -1,5 +1,5 @@
 <template>
-	<a :href="way" target="_blank" class="r-link">
+	<a :href="way" target="_blank" class="r-link" :class="color">
 		<p class="r-link__description">{{ text }}</p>
 		<slot name="icon"></slot>
 	</a>
@@ -17,6 +17,10 @@
 				type: String,
 				default: "link",
 			},
+			color: {
+				type: String,
+				default: "purple",
+			},
 		},
 	};
 </script>
@@ -27,16 +31,35 @@
 		align-items: center;
 		gap: 2rem;
 		width: fit-content;
-		border: 0.1rem solid var(--primary);
 		border-radius: 0.8rem;
 		padding: 2rem 4rem;
 		transition: all 0.2s ease;
+		&.purple {
+			border: 0.1rem solid var(--primary);
+			&:hover {
+				background-color: var(--primary);
+				.r-link__description {
+					color: var(--white);
+				}
+			}
+		}
+		&.white {
+			border: 0.1rem solid var(--white);
+			.r-link__description {
+				color: var(--white);
+			}
+			&:hover {
+				background-color: var(--white);
+				.r-link__description {
+					color: var(--primary);
+				}
+			}
+		}
+
 		&:hover {
-			background-color: var(--primary);
 			transform: translateY(-0.3rem);
 			transition: all 0.3s ease;
 			.r-link__description {
-				color: var(--white);
 				transition: all 0.3s ease;
 			}
 		}

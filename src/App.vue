@@ -29,9 +29,13 @@
 	body {
 		font-family: "Montserrat", sans-serif;
 		color: var(--black);
+
 		&.locked {
 			overflow: hidden;
 		}
+	}
+	* {
+		scroll-behavior: smooth;
 	}
 
 	#app,

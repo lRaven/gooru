@@ -2,7 +2,11 @@
 	<div class="the-header" id="header" ref="header">
 		<div class="the-header__container center-wide">
 			<div class="the-header__col">
-				<router-link to="/" class="the-header__logo">
+				<router-link
+					to="/"
+					class="the-header__logo"
+					@click="scrollToId('#header')"
+				>
 					GOORU
 					<span class="the-header__logo-secondary">PARSER</span>
 				</router-link>
@@ -11,9 +15,24 @@
 			<div class="the-header__col">
 				<nav class="the-header__nav">
 					<ul class="the-header__links">
-						<li class="the-header__link">Тарифы</li>
-						<li class="the-header__link">Как это работает</li>
-						<li class="the-header__link">О компании</li>
+						<li
+							class="the-header__link"
+							@click="scrollToId('#rates')"
+						>
+							Тарифы
+						</li>
+						<li
+							class="the-header__link"
+							@click="scrollToId('#how-it-works')"
+						>
+							Как это работает
+						</li>
+						<li
+							class="the-header__link"
+							@click="scrollToId('#about')"
+						>
+							О компании
+						</li>
 					</ul>
 				</nav>
 
@@ -28,6 +47,7 @@
 
 <script>
 	import rButton from "@/components/r-button";
+	import { scroll } from "@/js/scrollToLink";
 
 	export default {
 		name: "TheHeader",
@@ -53,6 +73,9 @@
 			},
 			resetPaintHeaderWhenPageScrolled() {
 				this.$refs.header.classList.remove("bg");
+			},
+			scrollToId(id) {
+				scroll(id);
 			},
 		},
 		mounted() {
