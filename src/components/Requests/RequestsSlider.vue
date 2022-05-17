@@ -2,7 +2,7 @@
 	<div class="requests-slider">
 		<div class="requests-slider__top">
 			<h2 class="requests-slider__title">{{ title }}</h2>
-			<div class="requests-slider__nav">
+			<div class="requests-slider__nav" v-if="document_width > 540">
 				<button
 					class="requests-slider-button-prev swiper-button-prev"
 				></button>
@@ -13,11 +13,20 @@
 		</div>
 		<swiper
 			class="requests-slider__inner"
-			slidesPerView="4"
 			:space-between="30"
 			:navigation="{
 				nextEl: '.requests-slider-button-next',
 				prevEl: '.requests-slider-button-prev',
+			}"
+			:breakpoints="{
+				'540': {
+					slidesPerView: 1,
+					spaceBetween: 20,
+				},
+				'541': {
+					slidesPerView: 'auto',
+					spaceBetween: 30,
+				},
 			}"
 			:modules="modules"
 			:speed="600"
@@ -31,6 +40,14 @@
 				></request-card>
 			</swiper-slide>
 		</swiper>
+		<div class="requests-slider__bottom" v-if="document_width <= 540">
+			<button
+				class="requests-slider-button-prev swiper-button-prev"
+			></button>
+			<button
+				class="requests-slider-button-next swiper-button-next"
+			></button>
+		</div>
 	</div>
 </template>
 
@@ -42,6 +59,7 @@
 	import "swiper/css/navigation";
 
 	import RequestCard from "@/components/Requests/RequestCard";
+	import { mapState } from "vuex";
 
 	export default {
 		name: "RequestsSlider",
@@ -57,6 +75,10 @@
 			},
 			slides: Array,
 		},
+		data: () => ({
+			slidesPerView: 4,
+		}),
+		computed: { ...mapState(["document_width"]) },
 		setup() {
 			return {
 				modules: [Navigation],
@@ -73,42 +95,35 @@
 			align-items: center;
 			margin-bottom: 6rem;
 		}
-		&__title {
-		}
 		&__nav {
 			display: flex;
 			align-items: center;
 			gap: 3rem;
 		}
 
-		.swiper {
-			overflow: visible;
-			&-button {
-				&-disabled {
-					opacity: 1;
-					&::after {
-						opacity: 0.5;
-					}
-				}
-				&-prev,
-				&-next {
-					position: static;
-					margin: 0;
-					width: 4.6rem;
-					height: 4.6rem;
-					border: 0.1rem solid #e3e3e3;
-					border-radius: 1rem;
-					background-color: var(--white);
-					z-index: 1;
-					&::after {
-						font-size: 1.6rem;
-						color: var(--primary);
-						font-weight: 600;
-					}
-				}
+		&__bottom {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 3.8rem;
+			margin-top: 3rem;
+		}
+		.swiper-slide {
+			width: max-content;
+		}
+	}
+
+	@media (max-width: 767px) {
+		.requests-slider {
+			&__top {
+				margin-bottom: 4rem;
 			}
-			&-slide {
-				padding: 1rem 0;
+		}
+	}
+	@media (max-width: 540px) {
+		.requests-slider {
+			&__top {
+				margin-bottom: 2.4rem;
 			}
 		}
 	}

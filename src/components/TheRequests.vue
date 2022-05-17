@@ -73,4 +73,19 @@
 			margin-bottom: 6rem;
 		}
 	}
+
+	@media (max-width: 1023px) {
+		.the-requests {
+			padding-top: 4rem;
+		}
+	}
+	@media (max-width: 540px) {
+		.the-requests {
+			background: linear-gradient(
+				0deg,
+				rgb(255, 255, 255) 30%,
+				rgba(25, 126, 202, 0.05) 30%
+			);
+		}
+	}
 </style>

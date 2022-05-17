@@ -2,22 +2,31 @@
 	<div class="rates-slider">
 		<div class="rates-slider__top">
 			<h2 class="rates-slider__title">{{ title }}</h2>
-			<div class="rates-slider__nav">
+			<div class="rates-slider__nav" v-if="document_width > 540">
 				<button
 					class="rates-slider-button-prev swiper-button-prev"
 				></button>
 				<button
-					class="rates-slider-button-prev swiper-button-next"
+					class="rates-slider-button-next swiper-button-next"
 				></button>
 			</div>
 		</div>
 		<swiper
 			class="rates-slider__inner"
-			slidesPerView="4"
 			:space-between="30"
 			:navigation="{
 				nextEl: '.rates-slider-button-next',
 				prevEl: '.rates-slider-button-prev',
+			}"
+			:breakpoints="{
+				'0': {
+					slidesPerView: 'auto',
+					spaceBetween: 20,
+				},
+				'1340': {
+					slidesPerView: 4,
+					spaceBetween: 30,
+				},
 			}"
 			:modules="modules"
 			:speed="600"
@@ -30,6 +39,14 @@
 				></rate-card>
 			</swiper-slide>
 		</swiper>
+		<div class="rates-slider__bottom" v-if="document_width <= 540">
+			<button
+				class="rates-slider-button-prev swiper-button-prev"
+			></button>
+			<button
+				class="rates-slider-button-next swiper-button-next"
+			></button>
+		</div>
 	</div>
 </template>
 
@@ -41,6 +58,7 @@
 	import "swiper/css/navigation";
 
 	import RateCard from "@/components/Rates/RateCard";
+	import { mapState } from "vuex";
 
 	export default {
 		name: "RatesSlider",
@@ -56,6 +74,7 @@
 			},
 			slides: Array,
 		},
+		computed: { ...mapState(["document_width"]) },
 		setup() {
 			return {
 				modules: [Navigation],
@@ -72,42 +91,42 @@
 			align-items: center;
 			margin-bottom: 6rem;
 		}
-		&__title {
-		}
 		&__nav {
 			display: flex;
 			align-items: center;
 			gap: 3rem;
 		}
+		&__bottom {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 3.8rem;
+			margin-top: 3rem;
+		}
+	}
 
-		.swiper {
-			overflow: visible;
-			&-button {
-				&-disabled {
-					opacity: 1;
-					&::after {
-						opacity: 0.5;
-					}
-				}
-				&-prev,
-				&-next {
-					position: static;
-					margin: 0;
-					width: 4.6rem;
-					height: 4.6rem;
-					border: 0.1rem solid #e3e3e3;
-					border-radius: 1rem;
-					background-color: var(--white);
-					z-index: 1;
-					&::after {
-						font-size: 1.6rem;
-						color: var(--primary);
-						font-weight: 600;
-					}
-				}
+	@media (max-width: 1340px) {
+		.rates-slider {
+			&__top {
+				justify-content: space-between;
 			}
-			&-slide {
-				padding: 1rem 0;
+			.swiper-slide {
+				width: max-content;
+			}
+		}
+	}
+
+	@media (max-width: 767px) {
+		.rates-slider {
+			&__top {
+				margin-bottom: 4rem;
+			}
+		}
+	}
+	@media (max-width: 540px) {
+		.rates-slider {
+			&__top {
+				margin-bottom: 2.4rem;
 			}
 		}
 	}

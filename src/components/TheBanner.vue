@@ -477,4 +477,76 @@
 			}
 		}
 	}
+
+	@media (max-width: 1200px) {
+		.the-banner {
+			&__container {
+				flex-direction: column;
+				align-items: flex-start;
+				.r-animated-svg {
+					display: flex;
+					justify-content: center;
+					width: 100%;
+					&__vector {
+						height: inherit;
+						width: initial;
+					}
+				}
+			}
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.the-banner {
+			&__container {
+				padding: 18rem 0 4rem 0;
+			}
+			&__content {
+				width: 100%;
+			}
+			&__actions {
+				gap: 3rem;
+				.r-button,
+				.r-link {
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 767px) {
+		.the-banner {
+			&__title {
+				margin-bottom: 2rem;
+			}
+			&__subtitle {
+				margin-bottom: 6rem;
+			}
+			&__actions {
+				flex-direction: column;
+			}
+			.r-animated-svg {
+				max-height: 30rem;
+				width: inherit;
+				&__vector {
+					height: 100%;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.the-banner {
+			min-height: inherit;
+			&__container {
+				padding: 8rem 0 2rem 0;
+			}
+			&__title {
+				margin-bottom: 2.4rem;
+			}
+			&__subtitle {
+				margin-bottom: 4rem;
+			}
+		}
+	}
 </style>

@@ -58,12 +58,17 @@
 			&.reversed {
 				flex-direction: row-reverse;
 			}
-			.normal {
+			&.normal {
 				flex-direction: row;
 			}
 		}
 
 		&__col {
+			.r-animated-svg {
+				&__vector {
+					width: inherit;
+				}
+			}
 			&:last-child {
 				max-width: 81rem;
 				width: 100%;
@@ -78,6 +83,49 @@
 		&__description {
 			margin-bottom: 8rem;
 			line-height: 1.5;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.r-benefit {
+			&__title {
+				margin-bottom: 2.4rem;
+			}
+			&__description {
+				margin-bottom: 4rem;
+			}
+			.r-animated-svg {
+				max-width: 26rem;
+				&__vector {
+					height: 100%;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 767px) {
+		.r-benefit {
+			padding: 4rem 0;
+			&__container {
+				&.normal,
+				&.reversed {
+					flex-direction: column;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.r-benefit {
+			padding: 3rem 0;
+			&__container {
+			}
+			.r-animated-svg {
+				max-width: 20rem;
+			}
+			.r-button {
+				width: 100%;
+			}
 		}
 	}
 </style>

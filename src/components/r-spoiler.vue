@@ -72,6 +72,11 @@
 					"style",
 					`height: ${this.contentHeight}px`
 				);
+
+				// TODO: адаптировать высоту контента при resize
+				// setTimeout(() => {
+				// 	this.$refs.body.setAttribute("style", "height: auto");
+				// }, 200);
 			},
 			closeSpoiler() {
 				this.$refs.arrow.classList.remove("open");
@@ -130,6 +135,22 @@
 					font-weight: 700;
 					font-size: 40rem;
 				}
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.r-spoiler {
+			&__header,
+			&__content {
+				padding: 1.2rem;
+			}
+			&__title {
+				font-size: 1.6rem;
+			}
+			&__text,
+			&__disclaimer {
+				font-size: 1.4rem;
 			}
 		}
 	}

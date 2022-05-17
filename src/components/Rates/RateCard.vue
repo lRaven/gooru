@@ -67,6 +67,7 @@
 		box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
 		border-radius: 1rem;
 		min-height: 47rem;
+		max-width: 33rem;
 		transition: all 0.2s ease;
 		&:hover {
 			background-color: rgba(25, 126, 202, 0.3);
@@ -120,6 +121,21 @@
 		.r-button {
 			margin-top: auto;
 			padding: 1.2rem 3rem;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.rate-card {
+			&__description,
+			&__checklist-item-text {
+				font-size: 1.4rem;
+			}
+		}
+	}
+	@media (max-width: 540px) {
+		.rate-card {
+			padding: 2rem 1rem;
+			max-width: 26rem;
 		}
 	}
 </style>

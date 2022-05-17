@@ -30,8 +30,10 @@
 		user-select: none;
 		display: flex;
 		align-items: center;
+		justify-content: center;
 		gap: 2rem;
 		width: fit-content;
+		min-width: max-content;
 		border-radius: 0.8rem;
 		padding: 2rem 4rem;
 		transition: all 0.2s ease;
@@ -73,6 +75,16 @@
 		&__description {
 			color: var(--primary);
 			transition: all 0.2s ease;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.r-link {
+			padding: 1.6rem;
+
+			&__description {
+				font-size: 1.4rem;
+			}
 		}
 	}
 </style>

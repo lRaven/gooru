@@ -37,7 +37,11 @@
 				</nav>
 
 				<div class="the-header__buttons">
-					<r-button color="transparent" text="Войти"></r-button>
+					<r-button
+						color="transparent"
+						text="Войти"
+						ref="button"
+					></r-button>
 					<r-button text="Регистрация"></r-button>
 				</div>
 			</div>
@@ -48,6 +52,7 @@
 <script>
 	import rButton from "@/components/r-button";
 	import { scroll } from "@/js/scrollToLink";
+	import { mapState } from "vuex";
 
 	export default {
 		name: "TheHeader",
@@ -66,6 +71,7 @@
 			headerHeight() {
 				return this.$refs.header.clientHeight;
 			},
+			...mapState(["document_width"]),
 		},
 		methods: {
 			paintHeaderWhenPageScrolled() {
@@ -93,13 +99,13 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		padding: 4rem 1.5rem;
+		padding: 4rem;
 		z-index: 3;
 		transition: all 0.2s ease;
 		&.bg {
 			background-color: #fff;
 			box-shadow: 0 0 1rem 0 var(--gray);
-			padding: 2rem 1.5rem;
+			padding: 2rem 4rem;
 			transition: all 0.5s ease;
 		}
 
@@ -163,6 +169,61 @@
 			gap: 1rem;
 			.r-button {
 				padding: 1.2rem 3rem;
+			}
+		}
+	}
+
+	@media (max-width: 1420px) {
+		.the-header {
+			&__col {
+				&:last-child {
+					gap: 2rem;
+				}
+			}
+			&__link {
+				padding: 1.2rem 1.2rem;
+			}
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.the-header {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+
+			&__links {
+				display: none;
+			}
+		}
+	}
+	@media (max-width: 767px) {
+		.the-header {
+			padding: 1.5rem;
+			&.bg {
+				padding: 1.5rem;
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.the-header {
+			&__logo {
+				display: flex;
+				flex-direction: column;
+				font-size: 1.6rem;
+			}
+			.r-button {
+				&.transparent {
+					background-color: var(--primary);
+					color: var(--white);
+					&:hover {
+						background-color: var(--white);
+						color: var(--primary);
+					}
+				}
+				&.purple {
+					display: none;
+				}
 			}
 		}
 	}

@@ -1,6 +1,8 @@
 <template>
-	<section class="the-rates center" id="rates">
-		<rates-slider title="Тарифы" :slides="rates_list"></rates-slider>
+	<section class="the-rates" id="rates">
+		<div class="the-rates__container center">
+			<rates-slider title="Тарифы" :slides="rates_list"></rates-slider>
+		</div>
 	</section>
 </template>
 
@@ -49,7 +51,7 @@
 					],
 				},
 				{
-					iod: 4,
+					id: 4,
 					name: "Ознакомительный",
 					price: 15800,
 					checklist: [
@@ -66,10 +68,15 @@
 
 <style lang="scss" scoped>
 	.the-rates {
-		padding: 10rem 1.5rem;
+		padding: 10rem 4rem;
 		&__title {
 			text-align: center;
 			margin-bottom: 6rem;
+		}
+	}
+	@media (max-width: 540px) {
+		.the-rates {
+			padding: 2rem 1.5rem;
 		}
 	}
 </style>

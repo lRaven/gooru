@@ -1,0 +1,30 @@
+.swiper {
+	overflow: visible !important;
+	&-button {
+		&-disabled {
+			opacity: 1 !important;
+			&::after {
+				opacity: 0.5;
+			}
+		}
+		&-prev,
+		&-next {
+			position: static !important;
+			margin: 0 !important;
+			width: 4.6rem !important;
+			height: 4.6rem !important;
+			border: 0.1rem solid #e3e3e3;
+			border-radius: 1rem;
+			background-color: var(--white);
+			z-index: 1 !important;
+			&::after {
+				font-size: 1.6rem !important;
+				color: var(--primary);
+				font-weight: 600;
+			}
+		}
+	}
+	&-slide {
+		padding: 1rem 0;
+	}
+}

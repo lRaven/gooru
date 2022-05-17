@@ -7,6 +7,8 @@
 </template>
 
 <script>
+	import { mapActions } from "vuex";
+
 	export default {
 		watch: {
 			$route(to) {
@@ -18,11 +20,16 @@
 				document.querySelector("body").classList.remove("locked");
 			},
 		},
+		methods: { ...mapActions(["getDocumentWidth"]) },
+		created() {
+			this.getDocumentWidth();
+		},
 	};
 </script>
 
 <style lang="scss">
 	@import "@/assets/scss/animation.scss";
+	@import "@/assets/scss/swiper.scss";
 	@import "@/assets/scss/center.scss";
 	@import "@/assets/scss/variables.scss";
 
@@ -36,6 +43,7 @@
 	}
 	* {
 		scroll-behavior: smooth;
+		transition: padding 0.3s ease, margin 0.3s ease;
 	}
 
 	#app,
@@ -55,7 +63,7 @@
 	.the-header,
 	section,
 	.the-footer {
-		padding: 0 1.5rem;
+		padding: 0 4rem;
 	}
 
 	section {
@@ -84,5 +92,50 @@
 	}
 	p {
 		font-size: 1.8rem;
+	}
+
+	@media (max-width: 1023px) {
+		h1 {
+			font-size: 6rem;
+		}
+		h2 {
+			font-size: 2.8rem;
+		}
+		h3 {
+			font-size: 2rem;
+		}
+		h4 {
+			font-size: 2rem;
+		}
+		h5 {
+		}
+		p {
+			font-size: 1.6rem;
+		}
+	}
+	@media (max-width: 767px) {
+		.the-header,
+		section,
+		.the-footer {
+			padding: 0 1.5rem;
+		}
+	}
+	@media (max-width: 540px) {
+		h1 {
+			font-size: 3rem;
+		}
+		h2 {
+			font-size: 2.2rem;
+		}
+		h3 {
+			font-size: 1.6rem;
+		}
+		h4 {
+		}
+		h5 {
+		}
+		p {
+			font-size: 1.4rem;
+		}
 	}
 </style>

@@ -8,9 +8,9 @@
 			<the-rates />
 			<the-how-it-works />
 			<the-sample-parser />
-			<the-about-company />
+			<!--<the-about-company />-->
 		</main>
-		<the-footer />
+		<!-- <the-footer /> -->
 	</div>
 </template>
 
@@ -23,9 +23,9 @@
 	import TheRates from "@/components/TheRates";
 	import TheHowItWorks from "@/components/TheHowItWorks";
 	import TheSampleParser from "@/components/TheSampleParser";
-	import TheAboutCompany from "@/components/TheAboutCompany";
+	// import TheAboutCompany from "@/components/TheAboutCompany";
 
-	import TheFooter from "@/components/TheFooter";
+	// import TheFooter from "@/components/TheFooter";
 
 	export default {
 		name: "PageHome",
@@ -38,9 +38,9 @@
 			TheRates,
 			TheHowItWorks,
 			TheSampleParser,
-			TheAboutCompany,
+			// TheAboutCompany,
 
-			TheFooter,
+			// TheFooter,
 		},
 	};
 </script>

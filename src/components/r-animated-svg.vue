@@ -50,6 +50,8 @@
 		&__vector {
 			transition: all 0.2s ease;
 			overflow: visible;
+			width: 100%;
+			height: 100%;
 		}
 
 		&__dot {

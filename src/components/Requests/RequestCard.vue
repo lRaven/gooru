@@ -76,6 +76,9 @@
 		}
 		&__image {
 			user-select: none;
+			object-fit: cover;
+			width: 100%;
+			max-height: 22rem;
 		}
 
 		&__info {
@@ -103,6 +106,12 @@
 				font-size: 1.6rem;
 				font-weight: 600;
 			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.request-card {
+			max-width: initial;
 		}
 	}
 </style>
