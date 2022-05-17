@@ -1,17 +1,24 @@
 <template>
 	<section class="the-sample-parser">
 		<div class="the-sample-parser__container center">
+			<r-plus-box color="var(--white)"></r-plus-box>
+			<r-plus-box color="var(--white)" :isFullSquare="true"></r-plus-box>
 			<div class="the-sample-parser__col">
 				<h2 class="the-sample-parser__title">
 					Сделайте пробный парсер
 				</h2>
 				<p class="the-sample-parser__description">
-					Текст о преимуществах сервиса и что для его оценки вы можете
-					сделать пробный запрос на парсер
+					Предлагаем вам продемонстрировать наши услуги в деле.
+					Отправьте нам запрос на парсинг, и мы предоставим вам
+					пробные результаты в оговоренные сроки.
 				</p>
 				<div class="the-sample-parser__buttons">
 					<r-button text="ОТПРАВИТЬ ЗАПРОС"></r-button>
-					<r-link color="white" text="ЗАДАТЬ ВОПРОСЫ В TELEGRAM">
+					<r-link
+						color="white"
+						text="ЗАДАТЬ ВОПРОСЫ В TELEGRAM"
+						way="https://telegram.im/@compass_pro"
+					>
 						<template v-slot:icon>
 							<svg
 								width="23"
@@ -283,6 +290,7 @@
 </template>
 
 <script>
+	import rPlusBox from "@/components/r-plus-box";
 	import rButton from "@/components/r-button";
 	import rLink from "@/components/r-link";
 	import rAnimatedSvg from "@/components/r-animated-svg";
@@ -290,6 +298,7 @@
 	export default {
 		name: "TheSampleParser",
 		components: {
+			rPlusBox,
 			rButton,
 			rLink,
 			rAnimatedSvg,
@@ -304,18 +313,33 @@
 		background: linear-gradient(101.55deg, #542f7d -24.53%, #338dd0 96.23%),
 			#c4c4c4;
 		&__container {
+			position: relative;
 			display: flex;
 			justify-content: space-between;
+			.r-plus-box {
+				position: absolute;
+				&:first-child {
+					left: -16rem;
+					top: -8rem;
+				}
+				&:nth-child(2) {
+					right: -17rem;
+					bottom: -5rem;
+				}
+			}
 		}
 
 		&__col {
+			&:last-child {
+				padding: 0 10rem;
+			}
 		}
 
 		&__title {
 			margin-bottom: 4rem;
 		}
 		&__description {
-			line-height: 1.3;
+			line-height: 1.5;
 			max-width: 61rem;
 			margin-bottom: 8rem;
 		}

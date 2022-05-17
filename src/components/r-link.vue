@@ -27,6 +27,7 @@
 
 <style lang="scss" scoped>
 	.r-link {
+		user-select: none;
 		display: flex;
 		align-items: center;
 		gap: 2rem;
@@ -34,6 +35,7 @@
 		border-radius: 0.8rem;
 		padding: 2rem 4rem;
 		transition: all 0.2s ease;
+		font-weight: 500;
 		&.purple {
 			border: 0.1rem solid var(--primary);
 			&:hover {

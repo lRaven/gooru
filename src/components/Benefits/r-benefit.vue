@@ -48,6 +48,7 @@
 <style lang="scss" scoped>
 	.r-benefit {
 		overflow: hidden;
+		padding: 12rem 0;
 		&__container {
 			display: flex;
 			align-items: center;

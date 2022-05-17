@@ -6,7 +6,7 @@
 			<span class="request-card__circle"></span>
 		</div>
 		<div class="request-card__main">
-			<img :src="img" alt="" />
+			<img :src="img" alt="" class="request-card__image" />
 		</div>
 		<div class="request-card__info">
 			<h5 class="request-card__title">
@@ -73,6 +73,9 @@
 
 		&__main {
 			max-height: 20rem;
+		}
+		&__image {
+			user-select: none;
 		}
 
 		&__info {
