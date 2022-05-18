@@ -380,11 +380,14 @@
 	}
 	@media (max-width: 767px) {
 		.the-how-it-works {
-			padding: 4rem;
+			padding: 4rem 1.5rem;
 			&__container {
 				flex-direction: column-reverse;
 			}
 			&__col {
+				&:first-child {
+					max-width: 100%;
+				}
 				&:last-child {
 					display: flex;
 					justify-content: center;

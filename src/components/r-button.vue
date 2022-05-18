@@ -46,6 +46,10 @@
 		&.white {
 			background-color: var(--white);
 			color: var(--primary);
+			&:hover {
+				background-color: var(--primary);
+				color: var(--white);
+			}
 		}
 		&.transparent {
 			background-color: transparent;

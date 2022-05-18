@@ -38,6 +38,7 @@
 
 <script>
 	import { directive } from "vue3-click-away";
+	import { mapState } from "vuex";
 
 	export default {
 		name: "rSpoiler",
@@ -58,28 +59,33 @@
 				if (this.isContentVisible === true) this.openSpoiler();
 				else if (this.isContentVisible === false) this.closeSpoiler();
 			},
+			document_width() {
+				setTimeout(() => {
+					this.closeSpoiler();
+				}, 500);
+			},
 		},
 		data: () => ({ isContentVisible: false }),
 		computed: {
+			...mapState(["document_width"]),
+
 			contentHeight() {
 				return this.$refs.content.offsetHeight;
 			},
 		},
 		methods: {
 			openSpoiler() {
+				const contentHeight = this.$refs.content.offsetHeight;
 				this.$refs.arrow.classList.add("open");
+				this.$refs.body.classList.add("open");
 				this.$refs.body.setAttribute(
 					"style",
-					`height: ${this.contentHeight}px`
+					`height: ${contentHeight}px`
 				);
-
-				// TODO: адаптировать высоту контента при resize
-				// setTimeout(() => {
-				// 	this.$refs.body.setAttribute("style", "height: auto");
-				// }, 200);
 			},
 			closeSpoiler() {
 				this.$refs.arrow.classList.remove("open");
+				this.$refs.body.classList.remove("open");
 				this.$refs.body.removeAttribute("style");
 				this.isContentVisible = false;
 			},

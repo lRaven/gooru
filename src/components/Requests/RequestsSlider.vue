@@ -2,7 +2,7 @@
 	<div class="requests-slider">
 		<div class="requests-slider__top">
 			<h2 class="requests-slider__title">{{ title }}</h2>
-			<div class="requests-slider__nav" v-if="document_width > 540">
+			<div class="requests-slider__nav" v-show="document_width > 540">
 				<button
 					class="requests-slider-button-prev swiper-button-prev"
 				></button>
@@ -40,7 +40,7 @@
 				></request-card>
 			</swiper-slide>
 		</swiper>
-		<div class="requests-slider__bottom" v-if="document_width <= 540">
+		<div class="requests-slider__bottom" v-show="document_width <= 540">
 			<button
 				class="requests-slider-button-prev swiper-button-prev"
 			></button>

@@ -2,7 +2,7 @@
 	<div class="rates-slider">
 		<div class="rates-slider__top">
 			<h2 class="rates-slider__title">{{ title }}</h2>
-			<div class="rates-slider__nav" v-if="document_width > 540">
+			<div class="rates-slider__nav" v-show="document_width > 540">
 				<button
 					class="rates-slider-button-prev swiper-button-prev"
 				></button>
@@ -39,7 +39,7 @@
 				></rate-card>
 			</swiper-slide>
 		</swiper>
-		<div class="rates-slider__bottom" v-if="document_width <= 540">
+		<div class="rates-slider__bottom" v-show="document_width <= 540">
 			<button
 				class="rates-slider-button-prev swiper-button-prev"
 			></button>

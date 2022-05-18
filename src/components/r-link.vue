@@ -32,7 +32,6 @@
 		align-items: center;
 		justify-content: center;
 		gap: 2rem;
-		width: fit-content;
 		min-width: max-content;
 		border-radius: 0.8rem;
 		padding: 2rem 4rem;

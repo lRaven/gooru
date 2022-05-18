@@ -44,9 +44,7 @@
 <script>
 	export default {
 		name: "TheFooter",
-		computed: {
-			current_year: () => new Date().getFullYear(),
-		},
+		computed: { current_year: () => new Date().getFullYear() },
 	};
 </script>
 
@@ -54,7 +52,7 @@
 	.the-footer {
 		user-select: none;
 		background-color: #ededed;
-		padding: 3rem 1.5rem;
+		padding: 3rem 4rem;
 		text-transform: uppercase;
 		&__container {
 			display: flex;
@@ -73,10 +71,12 @@
 
 		&__company {
 			display: grid;
-			grid-template-columns: 6rem 1fr;
+			grid-template-columns: max-content 1fr;
 			grid-gap: 0.5rem 1rem;
 			&-logo {
 				grid-area: 1/1/3/1;
+				width: 6rem;
+				height: 6rem;
 			}
 			&-name {
 				font-weight: 700;
@@ -85,6 +85,7 @@
 			}
 			&-slogan {
 				font-size: 1rem;
+				width: max-content;
 			}
 		}
 
@@ -99,10 +100,99 @@
 			gap: 6rem;
 			&-item {
 				cursor: pointer;
+				width: max-content;
 			}
 		}
 		&__copyright {
 			cursor: inherit;
+		}
+	}
+
+	@media (max-width: 1440px) {
+		.the-footer {
+			&__container {
+				gap: 3rem;
+			}
+			&__col {
+				&:first-child {
+					gap: 5rem;
+				}
+			}
+			&__list {
+				gap: 2rem;
+			}
+		}
+	}
+	@media (max-width: 1240px) {
+		.the-footer {
+			&__container {
+				flex-direction: column;
+			}
+			&__col {
+				width: 100%;
+
+				&:first-child {
+					justify-content: space-between;
+				}
+			}
+
+			&__list {
+				width: 100%;
+				justify-content: space-between;
+			}
+		}
+	}
+	@media (max-width: 767px) {
+		.the-footer {
+			padding: 3rem 1.5rem;
+		}
+	}
+	@media (max-width: 670px) {
+		.the-footer {
+			&__list {
+				flex-wrap: wrap;
+				gap: 1rem;
+				&-item {
+					text-align: center;
+					width: 100%;
+				}
+			}
+		}
+	}
+	@media (max-width: 540px) {
+		.the-footer {
+			&__col {
+				&:first-child {
+					gap: 2rem;
+				}
+			}
+
+			&__company {
+				&-logo {
+					width: 4rem;
+					height: 4rem;
+				}
+				&-name {
+					font-size: 1rem;
+				}
+				&-slogan {
+					font-size: 0.8rem;
+				}
+			}
+
+			&__partners {
+				flex-direction: column;
+				gap: 0.8rem;
+				img {
+					max-width: 4rem;
+				}
+			}
+
+			&__list {
+				&-item {
+					font-size: 0.8rem;
+				}
+			}
 		}
 	}
 </style>

@@ -74,7 +74,7 @@
 			margin-bottom: 6rem;
 		}
 	}
-	@media (max-width: 540px) {
+	@media (max-width: 767px) {
 		.the-rates {
 			padding: 2rem 1.5rem;
 		}

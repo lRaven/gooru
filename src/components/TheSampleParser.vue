@@ -13,10 +13,10 @@
 					пробные результаты в оговоренные сроки.
 				</p>
 				<div class="the-sample-parser__buttons">
-					<r-button text="ОТПРАВИТЬ ЗАПРОС"></r-button>
+					<r-button text="ОТПРАВИТЬ ЗАПРОС" color="white"></r-button>
 					<r-link
 						color="white"
-						text="ЗАДАТЬ ВОПРОСЫ В TELEGRAM"
+						:text="link_text"
 						way="https://telegram.im/@compass_pro"
 					>
 						<template v-slot:icon>
@@ -294,6 +294,7 @@
 	import rButton from "@/components/r-button";
 	import rLink from "@/components/r-link";
 	import rAnimatedSvg from "@/components/r-animated-svg";
+	import { mapState } from "vuex";
 
 	export default {
 		name: "TheSampleParser",
@@ -303,13 +304,31 @@
 			rLink,
 			rAnimatedSvg,
 		},
+		watch: {
+			document_width() {
+				this.document_width <= 767
+					? (this.link_text = "ЗАДАТЬ ВОПРОСЫ")
+					: (this.link_text = "ЗАДАТЬ ВОПРОСЫ В TELEGRAM");
+			},
+		},
+		computed: {
+			...mapState(["document_width"]),
+		},
+		data: () => ({
+			link_text: "ЗАДАТЬ ВОПРОСЫ В TELEGRAM",
+		}),
+		mounted() {
+			this.document_width <= 767
+				? (this.link_text = "ЗАДАТЬ ВОПРОСЫ")
+				: (this.link_text = "ЗАДАТЬ ВОПРОСЫ В TELEGRAM");
+		},
 	};
 </script>
 
 <style lang="scss" scoped>
 	.the-sample-parser {
 		color: var(--white);
-		padding: 12rem 1.5rem 9rem 1.5rem;
+		padding: 12rem 4rem 9rem 4rem;
 		background: linear-gradient(101.55deg, #542f7d -24.53%, #338dd0 96.23%),
 			#c4c4c4;
 		&__container {
@@ -346,6 +365,7 @@
 
 		&__buttons {
 			display: flex;
+			flex-wrap: wrap;
 			gap: 6rem;
 			.r-link {
 				&__icon {
@@ -361,6 +381,63 @@
 						}
 					}
 				}
+			}
+		}
+	}
+
+	@media (max-width: 1310px) {
+		.the-sample-parser {
+			&__buttons {
+				gap: 2rem;
+			}
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.the-sample-parser {
+			padding: 5rem 4rem 4rem 4rem;
+			&__container {
+				gap: 5rem;
+			}
+			&__col {
+				&:last-child {
+					padding: 0;
+				}
+			}
+			&__title {
+				margin-bottom: 2.4rem;
+			}
+			&__description {
+				margin-bottom: 4rem;
+			}
+			.r-animated-svg {
+				&__vector {
+					min-width: 30rem;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 767px) {
+		.the-sample-parser {
+			padding: 5rem 1.5rem 4rem 1.5rem;
+			&__container {
+				flex-direction: column-reverse;
+				.r-animated-svg {
+					&__vector {
+						max-height: 25rem;
+						min-width: initial;
+					}
+				}
+			}
+
+			&__title {
+				margin-bottom: 2rem;
+			}
+
+			&__buttons {
+				flex-direction: column;
+				gap: 1.6rem;
 			}
 		}
 	}

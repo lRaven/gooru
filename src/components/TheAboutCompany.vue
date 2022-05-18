@@ -52,7 +52,7 @@
 <style lang="scss" scoped>
 	.the-about-company {
 		display: flex;
-		padding: 10rem 1.5rem 6rem 1.5rem;
+		padding: 10rem 4rem 6rem 4rem;
 		align-items: center;
 		justify-content: space-between;
 		gap: 5rem;
@@ -62,6 +62,7 @@
 			}
 			.r-link {
 				margin-top: 8rem;
+				max-width: max-content;
 				&__icon path {
 					transition: all 0.2s ease;
 				}
@@ -83,6 +84,42 @@
 
 		&__image {
 			user-select: none;
+			max-width: 60rem;
+			width: 100%;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.the-about-company {
+			padding: 8rem 4rem;
+			&__title {
+				margin-bottom: 2.4rem;
+			}
+			.r-link {
+				margin-top: 4rem;
+			}
+		}
+	}
+
+	@media (max-width: 767px) {
+		.the-about-company {
+			padding: 8rem 1.5rem;
+			flex-direction: column;
+			align-items: flex-start;
+
+			&__col {
+				&:first-child {
+					max-width: 100%;
+					width: 100%;
+				}
+			}
+
+			.r-link {
+				max-width: 100%;
+			}
+			&__image {
+				max-width: 40rem;
+			}
 		}
 	}
 </style>
