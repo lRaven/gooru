@@ -109,7 +109,7 @@
 			&__container {
 				&.normal,
 				&.reversed {
-					flex-direction: column;
+					flex-direction: column-reverse;
 				}
 			}
 		}
