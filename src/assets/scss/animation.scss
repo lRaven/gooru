@@ -8,4 +8,5 @@
 .v-leave-to {
 	opacity: 0;
 	transform: translateY(2rem);
+	transition: all 0.3s ease;
 }

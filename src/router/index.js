@@ -12,9 +12,19 @@ const routes = [
 		}
 	},
 	{
+		path: '/cabinet',
+		name: 'cabinet',
+
+		component: () => import(/* webpackChunkName: "cabinet" */ '@/views/PageCabinet'),
+
+		meta: {
+			title: 'Cabinet',
+		}
+	},
+	{
 		path: '/:pathMatch(.*)*',
 		name: '404',
-		component: () => import(/* webpackChunkName: "about" */ '@/views/PageNotFound'),
+		component: () => import(/* webpackChunkName: "not_found" */ '@/views/PageNotFound'),
 
 		meta: {
 			title: '404',

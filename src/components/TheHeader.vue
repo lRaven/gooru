@@ -7,7 +7,7 @@
 					class="the-header__logo"
 					@click="scrollToId('#header')"
 				>
-					GOORU
+					COMPASS
 					<span class="the-header__logo-secondary">PARSER</span>
 				</router-link>
 			</div>
