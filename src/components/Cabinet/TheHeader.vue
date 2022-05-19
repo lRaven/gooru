@@ -15,14 +15,19 @@
 					class="the-header__account-visible"
 					@click="
 						isProfileOpened === true
-							? (isProfileOpened = false)
-							: (isProfileOpened = true)
+							? closeProfile()
+							: openProfile()
 					"
 				>
 					<img :src="avatar" class="the-header__avatar" />
 					<p class="the-header__username">{{ username }}</p>
 					<div class="the-header__account-button">
-						<img src="img/icon/cabinet/arrow.svg" alt="" />
+						<img
+							src="img/icon/cabinet/arrow.svg"
+							alt=""
+							class="the-header__account-arrow"
+							ref="arrow"
+						/>
 					</div>
 				</div>
 				<transition>
@@ -63,12 +68,15 @@
 				default: "UserUser1234",
 			},
 		},
-		data: () => ({
-			isProfileOpened: false,
-		}),
+		data: () => ({ isProfileOpened: false }),
 		methods: {
+			openProfile() {
+				this.isProfileOpened = true;
+				this.$refs.arrow.classList.add("open");
+			},
 			closeProfile() {
 				this.isProfileOpened = false;
+				this.$refs.arrow.classList.remove("open");
 			},
 		},
 		directives: { ClickAway: directive },
@@ -83,7 +91,8 @@
 		left: 0;
 		right: 0;
 		display: grid;
-		grid-template-columns: 30rem 1fr;
+		grid-template-columns: 23.5rem 1fr;
+		gap: 4rem;
 		padding-top: 1rem;
 		padding-bottom: 1rem;
 		box-shadow: 0 0.4rem 1.4rem rgba(0, 0, 0, 0.09);
@@ -118,6 +127,12 @@
 				align-items: center;
 				gap: 2rem;
 				height: 100%;
+			}
+			&-arrow {
+				transition: all 0.2s ease;
+				&.open {
+					transform: rotate(180deg);
+				}
 			}
 			&-content {
 				position: absolute;

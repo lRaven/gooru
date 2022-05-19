@@ -1,4 +1,4 @@
-//*появление/скрытие "скольжение вверх"
+//*fade up
 .v-enter-active,
 .v-leave-active {
 	transition: all 0.3s ease;
@@ -9,4 +9,17 @@
 	opacity: 0;
 	transform: translateY(2rem);
 	transition: all 0.3s ease;
+}
+
+//*fade left
+.fade-left-enter-active,
+.fade-left-leave-active {
+	transition: all 0.2s ease;
+}
+
+.fade-left-enter-from,
+.fade-left-leave-to {
+	opacity: 0;
+	transform: translateX(-2rem);
+	transition: all 0.2s ease;
 }
