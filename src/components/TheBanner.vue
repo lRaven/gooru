@@ -2,17 +2,14 @@
 	<section class="the-banner">
 		<div class="the-banner__container center">
 			<!-- //*decorative -->
+			<r-plus-box color="#5960c7" class="r-plus-box__corner"></r-plus-box>
 			<r-plus-box
-				color="var(--primary)"
-				class="r-plus-box__corner"
-			></r-plus-box>
-			<r-plus-box
-				color="var(--primary)"
+				color="#5960c7"
 				:isFullSquare="true"
 				class="r-plus-box__full-first"
 			></r-plus-box>
 			<r-plus-box
-				color="var(--primary)"
+				color="#5960c7"
 				:isFullSquare="true"
 				class="r-plus-box__full-second"
 			></r-plus-box>
@@ -371,6 +368,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.the-banner {
 		display: flex;
 		background-color: #f2f9fa;
@@ -407,7 +406,7 @@
 			}
 		}
 		&__subtitle {
-			color: var(--dark);
+			color: $dark;
 			font-weight: 300;
 			line-height: 1.2;
 			margin-bottom: 8rem;
@@ -425,7 +424,7 @@
 				}
 				&:hover {
 					.r-link__icon-path {
-						fill: var(--white);
+						fill: $white;
 						transition: all 0.3s ease;
 					}
 				}

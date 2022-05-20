@@ -53,7 +53,10 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.navigation-item {
+		user-select: none;
 		width: 100%;
 
 		&__radio {
@@ -92,15 +95,15 @@
 		&__description {
 			font-weight: 600;
 			font-size: 1.4rem;
-			color: var(--white);
+			color: $white;
 		}
 
 		&__counter {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			background-color: var(--red);
-			color: var(--white);
+			background-color: $red;
+			color: $white;
 			min-width: 1.8rem;
 			height: 1.8rem;
 			border-radius: 50%;

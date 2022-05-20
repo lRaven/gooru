@@ -28,9 +28,7 @@
 			TheParsers,
 		},
 		computed: {
-			...mapState({
-				tab: (state) => state.navigation_panel.tab,
-			}),
+			...mapState({ tab: (state) => state.navigation_panel.tab }),
 		},
 	};
 </script>
@@ -39,8 +37,14 @@
 	.page-cabinet {
 		display: grid;
 		grid-template-columns: 27.5rem 1fr;
+		height: 100vh;
 		&__main {
-			padding: 12rem 4rem 4rem 4rem;
+			margin-top: 8rem;
+			background-color: #f1f7ff;
+			overflow-y: auto;
+			section {
+				overflow: visible;
+			}
 		}
 	}
 </style>

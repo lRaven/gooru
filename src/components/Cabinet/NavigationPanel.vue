@@ -217,6 +217,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.navigation-panel {
 		background: linear-gradient(
 			350.85deg,
@@ -229,6 +231,7 @@
 			height: 100%;
 			background: url("/public/img/icon/cabinet/goo.svg") bottom left /
 				90% no-repeat;
+			margin-bottom: 25rem;
 		}
 
 		&__list {
@@ -251,7 +254,7 @@
 			&__icon {
 				&.selected {
 					path {
-						fill: var(--white);
+						fill: $white;
 						fill-opacity: 1;
 					}
 				}

@@ -58,13 +58,15 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.rate-card {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		background-color: #197eca0d;
 		padding: 2rem 1.4rem 2rem 1rem;
-		box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+		box-shadow: $shadow;
 		border-radius: 1rem;
 		min-height: 47rem;
 		max-width: 33rem;

@@ -49,13 +49,15 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.request-card {
 		max-width: 33rem;
 		width: 100%;
 		border-radius: 1rem;
 		overflow: hidden;
-		background-color: var(--white);
-		box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
+		background-color: $white;
+		box-shadow: $shadow;
 		&__header {
 			background: linear-gradient(180deg, #3d86cf 0%, #6670d3 100%);
 			padding: 0.6rem 1rem;
@@ -63,7 +65,7 @@
 		&__circle {
 			display: inline-block;
 			border-radius: 50%;
-			border: 0.1rem solid var(--white);
+			border: 0.1rem solid $white;
 			width: 0.5rem;
 			height: 0.5rem;
 			+ .request-card__circle {
@@ -82,7 +84,7 @@
 		}
 
 		&__info {
-			border-top: 0.1rem solid var(--primary);
+			border-top: 0.1rem solid $primary;
 			padding: 2rem;
 		}
 

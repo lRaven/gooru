@@ -26,6 +26,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.r-link {
 		user-select: none;
 		display: flex;
@@ -38,23 +40,23 @@
 		transition: all 0.2s ease;
 		font-weight: 500;
 		&.purple {
-			border: 0.1rem solid var(--primary);
+			border: 0.1rem solid $primary;
 			&:hover {
-				background-color: var(--primary);
+				background-color: $primary;
 				.r-link__description {
-					color: var(--white);
+					color: $white;
 				}
 			}
 		}
 		&.white {
-			border: 0.1rem solid var(--white);
+			border: 0.1rem solid $white;
 			.r-link__description {
-				color: var(--white);
+				color: $white;
 			}
 			&:hover {
-				background-color: var(--white);
+				background-color: $white;
 				.r-link__description {
-					color: var(--primary);
+					color: $primary;
 				}
 			}
 		}
@@ -72,7 +74,7 @@
 		}
 
 		&__description {
-			color: var(--primary);
+			color: $primary;
 			transition: all 0.2s ease;
 		}
 	}

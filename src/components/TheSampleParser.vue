@@ -1,8 +1,8 @@
 <template>
 	<section class="the-sample-parser">
 		<div class="the-sample-parser__container center">
-			<r-plus-box color="var(--white)"></r-plus-box>
-			<r-plus-box color="var(--white)" :isFullSquare="true"></r-plus-box>
+			<r-plus-box color="#fff"></r-plus-box>
+			<r-plus-box color="#fff" :isFullSquare="true"></r-plus-box>
 			<div class="the-sample-parser__col">
 				<h2 class="the-sample-parser__title">
 					Сделайте пробный парсер
@@ -30,7 +30,7 @@
 							>
 								<path
 									d="M21.3205 0.221581L0.890526 8.28644C0.890526 8.28644 -0.0757566 8.62199 0.004767 9.23524C0.0852906 9.84849 0.86752 10.1262 0.86752 10.1262L6.00952 11.8618L18.3526 3.98209C18.3526 3.98209 19.0658 3.5424 19.0428 3.98209C19.0428 3.98209 19.1694 4.06309 18.7898 4.42178C18.3987 4.78048 9.08092 13.204 9.08092 13.204L9.05792 13.2272L9.04641 13.2966L8.41373 18.9547C8.70131 19.082 8.95439 18.8853 8.95439 18.8853L12.2789 15.8422L17.4554 19.8341C18.8588 20.4474 19.3649 19.163 19.3649 19.163L23 0.707555C23 -0.518951 21.3205 0.221581 21.3205 0.221581Z"
-									fill="var(--white)"
+									fill="$white"
 								/>
 							</svg>
 						</template>
@@ -326,8 +326,10 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.the-sample-parser {
-		color: var(--white);
+		color: $white;
 		padding: 12rem 4rem 9rem 4rem;
 		background: linear-gradient(101.55deg, #542f7d -24.53%, #338dd0 96.23%),
 			#c4c4c4;
@@ -376,7 +378,7 @@
 				&:hover {
 					.r-link__icon {
 						path {
-							fill: var(--primary);
+							fill: $primary;
 							transition: all 0.3s ease;
 						}
 					}

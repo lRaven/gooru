@@ -84,6 +84,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.the-header {
 		user-select: none;
 		position: fixed;
@@ -95,8 +97,8 @@
 		gap: 4rem;
 		padding-top: 1rem;
 		padding-bottom: 1rem;
-		box-shadow: 0 0.4rem 1.4rem rgba(0, 0, 0, 0.09);
-		background-color: var(--white);
+		box-shadow: $shadow;
+		background-color: $white;
 		&__col {
 			display: flex;
 			align-items: center;
@@ -110,10 +112,10 @@
 			flex-direction: column;
 			gap: 0.5rem;
 			font-size: 2rem;
-			color: var(--primary);
+			color: $primary;
 			font-weight: 700;
 			&-second {
-				color: var(--secondary);
+				color: $secondary;
 				font-weight: 300;
 			}
 		}
@@ -139,9 +141,9 @@
 				left: 0;
 				right: 0;
 				top: calc(100% + 1rem);
-				box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.08);
+				box-shadow: $shadow;
 				border-radius: 0.8rem;
-				background-color: var(--white);
+				background-color: $white;
 				padding: 1rem;
 			}
 		}

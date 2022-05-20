@@ -50,6 +50,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.the-about-company {
 		display: flex;
 		padding: 10rem 4rem 6rem 4rem;
@@ -68,7 +70,7 @@
 				}
 				&:hover {
 					.r-link__icon path {
-						fill: var(--white);
+						fill: $white;
 						transition: all 0.3s ease;
 					}
 				}

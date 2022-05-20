@@ -1,3 +1,5 @@
+@import "@/assets/scss/variables.scss";
+
 .swiper {
 	overflow: visible !important;
 	&-button {
@@ -15,11 +17,11 @@
 			height: 4.6rem !important;
 			border: 0.1rem solid #e3e3e3;
 			border-radius: 1rem;
-			background-color: var(--white);
+			background-color: $white;
 			z-index: 1 !important;
 			&::after {
 				font-size: 1.6rem !important;
-				color: var(--primary);
+				color: $primary;
 				font-weight: 600;
 			}
 		}

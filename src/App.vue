@@ -35,7 +35,7 @@
 
 	body {
 		font-family: "Montserrat", sans-serif;
-		color: var(--black);
+		color: $black;
 
 		&.locked {
 			overflow: hidden;
@@ -44,6 +44,22 @@
 	* {
 		scroll-behavior: smooth;
 		transition: padding 0.3s ease, margin 0.3s ease;
+
+		//*chrome/safari
+		&::-webkit-scrollbar {
+			width: $scrollbarWidth; /* ширина scrollbar */
+		}
+		&::-webkit-scrollbar-track {
+			background: $scrollbarBg; /* цвет дорожки */
+		}
+		&::-webkit-scrollbar-thumb {
+			background-color: $scrollbarThumb; /* цвет плашки */
+			border-radius: $scrollbarBorderRadius; /* закругления плашки */
+			border: $scrollbarBorder; /* padding вокруг плашки */
+		}
+		//*firefox
+		scrollbar-width: thin; /* "auto" или "thin"  */
+		scrollbar-color: $scrollbarThumb $scrollbarBg;
 	}
 
 	#app,

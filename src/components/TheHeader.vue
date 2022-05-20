@@ -93,6 +93,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.the-header {
 		user-select: none;
 		position: fixed;
@@ -104,7 +106,7 @@
 		transition: all 0.2s ease;
 		&.bg {
 			background-color: #fff;
-			box-shadow: 0 0 1rem 0 var(--gray);
+			box-shadow: $shadow;
 			padding: 2rem 4rem;
 			transition: all 0.5s ease;
 		}
@@ -124,13 +126,13 @@
 		}
 
 		&__logo {
-			color: var(--primary);
+			color: $primary;
 			font-weight: 700;
 			font-size: 2.4rem;
 			text-transform: uppercase;
 
 			&-secondary {
-				color: var(--secondary);
+				color: $secondary;
 				font-weight: 300;
 			}
 		}
@@ -152,7 +154,7 @@
 				bottom: 0.5rem;
 				width: 0;
 				height: 0.2rem;
-				background-color: var(--black);
+				background-color: $black;
 				transition: all 0.2s ease;
 			}
 			&:hover {
@@ -214,11 +216,11 @@
 			}
 			.r-button {
 				&.transparent {
-					background-color: var(--primary);
-					color: var(--white);
+					background-color: $primary;
+					color: $white;
 					&:hover {
-						background-color: var(--white);
-						color: var(--primary);
+						background-color: $white;
+						color: $primary;
 					}
 				}
 				&.purple {

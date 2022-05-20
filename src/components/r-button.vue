@@ -19,6 +19,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables.scss";
+
 	.r-button {
 		user-select: none;
 		font-size: 1.6rem;
@@ -36,27 +38,37 @@
 		}
 
 		&.purple {
-			background-color: var(--primary);
-			color: var(--white);
+			background-color: $primary;
+			color: $white;
 			&:hover {
-				background-color: var(--white);
-				color: var(--primary);
+				background-color: $white;
+				color: $primary;
 			}
 		}
 		&.white {
-			background-color: var(--white);
-			color: var(--primary);
+			background-color: $white;
+			color: $primary;
 			&:hover {
-				background-color: var(--primary);
-				color: var(--white);
+				background-color: $primary;
+				color: $white;
 			}
 		}
 		&.transparent {
 			background-color: transparent;
-			color: var(--primary);
+			color: $primary;
 			&:hover {
 				background-color: #5960c7fd;
-				color: var(--white);
+				color: $white;
+			}
+		}
+		&.bordered {
+			background-color: transparent;
+			outline: 0.1rem solid $black-50;
+			color: $black-50;
+			border-radius: 1rem;
+			&:hover {
+				outline-color: $primary;
+				color: $primary;
 			}
 		}
 	}
