@@ -9,24 +9,7 @@
 				<p class="parser-card__date">{{ date }}</p>
 			</div>
 			<div class="parser-card__col">
-				<p
-					class="parser-card__status parser-card__status-works"
-					v-if="status !== null && status < 100"
-				>
-					Выполнено {{ status }}%
-				</p>
-				<p
-					class="parser-card__status parser-card__status-completed"
-					v-else-if="status === 100"
-				>
-					Готово
-				</p>
-				<p
-					class="parser-card__status parser-card__status-postpone"
-					v-else
-				>
-					Отложено
-				</p>
+				<r-status :status="status"></r-status>
 			</div>
 			<div class="parser-card__col">
 				<p class="parser-card__found">{{ found }}</p>
@@ -38,7 +21,15 @@
 				<p class="parser-card__time">{{ time }}</p>
 			</div>
 			<div class="parser-card__col">
-				<r-button text="Подробнее" color="bordered"></r-button>
+				<r-button
+					text="Подробнее"
+					color="bordered"
+					@click="
+						this.$router.push({
+							path: `/cabinet/parsers/parser/${id}`,
+						})
+					"
+				></r-button>
 			</div>
 		</div>
 	</div>
@@ -47,12 +38,14 @@
 <script>
 	import rCheckbox from "@/components/r-checkbox";
 	import rButton from "@/components/r-button";
+	import rStatus from "@/components/Cabinet/r-status";
 
 	export default {
 		name: "ParserCard",
 		components: {
 			rCheckbox,
 			rButton,
+			rStatus,
 		},
 		watch: {
 			isSelected() {
@@ -62,6 +55,7 @@
 			},
 		},
 		props: {
+			id: Number,
 			source: {
 				value: String,
 				default: "source",
@@ -92,7 +86,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables.scss";
+	@import "@/assets/scss/variables";
 
 	.parser-card {
 		display: flex;
@@ -148,24 +142,6 @@
 		&__favorite {
 			font-weight: 600;
 			font-size: 1.5rem;
-		}
-
-		&__status {
-			padding: 0.8rem 2.4rem;
-			border-radius: 5rem;
-			font-weight: 600;
-			&-works {
-				color: $secondary;
-				background-color: $secondary-10;
-			}
-			&-completed {
-				color: $primary;
-				background-color: $primary-15;
-			}
-			&-postpone {
-				color: $black-50;
-				background-color: #f0f0f0;
-			}
 		}
 	}
 </style>

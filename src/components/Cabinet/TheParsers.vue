@@ -50,6 +50,7 @@
 				<parser-card
 					v-for="parser in parsers"
 					:key="parser.id"
+					:id="parser.id"
 					:source="parser.source"
 					:date="parser.date"
 					:status="parser.status"
@@ -73,7 +74,7 @@
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
 
-	import { mapState } from "vuex";
+	import { mapState, mapMutations } from "vuex";
 
 	export default {
 		name: "TheParsers",
@@ -94,20 +95,26 @@
 			sortBy: "source",
 		}),
 		methods: {
+			...mapMutations(["SET_TAB"]),
 			sort_list(by) {
 				console.log(by);
 			},
+		},
+		created() {
+			this.SET_TAB("parsers");
 		},
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables.scss";
+	@import "@/assets/scss/variables";
 
 	.the-parsers {
+		display: grid;
+		grid-template-rows: repeat(2, max-content) 1fr;
 		padding-top: 4rem;
 		padding-bottom: 4rem;
-		height: 100%;
+		min-height: 100%;
 
 		&__title {
 			font-weight: 400;
@@ -146,7 +153,6 @@
 		}
 
 		&__content {
-			height: calc(100% - 10rem);
 			display: grid;
 			grid-template-rows: max-content 1fr max-content;
 		}
@@ -176,11 +182,16 @@
 		}
 
 		&__bottom {
-			padding: 0 0 0 2.6rem;
+			padding-left: 2.6rem;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			gap: 5rem;
+			.r-button {
+				font-size: 1.4rem;
+				padding: 1.2rem 2.8rem;
+				font-weight: 500;
+			}
 		}
 	}
 </style>

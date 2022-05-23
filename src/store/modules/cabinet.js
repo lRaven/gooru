@@ -3,6 +3,7 @@ const state = () => ({
 		{
 			id: 1,
 			source: 'avito.ru',
+			img: 'img/requests/request-img1.jpg',
 			date: '03.15.2021',
 			status: 58,
 			found: 600,
@@ -12,6 +13,7 @@ const state = () => ({
 		{
 			id: 2,
 			source: 'bbbbbds.ru',
+			img: 'img/requests/request-img2.jpg',
 			date: '03.15.2021',
 			status: 100,
 			found: 600,
@@ -21,6 +23,7 @@ const state = () => ({
 		{
 			id: 3,
 			source: 'cccccasdca.com',
+			img: 'img/requests/request-img3.jpg',
 			date: '03.15.2021',
 			status: null,
 			found: 600,
@@ -30,6 +33,7 @@ const state = () => ({
 		{
 			id: 4,
 			source: 'avito.ru',
+			img: 'img/requests/request-img4.jpg',
 			date: '03.15.2021',
 			status: 100,
 			found: 600,
@@ -39,6 +43,7 @@ const state = () => ({
 		{
 			id: 5,
 			source: 'bbbbbds.ru',
+			img: 'img/requests/request-img1.jpg',
 			date: '03.15.2021',
 			status: 100,
 			found: 600,
@@ -48,6 +53,7 @@ const state = () => ({
 		{
 			id: 6,
 			source: 'cccccasdca.com',
+			img: 'img/requests/request-img2.jpg',
 			date: '03.15.2021',
 			status: 100,
 			found: 600,
@@ -57,6 +63,7 @@ const state = () => ({
 		{
 			id: 7,
 			source: 'avito.ru',
+			img: 'img/requests/request-img3.jpg',
 			date: '03.15.2021',
 			status: 100,
 			found: 600,
@@ -66,6 +73,7 @@ const state = () => ({
 		{
 			id: 8,
 			source: 'bbbbbds.ru',
+			img: 'img/requests/request-img4.jpg',
 			date: '03.15.2021',
 			status: 100,
 			found: 600,
@@ -75,6 +83,7 @@ const state = () => ({
 		{
 			id: 9,
 			source: 'cccccasdca.com',
+			img: 'img/requests/request-img1.jpg',
 			date: '03.15.2021',
 			status: 100,
 			found: 600,

@@ -8,6 +8,7 @@
 				class="navigation-item__radio-real"
 				:checked="isDefaultChecked"
 				@change="this.$emit('set_tab', value)"
+				@click="this.$emit('set_tab', value)"
 			/>
 			<div class="navigation-item__radio-fake" ref="content">
 				<div class="navigation-item__col">
@@ -53,7 +54,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables.scss";
+	@import "@/assets/scss/variables";
 
 	.navigation-item {
 		user-select: none;

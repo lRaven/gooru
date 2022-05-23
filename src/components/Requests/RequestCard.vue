@@ -49,7 +49,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables.scss";
+	@import "@/assets/scss/variables";
 
 	.request-card {
 		max-width: 33rem;

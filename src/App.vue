@@ -28,10 +28,10 @@
 </script>
 
 <style lang="scss">
-	@import "@/assets/scss/animation.scss";
-	@import "@/assets/scss/swiper.scss";
-	@import "@/assets/scss/center.scss";
-	@import "@/assets/scss/variables.scss";
+	@import "@/assets/scss/animation";
+	@import "@/assets/scss/swiper";
+	@import "@/assets/scss/center";
+	@import "@/assets/scss/variables";
 
 	body {
 		font-family: "Montserrat", sans-serif;

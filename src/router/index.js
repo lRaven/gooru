@@ -19,7 +19,25 @@ const routes = [
 
 		meta: {
 			title: 'Cabinet',
-		}
+		},
+		redirect: { name: 'appeals' },
+		children: [
+			{
+				path: 'appeals',
+				name: 'appeals',
+				component: () => import(/* webpackChunkName: "cabinet/parsers" */ '@/components/Cabinet/TheAppeals'),
+			},
+			{
+				path: 'parsers',
+				name: 'parsers',
+				component: () => import(/* webpackChunkName: "cabinet/parsers" */ '@/components/Cabinet/TheParsers'),
+			},
+			{
+				path: 'parsers/parser/:id',
+				name: 'parser',
+				component: () => import(/* webpackChunkName: "cabinet/parsers/parser" */ '@/components/Cabinet/TheParser'),
+			},
+		],
 	},
 	{
 		path: '/:pathMatch(.*)*',

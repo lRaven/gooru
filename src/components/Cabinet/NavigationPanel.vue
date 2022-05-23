@@ -192,6 +192,7 @@
 			...mapMutations(["SET_TAB"]),
 			set_tab(tab) {
 				this.SET_TAB(tab);
+				this.$router.push({ name: tab, query: { page: 1 } });
 			},
 			paint_tab() {
 				this.tabs.forEach((tab) => {
@@ -201,7 +202,6 @@
 				});
 			},
 			paint_icon() {
-				// ref.classList.add("selected");
 				for (let [key, value] of Object.entries(this.$refs)) {
 					console.log(key, value);
 				}
@@ -210,14 +210,11 @@
 		created() {
 			this.paint_tab();
 		},
-		mounted() {
-			// this.paint_icon();
-		},
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables.scss";
+	@import "@/assets/scss/variables";
 
 	.navigation-panel {
 		background: linear-gradient(

@@ -41,6 +41,12 @@
 						color="transparent"
 						text="Войти"
 						ref="button"
+						@click="
+							this.$router.push({
+								name: 'parsers',
+								query: { page: 1 },
+							})
+						"
 					></r-button>
 					<r-button text="Регистрация"></r-button>
 				</div>
@@ -93,7 +99,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables.scss";
+	@import "@/assets/scss/variables";
 
 	.the-header {
 		user-select: none;
