@@ -18,7 +18,7 @@ const routes = [
 		component: () => import(/* webpackChunkName: "cabinet" */ '@/views/PageCabinet'),
 
 		meta: {
-			title: 'Cabinet',
+			title: 'Личный кабинет',
 		},
 		redirect: { name: 'appeals' },
 		children: [
@@ -26,16 +26,25 @@ const routes = [
 				path: 'appeals',
 				name: 'appeals',
 				component: () => import(/* webpackChunkName: "cabinet/parsers" */ '@/components/Cabinet/TheAppeals'),
+				meta: {
+					title: 'Обращения',
+				},
 			},
 			{
 				path: 'parsers',
 				name: 'parsers',
 				component: () => import(/* webpackChunkName: "cabinet/parsers" */ '@/components/Cabinet/TheParsers'),
+				meta: {
+					title: 'Мои парсеры',
+				},
 			},
 			{
 				path: 'parsers/parser/:id',
 				name: 'parser',
 				component: () => import(/* webpackChunkName: "cabinet/parsers/parser" */ '@/components/Cabinet/TheParser'),
+				meta: {
+					title: 'Парсер',
+				},
 			},
 		],
 	},

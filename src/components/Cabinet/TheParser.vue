@@ -32,16 +32,54 @@
 			</div>
 
 			<div class="the-parser__col the-parser__content">
-				<div class="the-parser__content-header">
-					<h4 class="the-parser__content-found">
-						Найдено
-						<span class="the-parser__content-found-number"
-							>862</span
-						>
-					</h4>
+				<div class="the-parser__content-main">
+					<div class="the-parser__content-header">
+						<div class="the-parser__content-header-row">
+							<h4 class="the-parser__content-found">
+								Найдено
+								<span class="the-parser__content-found-number">
+									{{ current_parser.content.length }}
+								</span>
+							</h4>
+							<p class="the-parser__total-processed">
+								всего обработано
+								{{ current_parser.content.length }}
+							</p>
+						</div>
+
+						<div class="the-parser__content-header-row">
+							<button
+								type="button"
+								class="the-parser__sortby selected"
+							>
+								по свежести материала
+							</button>
+							<button type="button" class="the-parser__sortby">
+								отмеченные
+							</button>
+
+							<button type="button" class="the-parser__sortby">
+								с комментариями
+							</button>
+						</div>
+					</div>
+
+					<ol class="the-parser__content-list">
+						<parser-content
+							v-for="parser_result in current_parser.content"
+							:key="parser_result.id"
+							:parser="parser_result"
+						></parser-content>
+					</ol>
 				</div>
 
-				<ul class="the-parser__content-list"></ul>
+				<div
+					class="the-parser__content-bottom"
+					v-if="current_parser.content.length > 10"
+				>
+					<r-button color="bordered" text="Показать ещё"></r-button>
+					<r-pagination></r-pagination>
+				</div>
 			</div>
 		</div>
 
@@ -52,11 +90,17 @@
 <script>
 	import { mapState, mapMutations } from "vuex";
 	import rStatus from "@/components/Cabinet/r-status";
+	import ParserContent from "@/components/Cabinet/Parser/ParserContent";
+	import rButton from "@/components/r-button";
+	import rPagination from "@/components/r-pagination";
 
 	export default {
 		name: "TheParser",
 		components: {
 			rStatus,
+			ParserContent,
+			rButton,
+			rPagination,
 		},
 		data() {
 			return {
@@ -96,14 +140,15 @@
 	.the-parser {
 		display: grid;
 		grid-template-columns: 1fr max-content;
-		grid-gap: 3rem;
-		padding-right: 0;
+		padding: 0;
+		height: calc(100vh - 8rem);
 
 		&__main {
-			padding-top: 4rem;
+			padding: 4rem 3rem 4rem 4rem;
 			display: grid;
 			grid-template-columns: 41rem 1fr;
 			grid-template-rows: repeat(2, max-content);
+			grid-template-columns: max-content, 1fr;
 			grid-gap: 3rem;
 		}
 
@@ -119,6 +164,7 @@
 			width: 100%;
 			margin-bottom: 4rem;
 		}
+
 		&__info {
 			display: grid;
 			grid-template-columns: repeat(2, max-content);
@@ -140,11 +186,34 @@
 		}
 
 		&__content {
-			background-color: $white;
-			border-radius: 0.8rem;
-			box-shadow: $shadow;
+			display: grid;
+			grid-template-rows: repeat(2, min-content);
+			align-content: space-between;
+			grid-gap: 2rem;
+			height: calc(100vh - 18.6rem);
+			padding-bottom: 3rem;
+
+			&-main {
+				overflow: hidden;
+				display: grid;
+				grid-template-rows: max-content minmax(max-content, 1fr);
+
+				background-color: $white;
+				border-radius: 0.8rem;
+				box-shadow: $shadow;
+			}
+
 			&-header {
-				padding: 2rem 3rem;
+				padding: 3rem;
+				&-row {
+					display: flex;
+					align-items: center;
+					gap: 2rem;
+					&:first-child {
+						justify-content: space-between;
+						margin-bottom: 1rem;
+					}
+				}
 			}
 			&-found {
 				&-number {
@@ -153,6 +222,32 @@
 			}
 
 			&-list {
+				list-style: none;
+				overflow-y: auto;
+				max-height: calc(100vh - 39.3rem);
+			}
+
+			&-bottom {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.r-button {
+					font-size: 1.4rem;
+					padding: 1rem 2.8rem;
+				}
+			}
+		}
+		&__total-processed {
+			color: $black-70;
+		}
+
+		&__sortby {
+			background-color: transparent;
+			font-size: 1.2rem;
+			color: $black-50;
+			&.selected {
+				font-weight: 600;
+				color: $black-70;
 			}
 		}
 

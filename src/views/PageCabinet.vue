@@ -4,9 +4,11 @@
 		<navigation-panel />
 
 		<main class="page-cabinet__main main">
-			<transition mode="out-in">
-				<router-view />
-			</transition>
+			<router-view v-slot="{ Component }">
+				<transition mode="out-in">
+					<component :is="Component" />
+				</transition>
+			</router-view>
 		</main>
 	</div>
 </template>
