@@ -1,5 +1,11 @@
 <template>
 	<li class="parser-content">
+		<img
+			:src="parser.img"
+			alt="image"
+			class="parser-content__image"
+			v-if="parser.img"
+		/>
 		<div class="parser-content__col">
 			<p class="parser-content__text">{{ parser.text }}</p>
 			<a
@@ -132,10 +138,10 @@
 
 	.parser-content {
 		border-top: 0.1rem solid #999;
-		padding: 1rem 3rem;
+		padding: 1rem 3rem 1rem 1rem;
 		display: flex;
 		align-items: center;
-		gap: 3rem;
+		gap: 1rem;
 
 		&__col {
 			&:last-child {
@@ -145,6 +151,12 @@
 			}
 		}
 
+		&__image {
+			max-width: 7rem;
+			width: 100%;
+			max-height: 5rem;
+			object-fit: contain;
+		}
 		&__text {
 			font-size: 1.2rem;
 			line-height: 1.3;

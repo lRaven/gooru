@@ -13,24 +13,22 @@
 				src="img/icon/arrow-full.svg"
 				alt="arrow"
 				class="r-spoiler__arrow"
+				:class="arrowType"
 				ref="arrow"
+				v-if="arrowType === 'purple'"
+			/>
+			<img
+				src="img/icon/cabinet/arrow.svg"
+				alt="arrow"
+				class="r-spoiler__arrow"
+				:class="arrowType"
+				ref="arrow"
+				v-else-if="arrowType === 'gray'"
 			/>
 		</div>
 		<div class="r-spoiler__body" ref="body">
 			<div class="r-spoiler__content" ref="content">
-				<p class="r-spoiler__text" v-for="text in texts" :key="text.id">
-					{{ text.text }}
-				</p>
-				<ul class="r-spoiler__list">
-					<li
-						class="r-spoiler__list-item"
-						v-for="item in list"
-						:key="item.id"
-					>
-						{{ item.text }}
-					</li>
-				</ul>
-				<p class="r-spoiler__disclaimer">{{ disclaimer }}</p>
+				<slot />
 			</div>
 		</div>
 	</div>
@@ -47,12 +45,10 @@
 				value: String,
 				default: "Title",
 			},
-			texts: {
-				value: Array,
-				default: [{ id: 1, text: "Text" }],
+			arrowType: {
+				value: String,
+				default: "purple",
 			},
-			list: Array,
-			disclaimer: String,
 		},
 		watch: {
 			isContentVisible() {
@@ -100,8 +96,9 @@
 			user-select: none;
 			display: flex;
 			justify-content: space-between;
+			align-items: center;
 			gap: 5rem;
-			padding: 1.2rem 2rem;
+			padding: 1.2rem 0;
 			cursor: pointer;
 		}
 		&__title {
@@ -110,10 +107,18 @@
 		}
 		&__arrow {
 			pointer-events: all;
-			width: 1.6rem;
 			transition: all 0.2s ease;
-			&.open {
-				transform: rotate(90deg);
+			&.purple {
+				width: 1.6rem;
+				&.open {
+					transform: rotate(90deg);
+				}
+			}
+			&.gray {
+				width: 1rem;
+				&.open {
+					transform: rotate(180deg);
+				}
 			}
 		}
 
@@ -124,24 +129,7 @@
 			border-bottom: 0.1rem solid #cdcdcd;
 		}
 		&__content {
-			padding: 2rem 4rem 2rem 2rem;
-		}
-
-		&__text,
-		&__disclaimer {
-			line-height: 1.3;
-			font-size: 1.6rem;
-		}
-		&__list {
-			&-item {
-				font-size: 1.6rem;
-				line-height: 1.3;
-				display: block;
-				&::first-letter {
-					font-weight: 700;
-					font-size: 40rem;
-				}
-			}
+			padding: 2rem 4rem 2rem 0;
 		}
 	}
 
@@ -153,10 +141,6 @@
 			}
 			&__title {
 				font-size: 1.6rem;
-			}
-			&__text,
-			&__disclaimer {
-				font-size: 1.4rem;
 			}
 		}
 	}

@@ -99,6 +99,7 @@
 		padding-bottom: 1rem;
 		box-shadow: $shadow;
 		background-color: $white;
+		z-index: 3;
 		&__col {
 			display: flex;
 			align-items: center;

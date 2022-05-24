@@ -83,7 +83,7 @@
 			</div>
 		</div>
 
-		<div class="the-parser__filters heze"></div>
+		<parser-filters :current_parser="current_parser"></parser-filters>
 	</section>
 </template>
 
@@ -93,6 +93,7 @@
 	import ParserContent from "@/components/Cabinet/Parser/ParserContent";
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
+	import ParserFilters from "@/components/Cabinet/Parser/ParserFilters";
 
 	export default {
 		name: "TheParser",
@@ -101,6 +102,7 @@
 			ParserContent,
 			rButton,
 			rPagination,
+			ParserFilters,
 		},
 		data() {
 			return {
@@ -131,12 +133,6 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.heze {
-		width: 29.8rem;
-		height: calc(100vh - 8rem);
-		background-color: $secondary;
-	}
-
 	.the-parser {
 		display: grid;
 		grid-template-columns: 1fr max-content;
@@ -161,6 +157,7 @@
 		}
 
 		&__image {
+			user-select: none;
 			width: 100%;
 			margin-bottom: 4rem;
 		}
@@ -231,6 +228,7 @@
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
+				gap: 5rem;
 				.r-button {
 					font-size: 1.4rem;
 					padding: 1rem 2.8rem;
@@ -242,6 +240,7 @@
 		}
 
 		&__sortby {
+			user-select: none;
 			background-color: transparent;
 			font-size: 1.2rem;
 			color: $black-50;
@@ -249,10 +248,6 @@
 				font-weight: 600;
 				color: $black-70;
 			}
-		}
-
-		&__filters {
-			// background-color: rgba(255, 255, 255, 0.5);
 		}
 	}
 </style>
