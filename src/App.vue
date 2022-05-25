@@ -90,6 +90,14 @@
 		flex: 0 0 auto;
 	}
 
+	img,
+	svg,
+	button,
+	header,
+	footer {
+		user-select: none;
+	}
+
 	h1 {
 		font-size: 8rem;
 	}

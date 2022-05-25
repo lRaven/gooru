@@ -1,6 +1,12 @@
 <template>
 	<label class="text-checkbox">
-		<input type="checkbox" name="" id="" class="text-checkbox__real" />
+		<input
+			type="checkbox"
+			name=""
+			id=""
+			class="text-checkbox__real"
+			@change="this.$emit('update:modelValue', $event.target.checked)"
+		/>
 		<p class="text-checkbox__fake">{{ text }}</p>
 	</label>
 </template>

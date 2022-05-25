@@ -129,7 +129,7 @@
 			border-bottom: 0.1rem solid #cdcdcd;
 		}
 		&__content {
-			padding: 2rem 4rem 2rem 0;
+			padding: 2rem 0;
 		}
 	}
 

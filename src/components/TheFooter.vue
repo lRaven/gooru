@@ -1,5 +1,5 @@
 <template>
-	<div class="the-footer">
+	<footer class="the-footer">
 		<div class="the-footer__container center-wide">
 			<div class="the-footer__col">
 				<div class="the-footer__company">
@@ -38,7 +38,7 @@
 				</ul>
 			</div>
 		</div>
-	</div>
+	</footer>
 </template>
 
 <script>
@@ -50,7 +50,6 @@
 
 <style lang="scss" scoped>
 	.the-footer {
-		user-select: none;
 		background-color: #ededed;
 		padding: 3rem 4rem;
 		text-transform: uppercase;

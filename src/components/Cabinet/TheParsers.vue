@@ -130,7 +130,6 @@
 
 		&__postpone,
 		&__remove {
-			user-select: none;
 			display: flex;
 			align-items: center;
 			gap: 1rem;

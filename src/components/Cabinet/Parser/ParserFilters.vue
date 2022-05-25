@@ -23,6 +23,7 @@
 				/>
 			</svg>
 		</button>
+
 		<div class="parser-filters__header">
 			<img
 				src="img/icon/cabinet/filter.svg"
@@ -34,7 +35,7 @@
 			</h5>
 		</div>
 
-		<div class="parser-filters__body" v-if="isMinimized === false">
+		<div class="parser-filters__body" v-show="isMinimized === false">
 			<r-spoiler title="Источник" arrowType="gray">
 				<template v-slot>
 					<input
@@ -43,17 +44,65 @@
 						id=""
 						placeholder="Введите источник"
 						class="parser-filters__input"
-						:value="current_parser.source"
 					/>
 				</template>
 			</r-spoiler>
+
 			<r-spoiler title="Объект поиска" arrowType="gray">
 				<template v-slot>
-					<text-checkbox></text-checkbox>
-					<text-checkbox></text-checkbox>
-					<text-checkbox></text-checkbox>
+					<div class="parser-filters__checkboxes">
+						<text-checkbox
+							text="Текст"
+							v-model="texts"
+						></text-checkbox>
+						<text-checkbox
+							text="Изображения"
+							v-model="images"
+						></text-checkbox>
+						<text-checkbox
+							text="Видео"
+							v-model="videos"
+						></text-checkbox>
+						<text-checkbox
+							text="Товар"
+							v-model="products"
+						></text-checkbox>
+					</div>
 				</template>
 			</r-spoiler>
+
+			<r-spoiler title="Условия поиска" arrowType="gray">
+				<template v-slot>
+					<textarea
+						placeholder="Текстовое описание требований для поиска с возможностью прикрепления фото"
+						class="parser-filters__textarea"
+						v-model="description"
+					></textarea>
+				</template>
+			</r-spoiler>
+
+			<label class="parser-filters__file">
+				<input
+					type="file"
+					name=""
+					id=""
+					class="parser-filters__file-real"
+					accept="image/*"
+					@change="file = $event.target.files[0].name"
+				/>
+				<span class="parser-filters__file-fake">
+					<img
+						src="img/icon/cabinet/camera.svg"
+						alt=""
+						class="parser-filters__file-icon"
+					/>
+					<p class="parser-filters__file-description">
+						{{ file || "Добавить фото" }}
+					</p>
+				</span>
+			</label>
+
+			<r-button text="Применить"></r-button>
 		</div>
 	</div>
 </template>
@@ -61,12 +110,14 @@
 <script>
 	import rSpoiler from "@/components/r-spoiler";
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
+	import rButton from "@/components/r-button";
 
 	export default {
 		name: "ParserFilters",
 		components: {
 			rSpoiler,
 			TextCheckbox,
+			rButton,
 		},
 		watch: {
 			isMinimized() {
@@ -77,11 +128,14 @@
 				}
 			},
 		},
-		props: {
-			current_parser: Object,
-		},
 		data: () => ({
 			isMinimized: false,
+			texts: false,
+			images: false,
+			videos: false,
+			products: false,
+			description: "",
+			file: "",
 		}),
 		methods: {
 			minimizePanel() {
@@ -136,17 +190,65 @@
 			gap: 1.2rem;
 			margin-bottom: 2.6rem;
 		}
-		&__icon {
-			user-select: none;
-		}
 		&__title {
 			font-weight: 600;
 			color: $gray;
 		}
 
+		.r-spoiler {
+			+ .r-spoiler {
+				margin-top: 2.8rem;
+			}
+		}
+
 		&__input {
 			background-color: transparent;
 			font-size: 1.6rem;
+		}
+
+		&__checkboxes {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+		}
+
+		&__textarea {
+			font-size: 1.3rem;
+			width: 100%;
+			height: 5rem;
+			resize: none;
+			max-height: 10rem;
+			background-color: transparent;
+		}
+
+		&__file {
+			user-select: none;
+			display: inline-block;
+			padding: 1.2rem 0;
+			margin-bottom: 2.8rem;
+			&-real {
+				display: none;
+			}
+			&-fake {
+				display: flex;
+				align-items: center;
+				gap: 0.6rem;
+				cursor: pointer;
+			}
+			&-icon {
+				width: 2.2rem;
+			}
+			&-description {
+				font-size: 1rem;
+				color: $black-70;
+			}
+		}
+
+		.r-button {
+			width: 100%;
+			font-size: 1.4rem;
+			padding-top: 1.5rem;
+			padding-bottom: 1.5rem;
 		}
 	}
 </style>

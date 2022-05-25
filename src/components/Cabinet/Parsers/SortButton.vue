@@ -25,7 +25,6 @@
 	@import "@/assets/scss/variables";
 
 	.sort-button {
-		user-select: none;
 		background-color: transparent;
 		display: flex;
 		align-items: center;

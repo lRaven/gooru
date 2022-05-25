@@ -22,7 +22,6 @@
 	@import "@/assets/scss/variables";
 
 	.r-button {
-		user-select: none;
 		font-size: 1.6rem;
 		font-weight: 700;
 		padding: 2rem 3rem;

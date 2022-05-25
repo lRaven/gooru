@@ -36,9 +36,14 @@
 		&__real {
 			display: none;
 			&:checked {
-				+ .r-checkbox__fake {
-					background-color: $primary;
-					border-color: $primary;
+				~ .r-checkbox {
+					&__fake {
+						background-color: $primary;
+						border-color: $primary;
+					}
+					&__description {
+						color: $black;
+					}
 				}
 			}
 		}

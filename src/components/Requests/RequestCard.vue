@@ -77,7 +77,6 @@
 			max-height: 20rem;
 		}
 		&__image {
-			user-select: none;
 			object-fit: cover;
 			width: 100%;
 			max-height: 22rem;

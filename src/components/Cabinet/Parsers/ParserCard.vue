@@ -26,7 +26,8 @@
 					color="bordered"
 					@click="
 						this.$router.push({
-							path: `/cabinet/parsers/parser/${id}`,
+							path: `/cabinet/parsers/${id}`,
+							query: { page: 1 },
 						})
 					"
 				></r-button>

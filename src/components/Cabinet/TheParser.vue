@@ -157,7 +157,6 @@
 		}
 
 		&__image {
-			user-select: none;
 			width: 100%;
 			margin-bottom: 4rem;
 		}
@@ -240,7 +239,6 @@
 		}
 
 		&__sortby {
-			user-select: none;
 			background-color: transparent;
 			font-size: 1.2rem;
 			color: $black-50;

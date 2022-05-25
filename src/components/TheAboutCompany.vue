@@ -85,7 +85,6 @@
 		}
 
 		&__image {
-			user-select: none;
 			max-width: 60rem;
 			width: 100%;
 		}

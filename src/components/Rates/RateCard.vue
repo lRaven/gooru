@@ -116,7 +116,6 @@
 			}
 		}
 		&__tick {
-			user-select: none;
 			max-width: 2.7rem;
 			max-height: 2.3rem;
 		}

@@ -1,5 +1,5 @@
 <template>
-	<div class="the-header" id="header" ref="header">
+	<header class="the-header" id="header" ref="header">
 		<div class="the-header__container center-wide">
 			<div class="the-header__col">
 				<router-link
@@ -41,18 +41,16 @@
 						color="transparent"
 						text="Войти"
 						ref="button"
-						@click="
-							this.$router.push({
-								name: 'parsers',
-								query: { page: 1 },
-							})
-						"
+						@click="this.$router.push({ name: 'login' })"
 					></r-button>
-					<r-button text="Регистрация"></r-button>
+					<r-button
+						text="Регистрация"
+						@click="this.$router.push({ name: 'registration' })"
+					></r-button>
 				</div>
 			</div>
 		</div>
-	</div>
+	</header>
 </template>
 
 <script>
@@ -102,7 +100,6 @@
 	@import "@/assets/scss/variables";
 
 	.the-header {
-		user-select: none;
 		position: fixed;
 		top: 0;
 		left: 0;

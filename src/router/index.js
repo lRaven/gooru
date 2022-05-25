@@ -1,6 +1,16 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import PageHome from '@/views/PageHome'
 
+import PageCabinet from '@/views/PageCabinet'
+import TheAppeals from '@/components/Cabinet/TheAppeals'
+
+import TheParsers from '@/components/Cabinet/TheParsers'
+import TheParser from '@/components/Cabinet/TheParser'
+
+import TheFavorites from '@/components/Cabinet/TheFavorites'
+
+import PageNotFound from '@/views/PageNotFound'
+
 const routes = [
 	{
 		path: '/',
@@ -11,11 +21,12 @@ const routes = [
 			title: 'Gooru',
 		}
 	},
+
 	{
 		path: '/cabinet',
 		name: 'cabinet',
 
-		component: () => import(/* webpackChunkName: "cabinet" */ '@/views/PageCabinet'),
+		component: PageCabinet,
 
 		meta: {
 			title: 'Личный кабинет',
@@ -25,7 +36,7 @@ const routes = [
 			{
 				path: 'appeals',
 				name: 'appeals',
-				component: () => import(/* webpackChunkName: "cabinet/parsers" */ '@/components/Cabinet/TheAppeals'),
+				component: TheAppeals,
 				meta: {
 					title: 'Обращения',
 				},
@@ -33,25 +44,45 @@ const routes = [
 			{
 				path: 'parsers',
 				name: 'parsers',
-				component: () => import(/* webpackChunkName: "cabinet/parsers" */ '@/components/Cabinet/TheParsers'),
+				component: TheParsers,
 				meta: {
 					title: 'Мои парсеры',
 				},
 			},
 			{
-				path: 'parsers/parser/:id',
+				path: 'parsers/:id',
 				name: 'parser',
-				component: () => import(/* webpackChunkName: "cabinet/parsers/parser" */ '@/components/Cabinet/TheParser'),
+				component: TheParser,
 				meta: {
 					title: 'Парсер',
 				},
 			},
+			{
+				path: 'favorites',
+				name: 'favorites',
+				component: TheFavorites,
+				meta: {
+					title: 'Избранное',
+				},
+			},
 		],
 	},
+
+	{
+		path: '/login',
+		name: 'login',
+		redirect: { name: 'cabinet' },
+	},
+	{
+		path: '/registration',
+		name: 'registration',
+		redirect: { name: 'cabinet' },
+	},
+
 	{
 		path: '/:pathMatch(.*)*',
 		name: '404',
-		component: () => import(/* webpackChunkName: "not_found" */ '@/views/PageNotFound'),
+		component: PageNotFound,
 
 		meta: {
 			title: '404',

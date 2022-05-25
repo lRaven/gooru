@@ -87,7 +87,6 @@
 	@import "@/assets/scss/variables";
 
 	.the-header {
-		user-select: none;
 		position: fixed;
 		top: 0;
 		left: 0;
