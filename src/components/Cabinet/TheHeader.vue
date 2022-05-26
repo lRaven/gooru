@@ -20,7 +20,9 @@
 					"
 				>
 					<img :src="avatar" class="the-header__avatar" />
-					<p class="the-header__username">{{ username }}</p>
+					<p class="the-header__username">
+						{{ username }}
+					</p>
 					<div class="the-header__account-button">
 						<img
 							src="img/icon/cabinet/arrow.svg"
@@ -52,21 +54,22 @@
 <script>
 	import rButton from "@/components/r-button";
 	import { directive } from "vue3-click-away";
+	import { mapState } from "vuex";
 
 	export default {
 		name: "TheHeader",
-		components: {
-			rButton,
-		},
+		components: { rButton },
 		props: {
 			avatar: {
 				value: String,
 				default: "img/icon/cabinet/no-avatar.svg",
 			},
-			username: {
-				value: String,
-				default: "UserUser1234",
-			},
+		},
+		computed: {
+			...mapState({
+				username: (state) => state.cabinet.user.username,
+				// avatar: state=
+			}),
 		},
 		data: () => ({ isProfileOpened: false }),
 		methods: {

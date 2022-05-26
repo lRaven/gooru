@@ -1,4 +1,10 @@
+import cookie from 'vue-cookies';
+import axios from 'axios';
+import store from '@/store';
+
 const state = () => ({
+	user: {},
+
 	parsers: [
 		{
 			id: 1,
@@ -1380,11 +1386,33 @@ const state = () => ({
 	]
 })
 
-const getters = { PARSERS: state => state.parsers }
+const getters = { PARSERS: state => state.parsers, }
 
-const mutations = { SET_PARSERS: (state, payload) => state.parsers = payload }
+const mutations = {
+	SET_PARSERS: (state, payload) => state.parsers = payload,
+	SET_USER_DATA: (state, payload) => state.user = payload,
+}
 
-const actions = {}
+const actions = {
+	getUserData: async (context) => {
+		try {
+			let request = await axios
+				.get(`${store.state.baseURL}/auth/users/me`, {
+					headers: { Authorization: `token ${cookie.get("auth_token")}`, },
+				})
+
+			if (request.status === 200) {
+				console.log("Authentification successful");
+				context.commit('SET_USER_DATA', request.data);
+			}
+
+		}
+		catch {
+			localStorage.setItem("userAuth", "no");
+			cookie.remove("auth_token");
+		}
+	}
+}
 
 export default {
 	state,

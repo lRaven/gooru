@@ -1,6 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import PageHome from '@/views/PageHome'
 
+import PageLogin from '@/views/PageLogin'
+import PageRegistration from '@/views/PageRegistration'
+
 import PageCabinet from '@/views/PageCabinet'
 import TheAppeals from '@/components/Cabinet/TheAppeals'
 
@@ -19,6 +22,7 @@ const routes = [
 
 		meta: {
 			title: 'Gooru',
+			requiresAuth: false,
 		}
 	},
 
@@ -39,6 +43,7 @@ const routes = [
 				component: TheAppeals,
 				meta: {
 					title: 'Обращения',
+					requiresAuth: true,
 				},
 			},
 			{
@@ -47,6 +52,7 @@ const routes = [
 				component: TheParsers,
 				meta: {
 					title: 'Мои парсеры',
+					requiresAuth: true,
 				},
 			},
 			{
@@ -55,6 +61,7 @@ const routes = [
 				component: TheParser,
 				meta: {
 					title: 'Парсер',
+					requiresAuth: true,
 				},
 			},
 			{
@@ -63,6 +70,7 @@ const routes = [
 				component: TheFavorites,
 				meta: {
 					title: 'Избранное',
+					requiresAuth: true,
 				},
 			},
 		],
@@ -71,12 +79,21 @@ const routes = [
 	{
 		path: '/login',
 		name: 'login',
-		redirect: { name: 'cabinet' },
+		component: PageLogin,
+		meta: {
+			title: 'Авторизация',
+			requiresAuth: false,
+		},
+
 	},
 	{
 		path: '/registration',
 		name: 'registration',
-		redirect: { name: 'cabinet' },
+		component: PageRegistration,
+		meta: {
+			title: 'Регистрация',
+			requiresAuth: false,
+		},
 	},
 
 	{
@@ -93,6 +110,15 @@ const routes = [
 const router = createRouter({
 	history: createWebHashHistory(),
 	routes
+})
+
+router.beforeEach((to) => {
+	if (to.meta.requiresAuth === true) {
+		if (localStorage.getItem('userAuth') !== 'yes') {
+			return { name: 'login' }
+		} else return true
+	}
+	else return true
 })
 
 export default router

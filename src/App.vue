@@ -7,7 +7,7 @@
 </template>
 
 <script>
-	import { mapActions } from "vuex";
+	import { mapState, mapActions } from "vuex";
 
 	export default {
 		watch: {
@@ -20,9 +20,13 @@
 				document.querySelector("body").classList.remove("locked");
 			},
 		},
-		methods: { ...mapActions(["getDocumentWidth"]) },
+		computed: { ...mapState(["baseURL"]) },
+		methods: {
+			...mapActions(["getDocumentWidth", "getUserData"]),
+		},
 		created() {
 			this.getDocumentWidth();
+			this.getUserData();
 		},
 	};
 </script>

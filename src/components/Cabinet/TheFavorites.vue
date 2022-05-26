@@ -3,7 +3,7 @@
 		<div class="the-favorites__main">
 			<h2 class="the-favorites__title">Избранное</h2>
 			<div class="the-favorites__sort-panel">
-				<div class="the-favorites__sort-panel-row">
+				<div class="the-favorites__sort-panel-header">
 					<button class="the-favorites__sort-panel-btn" type="button">
 						<img
 							src="img/icon/cabinet/sort.svg"
@@ -27,7 +27,7 @@
 					</button>
 				</div>
 
-				<div class="the-favorites__sort-panel-row"></div>
+				<div class="the-favorites__sort-panel-body"></div>
 			</div>
 		</div>
 
@@ -71,12 +71,10 @@
 		}
 
 		&__sort-panel {
-			&-row {
-				&:first-child {
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-				}
+			&-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
 			}
 
 			&-btn {
@@ -102,6 +100,9 @@
 				}
 			}
 			&-close {
+			}
+
+			&-body {
 			}
 		}
 	}
