@@ -5,6 +5,7 @@
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="selectAll"
+				:checked="selectAll"
 			></r-checkbox>
 			<button class="the-parsers__postpone" type="button">
 				<img src="img/icon/cabinet/postpone.svg" alt="postpone" />
@@ -12,7 +13,11 @@
 					Отложить выбранные
 				</p>
 			</button>
-			<button class="the-parsers__remove" type="button">
+			<button
+				class="the-parsers__remove"
+				type="button"
+				@click="deleteSelected = true"
+			>
 				<img src="img/icon/cabinet/remove.svg" alt="remove" />
 				<p class="the-parsers__remove-description">Удалить выбранные</p>
 			</button>
@@ -22,27 +27,27 @@
 			<div class="the-parsers__sort">
 				<sort-button
 					description="Источник"
-					@sort_list="sortBy = 'source'"
+					@click="sortArrayByObjectKey(parsers, 'source')"
 				></sort-button>
 				<sort-button
 					description="Дата"
-					@sort_list="sortBy = 'date'"
+					@click="sortArrayByObjectKey(parsers, 'date')"
 				></sort-button>
 				<sort-button
 					description="Статус"
-					@sort_list="sortBy = 'status'"
+					@click="sortArrayByObjectKey(parsers, 'status')"
 				></sort-button>
 				<sort-button
 					description="Найдено"
-					@sort_list="sortBy = 'found'"
+					@click="sortArrayByObjectKey(parsers, 'found')"
 				></sort-button>
 				<sort-button
 					description="В избранном"
-					@sort_list="sortBy = 'favorite'"
+					@click="sortArrayByObjectKey(parsers, 'favorite')"
 				></sort-button>
 				<sort-button
 					description="Время парсинга"
-					@sort_list="sortBy = 'time'"
+					@click="sortArrayByObjectKey(parsers, 'time')"
 				></sort-button>
 			</div>
 
@@ -50,13 +55,7 @@
 				<parser-card
 					v-for="parser in parsers"
 					:key="parser.id"
-					:id="parser.id"
-					:source="parser.source"
-					:date="parser.date"
-					:status="parser.status"
-					:found="parser.found"
-					:favorite="parser.favorite"
-					:time="parser.time"
+					:parser="parser"
 				></parser-card>
 			</div>
 			<div class="the-parsers__bottom">
@@ -75,6 +74,7 @@
 	import rPagination from "@/components/r-pagination";
 
 	import { mapState, mapMutations } from "vuex";
+	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
 
 	export default {
 		name: "TheParsers",
@@ -88,17 +88,47 @@
 		computed: {
 			...mapState({ parsers: (state) => state.cabinet.parsers }),
 		},
+		watch: {
+			selectAll() {
+				this.selectAll === true
+					? this.SELECT_ALL_PARSERS()
+					: this.UNSELECT_ALL_PARSERS();
+			},
+			deleteSelected() {
+				if (this.deleteSelected === true) {
+					this.DELETE_SELECTED_PARSERS();
+					setTimeout(() => {
+						this.deleteSelected = false;
+					}, 1000);
+				}
+			},
+			sortBy() {},
+			parsers: {
+				handler: function () {
+					if (this.parsers.length === 0) {
+						this.selectAll = false;
+					}
+				},
+				deep: true,
+			},
+		},
 		data: () => ({
 			selectAll: false,
 			postponeSelected: false,
 			deleteSelected: false,
-			sortBy: "source",
+			sortBy: "none",
 		}),
 		methods: {
-			...mapMutations(["SET_TAB"]),
+			...mapMutations([
+				"SET_TAB",
+				"SELECT_ALL_PARSERS",
+				"UNSELECT_ALL_PARSERS",
+				"DELETE_SELECTED_PARSERS",
+			]),
 			sort_list(by) {
 				console.log(by);
 			},
+			sortArrayByObjectKey,
 		},
 		created() {
 			this.SET_TAB("parsers");

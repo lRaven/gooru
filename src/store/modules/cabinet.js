@@ -1386,10 +1386,39 @@ const state = () => ({
 	]
 })
 
-const getters = { PARSERS: state => state.parsers, }
+const getters = {}
 
 const mutations = {
 	SET_PARSERS: (state, payload) => state.parsers = payload,
+
+	SELECT_ALL_PARSERS: (state) => {
+		state.parsers.forEach(parser => parser.selected = true);
+	},
+	UNSELECT_ALL_PARSERS: (state) => {
+		state.parsers.forEach(parser => parser.selected = false);
+	},
+
+
+	SELECT_PARSER: (state, payload) => {
+		state.parsers.forEach(parser => {
+			if (parser.id === payload) { parser.selected = true }
+		})
+	},
+	UNSELECT_PARSER: (state, payload) => {
+		state.parsers.forEach(parser => {
+			if (parser.id === payload) { parser.selected = false }
+		})
+	},
+
+	DELETE_SELECTED_PARSERS: (state) => {
+		for (let index = 0; index < state.parsers.length; index++) {
+			if (state.parsers[index].selected === true) {
+				state.parsers.splice(index, 1);
+				index--;
+			}
+		}
+	},
+
 	SET_USER_DATA: (state, payload) => state.user = payload,
 }
 
@@ -1408,7 +1437,7 @@ const actions = {
 
 		}
 		catch {
-			localStorage.setItem("userAuth", "no");
+			localStorage.setItem("userAuth", 'no');
 			cookie.remove("auth_token");
 		}
 	}

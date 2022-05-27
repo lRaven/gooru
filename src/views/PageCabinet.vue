@@ -49,3 +49,18 @@
 		}
 	}
 </style>
+
+<style lang="scss">
+	.page-cabinet {
+		.r-spoiler {
+			&__title {
+				font-weight: 500;
+				font-size: 1.2rem;
+			}
+
+			+ .r-spoiler {
+				margin-top: 2.8rem;
+			}
+		}
+	}
+</style>

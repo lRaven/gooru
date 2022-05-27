@@ -15,6 +15,7 @@
     "vue": "^3.2.13",
     "vue-cookies": "^1.8.1",
     "vue-router": "^4.0.3",
+    "vue-social-sharing": "^4.0.0-alpha4",
     "vue3-click-away": "^1.2.4",
     "vuex": "^4.0.0"
   },

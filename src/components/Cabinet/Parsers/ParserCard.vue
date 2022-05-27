@@ -1,24 +1,24 @@
 <template>
 	<div class="parser-card">
-		<r-checkbox v-model="isSelected"></r-checkbox>
+		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
 		<div class="parser-card__content" ref="content">
 			<div class="parser-card__col">
-				<p class="parser-card__source">{{ source }}</p>
+				<p class="parser-card__source">{{ parser.source }}</p>
 			</div>
 			<div class="parser-card__col">
-				<p class="parser-card__date">{{ date }}</p>
+				<p class="parser-card__date">{{ parser.date }}</p>
 			</div>
 			<div class="parser-card__col">
-				<r-status :status="status"></r-status>
+				<r-status :status="parser.status"></r-status>
 			</div>
 			<div class="parser-card__col">
-				<p class="parser-card__found">{{ found }}</p>
+				<p class="parser-card__found">{{ parser.found }}</p>
 			</div>
 			<div class="parser-card__col">
-				<p class="parser-card__favorite">{{ favorite }}</p>
+				<p class="parser-card__favorite">{{ parser.favorite }}</p>
 			</div>
 			<div class="parser-card__col">
-				<p class="parser-card__time">{{ time }}</p>
+				<p class="parser-card__time">{{ parser.time }}</p>
 			</div>
 			<div class="parser-card__col">
 				<r-button
@@ -26,7 +26,7 @@
 					color="bordered"
 					@click="
 						this.$router.push({
-							path: `/cabinet/parsers/${id}`,
+							path: `/cabinet/parsers/${parser.id}`,
 							query: { page: 1 },
 						})
 					"
@@ -40,6 +40,7 @@
 	import rCheckbox from "@/components/r-checkbox";
 	import rButton from "@/components/r-button";
 	import rStatus from "@/components/Cabinet/r-status";
+	import { mapMutations } from "vuex";
 
 	export default {
 		name: "ParserCard",
@@ -50,39 +51,27 @@
 		},
 		watch: {
 			isSelected() {
-				this.isSelected === true
-					? this.$refs.content.classList.add("selected")
-					: this.$refs.content.classList.remove("selected");
+				if (this.isSelected === true) {
+					this.$refs.content.classList.add("selected");
+					this.SELECT_PARSER(this.parser.id);
+				} else {
+					this.$refs.content.classList.remove("selected");
+					this.UNSELECT_PARSER(this.parser.id);
+				}
+			},
+			"parser.selected"() {
+				this.isSelected = this.parser.selected;
 			},
 		},
-		props: {
-			id: Number,
-			source: {
-				value: String,
-				default: "source",
-			},
-			date: {
-				value: String,
-				default: "01.01.1970",
-			},
-			status: {
-				value: Number,
-				default: null,
-			},
-			found: {
-				value: Number,
-				default: 0,
-			},
-			favorite: {
-				value: Number,
-				default: 0,
-			},
-			time: {
-				value: String,
-				default: "0мин.",
-			},
+		props: { parser: Object },
+		data() {
+			return {
+				isSelected: this.parser.selected || false,
+			};
 		},
-		data: () => ({ isSelected: false }),
+		methods: {
+			...mapMutations(["SELECT_PARSER", "UNSELECT_PARSER"]),
+		},
 	};
 </script>
 

@@ -163,25 +163,65 @@
 				</p>
 				<ul class="parser-content__social-list">
 					<li class="parser-content__social-list-item">
-						<img src="img/icon/cabinet/fb.svg" alt="facebook" />
+						<ShareNetwork
+							network="facebook"
+							:url="shareContent.url"
+							:title="shareContent.title"
+							:description="shareContent.description"
+							:media="shareContent.image"
+							:quote="shareContent.quote"
+							:hashtags="shareContent.hashtags"
+						>
+							<img src="img/icon/cabinet/fb.svg" alt="facebook" />
+						</ShareNetwork>
 					</li>
 					<li class="parser-content__social-list-item">
-						<img src="img/icon/cabinet/ok.svg" alt="classmates" />
+						<ShareNetwork
+							network="odnoklassniki"
+							:url="shareContent.url"
+							:title="shareContent.title"
+							:description="shareContent.description"
+							:media="shareContent.image"
+						>
+							<img src="img/icon/cabinet/ok.svg" alt="ok" />
+						</ShareNetwork>
 					</li>
 					<li class="parser-content__social-list-item">
-						<img src="img/icon/cabinet/vk.svg" alt="vk" />
+						<ShareNetwork
+							network="vk"
+							:url="shareContent.url"
+							:title="shareContent.title"
+							:description="shareContent.description"
+							:media="shareContent.image"
+						>
+							<img src="img/icon/cabinet/vk.svg" alt="vk" />
+						</ShareNetwork>
 					</li>
 					<li class="parser-content__social-list-item">
-						<img src="img/icon/cabinet/mailru.png" alt="mailru" />
+						<ShareNetwork
+							network="twitter"
+							:url="shareContent.url"
+							:title="shareContent.title"
+							:description="shareContent.description"
+							:media="shareContent.image"
+							:hashtags="shareContent.hashtags"
+						>
+							<img
+								src="img/icon/cabinet/twtr.svg"
+								alt="twitter"
+							/>
+						</ShareNetwork>
 					</li>
 					<li class="parser-content__social-list-item">
-						<img src="img/icon/cabinet/twtr.svg" alt="twitter" />
-					</li>
-					<li class="parser-content__social-list-item">
-						<img src="img/icon/cabinet/social.svg" alt="social" />
-					</li>
-					<li class="parser-content__social-list-item">
-						<img src="img/icon/cabinet/social2.svg" alt="social2" />
+						<ShareNetwork
+							network="telegram"
+							:url="shareContent.url"
+							:title="shareContent.title"
+							:description="shareContent.description"
+							:media="shareContent.image"
+						>
+							<img src="img/icon/cabinet/tg.svg" alt="tg" />
+						</ShareNetwork>
 					</li>
 				</ul>
 			</div>
@@ -196,13 +236,13 @@
 				<ul class="parser-content__download-list">
 					<li class="parser-content__download-list-item">
 						<r-checkbox
-							description="excel"
+							description="Excel"
 							v-model="downloadFormats.excel"
 						></r-checkbox>
 					</li>
 					<li class="parser-content__download-list-item">
 						<r-checkbox
-							description="csv"
+							description="CSV"
 							v-model="downloadFormats.csv"
 						></r-checkbox>
 					</li>
@@ -257,6 +297,18 @@
 
 			comment: "",
 			downloadFormats: { excel: false, csv: false },
+
+			shareContent: {
+				url: window.location.href,
+				title: "title",
+				description: "description",
+				image: "https://gitlab.com/uploads/-/system/project/avatar/32004440/Vue.js_Logo_2.svg.png",
+
+				// *fb only
+				quote: "",
+				//*fb, twtr only
+				hashtags: "",
+			},
 		}),
 		components: { rButton, rCheckbox },
 		methods: {
@@ -266,6 +318,7 @@
 				this.isDownloadOpen = false;
 			},
 		},
+		mounted() {},
 		directives: { ClickAway: directive },
 	};
 </script>

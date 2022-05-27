@@ -1,5 +1,5 @@
 <template>
-	<button class="sort-button" @click="this.$emit('sort_list')">
+	<button class="sort-button">
 		<p class="sort-button__description">{{ description }}</p>
 		<img
 			src="img/icon/cabinet/arrow.svg"

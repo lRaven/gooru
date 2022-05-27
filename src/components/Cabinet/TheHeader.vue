@@ -19,7 +19,23 @@
 							: openProfile()
 					"
 				>
-					<img :src="avatar" class="the-header__avatar" />
+					<!-- <img
+						:src="avatar"
+						class="the-header__avatar"
+						v-if="avatar"
+						alt="avatar"
+					/>
+					<img
+						src="img/icon/cabinet/no-avatar.svg"
+						class="the-header__avatar"
+						alt="avatar"
+						v-else
+					/> -->
+					<img
+						src="img/icon/cabinet/no-avatar.svg"
+						class="the-header__avatar"
+						alt="avatar"
+					/>
 					<p class="the-header__username">
 						{{ username }}
 					</p>
@@ -59,16 +75,12 @@
 	export default {
 		name: "TheHeader",
 		components: { rButton },
-		props: {
-			avatar: {
-				value: String,
-				default: "img/icon/cabinet/no-avatar.svg",
-			},
-		},
 		computed: {
 			...mapState({
 				username: (state) => state.cabinet.user.username,
-				// avatar: state=
+
+				//TODO: получить аватарку с бека, на данный момент по этому пути 404
+				// avatar: (state) => state.cabinet.user.avatar,
 			}),
 		},
 		data: () => ({ isProfileOpened: false }),

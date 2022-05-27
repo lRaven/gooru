@@ -1,0 +1,128 @@
+<template>
+	<div class="r-dropdown" v-click-away="closeDropdown">
+		<div
+			class="r-dropdown__header"
+			@click="
+				isContentVisible === true
+					? (isContentVisible = false)
+					: (isContentVisible = true)
+			"
+		>
+			<p class="r-dropdown__selected" ref="selected">
+				{{ selected_item }}
+			</p>
+
+			<svg
+				width="10"
+				height="6"
+				viewBox="0 0 10 6"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+				class="r-dropdown__arrow"
+				ref="arrow"
+			>
+				<path
+					d="M9.60142 1.53033C9.89431 1.23744 9.89431 0.762563 9.60142 0.46967C9.30853 0.176777 8.83365 0.176777 8.54076 0.46967L9.60142 1.53033ZM5.03555 5.03555L4.50522 5.56588C4.79811 5.85877 5.27298 5.85877 5.56588 5.56588L5.03555 5.03555ZM1.53033 0.46967C1.23744 0.176777 0.762563 0.176777 0.46967 0.46967C0.176777 0.762563 0.176777 1.23744 0.46967 1.53033L1.53033 0.46967ZM8.54076 0.46967L4.50522 4.50522L5.56588 5.56588L9.60142 1.53033L8.54076 0.46967ZM5.56588 4.50522L1.53033 0.46967L0.46967 1.53033L4.50522 5.56588L5.56588 4.50522Z"
+					fill="#323232"
+				/>
+			</svg>
+		</div>
+
+		<transition mode="out-in">
+			<ul class="r-dropdown__list" v-show="isContentVisible">
+				<li
+					class="r-dropdown__list-item"
+					v-for="item in list"
+					:key="item.id"
+					@click="selectValue(item.id, item.description)"
+				>
+					{{ item.description }}
+				</li>
+			</ul>
+		</transition>
+	</div>
+</template>
+
+<script>
+	import { directive } from "vue3-click-away";
+
+	export default {
+		name: "rDropdown",
+		props: {
+			selected_item: {
+				value: String,
+				default: "Selected/placeholder",
+			},
+			list: {
+				value: Array,
+				default: [
+					{ id: 1, description: "item-1" },
+					{ id: 2, description: "item-2" },
+					{ id: 3, description: "item-3" },
+				],
+			},
+		},
+		data: () => ({
+			isContentVisible: false,
+		}),
+		methods: {
+			selectValue(id, text) {
+				this.$refs.selected.textContent = text;
+				this.$emit("update:modelValue", id);
+
+				this.closeDropdown();
+			},
+			closeDropdown() {
+				this.isContentVisible = false;
+			},
+		},
+		directives: { ClickAway: directive },
+	};
+</script>
+
+<style lang="scss" scoped>
+	@import "@/assets/scss/variables";
+
+	.r-dropdown {
+		position: relative;
+		user-select: none;
+		&__header {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			background-color: $white;
+			padding: 1rem;
+			gap: 3rem;
+			border: 0.1rem solid rgba(50, 50, 50, 0.1);
+			border-radius: 0.6rem;
+		}
+		&__selected {
+			font-size: 1.6rem;
+			font-weight: 500;
+		}
+		&__arrow {
+			transition: all 0.2s ease;
+			&.open {
+				transform: rotate(180deg);
+			}
+		}
+
+		&__list {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: calc(100% + 0.5rem);
+			background-color: $white;
+			border: 0.1rem solid rgba(50, 50, 50, 0.1);
+			border-radius: 0.6rem;
+			z-index: 2;
+			&-item {
+				padding: 1rem;
+				cursor: pointer;
+				font-size: 1.6rem;
+				font-weight: 500;
+			}
+		}
+	}
+</style>

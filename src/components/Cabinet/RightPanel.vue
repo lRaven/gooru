@@ -1,7 +1,7 @@
 <template>
-	<div class="parser-filters" ref="filters">
+	<div class="right-panel" ref="filters">
 		<button
-			class="parser-filters__minimize"
+			class="right-panel__minimize"
 			@click="
 				isMinimized === true
 					? (isMinimized = false)
@@ -14,7 +14,7 @@
 				viewBox="0 0 10 6"
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
-				class="parser-filters__minimize-icon"
+				class="right-panel__minimize-icon"
 				ref="arrow"
 			>
 				<path
@@ -24,33 +24,31 @@
 			</svg>
 		</button>
 
-		<div class="parser-filters__header">
-			<img
-				src="img/icon/cabinet/filter.svg"
-				alt=""
-				class="parser-filters__icon"
-			/>
-			<h5 class="parser-filters__title" v-if="isMinimized === false">
-				Фильтр
+		<div class="right-panel__header">
+			<img :src="icon" alt="" class="right-panel__icon" />
+			<h5 class="right-panel__title" v-if="isMinimized === false">
+				{{ title }}
 			</h5>
 		</div>
 
-		<div class="parser-filters__body" v-show="isMinimized === false">
-			<r-spoiler title="Источник" arrowType="gray">
+		<div class="right-panel__body" v-show="isMinimized === false">
+			<slot></slot>
+		</div>
+		<!-- <r-spoiler title="Источник" arrowType="gray">
 				<template v-slot>
 					<input
 						type="text"
 						name=""
 						id=""
 						placeholder="Введите источник"
-						class="parser-filters__input"
+						class="right-panel__input"
 					/>
 				</template>
 			</r-spoiler>
 
 			<r-spoiler title="Объект поиска" arrowType="gray">
 				<template v-slot>
-					<div class="parser-filters__checkboxes">
+					<div class="right-panel__checkboxes">
 						<text-checkbox
 							text="Текст"
 							v-model="texts"
@@ -75,49 +73,49 @@
 				<template v-slot>
 					<textarea
 						placeholder="Текстовое описание требований для поиска с возможностью прикрепления фото"
-						class="parser-filters__textarea"
+						class="right-panel__textarea"
 						v-model="description"
 					></textarea>
 				</template>
 			</r-spoiler>
 
-			<label class="parser-filters__file">
+			<label class="right-panel__file">
 				<input
 					type="file"
 					name=""
 					id=""
-					class="parser-filters__file-real"
+					class="right-panel__file-real"
 					accept="image/*"
 					@change="file = $event.target.files[0].name"
 				/>
-				<span class="parser-filters__file-fake">
+				<span class="right-panel__file-fake">
 					<img
 						src="img/icon/cabinet/camera.svg"
 						alt=""
-						class="parser-filters__file-icon"
+						class="right-panel__file-icon"
 					/>
-					<p class="parser-filters__file-description">
+					<p class="right-panel__file-description">
 						{{ file || "Добавить фото" }}
 					</p>
 				</span>
 			</label>
 
-			<r-button text="Применить"></r-button>
-		</div>
+			<r-button text="Применить"></r-button> -->
 	</div>
 </template>
 
 <script>
-	import rSpoiler from "@/components/r-spoiler";
-	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
-	import rButton from "@/components/r-button";
-
 	export default {
 		name: "ParserFilters",
-		components: {
-			rSpoiler,
-			TextCheckbox,
-			rButton,
+		props: {
+			icon: {
+				value: String,
+				default: "img/icon/cabinet/arrow-double.svg",
+			},
+			title: {
+				value: String,
+				default: "Title",
+			},
 		},
 		watch: {
 			isMinimized() {
@@ -153,7 +151,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.parser-filters {
+	.right-panel {
 		background-color: rgba(255, 255, 255, 0.5);
 		width: 29rem;
 		height: calc(100vh - 8rem);
@@ -190,76 +188,12 @@
 			gap: 1.2rem;
 			margin-bottom: 2.6rem;
 		}
+		&__icon {
+			width: 3.2rem;
+		}
 		&__title {
 			font-weight: 600;
 			color: $gray;
-		}
-
-		.r-spoiler {
-			+ .r-spoiler {
-				margin-top: 2.8rem;
-			}
-		}
-
-		&__input {
-			background-color: transparent;
-			font-size: 1.6rem;
-		}
-
-		&__checkboxes {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 1rem;
-		}
-
-		&__textarea {
-			font-size: 1.3rem;
-			width: 100%;
-			height: 5rem;
-			resize: none;
-			max-height: 10rem;
-			background-color: transparent;
-		}
-
-		&__file {
-			user-select: none;
-			display: inline-block;
-			padding: 1.2rem 0;
-			margin-bottom: 2.8rem;
-			&-real {
-				display: none;
-			}
-			&-fake {
-				display: flex;
-				align-items: center;
-				gap: 0.6rem;
-				cursor: pointer;
-			}
-			&-icon {
-				width: 2.2rem;
-			}
-			&-description {
-				font-size: 1rem;
-				color: $black-70;
-			}
-		}
-
-		.r-button {
-			width: 100%;
-			font-size: 1.4rem;
-			padding-top: 1.5rem;
-			padding-bottom: 1.5rem;
-		}
-	}
-</style>
-
-<style lang="scss">
-	.parser-filters {
-		.r-spoiler {
-			&__title {
-				font-weight: 500;
-				font-size: 1.2rem;
-			}
 		}
 	}
 </style>

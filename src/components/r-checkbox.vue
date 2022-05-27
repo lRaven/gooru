@@ -4,8 +4,10 @@
 			type="checkbox"
 			name=""
 			id=""
+			:checked="checked"
 			class="r-checkbox__real"
 			@change="this.$emit('update:modelValue', $event.target.checked)"
+			ref="checkbox"
 		/>
 		<span class="r-checkbox__fake">
 			<img src="img/icon/cabinet/tick.svg" alt="tick" />
@@ -19,7 +21,22 @@
 <script>
 	export default {
 		name: "rCheckbox",
-		props: { description: String },
+		props: {
+			description: String,
+			checked: {
+				value: Boolean,
+				default: false,
+			},
+		},
+		watch: {
+			checked() {
+				if (this.checked === true) {
+					this.$refs.checkbox.checked = true;
+				} else {
+					this.$refs.checkbox.checked = false;
+				}
+			},
+		},
 	};
 </script>
 
@@ -61,6 +78,7 @@
 		&__description {
 			font-size: 1.2rem;
 			color: $black-70;
+			font-weight: 500;
 		}
 	}
 </style>

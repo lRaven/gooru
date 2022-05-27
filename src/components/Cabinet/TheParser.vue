@@ -83,7 +83,86 @@
 			</div>
 		</div>
 
-		<parser-filters :current_parser="current_parser"></parser-filters>
+		<right-panel
+			:current_parser="current_parser"
+			icon="img/icon/cabinet/filter.svg"
+			title="Фильтр"
+		>
+			<template v-slot>
+				<div class="the-parser__right-panel">
+					<r-spoiler title="Источник" arrowType="gray">
+						<template v-slot>
+							<input
+								type="text"
+								name=""
+								id=""
+								placeholder="Введите источник"
+								class="the-parser__right-panel__input"
+								:value="current_parser.source"
+							/>
+						</template>
+					</r-spoiler>
+
+					<r-spoiler title="Объект поиска" arrowType="gray">
+						<template v-slot>
+							<div class="the-parser__right-panel__checkboxes">
+								<text-checkbox
+									text="Текст"
+									v-model="texts"
+								></text-checkbox>
+								<text-checkbox
+									text="Изображения"
+									v-model="images"
+								></text-checkbox>
+								<text-checkbox
+									text="Видео"
+									v-model="videos"
+								></text-checkbox>
+								<text-checkbox
+									text="Товар"
+									v-model="products"
+								></text-checkbox>
+							</div>
+						</template>
+					</r-spoiler>
+
+					<r-spoiler title="Условия поиска" arrowType="gray">
+						<template v-slot>
+							<textarea
+								placeholder="Текстовое описание требований для поиска с возможностью прикрепления фото"
+								class="the-parser__right-panel__textarea"
+								v-model="description"
+							></textarea>
+						</template>
+					</r-spoiler>
+
+					<label class="the-parser__right-panel__file">
+						<input
+							type="file"
+							name=""
+							id=""
+							class="the-parser__right-panel__file-real"
+							accept="image/*"
+							@change="file = $event.target.files[0].name"
+						/>
+						<span class="the-parser__right-panel__file-fake">
+							<img
+								src="img/icon/cabinet/camera.svg"
+								alt=""
+								class="the-parser__right-panel__file-icon"
+							/>
+							<p
+								class="the-parser__right-panel__file-description"
+							>
+								{{ file || "Добавить фото" }}
+							</p>
+						</span>
+					</label>
+
+					<r-button text="Применить"></r-button>
+				</div>
+			</template>
+		</right-panel>
 	</section>
 </template>
 
@@ -93,7 +172,10 @@
 	import ParserContent from "@/components/Cabinet/Parser/ParserContent";
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
-	import ParserFilters from "@/components/Cabinet/Parser/ParserFilters";
+
+	import RightPanel from "@/components/Cabinet/RightPanel";
+	import rSpoiler from "@/components/r-spoiler";
+	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
 
 	export default {
 		name: "TheParser",
@@ -102,11 +184,21 @@
 			ParserContent,
 			rButton,
 			rPagination,
-			ParserFilters,
+
+			RightPanel,
+			rSpoiler,
+			TextCheckbox,
 		},
 		data() {
 			return {
 				parser_id: Number(this.$route.params.id),
+
+				texts: false,
+				images: false,
+				videos: false,
+				products: false,
+				description: "",
+				file: "",
 			};
 		},
 		computed: {
@@ -245,6 +337,58 @@
 			&.selected {
 				font-weight: 600;
 				color: $black-70;
+			}
+		}
+
+		&__right-panel {
+			&__input {
+				background-color: transparent;
+				font-size: 1.6rem;
+			}
+
+			&__checkboxes {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1rem;
+			}
+
+			&__textarea {
+				font-size: 1.3rem;
+				width: 100%;
+				height: 5rem;
+				resize: none;
+				max-height: 10rem;
+				background-color: transparent;
+			}
+
+			&__file {
+				user-select: none;
+				display: inline-block;
+				padding: 1.2rem 0;
+				margin-bottom: 2.8rem;
+				&-real {
+					display: none;
+				}
+				&-fake {
+					display: flex;
+					align-items: center;
+					gap: 0.6rem;
+					cursor: pointer;
+				}
+				&-icon {
+					width: 2.2rem;
+				}
+				&-description {
+					font-size: 1rem;
+					color: $black-70;
+				}
+			}
+
+			.r-button {
+				width: 100%;
+				font-size: 1.4rem;
+				padding-top: 1.5rem;
+				padding-bottom: 1.5rem;
 			}
 		}
 	}
