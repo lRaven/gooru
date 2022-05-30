@@ -19,7 +19,7 @@
 							: openProfile()
 					"
 				>
-					<!-- <img
+					<img
 						:src="avatar"
 						class="the-header__avatar"
 						v-if="avatar"
@@ -30,11 +30,6 @@
 						class="the-header__avatar"
 						alt="avatar"
 						v-else
-					/> -->
-					<img
-						src="img/icon/cabinet/no-avatar.svg"
-						class="the-header__avatar"
-						alt="avatar"
 					/>
 					<p class="the-header__username">
 						{{ username }}
@@ -80,7 +75,7 @@
 				username: (state) => state.cabinet.user.username,
 
 				//TODO: получить аватарку с бека, на данный момент по этому пути 404
-				// avatar: (state) => state.cabinet.user.avatar,
+				avatar: (state) => state.cabinet.user.avatar,
 			}),
 		},
 		data: () => ({ isProfileOpened: false }),
@@ -161,6 +156,12 @@
 				background-color: $white;
 				padding: 1rem;
 			}
+		}
+		&__avatar {
+			height: 4.4rem;
+			width: 4.4rem;
+			border-radius: 50%;
+			object-fit: cover;
 		}
 	}
 </style>

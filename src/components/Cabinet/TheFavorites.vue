@@ -2,6 +2,7 @@
 	<section class="the-favorites">
 		<div class="the-favorites__main">
 			<h2 class="the-favorites__title">Избранное</h2>
+
 			<div class="the-favorites__sort-panel">
 				<div class="the-favorites__sort-panel-header">
 					<button
@@ -42,8 +43,47 @@
 					class="the-favorites__sort-panel-body"
 					v-show="isSortPanelVisible === true"
 				>
-					<r-dropdown v-model="show_by_source"></r-dropdown>
+					<div class="the-favorites__sort-panel-col">
+						<p class="the-favorites__sort-panel-description">
+							Поиск по источнику
+						</p>
+						<r-dropdown
+							v-model="show_by_source"
+							selected_item="Выберите источник"
+						></r-dropdown>
+					</div>
+
+					<div class="the-favorites__sort-panel-col">
+						<p class="the-favorites__sort-panel-description">
+							Поиск по дате
+						</p>
+						<r-date-range-picker></r-date-range-picker>
+					</div>
+
+					<div class="the-favorites__sort-panel-col">
+						<p class="the-favorites__sort-panel-description">
+							Поиск по типу контента
+						</p>
+						<r-dropdown
+							v-model="show_by_content"
+							selected_item="Выберите тип контента"
+						></r-dropdown>
+					</div>
+
+					<r-button color="bordered" text="Применить"></r-button>
 				</div>
+			</div>
+
+			<div class="the-favorites__list">
+				<favorite-card
+					v-for="parser in parsers"
+					:key="parser.id"
+					:parser="parser"
+				></favorite-card>
+			</div>
+			<div class="the-favorites__bottom">
+				<r-button color="bordered" text="Показать ещё"></r-button>
+				<r-pagination></r-pagination>
 			</div>
 		</div>
 
@@ -102,32 +142,44 @@
 </template>
 
 <script>
-	import { mapMutations } from "vuex";
+	import { mapState, mapMutations } from "vuex";
+
+	import rButton from "@/components/r-button";
+	import rDropdown from "@/components/Cabinet/r-dropdown";
+	import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
+	import FavoriteCard from "@/components/Cabinet/Favorites/FavoriteCard";
+	import rPagination from "@/components/r-pagination";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
 	import rSpoiler from "@/components/r-spoiler";
 	import rCheckbox from "@/components/r-checkbox";
-	import rButton from "@/components/r-button";
-	import rDropdown from "@/components/Cabinet/r-dropdown";
 
 	export default {
 		name: "TheFavorites",
 		components: {
+			rDropdown,
+			rDateRangePicker,
+			FavoriteCard,
+			rPagination,
+
 			RightPanel,
 			rSpoiler,
 			rCheckbox,
 			rButton,
-			rDropdown,
+		},
+		computed: {
+			...mapState({
+				parsers: (state) => state.cabinet.parsers,
+			}),
 		},
 		data: () => ({
-			isSortPanelVisible: true,
+			isSortPanelVisible: false,
 			show_by_source: "",
+			show_by_content: "",
 
 			total_selected: 0,
 		}),
-		methods: {
-			...mapMutations(["SET_TAB"]),
-		},
+		methods: { ...mapMutations(["SET_TAB"]) },
 		created() {
 			this.SET_TAB("favorites");
 		},
@@ -144,14 +196,17 @@
 		gap: 3rem;
 
 		&__main {
-			padding-top: 4rem;
+			padding: 4rem 0.5rem;
 			width: 100%;
+			height: calc(100vh - 8rem);
+			overflow-y: auto;
 		}
 		&__title {
 			margin-bottom: 1.5rem;
 		}
 
 		&__sort-panel {
+			margin-bottom: 4rem;
 			&-header {
 				display: flex;
 				align-items: center;
@@ -184,9 +239,37 @@
 			}
 
 			&-body {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr) 18rem;
+				grid-gap: 3rem;
+				align-items: flex-end;
 				padding: 2rem;
 				background-color: rgba(255, 255, 255, 0.5);
+				.r-button {
+					padding: 1rem 2.8rem;
+					width: max-content;
+					margin-left: auto;
+				}
 			}
+			&-col {
+			}
+			&-description {
+				margin-bottom: 0.5rem;
+				font-size: 1.2rem;
+				color: $black-50;
+			}
+		}
+
+		&__list {
+			// max-height: calc(100vh - 35rem);
+			// overflow-y: auto;
+			margin-bottom: 2rem;
+		}
+		&__bottom {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 5rem;
 		}
 
 		&__right-panel {

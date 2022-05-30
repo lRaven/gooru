@@ -3,9 +3,7 @@
 		<div
 			class="r-dropdown__header"
 			@click="
-				isContentVisible === true
-					? (isContentVisible = false)
-					: (isContentVisible = true)
+				isContentVisible === true ? closeDropdown() : openDropdown()
 			"
 		>
 			<p class="r-dropdown__selected" ref="selected">
@@ -62,18 +60,20 @@
 				],
 			},
 		},
-		data: () => ({
-			isContentVisible: false,
-		}),
+		data: () => ({ isContentVisible: false }),
 		methods: {
 			selectValue(id, text) {
 				this.$refs.selected.textContent = text;
 				this.$emit("update:modelValue", id);
-
 				this.closeDropdown();
+			},
+			openDropdown() {
+				this.isContentVisible = true;
+				this.$refs.arrow.classList.add("open");
 			},
 			closeDropdown() {
 				this.isContentVisible = false;
+				this.$refs.arrow.classList.remove("open");
 			},
 		},
 		directives: { ClickAway: directive },
@@ -96,6 +96,7 @@
 			gap: 3rem;
 			border: 0.1rem solid rgba(50, 50, 50, 0.1);
 			border-radius: 0.6rem;
+			min-height: 4rem;
 		}
 		&__selected {
 			font-size: 1.6rem;
@@ -122,6 +123,10 @@
 				cursor: pointer;
 				font-size: 1.6rem;
 				font-weight: 500;
+				transition: all 0.2s ease;
+				&:hover {
+					background-color: $primary-15;
+				}
 			}
 		}
 	}

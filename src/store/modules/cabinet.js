@@ -1431,12 +1431,13 @@ const actions = {
 				})
 
 			if (request.status === 200) {
-				console.log("Authentification successful");
+				console.log("User is authorized");
 				context.commit('SET_USER_DATA', request.data);
 			}
 
 		}
 		catch {
+			console.log("User isn't authorized");
 			localStorage.setItem("userAuth", 'no');
 			cookie.remove("auth_token");
 		}
