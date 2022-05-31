@@ -12,6 +12,8 @@ import TheParser from '@/components/Cabinet/TheParser'
 
 import TheFavorites from '@/components/Cabinet/TheFavorites'
 
+import PageBrief from '@/views/PageBrief'
+
 import PageNotFound from '@/views/PageNotFound'
 
 const routes = [
@@ -94,6 +96,16 @@ const routes = [
 			title: 'Регистрация',
 			requiresAuth: false,
 		},
+	},
+
+	{
+		path: '/brief',
+		name: 'brief',
+		component: PageBrief,
+		meta: {
+			title: 'Бриф',
+			requiresAuth: false,
+		}
 	},
 
 	{

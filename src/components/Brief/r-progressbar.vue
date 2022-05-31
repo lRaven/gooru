@@ -1,0 +1,60 @@
+<template>
+	<ul class="r-progressbar">
+		<li class="r-progressbar__item" v-for="item in progress" :key="item.id">
+			<span
+				class="r-progressbar__item-tick checked"
+				v-if="item.checked === true"
+			></span>
+			<span class="r-progressbar__item-tick" v-else></span>
+		</li>
+	</ul>
+</template>
+
+<script>
+	export default {
+		name: "rProgressbar",
+		props: {
+			progress: {
+				value: Array,
+				default: [
+					{ id: 1, checked: true },
+					{ id: 2, checked: true },
+					{ id: 3, checked: false },
+					{ id: 4, checked: false },
+					{ id: 5, checked: false },
+					{ id: 6, checked: false },
+				],
+			},
+		},
+	};
+</script>
+
+<style lang="scss" scoped>
+	@import "@/assets/scss/variables";
+
+	.r-progressbar {
+		display: flex;
+		flex-direction: column-reverse;
+		gap: 0.2rem;
+		&__item {
+			width: 2rem;
+			height: 2rem;
+			background-color: $white;
+			border: 0.2rem solid $secondary;
+			border-radius: 50%;
+			overflow: hidden;
+			padding: 0.2rem;
+
+			&-tick {
+				border-radius: 50%;
+				display: block;
+				background-color: transparent;
+				height: 100%;
+				transition: all 0.2s ease;
+				&.checked {
+					background-color: $secondary;
+				}
+			}
+		}
+	}
+</style>

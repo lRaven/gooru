@@ -13,7 +13,11 @@
 					пробные результаты в оговоренные сроки.
 				</p>
 				<div class="the-sample-parser__buttons">
-					<r-button text="ОТПРАВИТЬ ЗАПРОС" color="white"></r-button>
+					<r-button
+						text="ОТПРАВИТЬ ЗАПРОС"
+						color="white"
+						@click="this.$router.push({ name: 'brief' })"
+					></r-button>
 					<r-link
 						color="white"
 						:text="link_text"
