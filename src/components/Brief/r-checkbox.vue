@@ -1,18 +1,16 @@
 <template>
-	<label class="r-radio-select">
+	<label class="r-checkbox">
 		<input
-			type="radio"
-			:name="radio_name"
-			id=""
+			type="checkbox"
+			:id="value"
 			:value="value"
-			:checked="isChecked"
-			class="r-radio-select__input"
-			@input="this.$emit('update:modelValue', value)"
+			class="r-checkbox__input"
+			@input="this.$emit('update:modelValue', $event.target.checked)"
 		/>
-		<div class="r-radio-select__btn">
-			<p class="r-radio-select__description">{{ description }}</p>
-			<div class="r-radio-select__input-fake">
-				<span class="r-radio-select__input-fake-tick"></span>
+		<div class="r-checkbox__btn">
+			<p class="r-checkbox__description">{{ description }}</p>
+			<div class="r-checkbox__input-fake">
+				<span class="r-checkbox__input-fake-tick"></span>
 			</div>
 		</div>
 	</label>
@@ -20,15 +18,11 @@
 
 <script>
 	export default {
-		name: "rRadioSelect",
+		name: "rCheckbox",
 		props: {
-			isChecked: {
-				value: Boolean,
-				default: false,
-			},
 			radio_name: {
 				value: String,
-				default: "radio",
+				default: "checkbox",
 			},
 			value: {
 				value: String,
@@ -45,17 +39,17 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.r-radio-select {
+	.r-checkbox {
 		user-select: none;
 		&__input {
 			display: none;
 
 			&:checked {
-				+ .r-radio-select__btn {
-					.r-radio-select__description {
+				+ .r-checkbox__btn {
+					.r-checkbox__description {
 						color: $secondary;
 					}
-					.r-radio-select__input-fake-tick {
+					.r-checkbox__input-fake-tick {
 						background-color: $secondary;
 					}
 				}

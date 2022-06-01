@@ -40,6 +40,34 @@
 							@moveToNextPage="moveToNextPage"
 						></brief-status>
 					</transition>
+
+					<transition mode="out-in">
+						<brief-fields-of-activity
+							v-if="page_number === 3"
+							@moveToNextPage="moveToNextPage"
+						></brief-fields-of-activity>
+					</transition>
+
+					<transition mode="out-in">
+						<brief-site-types
+							v-if="page_number === 4"
+							@moveToNextPage="moveToNextPage"
+						></brief-site-types>
+					</transition>
+
+					<transition mode="out-in">
+						<brief-additional-parameters
+							v-if="page_number === 5"
+							@moveToNextPage="moveToNextPage"
+						></brief-additional-parameters>
+					</transition>
+
+					<transition mode="out-in">
+						<brief-number-of-positions
+							v-if="page_number === 6"
+							@moveToNextPage="moveToNextPage"
+						></brief-number-of-positions>
+					</transition>
 				</div>
 
 				<div class="page-brief__content-col"></div>
@@ -50,8 +78,12 @@
 
 <script>
 	import rProgressbar from "@/components/Brief/r-progressbar";
-	import BriefStart from "@/components/Brief/BriefStart";
-	import BriefStatus from "@/components/Brief/BriefStatus";
+	import BriefStart from "@/components/Brief/Pages/BriefStart";
+	import BriefStatus from "@/components/Brief/Pages/BriefStatus";
+	import BriefFieldsOfActivity from "@/components/Brief/Pages/BriefFieldsOfActivity";
+	import BriefSiteTypes from "@/components/Brief/Pages/BriefSiteTypes";
+	import BriefAdditionalParameters from "@/components/Brief/Pages/BriefAdditionalParameters";
+	import BriefNumberOfPositions from "@/components/Brief/Pages/BriefNumberOfPositions";
 
 	export default {
 		name: "PageBrief",
@@ -59,6 +91,10 @@
 			rProgressbar,
 			BriefStart,
 			BriefStatus,
+			BriefFieldsOfActivity,
+			BriefSiteTypes,
+			BriefAdditionalParameters,
+			BriefNumberOfPositions,
 		},
 		watch: {
 			page_number() {
@@ -68,7 +104,7 @@
 					index++
 				) {
 					this.page_number > index
-						? (this.page_progress[index].checked = true)
+						? (this.page_progress[index].checked = "checked")
 						: (this.page_progress[index].checked = false);
 				}
 
@@ -115,7 +151,7 @@
 		data: () => ({
 			page_number: 1,
 			page_progress: [
-				{ id: 1, checked: true },
+				{ id: 1, checked: "checked" },
 				{ id: 2, checked: false },
 				{ id: 3, checked: false },
 				{ id: 4, checked: false },
@@ -173,6 +209,13 @@
 			&-col {
 				width: 100%;
 				position: relative;
+				&:nth-child(2) {
+					section {
+						width: 100%;
+						height: 100%;
+						position: absolute;
+					}
+				}
 				&:first-child {
 					display: flex;
 					flex-direction: column;

@@ -2,10 +2,10 @@
 	<ul class="r-progressbar">
 		<li class="r-progressbar__item" v-for="item in progress" :key="item.id">
 			<span
-				class="r-progressbar__item-tick checked"
-				v-if="item.checked === true"
+				class="r-progressbar__item-tick"
+				:class="item.checked"
+				ref="tick"
 			></span>
-			<span class="r-progressbar__item-tick" v-else></span>
 		</li>
 	</ul>
 </template>
@@ -17,8 +17,8 @@
 			progress: {
 				value: Array,
 				default: [
-					{ id: 1, checked: true },
-					{ id: 2, checked: true },
+					{ id: 1, checked: "checked" },
+					{ id: 2, checked: false },
 					{ id: 3, checked: false },
 					{ id: 4, checked: false },
 					{ id: 5, checked: false },

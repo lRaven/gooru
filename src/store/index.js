@@ -1,4 +1,6 @@
 import { createStore } from 'vuex'
+
+import brief from '@/store/modules/brief'
 import navigation_panel from '@/store/modules/navigation_panel'
 import cabinet from '@/store/modules/cabinet'
 
@@ -24,6 +26,7 @@ export default createStore({
 	},
 
 	modules: {
+		brief,
 		cabinet,
 		navigation_panel,
 	}

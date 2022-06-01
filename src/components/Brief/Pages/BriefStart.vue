@@ -12,7 +12,7 @@
 			@click="this.$emit('moveToNextPage')"
 		></r-button>
 
-		<p class="brief-start__text">
+		<p class="brief-start__description">
 			Вам нужны данные опросов?<br />
 			Контент новостных сайтов?<br />
 			Данные интернет-магазинов?<br />
@@ -37,9 +37,6 @@
 
 	.brief-start {
 		overflow: visible;
-		position: absolute;
-		width: 100%;
-		height: 100%;
 		display: grid;
 		grid-template-columns: repeat(2, max-content);
 		grid-template-rows: repeat(2, max-content);
@@ -67,7 +64,7 @@
 				font-weight: 700;
 			}
 		}
-		&__text {
+		&__description {
 			font-size: 2.4rem;
 			line-height: 1.3;
 		}

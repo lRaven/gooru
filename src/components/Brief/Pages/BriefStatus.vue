@@ -2,7 +2,10 @@
 	<section class="brief-status">
 		<div class="brief-status__col">
 			<div class="brief-status__row">
-				<p class="brief-status__title">ваш статус<br />клиента</p>
+				<p class="brief-status__title">
+					ваш статус<br />
+					клиента
+				</p>
 
 				<p class="brief-status__description">
 					Отметьте свой статус<br />
@@ -14,9 +17,11 @@
 			<div class="brief-status__row brief-status__inputs">
 				<r-radio-select
 					radio_name="status"
-					v-for="status in status_list"
+					v-for="status in client_statuses"
 					:key="status.id"
 					:description="status.description"
+					:value="status"
+					:isChecked="status.status"
 					v-model="selected_status"
 				></r-radio-select>
 			</div>
@@ -25,6 +30,10 @@
 		<r-button
 			description="Идём дальше!"
 			:disabled="disabled_btn"
+			@click="
+				SET_CLIENT_STATUS(selected_status);
+				this.$emit('moveToNextPage');
+			"
 		></r-button>
 	</section>
 </template>
@@ -32,6 +41,7 @@
 <script>
 	import rButton from "@/components/Brief/r-button";
 	import rRadioSelect from "@/components/Brief/r-radio-select";
+	import { mapMutations } from "vuex";
 
 	export default {
 		name: "BriefStatus",
@@ -50,17 +60,20 @@
 			selected_status: null,
 			disabled_btn: true,
 
-			status_list: [
+			client_statuses: [
 				{ id: 1, description: "Физическое лицо" },
 				{ id: 2, description: "Самозанятый" },
 				{ id: 3, description: "Индивидуальный предприниматель" },
 				{
-					id: 3,
+					id: 4,
 					description: "Общество с ограниченной ответственностью",
 				},
-				{ id: 4, description: "Впишите свой вариант" },
+				{ id: 5, description: "Впишите свой вариант" },
 			],
 		}),
+		methods: {
+			...mapMutations(["SET_CLIENT_STATUS"]),
+		},
 	};
 </script>
 
@@ -76,6 +89,15 @@
 		width: 100%;
 		height: 100%;
 		padding: 5rem 0;
+
+		&__col {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			gap: 5rem;
+			width: 100%;
+		}
+
 		&__title {
 			width: fit-content;
 			position: relative;
@@ -94,13 +116,19 @@
 				height: 0.6rem;
 				background-color: $white;
 			}
-			&-bold {
-			}
 		}
 
 		&__description {
 			font-size: 2.4rem;
 			line-height: 1.3;
+		}
+
+		&__inputs {
+			display: flex;
+			flex-direction: column;
+			gap: 2.5rem;
+			max-width: 45rem;
+			width: 100%;
 		}
 
 		.r-button {
