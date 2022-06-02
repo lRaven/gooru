@@ -57,6 +57,7 @@
 
 			&-fake {
 				width: 2.4rem;
+				min-width: 2.4rem;
 				height: 2.4rem;
 				border: 0.2rem solid $secondary;
 				border-radius: 0.5rem;

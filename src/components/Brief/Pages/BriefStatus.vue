@@ -2,10 +2,10 @@
 	<section class="brief-status">
 		<div class="brief-status__col">
 			<div class="brief-status__row">
-				<p class="brief-status__title">
+				<h1 class="brief-status__title">
 					ваш статус<br />
 					клиента
-				</p>
+				</h1>
 
 				<p class="brief-status__description">
 					Отметьте свой статус<br />
@@ -29,7 +29,7 @@
 
 		<r-button
 			description="Идём дальше!"
-			:disabled="disabled_btn"
+			:disabled="isDisabledBtn"
 			@click="
 				SET_CLIENT_STATUS(selected_status);
 				this.$emit('moveToNextPage');
@@ -52,13 +52,13 @@
 		watch: {
 			selected_status() {
 				if (this.selected_status !== null) {
-					this.disabled_btn = false;
+					this.isDisabledBtn = false;
 				}
 			},
 		},
 		data: () => ({
 			selected_status: null,
-			disabled_btn: true,
+			isDisabledBtn: true,
 
 			client_statuses: [
 				{ id: 1, description: "Физическое лицо" },
@@ -88,7 +88,6 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		padding: 5rem 0;
 
 		&__col {
 			display: flex;

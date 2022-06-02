@@ -23,7 +23,7 @@
 				<p class="rate-card__checklist-item-text">{{ item.text }}</p>
 			</li>
 		</ul>
-		<r-button text="Выбрать"></r-button>
+		<r-button text="Выбрать" v-if="isHasButton"></r-button>
 	</div>
 </template>
 
@@ -33,6 +33,10 @@
 	export default {
 		name: "RateCard",
 		props: {
+			isHasButton: {
+				value: Boolean,
+				default: true,
+			},
 			name: {
 				value: String,
 				default: "'rate name'",

@@ -2,11 +2,11 @@
 	<section class="brief-site-types">
 		<div class="brief-site-types__col">
 			<div class="brief-site-types__row">
-				<p class="brief-site-types__title">
+				<h1 class="brief-site-types__title">
 					какой тип сайта<br />
 					вы хотите спарсить<br />
 					в нашем сервисе?
-				</p>
+				</h1>
 				<p class="brief-site-types__description">
 					Выберите один<br />
 					или несколько типов
@@ -25,7 +25,7 @@
 		</div>
 
 		<r-button
-			:disabled="disabled_btn"
+			:disabled="isDisabledBtn"
 			description="Выбор сделан!"
 			@click="
 				SET_SITE_TYPES(selected_site_types);
@@ -49,8 +49,8 @@
 		watch: {
 			selected_site_types() {
 				this.selected_site_types.length > 0
-					? (this.disabled_btn = false)
-					: (this.disabled_btn = true);
+					? (this.isDisabledBtn = false)
+					: (this.isDisabledBtn = true);
 			},
 			site_types: {
 				handler: function () {
@@ -63,7 +63,7 @@
 			},
 		},
 		data: () => ({
-			disabled_btn: true,
+			isDisabledBtn: true,
 
 			site_types: [
 				{ id: 1, description: "Интернет-магазин" },
@@ -91,7 +91,6 @@
 		display: flex;
 		justify-content: space-between;
 		gap: 5rem;
-		padding: 5rem 0;
 		&__col {
 			display: flex;
 			flex-direction: column;

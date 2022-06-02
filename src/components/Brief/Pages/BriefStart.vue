@@ -1,11 +1,11 @@
 <template>
 	<section class="brief-start">
-		<p class="brief-start__title">
+		<h1 class="brief-start__title">
 			<span class="brief-start__title-bold">
 				парсинг<br />по вашему<br />запросу:<br />
 			</span>
 			соберём<br />необходимое
-		</p>
+		</h1>
 
 		<r-button
 			description="ОК, обратиться!"
@@ -42,7 +42,6 @@
 		grid-template-rows: repeat(2, max-content);
 		grid-gap: 5rem;
 		justify-content: space-between;
-		padding: 5rem 0;
 		&__title {
 			width: fit-content;
 			position: relative;

@@ -94,6 +94,39 @@
 		flex: 0 0 auto;
 	}
 
+	input {
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			/* display: none; <- Crashes Chrome on hover */
+			-webkit-appearance: none;
+			margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+		}
+		-moz-appearance: textfield;
+		&:hover {
+			-moz-appearance: number-input;
+		}
+		&[type="text"] {
+			::-ms-clear {
+				display: none;
+				width: 0;
+				height: 0;
+			}
+			::-ms-reveal {
+				display: none;
+				width: 0;
+				height: 0;
+			}
+		}
+		&[type="search"] {
+			&::-webkit-search-decoration,
+			&::-webkit-search-cancel-button,
+			&::-webkit-search-results-button,
+			&::-webkit-search-results-decoration {
+				display: none;
+			}
+		}
+	}
+
 	img,
 	svg,
 	button,

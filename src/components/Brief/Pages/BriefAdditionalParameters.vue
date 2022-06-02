@@ -2,10 +2,10 @@
 	<section class="brief-additional-parameters">
 		<div class="brief-additional-parameters__col">
 			<div class="brief-additional-parametes__row">
-				<p class="brief-additional-parameters__title">
+				<h1 class="brief-additional-parameters__title">
 					ДОПОЛНИТЕЛЬНЫЕ<br />
 					ПАРАМЕТРЫ
-				</p>
+				</h1>
 				<p class="brief-additional-parameters__description">
 					Необходимо выбрать<br />
 					нужные вам опции парсинга
@@ -13,7 +13,7 @@
 			</div>
 
 			<r-button
-				:disabled="disabled_btn"
+				:disabled="isDisabledBtn"
 				description="Ещё парочку!"
 				@click="
 					SET_ADDITIONAL_PARAMETERS(selected_additional_parameters);
@@ -50,8 +50,8 @@
 		watch: {
 			selected_additional_parameters() {
 				this.selected_additional_parameters.length > 0
-					? (this.disabled_btn = false)
-					: (this.disabled_btn = true);
+					? (this.isDisabledBtn = false)
+					: (this.isDisabledBtn = true);
 			},
 			additional_parameters: {
 				handler: function () {
@@ -64,7 +64,7 @@
 			},
 		},
 		data: () => ({
-			disabled_btn: true,
+			isDisabledBtn: true,
 
 			additional_parameters: [
 				{ id: 1, description: "Парсинг с авторизацией (ваш аккаунт)" },
@@ -106,7 +106,6 @@
 		display: flex;
 		justify-content: space-between;
 		gap: 5rem;
-		padding: 5rem 0;
 
 		&__col {
 			display: flex;

@@ -1,67 +1,27 @@
 <template>
 	<section class="the-rates" id="rates">
 		<div class="the-rates__container center">
-			<rates-slider title="Тарифы" :slides="rates_list"></rates-slider>
+			<rates-slider title="Тарифы" :slides="rates"></rates-slider>
 		</div>
 	</section>
 </template>
 
 <script>
 	import RatesSlider from "@/components/Rates/RatesSlider";
+	import { mapState } from "vuex";
 
 	export default {
 		name: "TheRates",
 		components: {
 			RatesSlider,
 		},
+		computed: {
+			...mapState({
+				rates: (state) => state.rates.rates,
+			}),
+		},
 		data: () => ({
-			rates_list: [
-				{
-					id: 1,
-					name: "Ознакомительный",
-					price: 0,
-					checklist: [
-						{ id: 1, text: "1 веб-сайт" },
-						{ id: 2, text: "Комплект" },
-						{ id: 3, text: "Высокое доверие" },
-						{ id: 4, text: "Добавка парсинга" },
-					],
-				},
-				{
-					id: 2,
-					name: "Ознакомительный",
-					price: 560,
-					checklist: [
-						{ id: 1, text: "1 веб-сайт" },
-						{ id: 2, text: "Комплект" },
-						{ id: 3, text: "Высокое доверие" },
-						{ id: 4, text: "Добавка парсинга" },
-					],
-				},
-				{
-					id: 3,
-					name: "Ознакомительный",
-					price: 2440,
-					checklist: [
-						{ id: 1, text: "1 веб-сайт" },
-						{ id: 2, text: "Комплект" },
-						{ id: 3, text: "Высокое доверие" },
-						{ id: 4, text: "Добавка парсинга" },
-						{ id: 5, text: "Добавка парсинга" },
-					],
-				},
-				{
-					id: 4,
-					name: "Ознакомительный",
-					price: 15800,
-					checklist: [
-						{ id: 1, text: "1 веб-сайт" },
-						{ id: 2, text: "Комплект" },
-						{ id: 3, text: "Высокое доверие" },
-						{ id: 4, text: "Добавка парсинга" },
-					],
-				},
-			],
+			rates_list: [],
 		}),
 	};
 </script>

@@ -2,11 +2,11 @@
 	<section class="brief-fields-of-activity">
 		<div class="brief-fields-of-activity__col">
 			<div class="brief-fields-of-activity__row">
-				<p class="brief-fields-of-activity__title">
+				<h1 class="brief-fields-of-activity__title">
 					Данные<br />
 					по какой сфере<br />
 					вам интересны?
-				</p>
+				</h1>
 				<p class="brief-fields-of-activity__description">
 					Отметьте свои интересы<br />
 					в поле справа или впишите<br />
@@ -15,7 +15,7 @@
 			</div>
 
 			<r-button
-				:disabled="disabled_btn"
+				:disabled="isDisabledBtn"
 				description="Интересненько!"
 				@click="
 					SET_FIELDS_OF_ACTIVITY(selected_fields_of_activity);
@@ -51,8 +51,8 @@
 		watch: {
 			selected_fields_of_activity() {
 				this.selected_fields_of_activity.length > 0
-					? (this.disabled_btn = false)
-					: (this.disabled_btn = true);
+					? (this.isDisabledBtn = false)
+					: (this.isDisabledBtn = true);
 			},
 			fields_of_activity: {
 				handler: function () {
@@ -66,7 +66,7 @@
 		},
 
 		data: () => ({
-			disabled_btn: true,
+			isDisabledBtn: true,
 
 			fields_of_activity: [
 				{ id: 1, description: "Информационные технологии" },
@@ -90,7 +90,6 @@
 	.brief-fields-of-activity {
 		display: flex;
 		justify-content: space-between;
-		padding: 5rem 0;
 		&__col {
 			display: flex;
 			flex-direction: column;

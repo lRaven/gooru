@@ -65,11 +65,11 @@
 				width: 2.4rem;
 				height: 2.4rem;
 				border: 0.2rem solid $secondary;
-				border-radius: 0.5rem;
+				border-radius: 50%;
 				padding: 0.2rem;
 				&-tick {
 					display: block;
-					border-radius: 0.2rem;
+					border-radius: 50%;
 					background-color: transparent;
 					width: 100%;
 					height: 100%;

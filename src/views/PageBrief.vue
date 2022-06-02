@@ -23,6 +23,7 @@
 							/>
 						</button>
 					</transition>
+
 					<r-progressbar :progress="page_progress"></r-progressbar>
 				</div>
 
@@ -36,41 +37,73 @@
 
 					<transition mode="out-in">
 						<brief-status
-							v-if="page_number === 2"
+							v-show="page_number === 2"
 							@moveToNextPage="moveToNextPage"
 						></brief-status>
 					</transition>
 
 					<transition mode="out-in">
 						<brief-fields-of-activity
-							v-if="page_number === 3"
+							v-show="page_number === 3"
 							@moveToNextPage="moveToNextPage"
 						></brief-fields-of-activity>
 					</transition>
 
 					<transition mode="out-in">
 						<brief-site-types
-							v-if="page_number === 4"
+							v-show="page_number === 4"
 							@moveToNextPage="moveToNextPage"
 						></brief-site-types>
 					</transition>
 
 					<transition mode="out-in">
 						<brief-additional-parameters
-							v-if="page_number === 5"
+							v-show="page_number === 5"
 							@moveToNextPage="moveToNextPage"
 						></brief-additional-parameters>
 					</transition>
 
 					<transition mode="out-in">
 						<brief-number-of-positions
-							v-if="page_number === 6"
+							v-show="page_number === 6"
 							@moveToNextPage="moveToNextPage"
 						></brief-number-of-positions>
 					</transition>
+
+					<transition mode="out-in">
+						<brief-source
+							v-show="page_number === 7"
+							@moveToNextPage="moveToNextPage"
+						></brief-source>
+					</transition>
+
+					<transition mode="out-in">
+						<brief-price
+							v-show="page_number === 8"
+							@moveToNextPage="moveToNextPage"
+						></brief-price>
+					</transition>
+
+					<transition mode="out-in">
+						<brief-end
+							v-if="page_number === 9"
+							@moveToNextPage="moveToNextPage"
+						></brief-end>
+					</transition>
 				</div>
 
-				<div class="page-brief__content-col"></div>
+				<div class="page-brief__content-col">
+					<transition mode="out-in">
+						<button
+							type="button"
+							class="page-brief__back"
+							v-if="page_number === page_progress.length"
+							@click="this.$router.push('/')"
+						>
+							<img src="img/icon/brief/close.svg" alt="close" />
+						</button>
+					</transition>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -78,23 +111,35 @@
 
 <script>
 	import rProgressbar from "@/components/Brief/r-progressbar";
+
 	import BriefStart from "@/components/Brief/Pages/BriefStart";
+
 	import BriefStatus from "@/components/Brief/Pages/BriefStatus";
 	import BriefFieldsOfActivity from "@/components/Brief/Pages/BriefFieldsOfActivity";
 	import BriefSiteTypes from "@/components/Brief/Pages/BriefSiteTypes";
 	import BriefAdditionalParameters from "@/components/Brief/Pages/BriefAdditionalParameters";
 	import BriefNumberOfPositions from "@/components/Brief/Pages/BriefNumberOfPositions";
+	import BriefSource from "@/components/Brief/Pages/BriefSource";
+	import BriefPrice from "@/components/Brief/Pages/BriefPrice";
+
+	import BriefEnd from "@/components/Brief/Pages/BriefEnd";
 
 	export default {
 		name: "PageBrief",
 		components: {
 			rProgressbar,
+
 			BriefStart,
+
 			BriefStatus,
 			BriefFieldsOfActivity,
 			BriefSiteTypes,
 			BriefAdditionalParameters,
 			BriefNumberOfPositions,
+			BriefSource,
+			BriefPrice,
+
+			BriefEnd,
 		},
 		watch: {
 			page_number() {
@@ -106,6 +151,13 @@
 					this.page_number > index
 						? (this.page_progress[index].checked = "checked")
 						: (this.page_progress[index].checked = false);
+				}
+
+				if (this.page_number < 1) {
+					this.page_number = 1;
+				}
+				if (this.page_number > this.page_progress.length) {
+					this.page_number = this.page_progress.length;
 				}
 
 				if (this.page_number === 1) {
@@ -233,6 +285,10 @@
 		&__back {
 			background-color: transparent;
 			padding: 2rem;
+		}
+		section {
+			overflow: visible;
+			padding: 3rem 0;
 		}
 	}
 </style>
