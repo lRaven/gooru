@@ -13,12 +13,14 @@
 			</div>
 
 			<r-button
+				:size="document_width <= 540 ? 'small' : 'normal'"
 				:disabled="isDisabledBtn"
 				description="Ещё парочку!"
 				@click="
 					SET_ADDITIONAL_PARAMETERS(selected_additional_parameters);
 					this.$emit('moveToNextPage');
 				"
+				v-if="document_width > 1023"
 			></r-button>
 		</div>
 
@@ -26,6 +28,7 @@
 			class="brief-additional-parameters__col brief-additional-parameters__inputs"
 		>
 			<r-checkbox
+				:size="document_width <= 540 ? 'small' : 'normal'"
 				v-for="item in additional_parameters"
 				:key="item.id"
 				:description="item.description"
@@ -33,6 +36,19 @@
 				v-model="item.checked"
 			></r-checkbox>
 		</div>
+
+		<transition mode="out-in">
+			<r-button
+				:size="document_width <= 540 ? 'small' : 'normal'"
+				:disabled="isDisabledBtn"
+				description="Интересненько!"
+				@click="
+					SET_ADDITIONAL_PARAMETERS(selected_additional_parameters);
+					this.$emit('moveToNextPage');
+				"
+				v-if="document_width <= 1023"
+			></r-button>
+		</transition>
 	</section>
 </template>
 
@@ -47,6 +63,7 @@
 			rButton,
 			rCheckbox,
 		},
+		props: { document_width: Number },
 		watch: {
 			selected_additional_parameters() {
 				this.selected_additional_parameters.length > 0
@@ -106,6 +123,7 @@
 		display: flex;
 		justify-content: space-between;
 		gap: 5rem;
+		overflow: hidden;
 
 		&__col {
 			display: flex;
@@ -144,9 +162,34 @@
 			grid-template-columns: repeat(2, 1fr);
 			grid-template-rows: repeat(3, max-content);
 			grid-gap: 2.5rem;
+			overflow: auto;
 		}
 		.r-button {
 			width: max-content;
+		}
+	}
+
+	@media (max-width: 1470px) {
+		.brief-additional-parameters {
+			&__inputs {
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+			}
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.brief-additional-parameters {
+			flex-direction: column;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.brief-additional-parameters {
+			.r-button {
+				margin: 0 auto;
+			}
 		}
 	}
 </style>

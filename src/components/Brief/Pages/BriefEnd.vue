@@ -8,9 +8,9 @@
 	export default {
 		name: "BriefEnd",
 		mounted() {
-			setTimeout(() => {
-				this.$router.push("/");
-			}, 5000);
+			// setTimeout(() => {
+			// 	this.$router.push("/");
+			// }, 5000);
 		},
 	};
 </script>

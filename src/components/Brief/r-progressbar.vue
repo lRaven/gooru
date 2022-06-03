@@ -1,5 +1,5 @@
 <template>
-	<ul class="r-progressbar">
+	<ul class="r-progressbar" :class="direction">
 		<li class="r-progressbar__item" v-for="item in progress" :key="item.id">
 			<span
 				class="r-progressbar__item-tick"
@@ -14,6 +14,10 @@
 	export default {
 		name: "rProgressbar",
 		props: {
+			direction: {
+				value: String,
+				default: "vertical",
+			},
 			progress: {
 				value: Array,
 				default: [
@@ -34,8 +38,13 @@
 
 	.r-progressbar {
 		display: flex;
-		flex-direction: column-reverse;
 		gap: 0.2rem;
+		&.vertical {
+			flex-direction: column-reverse;
+		}
+		&.horizontal {
+			flex-direction: row;
+		}
 		&__item {
 			width: 2rem;
 			height: 2rem;

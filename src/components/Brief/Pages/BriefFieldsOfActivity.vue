@@ -14,26 +14,44 @@
 				</p>
 			</div>
 
+			<transition mode="out-in">
+				<r-button
+					:disabled="isDisabledBtn"
+					description="Интересненько!"
+					@click="
+						SET_FIELDS_OF_ACTIVITY(selected_fields_of_activity);
+						this.$emit('moveToNextPage');
+					"
+					v-if="document_width > 1023"
+				></r-button>
+			</transition>
+		</div>
+
+		<div class="brief-fields-of-activity__col">
+			<div class="brief-fields-of-activity__inputs">
+				<r-checkbox
+					:size="document_width <= 540 ? 'small' : 'normal'"
+					v-for="item in fields_of_activity"
+					:key="item.id"
+					:description="item.description"
+					:value="item.id"
+					v-model="item.checked"
+				></r-checkbox>
+			</div>
+		</div>
+
+		<transition mode="out-in">
 			<r-button
+				:size="document_width <= 540 ? 'small' : 'normal'"
 				:disabled="isDisabledBtn"
 				description="Интересненько!"
 				@click="
 					SET_FIELDS_OF_ACTIVITY(selected_fields_of_activity);
 					this.$emit('moveToNextPage');
 				"
+				v-if="document_width <= 1023"
 			></r-button>
-		</div>
-		<div
-			class="brief-fields-of-activity__col brief-fields-of-activity__inputs"
-		>
-			<r-checkbox
-				v-for="item in fields_of_activity"
-				:key="item.id"
-				:description="item.description"
-				:value="item.id"
-				v-model="item.checked"
-			></r-checkbox>
-		</div>
+		</transition>
 	</section>
 </template>
 
@@ -44,6 +62,7 @@
 
 	export default {
 		name: "BriefFieldsOfActivity",
+		props: { document_width: Number },
 		components: {
 			rButton,
 			rCheckbox,
@@ -90,14 +109,16 @@
 	.brief-fields-of-activity {
 		display: flex;
 		justify-content: space-between;
+		gap: 5rem;
 		&__col {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
+			width: 100%;
 		}
 
 		&__title {
-			width: fit-content;
+			width: max-content;
 			position: relative;
 			font-size: 4.8rem;
 			line-height: 1.3;
@@ -128,10 +149,41 @@
 		}
 
 		&__inputs {
+			display: flex;
+			flex-direction: column;
+			margin-left: auto;
 			justify-content: flex-end;
 			gap: 2.5rem;
 			max-width: 66rem;
 			width: 100%;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.brief-fields-of-activity {
+			flex-direction: column;
+
+			&__col {
+				&:first-child {
+					height: max-content;
+				}
+				&:nth-child(2) {
+					overflow-y: auto;
+				}
+			}
+
+			&__inputs {
+				margin-left: 0;
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.brief-fields-of-activity {
+			grid-template-rows: max-content 1fr;
+			.r-button {
+				margin: 0 auto;
+			}
 		}
 	}
 </style>

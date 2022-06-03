@@ -14,8 +14,9 @@
 				</p>
 			</div>
 
-			<div class="brief-status__row brief-status__inputs">
+			<div class="brief-status__inputs">
 				<r-radio-select
+					:size="document_width <= 540 ? 'small' : 'normal'"
 					radio_name="status"
 					v-for="status in client_statuses"
 					:key="status.id"
@@ -28,6 +29,7 @@
 		</div>
 
 		<r-button
+			:size="document_width <= 540 ? 'small' : 'normal'"
 			description="Идём дальше!"
 			:disabled="isDisabledBtn"
 			@click="
@@ -49,6 +51,7 @@
 			rButton,
 			rRadioSelect,
 		},
+		props: { document_width: Number },
 		watch: {
 			selected_status() {
 				if (this.selected_status !== null) {
@@ -81,7 +84,9 @@
 	@import "@/assets/scss/variables";
 
 	.brief-status {
-		display: flex;
+		display: grid;
+		grid-template-rows: 1fr max-content;
+		grid-template-columns: 1fr;
 		justify-content: space-between;
 		gap: 5rem;
 		overflow: visible;
@@ -89,12 +94,19 @@
 		width: 100%;
 		height: 100%;
 
+		&__row {
+			&:nth-child(2) {
+			}
+		}
+
 		&__col {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
 			gap: 5rem;
 			width: 100%;
+			max-width: 45rem;
+			overflow: hidden;
 		}
 
 		&__title {
@@ -126,12 +138,45 @@
 			display: flex;
 			flex-direction: column;
 			gap: 2.5rem;
-			max-width: 45rem;
 			width: 100%;
+			max-width: 66rem;
+			overflow: auto;
 		}
 
 		.r-button {
 			margin-top: auto;
+			width: max-content;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.brief-status {
+			flex-direction: column;
+			gap: 3rem;
+
+			&__col {
+				gap: 3rem;
+				width: 100%;
+				max-width: 100%;
+				justify-content: flex-start;
+			}
+			&__inputs {
+				gap: 1.5rem;
+			}
+
+			.r-button {
+				width: max-content;
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.brief-status {
+			&__col {
+			}
+			.r-button {
+				margin: 0 auto;
+			}
 		}
 	}
 </style>

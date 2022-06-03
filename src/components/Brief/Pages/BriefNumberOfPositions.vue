@@ -11,11 +11,47 @@
 			</div>
 
 			<div class="brief-number-of-positions__row">
-				<h1 class="brief-number-of-positions__title">
-					<span class="brief-number-of-positions__big-word">от</span>
-					и
-					<span class="brief-number-of-positions__big-word">до</span>
-				</h1>
+				<div class="brief-number-of-positions__title-wrapper">
+					<h1 class="brief-number-of-positions__title">
+						<span class="brief-number-of-positions__big-word">
+							от
+						</span>
+						и
+						<span class="brief-number-of-positions__big-word">
+							до
+						</span>
+					</h1>
+
+					<div
+						class="brief-number-of-positions__bottom-col"
+						ref="input_min_wrapper"
+						v-if="document_width <= 1023"
+					>
+						<input
+							type="number"
+							name=""
+							id=""
+							class="brief-number-of-positions__input"
+							ref="input_min"
+							v-model="range[0]"
+						/>
+					</div>
+
+					<div
+						class="brief-number-of-positions__bottom-col"
+						ref="input_max_wrapper"
+						v-if="document_width <= 1023"
+					>
+						<input
+							type="number"
+							name=""
+							id=""
+							class="brief-number-of-positions__input"
+							v-model="range[1]"
+							ref="input_max"
+						/>
+					</div>
+				</div>
 			</div>
 
 			<div class="brief-number-of-positions__row">
@@ -36,12 +72,14 @@
 				:selected_min="range[0]"
 				:selected_max="range[1]"
 				v-model="range"
+				v-if="document_width > 1023"
 			></r-double-range-slider>
 
 			<div class="brief-number-of-positions__bottom-row">
 				<div
 					class="brief-number-of-positions__bottom-col"
 					ref="input_min_wrapper"
+					v-if="document_width > 1023"
 				>
 					<input
 						type="number"
@@ -54,6 +92,7 @@
 				</div>
 
 				<r-button
+					:size="document_width <= 540 ? 'small' : 'normal'"
 					description="Подвиньтесь!"
 					:disabled="isDisabledBtn"
 					@click="
@@ -65,6 +104,7 @@
 				<div
 					class="brief-number-of-positions__bottom-col"
 					ref="input_max_wrapper"
+					v-if="document_width > 1023"
 				>
 					<input
 						type="number"
@@ -91,6 +131,7 @@
 			rDoubleRangeSlider,
 			rButton,
 		},
+		props: { document_width: Number },
 		watch: {
 			range: {
 				handler: function () {
@@ -226,6 +267,59 @@
 		}
 		.r-button {
 			margin: 0 auto;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.brief-number-of-positions {
+			// gap: 0;
+			&__top {
+				// height: 100%;
+			}
+			&__row {
+				&:nth-child(2) {
+					margin-top: auto;
+				}
+				&:nth-child(3) {
+					order: -1;
+				}
+			}
+			&__line {
+				display: none;
+			}
+
+			&__description {
+				font-size: 1.8rem;
+			}
+			&__big-word {
+				font-size: 15rem;
+			}
+
+			&__subtitle {
+				font-size: 2.4rem;
+				width: fit-content;
+				position: relative;
+				line-height: 1.3;
+				padding-top: 2rem;
+				text-transform: uppercase;
+				&::before {
+					content: "";
+					position: absolute;
+					left: 0;
+					top: 0;
+					width: 70%;
+					height: 0.6rem;
+					background-color: $white;
+				}
+				&-bold {
+					font-size: 3.6rem;
+				}
+			}
+			&__bottom {
+				&-row {
+					gap: 3rem;
+				}
+			}
 		}
 	}
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<label class="r-checkbox">
+	<label class="r-checkbox" :class="size">
 		<input
 			type="checkbox"
 			:id="value"
@@ -20,6 +20,10 @@
 	export default {
 		name: "rCheckbox",
 		props: {
+			size: {
+				value: String,
+				default: "normal",
+			},
 			radio_name: {
 				value: String,
 				default: "checkbox",
@@ -72,6 +76,16 @@
 				}
 			}
 		}
+		&.normal {
+			.r-checkbox__btn {
+				padding: 1.8rem 1.5rem;
+			}
+		}
+		&.small {
+			.r-checkbox__btn {
+				padding: 1.2rem;
+			}
+		}
 		&__btn {
 			display: flex;
 			align-items: center;
@@ -79,7 +93,6 @@
 			gap: 1rem;
 			cursor: pointer;
 			background-color: $white;
-			padding: 1.8rem 1.5rem;
 			border-radius: 1rem;
 			border: 0.2rem solid #e7f4ff;
 		}

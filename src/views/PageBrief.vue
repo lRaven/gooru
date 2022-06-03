@@ -14,7 +14,7 @@
 						<button
 							type="button"
 							class="page-brief__back"
-							v-if="page_number > 1"
+							v-if="page_number > 1 && document_width > 767"
 							@click="moveToPrevPage"
 						>
 							<img
@@ -24,14 +24,20 @@
 						</button>
 					</transition>
 
-					<r-progressbar :progress="page_progress"></r-progressbar>
+					<r-progressbar
+						:direction="
+							document_width < 768 ? 'horizontal' : 'vertical'
+						"
+						:progress="page_progress"
+					></r-progressbar>
 				</div>
 
-				<div class="page-brief__content-col">
+				<div class="page-brief__content-col page-brief__pages">
 					<transition mode="out-in">
 						<brief-start
 							v-if="page_number === 1"
 							@moveToNextPage="moveToNextPage"
+							:document_width="document_width"
 						></brief-start>
 					</transition>
 
@@ -39,6 +45,7 @@
 						<brief-status
 							v-show="page_number === 2"
 							@moveToNextPage="moveToNextPage"
+							:document_width="document_width"
 						></brief-status>
 					</transition>
 
@@ -46,6 +53,7 @@
 						<brief-fields-of-activity
 							v-show="page_number === 3"
 							@moveToNextPage="moveToNextPage"
+							:document_width="document_width"
 						></brief-fields-of-activity>
 					</transition>
 
@@ -53,6 +61,7 @@
 						<brief-site-types
 							v-show="page_number === 4"
 							@moveToNextPage="moveToNextPage"
+							:document_width="document_width"
 						></brief-site-types>
 					</transition>
 
@@ -60,6 +69,7 @@
 						<brief-additional-parameters
 							v-show="page_number === 5"
 							@moveToNextPage="moveToNextPage"
+							:document_width="document_width"
 						></brief-additional-parameters>
 					</transition>
 
@@ -67,6 +77,7 @@
 						<brief-number-of-positions
 							v-show="page_number === 6"
 							@moveToNextPage="moveToNextPage"
+							:document_width="document_width"
 						></brief-number-of-positions>
 					</transition>
 
@@ -74,6 +85,7 @@
 						<brief-source
 							v-show="page_number === 7"
 							@moveToNextPage="moveToNextPage"
+							:document_width="document_width"
 						></brief-source>
 					</transition>
 
@@ -81,6 +93,7 @@
 						<brief-price
 							v-show="page_number === 8"
 							@moveToNextPage="moveToNextPage"
+							:document_width="document_width"
 						></brief-price>
 					</transition>
 
@@ -97,6 +110,20 @@
 						<button
 							type="button"
 							class="page-brief__back"
+							v-if="page_number > 1 && document_width < 768"
+							@click="moveToPrevPage"
+						>
+							<img
+								src="img/icon/brief/arrow-long.svg"
+								alt="arrow-back"
+							/>
+						</button>
+					</transition>
+
+					<transition mode="out-in">
+						<button
+							type="button"
+							class="page-brief__exit"
 							v-if="page_number === page_progress.length"
 							@click="this.$router.push('/')"
 						>
@@ -123,6 +150,8 @@
 	import BriefPrice from "@/components/Brief/Pages/BriefPrice";
 
 	import BriefEnd from "@/components/Brief/Pages/BriefEnd";
+
+	import { mapState } from "vuex";
 
 	export default {
 		name: "PageBrief",
@@ -200,8 +229,9 @@
 				}
 			},
 		},
+		computed: { ...mapState(["document_width"]) },
 		data: () => ({
-			page_number: 1,
+			page_number: 6,
 			page_progress: [
 				{ id: 1, checked: "checked" },
 				{ id: 2, checked: false },
@@ -237,7 +267,7 @@
 		height: 100vh;
 		overflow: hidden;
 		transition: all 0.2s ease;
-		padding: 3rem;
+		padding: 3rem 0;
 
 		&__bg {
 			position: absolute;
@@ -254,26 +284,21 @@
 
 		&__content {
 			display: grid;
-			grid-template-columns: max-content 1fr max-content;
+			grid-template-columns: 6rem 1fr 6rem;
 			position: relative;
 			gap: 5rem;
 			height: 100%;
+			overflow: hidden;
+
 			&-col {
 				width: 100%;
 				position: relative;
-				&:nth-child(2) {
-					section {
-						width: 100%;
-						height: 100%;
-						position: absolute;
-					}
-				}
+
 				&:first-child {
 					display: flex;
 					flex-direction: column;
 					justify-content: space-between;
 					align-items: center;
-					width: 6rem;
 					.r-progressbar {
 						margin-top: auto;
 						padding: 2rem;
@@ -282,13 +307,102 @@
 			}
 		}
 
-		&__back {
-			background-color: transparent;
-			padding: 2rem;
+		&__pages {
+			display: grid;
+			section {
+				overflow: visible;
+				width: 100%;
+				height: 100%;
+				max-height: calc(100vh - 6rem);
+				grid-area: 1/1;
+				padding: 0 1rem;
+			}
 		}
-		section {
-			overflow: visible;
-			padding: 3rem 0;
+
+		&__back,
+		&__exit {
+			background-color: transparent;
+			padding: 2rem 1rem;
+		}
+	}
+
+	@media (max-width: 1200px) {
+		.page-brief {
+			&__content {
+				gap: 0;
+			}
+		}
+	}
+
+	@media (max-width: 767px) {
+		.page-brief {
+			padding: 0;
+			&__content {
+				grid-template-columns: 1fr;
+				grid-template-rows: 6rem 1fr 6rem;
+				&-col {
+					&:first-child {
+						order: 3;
+					}
+				}
+			}
+			&__pages {
+				grid-area: 2/1/2/1;
+				section {
+					max-height: calc(100vh - 12rem);
+				}
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.page-brief {
+			padding: 1rem 0;
+			&__content {
+				gap: 0;
+			}
+		}
+	}
+</style>
+
+<style lang="scss">
+	@media (max-width: 1023px) {
+		.page-brief {
+			section {
+				h1 {
+					margin-bottom: 0 !important;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.page-brief {
+			&__pages {
+				section {
+					h1 {
+						font-size: 3.6rem !important;
+					}
+					p {
+						font-size: 1.8rem !important;
+					}
+				}
+			}
+		}
+	}
+
+	@media (max-width: 375px) {
+		.page-brief {
+			&__pages {
+				section {
+					h1 {
+						font-size: 2.4rem !important;
+					}
+					p {
+						font-size: 1.5rem !important;
+					}
+				}
+			}
 		}
 	}
 </style>

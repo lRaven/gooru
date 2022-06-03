@@ -13,8 +13,9 @@
 				</p>
 			</div>
 
-			<div class="brief-site-types__row brief-site-types__inputs">
+			<div class="brief-site-types__inputs">
 				<r-checkbox
+					:size="document_width <= 540 ? 'small' : 'normal'"
 					v-for="item in site_types"
 					:key="item.id"
 					:description="item.description"
@@ -25,6 +26,7 @@
 		</div>
 
 		<r-button
+			:size="document_width <= 540 ? 'small' : 'normal'"
 			:disabled="isDisabledBtn"
 			description="Выбор сделан!"
 			@click="
@@ -46,6 +48,7 @@
 			rButton,
 			rCheckbox,
 		},
+		props: { document_width: Number },
 		watch: {
 			selected_site_types() {
 				this.selected_site_types.length > 0
@@ -96,8 +99,8 @@
 			flex-direction: column;
 			justify-content: space-between;
 			gap: 5rem;
+			overflow: hidden;
 		}
-
 		&__title {
 			width: fit-content;
 			position: relative;
@@ -127,6 +130,24 @@
 			display: flex;
 			flex-direction: column;
 			gap: 2.5rem;
+			overflow: auto;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.brief-site-types {
+			flex-direction: column;
+			.r-button {
+				width: max-content;
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.brief-site-types {
+			.r-button {
+				margin: 0 auto;
+			}
 		}
 	}
 </style>

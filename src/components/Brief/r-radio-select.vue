@@ -1,5 +1,5 @@
 <template>
-	<label class="r-radio-select">
+	<label class="r-radio-select" :class="size">
 		<input
 			type="radio"
 			:name="radio_name"
@@ -22,6 +22,10 @@
 	export default {
 		name: "rRadioSelect",
 		props: {
+			size: {
+				value: String,
+				default: "normal",
+			},
 			isChecked: {
 				value: Boolean,
 				default: false,
@@ -64,6 +68,7 @@
 			&-fake {
 				width: 2.4rem;
 				height: 2.4rem;
+				min-width: 2.4rem;
 				border: 0.2rem solid $secondary;
 				border-radius: 50%;
 				padding: 0.2rem;
@@ -77,6 +82,17 @@
 				}
 			}
 		}
+		&.normal {
+			.r-radio-select__btn {
+				padding: 1.8rem 1.5rem;
+			}
+		}
+		&.small {
+			.r-radio-select__btn {
+				padding: 1.2rem;
+			}
+		}
+
 		&__btn {
 			display: flex;
 			align-items: center;
@@ -84,7 +100,7 @@
 			gap: 1rem;
 			cursor: pointer;
 			background-color: $white;
-			padding: 1.8rem 1.5rem;
+
 			border-radius: 1rem;
 			border: 0.2rem solid #e7f4ff;
 		}

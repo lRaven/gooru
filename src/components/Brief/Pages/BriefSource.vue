@@ -21,6 +21,7 @@
 
 		<div class="brief-source__row brief-source__buttons">
 			<r-button
+				:size="document_width <= 540 ? 'small' : 'normal'"
 				:disabled="isDisabledBtn"
 				description="Добавить"
 				@click="
@@ -47,6 +48,7 @@
 			rInputUrl,
 			rButton,
 		},
+		props: { document_width: Number },
 		watch: {
 			sources: {
 				handler: function () {

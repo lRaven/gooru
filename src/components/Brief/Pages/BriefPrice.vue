@@ -96,6 +96,7 @@
 				</div>
 
 				<r-button
+					:size="document_width <= 540 ? 'small' : 'normal'"
 					:disabled="isDisabledBtn"
 					description="Да не вопрос! Держите!"
 					@click="
@@ -119,6 +120,7 @@
 			RateCard,
 			rButton,
 		},
+		props: { document_width: Number },
 		watch: {
 			user_data: {
 				handler: function () {
