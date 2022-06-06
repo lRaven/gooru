@@ -52,6 +52,7 @@
 			rRadioSelect,
 		},
 		props: { document_width: Number },
+		computed: {},
 		watch: {
 			selected_status() {
 				if (this.selected_status !== null) {
@@ -85,8 +86,7 @@
 
 	.brief-status {
 		display: grid;
-		grid-template-rows: 1fr max-content;
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(2, max-content);
 		justify-content: space-between;
 		gap: 5rem;
 		overflow: visible;
@@ -140,7 +140,7 @@
 			gap: 2.5rem;
 			width: 100%;
 			max-width: 66rem;
-			overflow: auto;
+			overflow-y: auto;
 		}
 
 		.r-button {
@@ -151,9 +151,8 @@
 
 	@media (max-width: 1023px) {
 		.brief-status {
-			flex-direction: column;
-			gap: 3rem;
-
+			grid-template-columns: 1fr;
+			grid-template-rows: 1fr max-content;
 			&__col {
 				gap: 3rem;
 				width: 100%;

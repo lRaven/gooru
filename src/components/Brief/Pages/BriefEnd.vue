@@ -39,4 +39,17 @@
 			}
 		}
 	}
+
+	@media (max-width: 540px) {
+		.brief-end {
+			display: flex;
+			justify-content: center;
+			align-items: flex-end;
+			&__title {
+				&::before {
+					width: 100%;
+				}
+			}
+		}
+	}
 </style>

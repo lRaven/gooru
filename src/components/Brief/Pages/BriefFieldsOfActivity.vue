@@ -115,6 +115,9 @@
 			flex-direction: column;
 			justify-content: space-between;
 			width: 100%;
+			&:nth-child(2) {
+				margin-top: auto;
+			}
 		}
 
 		&__title {

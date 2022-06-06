@@ -10,86 +10,71 @@
 				источников парса данных
 			</p>
 			<div class="brief-source__inputs">
-				<r-input-url
+				<r-radio-select
+					:size="document_width <= 540 ? 'small' : 'normal'"
+					radio_name="source"
 					v-for="source in sources"
 					:key="source.id"
-					v-model="source.description"
-					v-model:valid="source.valid"
-				></r-input-url>
+					:description="source.description"
+					:value="source"
+					:isChecked="source.status"
+					v-model="selected_source"
+				></r-radio-select>
 			</div>
 		</div>
 
-		<div class="brief-source__row brief-source__buttons">
-			<r-button
-				:size="document_width <= 540 ? 'small' : 'normal'"
-				:disabled="isDisabledBtn"
-				description="Добавить"
-				@click="
-					SET_SOURCES(selected_sources);
-					this.$emit('moveToNextPage');
-				"
-			></r-button>
-			<r-button
-				description="Пропустить"
-				@click="this.$emit('moveToNextPage')"
-			></r-button>
-		</div>
+		<r-button
+			:size="document_width <= 540 ? 'small' : 'normal'"
+			:disabled="isDisabledBtn"
+			description="Рассчитать стоимость"
+			@click="
+				SET_SOURCE(selected_source);
+				this.$emit('moveToNextPage');
+			"
+		></r-button>
 	</section>
 </template>
 
 <script>
-	import rInputUrl from "@/components/Brief/r-input-url";
+	import rRadioSelect from "@/components/Brief/r-radio-select";
 	import rButton from "@/components/Brief/r-button";
 	import { mapMutations } from "vuex";
 
 	export default {
 		name: "BriefSource",
 		components: {
-			rInputUrl,
+			rRadioSelect,
 			rButton,
 		},
 		props: { document_width: Number },
 		watch: {
-			sources: {
-				handler: function () {
-					const invalid_list = this.sources.find(
-						(source) => source.valid === false
-					);
-
-					invalid_list === undefined
-						? (this.isDisabledBtn = false)
-						: (this.isDisabledBtn = true);
-				},
-				deep: true,
+			selected_source() {
+				if (this.selected_source !== null) {
+					this.isDisabledBtn = false;
+				}
 			},
 		},
 		data: () => ({
 			isDisabledBtn: true,
 
 			sources: [
-				{ id: 1, description: "", valid: null },
-				{ id: 2, description: "", valid: null },
-				{ id: 3, description: "", valid: null },
-				{ id: 4, description: "", valid: null },
-				{ id: 5, description: "", valid: null },
-				{ id: 6, description: "", valid: null },
-				{ id: 7, description: "", valid: null },
+				{ id: 1, description: "От 1 до 3 сайтов, до 5 страниц" },
+				{ id: 2, description: "От 1 до 10 сайтов, до 15 страниц" },
+				{
+					id: 3,
+					description:
+						"От 1 до 10 сайтов, до 15 страниц, с выгрузкой в соцсети",
+				},
+				{
+					id: 4,
+					description:
+						"Свыше 10 сайтов, свыше 15 страниц, особые условия",
+				},
 			],
-		}),
-		computed: {
-			selected_sources() {
-				let result = this.sources.filter((source) => {
-					return (
-						source.valid !== false && source.description.length > 0
-					);
-				});
 
-				return result;
-			},
-		},
-		methods: {
-			...mapMutations(["SET_SOURCES"]),
-		},
+			selected_source: null,
+		}),
+		methods: { ...mapMutations(["SET_SOURCE"]) },
 	};
 </script>
 
@@ -101,6 +86,15 @@
 		flex-direction: column;
 		gap: 5rem;
 		justify-content: space-between;
+
+		&__row {
+			&:first-child {
+				display: flex;
+				flex-direction: column;
+				overflow: hidden;
+			}
+		}
+
 		&__title {
 			width: fit-content;
 			position: relative;
@@ -131,12 +125,19 @@
 			flex-direction: column;
 			gap: 1.5rem;
 			max-width: 63rem;
+			overflow-y: auto;
 		}
 
-		&__buttons {
-			display: flex;
-			align-items: center;
-			gap: 3.5rem;
+		.r-button {
+			width: max-content;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.brief-source {
+			.r-button {
+				margin: 0 auto;
+			}
 		}
 	}
 </style>

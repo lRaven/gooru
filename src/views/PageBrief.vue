@@ -172,66 +172,24 @@
 		},
 		watch: {
 			page_number() {
-				for (
-					let index = 0;
-					index < this.page_progress.length;
-					index++
-				) {
-					this.page_number > index
-						? (this.page_progress[index].checked = "checked")
-						: (this.page_progress[index].checked = false);
-				}
+				this.fillTheProgressbar();
 
+				this.document_width < 768
+					? this.transformBgImage("mobile")
+					: this.transformBgImage("pc");
+
+				//* проверка выхода из диапазона
 				if (this.page_number < 1) {
 					this.page_number = 1;
 				}
 				if (this.page_number > this.page_progress.length) {
 					this.page_number = this.page_progress.length;
 				}
-
-				if (this.page_number === 1) {
-					this.$refs.bg.removeAttribute("style");
-				} else if (this.page_number === 2) {
-					this.$refs.bg.setAttribute(
-						"style",
-						"transform: translateX(-10%) scale(1.25);"
-					);
-				} else if (this.page_number === 3) {
-					this.$refs.bg.setAttribute(
-						"style",
-						"transform: translate(25%, -37%) scale(0.5);"
-					);
-				} else if (this.page_number === 4) {
-					this.$refs.bg.setAttribute(
-						"style",
-						"transform: translate(-15%, 40%) scale(1.25);"
-					);
-				} else if (this.page_number === 5 || this.page_number === 7) {
-					this.$refs.bg.setAttribute(
-						"style",
-						"transform: translate(-15%, 20%) scale(1);"
-					);
-				} else if (this.page_number === 6) {
-					this.$refs.bg.setAttribute(
-						"style",
-						"transform: translate(0, -20%) scale(0.8);"
-					);
-				} else if (this.page_number === 8) {
-					this.$refs.bg.setAttribute(
-						"style",
-						"transform: translate(-20%, 0) scale(0.6);"
-					);
-				} else if (this.page_number === 9) {
-					this.$refs.bg.setAttribute(
-						"style",
-						"transform: translate(-25%, -10%) scale(1.25);"
-					);
-				}
 			},
 		},
 		computed: { ...mapState(["document_width"]) },
 		data: () => ({
-			page_number: 6,
+			page_number: 1,
 			page_progress: [
 				{ id: 1, checked: "checked" },
 				{ id: 2, checked: false },
@@ -246,6 +204,90 @@
 		}),
 
 		methods: {
+			fillTheProgressbar() {
+				for (
+					let index = 0;
+					index < this.page_progress.length;
+					index++
+				) {
+					this.page_number > index
+						? (this.page_progress[index].checked = "checked")
+						: (this.page_progress[index].checked = false);
+				}
+			},
+
+			transformBgImage(version) {
+				switch (version) {
+					case "mobile": {
+						if (this.page_number === 1) {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: rotate(-90deg);"
+							);
+						} else if (
+							this.page_number > 1 &&
+							this.page_number < this.page_progress.length
+						) {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: translateY(-20%) scale(0.5) rotate(-90deg);"
+							);
+						} else {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: translate(-15%, 52%) scale(1) rotate(-90deg);"
+							);
+						}
+						break;
+					}
+
+					case "pc": {
+						if (this.page_number === 1) {
+							this.$refs.bg.removeAttribute("style");
+						} else if (this.page_number === 2) {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: translateX(-10%) scale(1.25);"
+							);
+						} else if (this.page_number === 3) {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: translate(25%, -37%) scale(0.5);"
+							);
+						} else if (this.page_number === 4) {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: translate(-15%, 40%) scale(1.25);"
+							);
+						} else if (
+							this.page_number === 5 ||
+							this.page_number === 7
+						) {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: translate(-15%, 20%) scale(1);"
+							);
+						} else if (this.page_number === 6) {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: translate(0, -20%) scale(0.8);"
+							);
+						} else if (this.page_number === 8) {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: translate(-20%, 0) scale(0.6);"
+							);
+						} else if (this.page_number === 9) {
+							this.$refs.bg.setAttribute(
+								"style",
+								"transform: translate(-25%, -10%) scale(1.25);"
+							);
+						}
+						break;
+					}
+				}
+			},
+
 			moveToPrevPage() {
 				this.page_number--;
 			},
@@ -337,12 +379,25 @@
 	@media (max-width: 767px) {
 		.page-brief {
 			padding: 0;
+
+			&__bg {
+				width: 200%;
+				top: 0;
+				left: -25%;
+				transform: rotate(-90deg);
+			}
+
 			&__content {
 				grid-template-columns: 1fr;
 				grid-template-rows: 6rem 1fr 6rem;
 				&-col {
 					&:first-child {
 						order: 3;
+					}
+					&:nth-child(3) {
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
 					}
 				}
 			}

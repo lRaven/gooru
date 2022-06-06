@@ -141,6 +141,15 @@
 		computed: {
 			...mapState({
 				rates: (state) => state.rates.rates,
+
+				client_status: (store) => store.brief.client_status,
+				fields_of_activity: (store) => store.brief.fields_of_activity,
+				site_types: (store) => store.brief.site_types,
+				additional_parameters: (store) =>
+					store.brief.additional_parameters,
+				number_of_positions: (store) => store.brief.number_of_positions,
+				source: (store) => store.brief.source,
+				user_contacts: (store) => store.brief.user_contacts,
 			}),
 			rate() {
 				return this.rates[2];
@@ -171,8 +180,13 @@
 	@import "@/assets/scss/variables";
 
 	.brief-price {
-		display: flex;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
 		justify-content: space-between;
+		gap: 5rem;
+		overflow-x: hidden !important;
+		overflow-y: auto !important;
+		padding: 1rem;
 		&__col {
 			display: flex;
 			flex-direction: column;
@@ -272,6 +286,35 @@
 				width: 100%;
 				font-size: 1.5rem;
 				font-weight: 500;
+			}
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.brief-price {
+			grid-template-columns: 1fr;
+			&__col {
+				width: 100%;
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.brief-price {
+			&__contacts {
+				padding: 1.5rem;
+			}
+			&__horizontal-rule {
+				height: 0.3rem;
+			}
+
+			.rate-card {
+				max-width: 32rem;
+				padding: 2rem 1.4rem 2rem 1rem;
+			}
+			.r-button {
+				width: max-content;
+				margin: 0 auto;
 			}
 		}
 	}

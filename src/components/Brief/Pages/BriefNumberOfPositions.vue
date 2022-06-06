@@ -2,7 +2,7 @@
 	<section class="brief-number-of-positions">
 		<div class="brief-number-of-positions__top">
 			<div class="brief-number-of-positions__row">
-				<span class="brief-number-of-positions__line"></span>
+				<hr class="brief-number-of-positions__horizontal-rule" />
 
 				<p class="brief-number-of-positions__description">
 					Укажите примерное количество данных (услуг, товаров,
@@ -10,20 +10,14 @@
 				</p>
 			</div>
 
-			<div class="brief-number-of-positions__row">
-				<div class="brief-number-of-positions__title-wrapper">
-					<h1 class="brief-number-of-positions__title">
-						<span class="brief-number-of-positions__big-word">
-							от
-						</span>
-						и
-						<span class="brief-number-of-positions__big-word">
-							до
-						</span>
-					</h1>
+			<div class="brief-number-of-positions__title">
+				<div class="brief-number-of-positions__title-row">
+					<span class="brief-number-of-positions__big-word">
+						от
+					</span>
 
 					<div
-						class="brief-number-of-positions__bottom-col"
+						class="brief-number-of-positions__input-wrapper"
 						ref="input_min_wrapper"
 						v-if="document_width <= 1023"
 					>
@@ -36,9 +30,16 @@
 							v-model="range[0]"
 						/>
 					</div>
+				</div>
+
+				<div class="brief-number-of-positions__title-row">
+					<p class="brief-number-of-positions__title-and">и</p>
+					<span class="brief-number-of-positions__big-word">
+						до
+					</span>
 
 					<div
-						class="brief-number-of-positions__bottom-col"
+						class="brief-number-of-positions__input-wrapper"
 						ref="input_max_wrapper"
 						v-if="document_width <= 1023"
 					>
@@ -63,7 +64,7 @@
 					(Ориентировочно)
 				</p>
 
-				<span class="brief-number-of-positions__line"></span>
+				<hr class="brief-number-of-positions__horizontal-rule" />
 			</div>
 		</div>
 
@@ -72,12 +73,12 @@
 				:selected_min="range[0]"
 				:selected_max="range[1]"
 				v-model="range"
-				v-if="document_width > 1023"
+				v-show="document_width > 1023"
 			></r-double-range-slider>
 
 			<div class="brief-number-of-positions__bottom-row">
 				<div
-					class="brief-number-of-positions__bottom-col"
+					class="brief-number-of-positions__input-wrapper"
 					ref="input_min_wrapper"
 					v-if="document_width > 1023"
 				>
@@ -102,7 +103,7 @@
 				></r-button>
 
 				<div
-					class="brief-number-of-positions__bottom-col"
+					class="brief-number-of-positions__input-wrapper"
 					ref="input_max_wrapper"
 					v-if="document_width > 1023"
 				>
@@ -135,9 +136,16 @@
 		watch: {
 			range: {
 				handler: function () {
-					this.resizeInputByContent();
+					this.document_width <= 540
+						? this.resizeInputByContent(42.5, 22, "mobile")
+						: this.resizeInputByContent(52.5, 30, "pc");
 				},
 				deep: true,
+			},
+			document_width() {
+				this.document_width <= 540
+					? this.resizeInputByContent(42.5, 22, "mobile")
+					: this.resizeInputByContent(52.5, 30, "pc");
 			},
 		},
 		computed: {
@@ -156,20 +164,48 @@
 		},
 		methods: {
 			...mapMutations(["SET_NUMBER_OF_POSITIONS"]),
-			resizeInputByContent() {
-				this.$refs.input_min_wrapper.setAttribute(
-					"style",
-					`width: ${105 + 30 * this.input_min_length}px`
-				);
+			resizeInputByContent(padding, font_size, version) {
+				switch (version) {
+					case "mobile": {
+						this.$refs.input_min_wrapper.setAttribute(
+							"style",
+							`width: ${
+								padding * 2 + font_size * this.input_min_length
+							}px`
+						);
 
-				this.$refs.input_max_wrapper.setAttribute(
-					"style",
-					`width: ${105 + 30 * this.input_max_length}px`
-				);
+						this.$refs.input_max_wrapper.setAttribute(
+							"style",
+							"width: 100%"
+						);
+
+						break;
+					}
+
+					case "pc": {
+						this.$refs.input_min_wrapper.setAttribute(
+							"style",
+							`width: ${
+								padding * 2 + font_size * this.input_min_length
+							}px`
+						);
+
+						this.$refs.input_max_wrapper.setAttribute(
+							"style",
+							`width: ${
+								padding * 2 + font_size * this.input_max_length
+							}px`
+						);
+
+						break;
+					}
+				}
 			},
 		},
 		mounted() {
-			this.resizeInputByContent();
+			this.document_width <= 540
+				? this.resizeInputByContent(42.5, 22, "mobile")
+				: this.resizeInputByContent(52.5, 30, "pc");
 		},
 	};
 </script>
@@ -182,6 +218,13 @@
 		flex-direction: column;
 		justify-content: space-between;
 		gap: 5rem;
+
+		&__horizontal-rule {
+			display: block;
+			background-color: $white;
+			width: 100%;
+			height: 0.6rem;
+		}
 
 		&__top {
 			display: flex;
@@ -200,23 +243,29 @@
 			}
 		}
 
-		&__line {
-			display: block;
-			background-color: $white;
-			width: 100%;
-			height: 0.6rem;
-		}
 		&__description {
 			font-size: 2.4rem;
 			line-height: 1.2;
 		}
 
 		&__title {
+			display: flex;
 			text-transform: uppercase;
 			font-size: 8.6rem;
 			font-weight: 700;
 			color: #00b2ef;
 			margin-bottom: 2rem;
+			gap: 3rem;
+			&-and {
+				font-size: 8.6rem;
+			}
+			&-row {
+				gap: 3rem;
+				&:nth-child(2) {
+					display: flex;
+					align-items: flex-end;
+				}
+			}
 		}
 		&__big-word {
 			font-size: 23rem;
@@ -242,13 +291,6 @@
 				justify-content: space-between;
 				margin-top: 4rem;
 			}
-			&-col {
-				transition: all 0.2s ease;
-				min-width: 14rem;
-				&:last-child {
-					margin-left: auto;
-				}
-			}
 		}
 
 		&__input,
@@ -264,6 +306,15 @@
 			border: 0.2rem solid #00a9e8;
 			border-radius: 5rem;
 			width: 100%;
+			text-align: center;
+
+			&-wrapper {
+				transition: all 0.2s ease;
+				min-width: 14rem;
+				&:last-child {
+					margin-left: auto;
+				}
+			}
 		}
 		.r-button {
 			margin: 0 auto;
@@ -272,9 +323,23 @@
 
 	@media (max-width: 1023px) {
 		.brief-number-of-positions {
-			// gap: 0;
-			&__top {
-				// height: 100%;
+			gap: 0;
+
+			&__horizontal-rule {
+				display: none;
+			}
+
+			&__title {
+				gap: 3rem;
+				flex-direction: column;
+				justify-content: flex-end;
+				&-row {
+					display: flex;
+					margin-left: auto;
+				}
+				&-and {
+					font-size: 5rem;
+				}
 			}
 			&__row {
 				&:nth-child(2) {
@@ -284,15 +349,12 @@
 					order: -1;
 				}
 			}
-			&__line {
-				display: none;
-			}
 
 			&__description {
 				font-size: 1.8rem;
 			}
 			&__big-word {
-				font-size: 15rem;
+				font-size: 10rem;
 			}
 
 			&__subtitle {
@@ -315,9 +377,60 @@
 					font-size: 3.6rem;
 				}
 			}
+
 			&__bottom {
 				&-row {
+					margin-top: 0;
 					gap: 3rem;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 650px) {
+		.brief-number-of-positions {
+			&__title {
+				&-row {
+					&:nth-child(2) {
+						width: 100%;
+						display: grid;
+						grid-template-columns: repeat(2, 1fr);
+						.brief-number-of-positions__input-wrapper {
+							grid-column: 1/3;
+							min-width: 100%;
+						}
+					}
+				}
+				&-and {
+					margin-left: auto;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.brief-number-of-positions {
+			overflow-y: auto !important;
+			&__title {
+				flex-direction: column;
+				width: 100%;
+				&-row {
+					font-size: 4rem;
+				}
+			}
+
+			&__big-word {
+				font-size: 6rem;
+			}
+
+			&__input {
+				font-size: 3.5rem;
+				padding: 1rem 4rem;
+			}
+
+			&__bottom {
+				&-row {
+					display: flex;
 				}
 			}
 		}

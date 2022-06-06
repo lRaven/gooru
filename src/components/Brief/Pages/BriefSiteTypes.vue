@@ -130,7 +130,7 @@
 			display: flex;
 			flex-direction: column;
 			gap: 2.5rem;
-			overflow: auto;
+			overflow-y: auto;
 		}
 	}
 

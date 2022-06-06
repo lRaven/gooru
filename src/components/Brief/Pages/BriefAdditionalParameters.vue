@@ -162,7 +162,7 @@
 			grid-template-columns: repeat(2, 1fr);
 			grid-template-rows: repeat(3, max-content);
 			grid-gap: 2.5rem;
-			overflow: auto;
+			overflow-y: auto;
 		}
 		.r-button {
 			width: max-content;
