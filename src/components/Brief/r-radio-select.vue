@@ -1,5 +1,5 @@
 <template>
-	<label class="r-radio-select" :class="size">
+	<label class="r-radio-select">
 		<input
 			type="radio"
 			:name="radio_name"
@@ -10,7 +10,23 @@
 			@input="this.$emit('update:modelValue', value)"
 		/>
 		<div class="r-radio-select__btn">
-			<p class="r-radio-select__description">{{ description }}</p>
+			<p class="r-radio-select__description" v-if="!hasInputField">
+				{{ description }}
+			</p>
+			<input
+				type="text"
+				name=""
+				id=""
+				class="r-radio-select__text"
+				:placeholder="description"
+				@input="
+					isChecked = true;
+					this.$emit('update:modelValue', value);
+					this.$emit('update:text', $event.target.value);
+				"
+				v-else
+			/>
+
 			<div class="r-radio-select__input-fake">
 				<span class="r-radio-select__input-fake-tick"></span>
 			</div>
@@ -22,11 +38,7 @@
 	export default {
 		name: "rRadioSelect",
 		props: {
-			size: {
-				value: String,
-				default: "normal",
-			},
-			isChecked: {
+			hasInputField: {
 				value: Boolean,
 				default: false,
 			},
@@ -38,11 +50,20 @@
 				value: String,
 				default: "input value",
 			},
+			selected_value: Number,
 			description: {
 				value: String,
 				default: "input description",
 			},
 		},
+		watch: {
+			selected_value() {
+				this.selected_value !== this.value
+					? (this.isChecked = false)
+					: (this.isChecked = true);
+			},
+		},
+		data: () => ({ isChecked: false }),
 	};
 </script>
 
@@ -82,17 +103,6 @@
 				}
 			}
 		}
-		&.normal {
-			.r-radio-select__btn {
-				padding: 1.8rem 1.5rem;
-			}
-		}
-		&.small {
-			.r-radio-select__btn {
-				padding: 1.2rem;
-			}
-		}
-
 		&__btn {
 			display: flex;
 			align-items: center;
@@ -100,15 +110,25 @@
 			gap: 1rem;
 			cursor: pointer;
 			background-color: $white;
-
+			padding: 1.8rem 1.5rem;
 			border-radius: 1rem;
 			border: 0.2rem solid #e7f4ff;
 		}
-		&__description {
+		&__description,
+		&__text {
+			width: 100%;
 			font-weight: 600;
 			color: #808080;
 			font-size: 1.4rem;
 			transition: all 0.2s ease;
+		}
+	}
+
+	@media (max-width: 540px) {
+		.r-radio-select {
+			&__btn {
+				padding: 1.2rem;
+			}
 		}
 	}
 </style>

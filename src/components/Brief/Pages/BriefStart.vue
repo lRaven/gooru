@@ -8,7 +8,6 @@
 		</h1>
 
 		<r-button
-			:size="document_width <= 540 ? 'small' : 'normal'"
 			description="ОК, обратиться!"
 			@click="this.$emit('moveToNextPage')"
 		></r-button>
@@ -28,7 +27,6 @@
 	export default {
 		name: "BriefStart",
 		components: { rButton },
-		props: { document_width: Number },
 	};
 </script>
 

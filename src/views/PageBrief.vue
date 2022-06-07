@@ -37,7 +37,6 @@
 						<brief-start
 							v-if="page_number === 1"
 							@moveToNextPage="moveToNextPage"
-							:document_width="document_width"
 						></brief-start>
 					</transition>
 
@@ -45,7 +44,6 @@
 						<brief-status
 							v-show="page_number === 2"
 							@moveToNextPage="moveToNextPage"
-							:document_width="document_width"
 						></brief-status>
 					</transition>
 
@@ -61,7 +59,6 @@
 						<brief-site-types
 							v-show="page_number === 4"
 							@moveToNextPage="moveToNextPage"
-							:document_width="document_width"
 						></brief-site-types>
 					</transition>
 
@@ -85,7 +82,6 @@
 						<brief-source
 							v-show="page_number === 7"
 							@moveToNextPage="moveToNextPage"
-							:document_width="document_width"
 						></brief-source>
 					</transition>
 
@@ -93,7 +89,6 @@
 						<brief-price
 							v-show="page_number === 8"
 							@moveToNextPage="moveToNextPage"
-							:document_width="document_width"
 						></brief-price>
 					</transition>
 

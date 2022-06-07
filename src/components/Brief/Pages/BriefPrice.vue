@@ -23,6 +23,7 @@
 					:name="rate.name"
 					:price="rate.price"
 					:checklist="rate.checklist"
+					:description="rate.description"
 				></rate-card>
 			</div>
 		</div>
@@ -96,11 +97,10 @@
 				</div>
 
 				<r-button
-					:size="document_width <= 540 ? 'small' : 'normal'"
 					:disabled="isDisabledBtn"
 					description="Да не вопрос! Держите!"
 					@click="
-						SET_USER_CONTACTS(user_data);
+						SET_USER_CONTACTS(send_user_data);
 						this.$emit('moveToNextPage');
 					"
 				></r-button>
@@ -120,7 +120,6 @@
 			RateCard,
 			rButton,
 		},
-		props: { document_width: Number },
 		watch: {
 			user_data: {
 				handler: function () {
@@ -153,6 +152,14 @@
 			}),
 			rate() {
 				return this.rates[2];
+			},
+			send_user_data() {
+				let result = {};
+
+				result.username = this.user_data.username.content;
+				result.tel = this.user_data.tel.content;
+
+				return result;
 			},
 		},
 		data: () => ({
@@ -198,6 +205,7 @@
 			}
 			&:nth-child(2) {
 				max-width: 45rem;
+				margin-left: auto;
 			}
 		}
 
@@ -295,6 +303,9 @@
 			grid-template-columns: 1fr;
 			&__col {
 				width: 100%;
+				&:nth-child(2) {
+					margin-left: 0;
+				}
 			}
 		}
 	}

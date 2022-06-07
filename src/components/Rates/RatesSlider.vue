@@ -36,6 +36,7 @@
 					:name="slide.name"
 					:price="slide.price"
 					:checklist="slide.checklist"
+					:description="slide.description"
 				></rate-card>
 			</swiper-slide>
 		</swiper>

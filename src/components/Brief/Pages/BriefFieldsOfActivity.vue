@@ -20,6 +20,11 @@
 					description="Интересненько!"
 					@click="
 						SET_FIELDS_OF_ACTIVITY(selected_fields_of_activity);
+						if (isHasSelfOption === true)
+							SET_FIELDS_OF_ACTIVITY_SELF_OPTION(
+								fields_of_activity_self_option
+							);
+						else SET_FIELDS_OF_ACTIVITY_SELF_OPTION('');
 						this.$emit('moveToNextPage');
 					"
 					v-if="document_width > 1023"
@@ -30,23 +35,28 @@
 		<div class="brief-fields-of-activity__col">
 			<div class="brief-fields-of-activity__inputs">
 				<r-checkbox
-					:size="document_width <= 540 ? 'small' : 'normal'"
 					v-for="item in fields_of_activity"
 					:key="item.id"
 					:description="item.description"
 					:value="item.id"
+					:hasInputField="item.id === 5 ? true : false"
 					v-model="item.checked"
+					v-model:text="fields_of_activity_self_option"
 				></r-checkbox>
 			</div>
 		</div>
 
 		<transition mode="out-in">
 			<r-button
-				:size="document_width <= 540 ? 'small' : 'normal'"
 				:disabled="isDisabledBtn"
 				description="Интересненько!"
 				@click="
 					SET_FIELDS_OF_ACTIVITY(selected_fields_of_activity);
+					if (isHasSelfOption === true)
+						SET_FIELDS_OF_ACTIVITY_SELF_OPTION(
+							fields_of_activity_self_option
+						);
+					else SET_FIELDS_OF_ACTIVITY_SELF_OPTION('');
 					this.$emit('moveToNextPage');
 				"
 				v-if="document_width <= 1023"
@@ -73,17 +83,28 @@
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
-			fields_of_activity: {
-				handler: function () {
-					const result = this.fields_of_activity.filter((item) => {
-						return item.checked === true;
-					});
-					this.selected_fields_of_activity = result;
-				},
-				deep: true,
+		},
+		computed: {
+			selected_fields_of_activity() {
+				let result = [];
+
+				this.fields_of_activity.forEach((el) => {
+					if (el.checked === true) result.push(el.id);
+				});
+
+				return result;
+			},
+
+			isHasSelfOption() {
+				let result;
+				const find = this.selected_fields_of_activity.find(
+					(el) => el === 5
+				);
+				find === undefined ? (result = false) : (result = true);
+
+				return result;
 			},
 		},
-
 		data: () => ({
 			isDisabledBtn: true,
 
@@ -97,9 +118,14 @@
 				},
 				{ id: 5, description: "Впишите свой вариант" },
 			],
-			selected_fields_of_activity: [],
+			fields_of_activity_self_option: "",
 		}),
-		methods: { ...mapMutations(["SET_FIELDS_OF_ACTIVITY"]) },
+		methods: {
+			...mapMutations([
+				"SET_FIELDS_OF_ACTIVITY",
+				"SET_FIELDS_OF_ACTIVITY_SELF_OPTION",
+			]),
+		},
 	};
 </script>
 

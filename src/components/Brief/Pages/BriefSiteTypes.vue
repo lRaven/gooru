@@ -15,22 +15,25 @@
 
 			<div class="brief-site-types__inputs">
 				<r-checkbox
-					:size="document_width <= 540 ? 'small' : 'normal'"
 					v-for="item in site_types"
 					:key="item.id"
 					:description="item.description"
 					:value="item.id"
+					:hasInputField="item.id === 6 ? true : false"
 					v-model="item.checked"
+					v-model:text="site_types_self_option"
 				></r-checkbox>
 			</div>
 		</div>
 
 		<r-button
-			:size="document_width <= 540 ? 'small' : 'normal'"
 			:disabled="isDisabledBtn"
 			description="Выбор сделан!"
 			@click="
 				SET_SITE_TYPES(selected_site_types);
+				isHasSelfOption === true
+					? SET_SITE_TYPES_SELF_OPTION(site_types_self_option)
+					: SET_SITE_TYPES_SELF_OPTION('');
 				this.$emit('moveToNextPage');
 			"
 		></r-button>
@@ -48,21 +51,30 @@
 			rButton,
 			rCheckbox,
 		},
-		props: { document_width: Number },
 		watch: {
 			selected_site_types() {
 				this.selected_site_types.length > 0
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
-			site_types: {
-				handler: function () {
-					const result = this.site_types.filter((item) => {
-						return item.checked === true;
-					});
-					this.selected_site_types = result;
-				},
-				deep: true,
+		},
+		computed: {
+			selected_site_types() {
+				let result = [];
+
+				this.site_types.forEach((el) => {
+					if (el.checked === true) result.push(el.id);
+				});
+
+				return result;
+			},
+
+			isHasSelfOption() {
+				let result;
+				const find = this.selected_site_types.find((el) => el === 6);
+				find === undefined ? (result = false) : (result = true);
+
+				return result;
 			},
 		},
 		data: () => ({
@@ -79,10 +91,10 @@
 				{ id: 5, description: "Социальная сеть" },
 				{ id: 6, description: "Впишите свой вариант" },
 			],
-			selected_site_types: [],
+			site_types_self_option: "",
 		}),
 		methods: {
-			...mapMutations(["SET_SITE_TYPES"]),
+			...mapMutations(["SET_SITE_TYPES", "SET_SITE_TYPES_SELF_OPTION"]),
 		},
 	};
 </script>

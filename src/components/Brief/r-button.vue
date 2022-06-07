@@ -1,5 +1,5 @@
 <template>
-	<button class="r-button" :class="[color, size]" type="button">
+	<button class="r-button" :class="color" type="button">
 		<p class="r-button__description">{{ description }}</p>
 
 		<svg
@@ -49,6 +49,8 @@
 		font-weight: 500;
 		background-color: $white;
 		border: 0.2rem solid;
+		padding: 2rem 3rem;
+		gap: 3rem;
 		transition: all 0.2s ease;
 		height: max-content;
 		min-width: max-content;
@@ -86,26 +88,22 @@
 			}
 		}
 
-		&.normal {
-			padding: 2rem 3rem;
-			gap: 3rem;
-			.r-button__description {
-				font-size: 2.4rem;
-			}
-		}
-		&.small {
-			padding: 1.5rem 2rem;
-			gap: 2rem;
-			.r-button__description {
-				font-size: 1.7rem;
-			}
-		}
-
 		&__description {
+			font-size: 2.4rem;
 		}
 		&__arrow {
 			path {
 				transition: all 0.2s ease;
+			}
+		}
+	}
+
+	@media (max-width: 540px) {
+		.r-button {
+			padding: 1.5rem 2rem;
+			gap: 2rem;
+			&__description {
+				font-size: 1.7rem;
 			}
 		}
 	}

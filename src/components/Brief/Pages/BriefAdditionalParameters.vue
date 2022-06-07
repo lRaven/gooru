@@ -13,7 +13,6 @@
 			</div>
 
 			<r-button
-				:size="document_width <= 540 ? 'small' : 'normal'"
 				:disabled="isDisabledBtn"
 				description="Ещё парочку!"
 				@click="
@@ -28,7 +27,6 @@
 			class="brief-additional-parameters__col brief-additional-parameters__inputs"
 		>
 			<r-checkbox
-				:size="document_width <= 540 ? 'small' : 'normal'"
 				v-for="item in additional_parameters"
 				:key="item.id"
 				:description="item.description"
@@ -39,7 +37,6 @@
 
 		<transition mode="out-in">
 			<r-button
-				:size="document_width <= 540 ? 'small' : 'normal'"
 				:disabled="isDisabledBtn"
 				description="Интересненько!"
 				@click="
@@ -70,14 +67,16 @@
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
-			additional_parameters: {
-				handler: function () {
-					const result = this.additional_parameters.filter((item) => {
-						return item.checked === true;
-					});
-					this.selected_additional_parameters = result;
-				},
-				deep: true,
+		},
+		computed: {
+			selected_additional_parameters() {
+				let result = [];
+
+				this.additional_parameters.forEach((el) => {
+					if (el.checked === true) result.push(el.id);
+				});
+
+				return result;
 			},
 		},
 		data: () => ({
@@ -108,7 +107,6 @@
 					description: "Скачивание до 5 изображений одного товара",
 				},
 			],
-			selected_additional_parameters: [],
 		}),
 		methods: {
 			...mapMutations(["SET_ADDITIONAL_PARAMETERS"]),

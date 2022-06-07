@@ -11,12 +11,11 @@
 			</p>
 			<div class="brief-source__inputs">
 				<r-radio-select
-					:size="document_width <= 540 ? 'small' : 'normal'"
 					radio_name="source"
 					v-for="source in sources"
 					:key="source.id"
 					:description="source.description"
-					:value="source"
+					:value="source.id"
 					:isChecked="source.status"
 					v-model="selected_source"
 				></r-radio-select>
@@ -24,11 +23,10 @@
 		</div>
 
 		<r-button
-			:size="document_width <= 540 ? 'small' : 'normal'"
 			:disabled="isDisabledBtn"
 			description="Рассчитать стоимость"
 			@click="
-				SET_SOURCE(selected_source);
+				SET_SOURCE(Array.from(String(selected_source), Number));
 				this.$emit('moveToNextPage');
 			"
 		></r-button>
@@ -46,7 +44,6 @@
 			rRadioSelect,
 			rButton,
 		},
-		props: { document_width: Number },
 		watch: {
 			selected_source() {
 				if (this.selected_source !== null) {

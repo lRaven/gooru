@@ -16,24 +16,27 @@
 
 			<div class="brief-status__inputs">
 				<r-radio-select
-					:size="document_width <= 540 ? 'small' : 'normal'"
-					radio_name="status"
 					v-for="status in client_statuses"
 					:key="status.id"
+					radio_name="status"
 					:description="status.description"
-					:value="status"
-					:isChecked="status.status"
+					:value="status.id"
+					:selected_value="selected_status"
 					v-model="selected_status"
+					:hasInputField="status.id === 5 ? true : false"
+					v-model:text="client_status_self_option"
 				></r-radio-select>
 			</div>
 		</div>
 
 		<r-button
-			:size="document_width <= 540 ? 'small' : 'normal'"
 			description="Идём дальше!"
 			:disabled="isDisabledBtn"
 			@click="
-				SET_CLIENT_STATUS(selected_status);
+				SET_CLIENT_STATUS(Array.from(String(selected_status), Number));
+				selected_status === 5
+					? SET_CLIENT_STATUS_SELF_OPTION(client_status_self_option)
+					: SET_CLIENT_STATUS_SELF_OPTION('');
 				this.$emit('moveToNextPage');
 			"
 		></r-button>
@@ -51,8 +54,6 @@
 			rButton,
 			rRadioSelect,
 		},
-		props: { document_width: Number },
-		computed: {},
 		watch: {
 			selected_status() {
 				if (this.selected_status !== null) {
@@ -61,7 +62,6 @@
 			},
 		},
 		data: () => ({
-			selected_status: null,
 			isDisabledBtn: true,
 
 			client_statuses: [
@@ -74,9 +74,14 @@
 				},
 				{ id: 5, description: "Впишите свой вариант" },
 			],
+			selected_status: null,
+			client_status_self_option: "",
 		}),
 		methods: {
-			...mapMutations(["SET_CLIENT_STATUS"]),
+			...mapMutations([
+				"SET_CLIENT_STATUS",
+				"SET_CLIENT_STATUS_SELF_OPTION",
+			]),
 		},
 	};
 </script>

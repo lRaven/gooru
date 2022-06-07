@@ -2,9 +2,10 @@
 	<div class="rate-card">
 		<h4 class="rate-card__name">{{ name }}</h4>
 		<div class="rate-card__price-wrapper">
-			<p class="rate-card__price">
+			<p class="rate-card__price" v-if="price !== null">
 				{{ price }}₽ <span class="rate-card__price-month">/мес</span>
 			</p>
+			<p v-else class="rate-card__price-individually">Индивидуально</p>
 		</div>
 		<p class="rate-card__description">
 			предоставляется возможность выбора тарифного плана
@@ -54,6 +55,7 @@
 					{ id: 4, text: "item4" },
 				],
 			},
+			description: String,
 		},
 		components: {
 			rButton,
@@ -94,6 +96,11 @@
 			&-month {
 				font-size: 1.6rem;
 				font-weight: 300;
+			}
+			&-individually {
+				font-size: 3rem;
+				font-weight: 600;
+				margin-bottom: 0.7rem;
 			}
 		}
 

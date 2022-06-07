@@ -93,7 +93,6 @@
 				</div>
 
 				<r-button
-					:size="document_width <= 540 ? 'small' : 'normal'"
 					description="Подвиньтесь!"
 					:disabled="isDisabledBtn"
 					@click="
