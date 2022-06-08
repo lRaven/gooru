@@ -149,6 +149,16 @@
 	@media (max-width: 1023px) {
 		.brief-site-types {
 			flex-direction: column;
+			gap: 3rem;
+
+			&__col {
+				gap: 3rem;
+			}
+
+			&__inputs {
+				gap: 1.5rem;
+			}
+
 			.r-button {
 				width: max-content;
 			}

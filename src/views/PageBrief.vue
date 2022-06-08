@@ -352,7 +352,7 @@
 				height: 100%;
 				max-height: calc(100vh - 6rem);
 				grid-area: 1/1;
-				padding: 0 1rem;
+				padding: 3rem 1rem;
 			}
 		}
 

@@ -130,6 +130,12 @@
 		}
 	}
 
+	@media (max-width: 1023px) {
+		.brief-source {
+			gap: 3rem;
+		}
+	}
+
 	@media (max-width: 540px) {
 		.brief-source {
 			.r-button {

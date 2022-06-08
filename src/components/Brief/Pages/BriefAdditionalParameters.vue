@@ -3,7 +3,7 @@
 		<div class="brief-additional-parameters__col">
 			<div class="brief-additional-parametes__row">
 				<h1 class="brief-additional-parameters__title">
-					ДОПОЛНИТЕЛЬНЫЕ<br />
+					ДОПОЛНИТЕЛЬ<wbr />НЫЕ<br />
 					ПАРАМЕТРЫ
 				</h1>
 				<p class="brief-additional-parameters__description">
@@ -23,9 +23,7 @@
 			></r-button>
 		</div>
 
-		<div
-			class="brief-additional-parameters__col brief-additional-parameters__inputs"
-		>
+		<div class="brief-additional-parameters__inputs">
 			<r-checkbox
 				v-for="item in additional_parameters"
 				:key="item.id"
@@ -180,6 +178,15 @@
 	@media (max-width: 1023px) {
 		.brief-additional-parameters {
 			flex-direction: column;
+			justify-content: flex-start;
+			gap: 3rem;
+			&__inputs {
+				gap: 1.5rem;
+			}
+
+			.r-button {
+				margin-top: auto;
+			}
 		}
 	}
 
@@ -187,6 +194,7 @@
 		.brief-additional-parameters {
 			.r-button {
 				margin: 0 auto;
+				margin-top: auto;
 			}
 		}
 	}

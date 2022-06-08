@@ -98,6 +98,7 @@
 				font-weight: 300;
 			}
 			&-individually {
+				//*костылирование
 				font-size: 3rem;
 				font-weight: 600;
 				margin-bottom: 0.7rem;
@@ -114,6 +115,7 @@
 
 		&__checklist {
 			margin-bottom: 2rem;
+			max-width: 28rem;
 			&-item {
 				display: flex;
 				align-items: center;
@@ -148,6 +150,11 @@
 		.rate-card {
 			padding: 2rem 1rem;
 			max-width: 26rem;
+			&__price-individually {
+				//*костылирование
+				font-size: 2.4rem;
+				margin-bottom: 1.7rem;
+			}
 		}
 	}
 </style>

@@ -32,18 +32,16 @@
 			</transition>
 		</div>
 
-		<div class="brief-fields-of-activity__col">
-			<div class="brief-fields-of-activity__inputs">
-				<r-checkbox
-					v-for="item in fields_of_activity"
-					:key="item.id"
-					:description="item.description"
-					:value="item.id"
-					:hasInputField="item.id === 5 ? true : false"
-					v-model="item.checked"
-					v-model:text="fields_of_activity_self_option"
-				></r-checkbox>
-			</div>
+		<div class="brief-fields-of-activity__inputs">
+			<r-checkbox
+				v-for="item in fields_of_activity"
+				:key="item.id"
+				:description="item.description"
+				:value="item.id"
+				:hasInputField="item.id === 5 ? true : false"
+				v-model="item.checked"
+				v-model:text="fields_of_activity_self_option"
+			></r-checkbox>
 		</div>
 
 		<transition mode="out-in">
@@ -181,16 +179,20 @@
 			display: flex;
 			flex-direction: column;
 			margin-left: auto;
-			justify-content: flex-end;
+			margin-top: auto;
 			gap: 2.5rem;
+			overflow-y: auto;
 			max-width: 66rem;
 			width: 100%;
+			height: max-content;
 		}
 	}
 
 	@media (max-width: 1023px) {
 		.brief-fields-of-activity {
 			flex-direction: column;
+			justify-content: flex-start;
+			gap: 3rem;
 
 			&__col {
 				&:first-child {
@@ -202,16 +204,20 @@
 			}
 
 			&__inputs {
-				margin-left: 0;
+				margin: 0;
+				gap: 1.5rem;
+			}
+			.r-button {
+				margin-top: auto;
 			}
 		}
 	}
 
 	@media (max-width: 540px) {
 		.brief-fields-of-activity {
-			grid-template-rows: max-content 1fr;
 			.r-button {
 				margin: 0 auto;
+				margin-top: auto;
 			}
 		}
 	}
