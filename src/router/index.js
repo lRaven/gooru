@@ -130,7 +130,6 @@ router.beforeEach((to) => {
 			return { name: 'login' }
 		} else return true
 	}
-	else return true
 })
 
 export default router

@@ -73,7 +73,7 @@
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
 
-	import { mapState, mapMutations } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
 
 	export default {
@@ -102,7 +102,6 @@
 					}, 1000);
 				}
 			},
-			sortBy() {},
 			parsers: {
 				handler: function () {
 					if (this.parsers.length === 0) {
@@ -110,6 +109,9 @@
 					}
 				},
 				deep: true,
+			},
+			"$route.query.page"() {
+				console.log("page changed");
 			},
 		},
 		data: () => ({
@@ -125,6 +127,7 @@
 				"UNSELECT_ALL_PARSERS",
 				"DELETE_SELECTED_PARSERS",
 			]),
+			...mapActions(["getParsers"]),
 			sort_list(by) {
 				console.log(by);
 			},
@@ -132,6 +135,7 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
+			this.getParsers(1);
 		},
 	};
 </script>

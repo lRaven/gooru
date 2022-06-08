@@ -27,8 +27,17 @@
 
 			NavigationPanel,
 		},
+		watch: {
+			user_auth() {
+				if (this.user_auth === false)
+					this.$router.push({ name: "login" });
+			},
+		},
 		computed: {
-			...mapState({ tab: (state) => state.navigation_panel.tab }),
+			...mapState({
+				user_auth: (state) => state.cabinet.user_auth,
+				tab: (state) => state.navigation_panel.tab,
+			}),
 		},
 	};
 </script>

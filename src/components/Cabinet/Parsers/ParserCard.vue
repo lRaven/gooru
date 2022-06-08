@@ -3,7 +3,7 @@
 		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
 		<div class="parser-card__content" ref="content">
 			<div class="parser-card__col">
-				<p class="parser-card__source">{{ parser.source }}</p>
+				<p class="parser-card__source">{{ parser.parsource }}</p>
 			</div>
 			<div class="parser-card__col">
 				<p class="parser-card__date">{{ parser.date }}</p>
