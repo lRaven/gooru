@@ -45,7 +45,7 @@
 
 				<navigation-item
 					description="Мои парсеры"
-					value="parsers"
+					value="parsources"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[1].selected"
 				>

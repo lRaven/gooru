@@ -193,7 +193,7 @@
 	import { directive } from "vue3-click-away";
 
 	export default {
-		name: "ParserContent",
+		name: "FavoriteContentItem",
 		props: {
 			parser: Object,
 		},

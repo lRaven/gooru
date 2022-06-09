@@ -2,32 +2,32 @@
 	<section class="the-parser">
 		<div class="the-parser__main">
 			<h2 class="the-parser__title">
-				Парсинг сайта {{ current_parser.source }}
+				Парсинг сайта {{ parsource.parsource }}
 			</h2>
 
 			<div class="the-parser__col">
 				<img
-					:src="current_parser.img"
+					:src="parsource.img || 'img/icon/empty-image.svg'"
 					alt=""
 					class="the-parser__image"
 				/>
 				<div class="the-parser__info">
 					<p class="the-parser__info-key">Источник</p>
 					<a
-						:href="current_parser.source"
+						:href="parsource.url"
 						target="_blank"
 						class="the-parser__info-value the-parser__info-source"
 					>
-						{{ current_parser.source }}
+						{{ parsource.parsource }}
 					</a>
 
 					<p class="the-parser__info-key">Дата</p>
 					<p class="the-parser__info-value">
-						{{ current_parser.date }}
+						{{ parsource.date || "1.1.1970" }}
 					</p>
 
 					<p class="the-parser__info-key">Статус</p>
-					<r-status :status="current_parser.status"></r-status>
+					<r-status :status="parsource.status || 0"></r-status>
 				</div>
 			</div>
 
@@ -37,14 +37,14 @@
 						<div class="the-parser__content-header-row">
 							<h4 class="the-parser__content-found">
 								Найдено
-								<span class="the-parser__content-found-number">
+								<!-- <span class="the-parser__content-found-number">
 									{{ current_parser.content.length }}
-								</span>
+								</span> -->
 							</h4>
-							<p class="the-parser__total-processed">
+							<!-- <p class="the-parser__total-processed">
 								всего обработано
 								{{ current_parser.content.length }}
-							</p>
+							</p> -->
 						</div>
 
 						<div class="the-parser__content-header-row">
@@ -66,16 +66,16 @@
 
 					<ol class="the-parser__content-list">
 						<parser-content
-							v-for="parser_result in current_parser.content"
-							:key="parser_result.id"
-							:parser="parser_result"
+							v-for="parser in parsers"
+							:key="parser.id"
+							:parser="parser"
 						></parser-content>
 					</ol>
 				</div>
 
 				<div
 					class="the-parser__content-bottom"
-					v-if="current_parser.content.length > 10"
+					v-if="parser.length > 10"
 				>
 					<r-button color="bordered" text="Показать ещё"></r-button>
 					<r-pagination></r-pagination>
@@ -83,11 +83,7 @@
 			</div>
 		</div>
 
-		<right-panel
-			:current_parser="current_parser"
-			icon="img/icon/cabinet/filter.svg"
-			title="Фильтр"
-		>
+		<right-panel icon="img/icon/cabinet/filter.svg" title="Фильтр">
 			<template v-slot>
 				<div class="the-parser__right-panel">
 					<r-spoiler title="Источник" arrowType="gray">
@@ -98,7 +94,7 @@
 								id=""
 								placeholder="Введите источник"
 								class="the-parser__right-panel__input"
-								:value="current_parser.source"
+								:value="parser.parsource"
 							/>
 						</template>
 					</r-spoiler>
@@ -167,9 +163,9 @@
 </template>
 
 <script>
-	import { mapState, mapMutations } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 	import rStatus from "@/components/Cabinet/r-status";
-	import ParserContent from "@/components/Cabinet/Parser/ParserContent";
+	import ParserContent from "@/components/Cabinet/Parsource/ParserContent";
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
 
@@ -178,7 +174,7 @@
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
 
 	export default {
-		name: "TheParser",
+		name: "TheParsource",
 		components: {
 			rStatus,
 			ParserContent,
@@ -203,21 +199,18 @@
 		},
 		computed: {
 			...mapState({
-				parsers: (state) => state.cabinet.parsers,
+				parsource: (state) => state.parsers.parsource,
+				parsers: (state) => state.parsers.parsers,
 			}),
-			current_parser() {
-				let result = this.parsers.find(
-					(parser) => parser.id === this.parser_id
-				);
-
-				return result;
-			},
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
+			...mapActions(["getParsers", "getParsource"]),
 		},
 		created() {
 			this.SET_TAB("parsers");
+			this.getParsers();
+			this.getParsource(this.parsource_id);
 		},
 	};
 </script>

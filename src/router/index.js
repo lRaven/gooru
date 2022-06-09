@@ -7,8 +7,8 @@ import PageRegistration from '@/views/PageRegistration'
 import PageCabinet from '@/views/PageCabinet'
 import TheAppeals from '@/components/Cabinet/TheAppeals'
 
-import TheParsers from '@/components/Cabinet/TheParsers'
-import TheParser from '@/components/Cabinet/TheParser'
+import TheParsources from '@/components/Cabinet/TheParsources'
+import TheParsource from '@/components/Cabinet/TheParsource'
 
 import TheFavorites from '@/components/Cabinet/TheFavorites'
 
@@ -49,18 +49,18 @@ const routes = [
 				},
 			},
 			{
-				path: 'parsers',
-				name: 'parsers',
-				component: TheParsers,
+				path: 'parsources',
+				name: 'parsources',
+				component: TheParsources,
 				meta: {
 					title: 'Мои парсеры',
 					requiresAuth: true,
 				},
 			},
 			{
-				path: 'parsers/:id',
-				name: 'parser',
-				component: TheParser,
+				path: 'parsource/:id',
+				name: 'parsource',
+				component: TheParsource,
 				meta: {
 					title: 'Парсер',
 					requiresAuth: true,

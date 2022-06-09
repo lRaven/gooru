@@ -1,32 +1,38 @@
 <template>
-	<div class="parser-card">
+	<div class="parsource-card">
 		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
-		<div class="parser-card__content" ref="content">
-			<div class="parser-card__col">
-				<p class="parser-card__source">{{ parser.parsource }}</p>
+		<div class="parsource-card__content" ref="content">
+			<div class="parsource-card__col">
+				<p class="parsource-card__source">
+					{{ parsource.data_source }}
+				</p>
 			</div>
-			<div class="parser-card__col">
-				<p class="parser-card__date">{{ parser.date }}</p>
+			<div class="parsource-card__col">
+				<p class="parsource-card__date">
+					{{ parsource.date || "1.1.1970" }}
+				</p>
 			</div>
-			<div class="parser-card__col">
-				<r-status :status="parser.status"></r-status>
+			<div class="parsource-card__col">
+				<r-status :status="parsource.status || 0"></r-status>
 			</div>
-			<div class="parser-card__col">
-				<p class="parser-card__found">{{ parser.found }}</p>
+			<div class="parsource-card__col">
+				<p class="parsource-card__found">{{ parsource.found || 0 }}</p>
 			</div>
-			<div class="parser-card__col">
-				<p class="parser-card__favorite">{{ parser.favorite }}</p>
+			<div class="parsource-card__col">
+				<p class="parsource-card__favorite">
+					{{ parsource.favorite || 0 }}
+				</p>
 			</div>
-			<div class="parser-card__col">
-				<p class="parser-card__time">{{ parser.time }}</p>
+			<div class="parsource-card__col">
+				<p class="parsource-card__time">{{ parsource.time || "0ч" }}</p>
 			</div>
-			<div class="parser-card__col">
+			<div class="parsource-card__col">
 				<r-button
 					text="Подробнее"
 					color="bordered"
 					@click="
 						this.$router.push({
-							path: `/cabinet/parsers/${parser.id}`,
+							path: `/cabinet/parsource/${parsource.id}`,
 							query: { page: 1 },
 						})
 					"
@@ -43,7 +49,7 @@
 	import { mapMutations } from "vuex";
 
 	export default {
-		name: "ParserCard",
+		name: "ParsourceCard",
 		components: {
 			rCheckbox,
 			rButton,
@@ -53,24 +59,24 @@
 			isSelected() {
 				if (this.isSelected === true) {
 					this.$refs.content.classList.add("selected");
-					this.SELECT_PARSER(this.parser.id);
+					this.SELECT_PARSOURCE(this.parsource.id);
 				} else {
 					this.$refs.content.classList.remove("selected");
-					this.UNSELECT_PARSER(this.parser.id);
+					this.UNSELECT_PARSOURCE(this.parsource.id);
 				}
 			},
-			"parser.selected"() {
-				this.isSelected = this.parser.selected;
+			"parsource.selected"() {
+				this.isSelected = this.parsource.selected;
 			},
 		},
-		props: { parser: Object },
+		props: { parsource: Object },
 		data() {
 			return {
-				isSelected: this.parser.selected || false,
+				isSelected: this.parsource.selected || false,
 			};
 		},
 		methods: {
-			...mapMutations(["SELECT_PARSER", "UNSELECT_PARSER"]),
+			...mapMutations(["SELECT_PARSOURCE", "UNSELECT_PARSOURCE"]),
 		},
 	};
 </script>
@@ -78,7 +84,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.parser-card {
+	.parsource-card {
 		display: flex;
 		align-items: center;
 		gap: 1rem;

@@ -1,9 +1,12 @@
 import { createStore } from 'vuex'
 
 import rates from '@/store/modules/rates'
+
 import brief from '@/store/modules/brief'
-import navigation_panel from '@/store/modules/navigation_panel'
+
 import cabinet from '@/store/modules/cabinet'
+import navigation_panel from '@/store/modules/navigation_panel'
+import parsers from '@/store/modules/parsers'
 
 export default createStore({
 	state: () => ({
@@ -31,5 +34,6 @@ export default createStore({
 		brief,
 		cabinet,
 		navigation_panel,
+		parsers,
 	}
 })

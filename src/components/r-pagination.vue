@@ -2,7 +2,9 @@
 	<div class="r-pagination">
 		<button
 			type="button"
-			class="r-pagination__btn r-pagination__btn-prev disabled"
+			class="r-pagination__btn r-pagination__btn-prev"
+			:class="{ disabled: current_page <= 1 }"
+			@click="changePage(current_page - 1)"
 		>
 			<svg
 				width="10"
@@ -21,17 +23,75 @@
 			Предыдущая
 		</button>
 
-		<ol class="r-pagination__items">
-			<li class="r-pagination__item current">1</li>
-			<li class="r-pagination__item">2</li>
-			<li class="r-pagination__item">3</li>
-			<li class="r-pagination__item">4</li>
-			<li class="r-pagination__item">5</li>
-			<div class="r-pagination__separator">...</div>
-			<li class="r-pagination__item">18</li>
+		<ol class="r-pagination__items" v-if="totalPages <= 7">
+			<li
+				class="r-pagination__item"
+				v-for="pagination_item in totalPages"
+				:key="pagination_item"
+			>
+				<button
+					@click="changePage(pagination_item)"
+					class="r-pagination__item-btn"
+					:class="{ current: current_page === pagination_item }"
+				>
+					{{ pagination_item }}
+				</button>
+			</li>
 		</ol>
 
-		<button type="button" class="r-pagination__btn r-pagination__btn-next">
+		<ol
+			class="r-pagination__items"
+			v-else-if="totalPages > 7 && current_page < totalPages - 6"
+		>
+			<li
+				class="r-pagination__item"
+				v-for="pagination_item in range"
+				:key="pagination_item"
+			>
+				<button
+					@click="changePage(pagination_item)"
+					class="r-pagination__item-btn"
+					:class="{ current: current_page === pagination_item }"
+				>
+					{{ pagination_item }}
+				</button>
+			</li>
+
+			<div class="r-pagination__separator">...</div>
+
+			<li class="r-pagination__item">
+				<button
+					@click="changePage(totalPages)"
+					class="r-pagination__item-btn"
+					:class="{ current: current_page === totalPages }"
+				>
+					{{ totalPages }}
+				</button>
+			</li>
+		</ol>
+
+		<ol class="r-pagination__items" v-else>
+			<li
+				class="r-pagination__item"
+				v-for="pagination_item in remaining_range"
+				:key="pagination_item"
+			>
+				<button
+					@click="changePage(pagination_item)"
+					class="r-pagination__item-btn"
+					:class="{ current: current_page === pagination_item }"
+				>
+					{{ pagination_item }}
+				</button>
+			</li>
+		</ol>
+
+		<button
+			type="button"
+			class="r-pagination__btn r-pagination__btn-next"
+			:class="{ disabled: current_page >= totalPages }"
+			@click="changePage(current_page + 1)"
+		>
 			Следующая
 			<svg
 				width="10"
@@ -53,6 +113,54 @@
 <script>
 	export default {
 		name: "rPagination",
+		props: {
+			count: {
+				value: Number,
+				default: 70,
+			},
+			items_on_page: {
+				value: Number,
+				default: 10,
+			},
+		},
+		computed: {
+			totalPages() {
+				return Math.ceil(this.count / this.items_on_page);
+			},
+
+			//* range before separator
+			range() {
+				let range = [];
+				for (
+					let index = this.current_page;
+					index < this.current_page + 5;
+					index++
+				) {
+					range.push(index);
+				}
+				return range;
+			},
+
+			//* remaining range
+			remaining_range() {
+				let range = [];
+				for (
+					let index = this.totalPages - 6;
+					index <= this.totalPages;
+					index++
+				) {
+					range.push(index);
+				}
+				return range;
+			},
+		},
+		data: () => ({ current_page: 1 }),
+		methods: {
+			changePage(page_number) {
+				this.current_page = page_number;
+				this.$emit("page_changed", page_number);
+			},
+		},
 	};
 </script>
 
@@ -76,6 +184,7 @@
 				color: $black-50;
 				transition: all 0.2s ease;
 				&.disabled {
+					pointer-events: none;
 					cursor: default;
 					opacity: 0.5;
 				}
@@ -96,24 +205,29 @@
 			display: flex;
 			align-items: center;
 			gap: 0.9rem;
+			max-width: 50rem;
+			overflow-x: auto;
 		}
 		&__item {
-			cursor: pointer;
 			list-style: none;
-			font-size: 1.2rem;
-			color: $black-50;
-			width: 2.4rem;
-			height: 2.4rem;
-			border-radius: 50%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			transition: all 0.2s ease;
-			&.current {
-				cursor: default;
-				font-weight: 700;
-				color: $black-70;
-				background-color: $primary-20;
+			&-btn {
+				cursor: pointer;
+				background-color: transparent;
+				font-size: 1.2rem;
+				color: $black-50;
+				width: 2.4rem;
+				height: 2.4rem;
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: all 0.2s ease;
+				&.current {
+					cursor: default;
+					font-weight: 700;
+					color: $black-70;
+					background-color: $primary-20;
+				}
 			}
 		}
 		&__separator {

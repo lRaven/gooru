@@ -1,66 +1,73 @@
 <template>
-	<section class="the-parsers">
-		<h2 class="the-parsers__title">Мои парсеры</h2>
-		<div class="the-parsers__control">
+	<section class="the-parsources">
+		<h2 class="the-parsources__title">Мои парсеры</h2>
+		<div class="the-parsources__control">
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="selectAll"
 				:checked="selectAll"
 			></r-checkbox>
-			<button class="the-parsers__postpone" type="button">
+			<button class="the-parsources__postpone" type="button">
 				<img src="img/icon/cabinet/postpone.svg" alt="postpone" />
-				<p class="the-parsers__postpone-description">
+				<p class="the-parsources__postpone-description">
 					Отложить выбранные
 				</p>
 			</button>
 			<button
-				class="the-parsers__remove"
+				class="the-parsources__remove"
 				type="button"
 				@click="deleteSelected = true"
 			>
 				<img src="img/icon/cabinet/remove.svg" alt="remove" />
-				<p class="the-parsers__remove-description">Удалить выбранные</p>
+				<p class="the-parsources__remove-description">
+					Удалить выбранные
+				</p>
 			</button>
 		</div>
 
-		<div class="the-parsers__content">
-			<div class="the-parsers__sort">
+		<div class="the-parsources__content">
+			<div class="the-parsources__sort">
 				<sort-button
 					description="Источник"
-					@click="sortArrayByObjectKey(parsers, 'source')"
+					@click="sortArrayByObjectKey(parsources, 'data_source')"
 				></sort-button>
 				<sort-button
 					description="Дата"
-					@click="sortArrayByObjectKey(parsers, 'date')"
+					@click="sortArrayByObjectKey(parsources, 'date')"
 				></sort-button>
 				<sort-button
 					description="Статус"
-					@click="sortArrayByObjectKey(parsers, 'status')"
+					@click="sortArrayByObjectKey(parsources, 'status')"
 				></sort-button>
 				<sort-button
 					description="Найдено"
-					@click="sortArrayByObjectKey(parsers, 'found')"
+					@click="sortArrayByObjectKey(parsources, 'found')"
 				></sort-button>
 				<sort-button
 					description="В избранном"
-					@click="sortArrayByObjectKey(parsers, 'favorite')"
+					@click="sortArrayByObjectKey(parsources, 'favorite')"
 				></sort-button>
 				<sort-button
 					description="Время парсинга"
-					@click="sortArrayByObjectKey(parsers, 'time')"
+					@click="sortArrayByObjectKey(parsources, 'time')"
 				></sort-button>
 			</div>
 
-			<div class="the-parsers__list">
-				<parser-card
-					v-for="parser in parsers"
-					:key="parser.id"
-					:parser="parser"
-				></parser-card>
+			<div class="the-parsources__list">
+				<parsource-card
+					v-for="parsource in parsources"
+					:key="parsource.id"
+					:parsource="parsource"
+				></parsource-card>
 			</div>
-			<div class="the-parsers__bottom">
+			<div class="the-parsources__bottom">
 				<r-button text="Показать ещё" color="bordered"></r-button>
-				<r-pagination></r-pagination>
+
+				<r-pagination
+					:count="count"
+					:items_on_page="parsources_in_page"
+					@page_changed="page_changed"
+				></r-pagination>
 			</div>
 		</div>
 	</section>
@@ -68,8 +75,8 @@
 
 <script>
 	import rCheckbox from "@/components/r-checkbox";
-	import SortButton from "@/components/Cabinet/Parsers/SortButton";
-	import ParserCard from "@/components/Cabinet/Parsers/ParserCard";
+	import SortButton from "@/components/Cabinet/Parsources/SortButton";
+	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
 
@@ -77,41 +84,55 @@
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
 
 	export default {
-		name: "TheParsers",
+		name: "TheParsources",
 		components: {
 			rCheckbox,
 			rButton,
 			SortButton,
-			ParserCard,
+			ParsourceCard,
 			rPagination,
 		},
 		computed: {
-			...mapState({ parsers: (state) => state.cabinet.parsers }),
+			...mapState({
+				parsources: (state) => state.parsers.parsources,
+				parsources_pagination: (state) =>
+					state.parsers.parsources_pagination,
+			}),
+			page() {
+				return this.$route.query.page;
+			},
+			count() {
+				return this.parsources_pagination.count;
+			},
 		},
 		watch: {
+			page() {
+				this.getParsources({
+					// page_number: this.page,
+					// page_size: this.parsers_in_page,
+				});
+			},
+
 			selectAll() {
 				this.selectAll === true
-					? this.SELECT_ALL_PARSERS()
-					: this.UNSELECT_ALL_PARSERS();
+					? this.SELECT_ALL_PARSOURCES()
+					: this.UNSELECT_ALL_PARSOURCES();
 			},
 			deleteSelected() {
 				if (this.deleteSelected === true) {
-					this.DELETE_SELECTED_PARSERS();
+					this.DELETE_SELECTED_PARSOURCES();
 					setTimeout(() => {
 						this.deleteSelected = false;
 					}, 1000);
 				}
 			},
-			parsers: {
+			parsources: {
 				handler: function () {
-					if (this.parsers.length === 0) {
+					if (this.parsources.length === 0) {
 						this.selectAll = false;
 					}
 				},
 				deep: true,
-			},
-			"$route.query.page"() {
-				console.log("page changed");
 			},
 		},
 		data: () => ({
@@ -119,23 +140,35 @@
 			postponeSelected: false,
 			deleteSelected: false,
 			sortBy: "none",
+
+			parsources_in_page: 10,
 		}),
 		methods: {
 			...mapMutations([
 				"SET_TAB",
-				"SELECT_ALL_PARSERS",
-				"UNSELECT_ALL_PARSERS",
-				"DELETE_SELECTED_PARSERS",
+				"SELECT_ALL_PARSOURCES",
+				"UNSELECT_ALL_PARSOURCES",
+				"DELETE_SELECTED_PARSOURCES",
 			]),
-			...mapActions(["getParsers"]),
+			...mapActions(["getParsources"]),
 			sort_list(by) {
 				console.log(by);
 			},
 			sortArrayByObjectKey,
+
+			page_changed(page_number) {
+				this.$router.push({
+					name: "parsources",
+					query: { page: page_number },
+				});
+			},
 		},
 		created() {
 			this.SET_TAB("parsers");
-			this.getParsers(1);
+			this.getParsources({
+				// page_number: this.page,
+				// page_size: this.parsers_in_page,
+			});
 		},
 	};
 </script>
@@ -143,7 +176,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-parsers {
+	.the-parsources {
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
 		padding-top: 4rem;
