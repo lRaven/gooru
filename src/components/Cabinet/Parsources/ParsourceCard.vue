@@ -13,10 +13,10 @@
 				</p>
 			</div>
 			<div class="parsource-card__col">
-				<r-status :status="parsource.status || 0"></r-status>
+				<r-status :status="1 || parsource.condition"></r-status>
 			</div>
 			<div class="parsource-card__col">
-				<p class="parsource-card__found">{{ parsource.found || 0 }}</p>
+				<p class="parsource-card__found">{{ parsource.find || 0 }}</p>
 			</div>
 			<div class="parsource-card__col">
 				<p class="parsource-card__favorite">
@@ -24,7 +24,9 @@
 				</p>
 			</div>
 			<div class="parsource-card__col">
-				<p class="parsource-card__time">{{ parsource.time || "0ч" }}</p>
+				<p class="parsource-card__time">
+					{{ parsource.lost_time || "0ч" }}
+				</p>
 			</div>
 			<div class="parsource-card__col">
 				<r-button
@@ -134,6 +136,8 @@
 
 		&__source {
 			font-weight: 500;
+			text-overflow: ellipsis;
+			overflow: hidden;
 		}
 		&__favorite {
 			font-weight: 600;

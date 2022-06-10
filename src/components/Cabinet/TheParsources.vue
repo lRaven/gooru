@@ -60,10 +60,11 @@
 					:parsource="parsource"
 				></parsource-card>
 			</div>
-			<div class="the-parsources__bottom">
+			<div class="the-parsources__bottom" v-if="number_of_pages > 1">
 				<r-button text="Показать ещё" color="bordered"></r-button>
 
 				<r-pagination
+					:start_page="page"
 					:count="count"
 					:items_on_page="parsources_in_page"
 					@page_changed="page_changed"
@@ -99,17 +100,21 @@
 					state.parsers.parsources_pagination,
 			}),
 			page() {
-				return this.$route.query.page;
+				return +this.$route.query.page;
 			},
 			count() {
 				return this.parsources_pagination.count;
+			},
+
+			number_of_pages() {
+				return Math.ceil(this.count / this.parsources_in_page);
 			},
 		},
 		watch: {
 			page() {
 				this.getParsources({
-					// page_number: this.page,
-					// page_size: this.parsers_in_page,
+					page_number: this.page,
+					page_size: this.parsources_in_page,
 				});
 			},
 
@@ -166,8 +171,8 @@
 		created() {
 			this.SET_TAB("parsers");
 			this.getParsources({
-				// page_number: this.page,
-				// page_size: this.parsers_in_page,
+				page_number: this.page,
+				page_size: this.parsources_in_page,
 			});
 		},
 	};

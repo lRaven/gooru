@@ -6,6 +6,7 @@
 
 <script>
 	import { mapState } from "vuex";
+	import { send_brief } from "@/api/send_brief";
 
 	export default {
 		name: "BriefEnd",
@@ -52,7 +53,9 @@
 				return result;
 			},
 		},
+		methods: { send_brief },
 		mounted() {
+			this.send_brief(this.brief);
 			setTimeout(() => {
 				this.$router.push("/");
 			}, 5000);

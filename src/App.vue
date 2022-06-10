@@ -8,6 +8,7 @@
 
 <script>
 	import { mapState, mapActions } from "vuex";
+	// import axios from "axios";
 
 	export default {
 		watch: {
@@ -21,10 +22,30 @@
 			},
 		},
 		computed: { ...mapState(["baseURL"]) },
-		methods: { ...mapActions(["getDocumentWidth", "getUserData"]) },
+		methods: {
+			...mapActions(["getDocumentWidth", "getUserData"]),
+
+			// //* user account activation
+			// async activation() {
+			// 	try {
+			// 		const request = await axios.post(
+			// 			`${this.baseURL}/auth/users/activation/`,
+			// 			{
+			// 				uid: "NA",
+			// 				token: "b6sziy-95c76eae1aea25ca34a7de50654d5355",
+			// 			}
+			// 		);
+			// 		console.log(request);
+			// 	} catch (err) {
+			// 		console.error(err);
+			// 	}
+			// },
+		},
 		created() {
 			this.getDocumentWidth();
 			this.getUserData();
+
+			// this.activation();
 		},
 	};
 </script>

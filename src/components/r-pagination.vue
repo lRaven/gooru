@@ -114,6 +114,10 @@
 	export default {
 		name: "rPagination",
 		props: {
+			start_page: {
+				value: Number,
+				default: 1,
+			},
 			count: {
 				value: Number,
 				default: 70,
@@ -154,7 +158,14 @@
 				return range;
 			},
 		},
-		data: () => ({ current_page: 1 }),
+		watch: {
+			start_page() {
+				this.current_page = this.start_page;
+			},
+		},
+		data() {
+			return { current_page: this.start_page };
+		},
 		methods: {
 			changePage(page_number) {
 				this.current_page = page_number;

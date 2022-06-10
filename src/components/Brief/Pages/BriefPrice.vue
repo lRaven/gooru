@@ -3,16 +3,10 @@
 		<div class="brief-price__col">
 			<div class="brief-price__row">
 				<h1 class="brief-price__title">
-					<span class="brief-price__title-bold">и о погоде...</span
-					><br />
+					<span class="brief-price__title-bold">и о погоде...</span>
+					<br />
 					то есть о стоимости)
 				</h1>
-				<p class="brief-price__text">
-					Ваш результат парсинга:<br />
-					1000 строк данных, 6 любых столбцов данных о товаре или
-					услуге (например: категория, наименование, артикул, цена,
-					характеристики, ссылки на изображения).
-				</p>
 			</div>
 
 			<div class="brief-price__row">
@@ -27,8 +21,6 @@
 				></rate-card>
 			</div>
 		</div>
-		<!-- //*TODO: расставить неразрывные пробелы -->
-		<!-- //? &#160; -->
 
 		<div class="brief-price__col">
 			<div class="brief-price__row brief-price__more-text">
@@ -151,7 +143,7 @@
 				user_contacts: (store) => store.brief.user_contacts,
 			}),
 			rate() {
-				return this.rates[2];
+				return this.rates[this.source - 1] || {};
 			},
 			send_user_data() {
 				let result = {};

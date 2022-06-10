@@ -33,7 +33,7 @@
 			description="Идём дальше!"
 			:disabled="isDisabledBtn"
 			@click="
-				SET_CLIENT_STATUS(Array.from(String(selected_status), Number));
+				SET_CLIENT_STATUS(selected_status);
 				selected_status === 5
 					? SET_CLIENT_STATUS_SELF_OPTION(client_status_self_option)
 					: SET_CLIENT_STATUS_SELF_OPTION('');

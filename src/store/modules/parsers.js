@@ -52,9 +52,9 @@ const mutations = {
 }
 
 const actions = {
-	getParsources: async context => {
+	getParsources: async (context, args) => {
 		try {
-			const request = await axios.get(`${store.state.baseURL}/parsource/`,
+			const request = await axios.get(`${store.state.baseURL}/parsource/?page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
 			if (request.status === 200) {
@@ -67,7 +67,6 @@ const actions = {
 						pagination_info[iterator] = request.data[iterator]
 					}
 				}
-				console.log(pagination_info);
 				context.commit('SET_PARSOURCES_PAGINATION', pagination_info);
 			}
 
@@ -103,7 +102,7 @@ const actions = {
 	getParsers: async (context, args) => {
 		try {
 			const request =
-				await axios.get(`${store.state.baseURL}/parser/?page=${args.page_number}&page_size=${args.page_size}`,
+				await axios.get(`${store.state.baseURL}/parser/?parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
 
 			if (request.status === 200) {

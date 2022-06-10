@@ -26,7 +26,7 @@
 			:disabled="isDisabledBtn"
 			description="Рассчитать стоимость"
 			@click="
-				SET_SOURCE(Array.from(String(selected_source), Number));
+				SET_SOURCE(selected_source);
 				this.$emit('moveToNextPage');
 			"
 		></r-button>

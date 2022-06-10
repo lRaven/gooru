@@ -8,14 +8,14 @@
 				v-if="parser.img"
 			/>
 			<div class="parser-content__col">
-				<p class="parser-content__text">{{ clipped_description }}</p>
+				<p class="parser-content__text">{{ parser.article }}</p>
 				<a
-					:href="parser.link"
+					:href="parser.url"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="parser-content__link"
 				>
-					{{ parser.link }}
+					{{ parser.url }}
 				</a>
 			</div>
 			<div class="parser-content__col">
@@ -257,7 +257,6 @@
 	import rButton from "@/components/r-button";
 	import rCheckbox from "@/components/r-checkbox";
 	import { directive } from "vue3-click-away";
-	import { clip_string } from "@/js/clip_string";
 
 	export default {
 		name: "ParserContent",
@@ -296,8 +295,6 @@
 			isShareOpen: false,
 			isDownloadOpen: false,
 
-			clipped_description: "",
-
 			comment: "",
 			downloadFormats: { excel: false, csv: false },
 
@@ -320,15 +317,9 @@
 				this.isShareOpen = false;
 				this.isDownloadOpen = false;
 			},
-			clip_string,
 		},
 
-		created() {
-			this.clipped_description = this.clip_string(
-				this.parser.description,
-				190
-			);
-		},
+		created() {},
 		directives: { ClickAway: directive },
 	};
 </script>
@@ -380,8 +371,14 @@
 			object-fit: contain;
 		}
 		&__text {
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
 			font-size: 1.2rem;
 			line-height: 1.3;
+			max-height: 3.2rem;
 			margin-bottom: 0.5rem;
 		}
 		&__link {

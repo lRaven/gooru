@@ -2,23 +2,23 @@
 	<section class="the-parser">
 		<div class="the-parser__main">
 			<h2 class="the-parser__title">
-				Парсинг сайта {{ parsource.parsource }}
+				Парсинг сайта {{ parsource.data_source }}
 			</h2>
 
 			<div class="the-parser__col">
 				<img
-					:src="parsource.img || 'img/icon/empty-image.svg'"
+					:src="parsource.screenshot || 'img/icon/empty-image.svg'"
 					alt=""
 					class="the-parser__image"
 				/>
 				<div class="the-parser__info">
 					<p class="the-parser__info-key">Источник</p>
 					<a
-						:href="parsource.url"
+						:href="parsource.data_source"
 						target="_blank"
 						class="the-parser__info-value the-parser__info-source"
 					>
-						{{ parsource.parsource }}
+						{{ parsource.data_source }}
 					</a>
 
 					<p class="the-parser__info-key">Дата</p>
@@ -27,7 +27,7 @@
 					</p>
 
 					<p class="the-parser__info-key">Статус</p>
-					<r-status :status="parsource.status || 0"></r-status>
+					<r-status :status="1 || parsource.condition"></r-status>
 				</div>
 			</div>
 
@@ -37,14 +37,14 @@
 						<div class="the-parser__content-header-row">
 							<h4 class="the-parser__content-found">
 								Найдено
-								<!-- <span class="the-parser__content-found-number">
-									{{ current_parser.content.length }}
-								</span> -->
+								<span class="the-parser__content-found-number">
+									{{ count }}
+								</span>
 							</h4>
-							<!-- <p class="the-parser__total-processed">
+							<p class="the-parser__total-processed">
 								всего обработано
-								{{ current_parser.content.length }}
-							</p> -->
+								{{ count }}
+							</p>
 						</div>
 
 						<div class="the-parser__content-header-row">
@@ -75,10 +75,15 @@
 
 				<div
 					class="the-parser__content-bottom"
-					v-if="parser.length > 10"
+					v-if="number_of_pages > 1"
 				>
 					<r-button color="bordered" text="Показать ещё"></r-button>
-					<r-pagination></r-pagination>
+					<r-pagination
+						:start_page="page"
+						:count="count"
+						:items_on_page="parsers_in_page"
+						@page_changed="page_changed"
+					></r-pagination>
 				</div>
 			</div>
 		</div>
@@ -94,7 +99,7 @@
 								id=""
 								placeholder="Введите источник"
 								class="the-parser__right-panel__input"
-								:value="parser.parsource"
+								:value="parsource.parsource"
 							/>
 						</template>
 					</r-spoiler>
@@ -185,9 +190,50 @@
 			rSpoiler,
 			TextCheckbox,
 		},
+		computed: {
+			...mapState({
+				parsource: (state) => state.parsers.parsource,
+
+				parsers: (state) => state.parsers.parsers,
+				parsers_pagination: (state) => state.parsers.parsers_pagination,
+			}),
+
+			page() {
+				return +this.$route.query.page;
+			},
+			number_of_pages() {
+				return Math.ceil(this.count / this.parsers_in_page);
+			},
+
+			parsource_name() {
+				return this.parsource.name;
+			},
+
+			count() {
+				return this.parsers_pagination.count;
+			},
+		},
+		watch: {
+			page() {
+				this.getParsers({
+					parsource_name: this.parsource_name,
+					page_number: this.page,
+					page_size: this.parsers_in_page,
+				});
+			},
+
+			parsource() {
+				this.getParsers({
+					parsource_name: this.parsource_name,
+					page_number: this.page,
+					page_size: this.parsers_in_page,
+				});
+			},
+		},
 		data() {
 			return {
-				parser_id: Number(this.$route.params.id),
+				parsource_id: +this.$route.params.id,
+				parsers_in_page: 10,
 
 				texts: false,
 				images: false,
@@ -197,19 +243,20 @@
 				file: "",
 			};
 		},
-		computed: {
-			...mapState({
-				parsource: (state) => state.parsers.parsource,
-				parsers: (state) => state.parsers.parsers,
-			}),
-		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getParsers", "getParsource"]),
+
+			page_changed(page_number) {
+				this.$router.push({
+					name: "parsource",
+					query: { page: page_number },
+				});
+			},
 		},
 		created() {
 			this.SET_TAB("parsers");
-			this.getParsers();
+
 			this.getParsource(this.parsource_id);
 		},
 	};
