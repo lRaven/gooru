@@ -76,15 +76,16 @@
 
 			<div class="the-favorites__list">
 				<favorite-card
-					v-for="parser in parsers"
-					:key="parser.id"
-					:parser="parser"
+					v-for="favorite in favorites"
+					:key="favorite.id"
+					:parsource="favorite"
 				></favorite-card>
 			</div>
-			<div class="the-favorites__bottom">
+
+			<!-- <div class="the-favorites__bottom">
 				<r-button color="bordered" text="Показать ещё"></r-button>
 				<r-pagination></r-pagination>
-			</div>
+			</div> -->
 		</div>
 
 		<right-panel
@@ -148,7 +149,7 @@
 	import rDropdown from "@/components/Cabinet/r-dropdown";
 	import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
 	import FavoriteCard from "@/components/Cabinet/Favorites/FavoriteCard";
-	import rPagination from "@/components/r-pagination";
+	// import rPagination from "@/components/r-pagination";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
 	import rSpoiler from "@/components/r-spoiler";
@@ -160,7 +161,7 @@
 			rDropdown,
 			rDateRangePicker,
 			FavoriteCard,
-			rPagination,
+			// rPagination,
 
 			RightPanel,
 			rSpoiler,
@@ -168,9 +169,7 @@
 			rButton,
 		},
 		computed: {
-			...mapState({
-				parsers: (state) => state.cabinet.parsers,
-			}),
+			...mapState({ favorites: (state) => state.favorites.favorites }),
 		},
 		data: () => ({
 			isSortPanelVisible: false,

@@ -30,7 +30,7 @@ const actions = {
 				console.log("User is authorized");
 				context.commit('SET_USER_DATA', request.data);
 				context.commit('SET_USER_AUTH', true);
-				console.log("User data is saved");
+				console.log("User data saved");
 			}
 
 		}

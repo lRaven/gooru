@@ -7,7 +7,7 @@
 			</router-link>
 		</div>
 
-		<div class="the-header__col">
+		<div class="the-header__col" v-if="!isClear">
 			<r-button text="+ Новый парсинг"></r-button>
 
 			<div class="the-header__account" v-click-away="closeProfile">
@@ -121,6 +121,12 @@
 	export default {
 		name: "TheHeader",
 		components: { rButton },
+		props: {
+			isClear: {
+				value: Boolean,
+				default: false,
+			},
+		},
 		computed: {
 			...mapState({
 				username: (state) => state.cabinet.user.username,
@@ -140,6 +146,7 @@
 			},
 			logout,
 		},
+
 		directives: { ClickAway: directive },
 	};
 </script>
@@ -159,6 +166,7 @@
 		padding-bottom: 1rem;
 		box-shadow: $shadow;
 		background-color: $white;
+		min-height: 8rem;
 		z-index: 3;
 		&__col {
 			display: flex;

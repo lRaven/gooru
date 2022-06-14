@@ -3,11 +3,11 @@
 		<div class="favorite-card__header">
 			<div class="favorite-card__header-col">
 				<r-checkbox v-model="isAllSelected"></r-checkbox>
-				<h4 class="favorite-card__source">{{ parser.source }}</h4>
+				<h4 class="favorite-card__source">{{ parsource.source }}</h4>
 				<p class="favorite-card__favorite">
 					{{ 5 }}/{{ 862 }} в избранном
 				</p>
-				<p class="favorite-card__date">{{ parser.date }}</p>
+				<p class="favorite-card__date">{{ parsource.date }}</p>
 			</div>
 			<div class="favorite-card__header-col">
 				<r-button
@@ -15,7 +15,7 @@
 					text="Подробнее"
 					@click="
 						this.$router.push({
-							path: `/cabinet/parsers/${parser.id}`,
+							path: `/cabinet/parsource/${parsource.id}`,
 							query: { page: 1 },
 						})
 					"
@@ -50,9 +50,9 @@
 
 		<div class="favorite-card__list" v-show="isContentVisible">
 			<favorite-content-item
-				v-for="parser_content in parser.content"
-				:key="parser_content.id"
-				:parser="parser_content"
+				v-for="parser in parsource.parsers"
+				:key="parser.id"
+				:parser="parser"
 			></favorite-content-item>
 		</div>
 	</div>
@@ -72,144 +72,7 @@
 			rButton,
 			FavoriteContentItem,
 		},
-		props: {
-			parser: {
-				value: Object,
-				default: {
-					id: 1,
-					source: "avito.ru",
-					img: "img/requests/request-img1.jpg",
-					date: "03.15.2021",
-					status: 58,
-					found: 600,
-					favorite: 15,
-					time: "1ч 45мин",
-					content: [
-						{
-							id: 1,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 2,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 3,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 4,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-
-						{
-							id: 5,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 6,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 7,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 8,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 9,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 10,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 11,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 12,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 13,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 14,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 15,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 16,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 17,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 18,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 19,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-						{
-							id: 20,
-							text: "Средство или роскошь. Что будет с автомобильным рынком в России. Эксперт обозначил новые максимумы и минимумы для рубля",
-							link: "https://ria.ru/20220511/rubl-1787810835.html",
-							favorite: true,
-						},
-					],
-				},
-			},
-		},
+		props: { parsource: Object },
 		data: () => ({
 			isAllSelected: false,
 			isContentVisible: false,

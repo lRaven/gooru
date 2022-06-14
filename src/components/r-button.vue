@@ -70,6 +70,17 @@
 				color: $primary;
 			}
 		}
+
+		&:disabled {
+			cursor: default;
+			background-color: #eceff7;
+			color: #808080;
+			&:hover {
+				cursor: default;
+				background-color: #eceff7;
+				color: #808080;
+			}
+		}
 	}
 
 	@media (max-width: 540px) {

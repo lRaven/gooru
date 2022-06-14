@@ -3,15 +3,9 @@
 		<div class="favorite-content-item__row">
 			<div class="favorite-content-item__col">
 				<r-checkbox></r-checkbox>
-				<p class="favorite-content-item__text">{{ parser.text }}</p>
-				<a
-					:href="parser.link"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="favorite-content-item__link"
-				>
-					{{ parser.link }}
-				</a>
+
+				<p class="favorite-content-item__title">{{ parser.title }}</p>
+				<p class="favorite-content-item__text">{{ parser.article }}</p>
 			</div>
 
 			<div class="favorite-content-item__col">
@@ -192,11 +186,12 @@
 	import rCheckbox from "@/components/r-checkbox";
 	import { directive } from "vue3-click-away";
 
+	import { mapState } from "vuex";
+
 	export default {
 		name: "FavoriteContentItem",
-		props: {
-			parser: Object,
-		},
+		components: { rButton, rCheckbox },
+		props: { parser: Object },
 		watch: {
 			isShareOpen() {
 				if (this.isShareOpen === true) {
@@ -213,6 +208,23 @@
 				} else {
 					this.$refs.download.classList.remove("selected");
 				}
+			},
+		},
+		computed: {
+			...mapState({ favorites: (state) => state.favorites.favorites }),
+
+			isFavorited() {
+				let result;
+
+				this.favorites.forEach((parsource) => {
+					const find = parsource.parsers.find(
+						(el) => this.parser.id === el.id
+					);
+
+					find === undefined ? (result = false) : (result = true);
+				});
+
+				return result;
 			},
 		},
 		data: () => ({
@@ -234,7 +246,6 @@
 				hashtags: "",
 			},
 		}),
-		components: { rButton, rCheckbox },
 		methods: {
 			hideAllExtras() {
 				this.isMessagesOpen = false;
@@ -242,7 +253,7 @@
 				this.isDownloadOpen = false;
 			},
 		},
-		mounted() {},
+
 		directives: { ClickAway: directive },
 	};
 </script>
@@ -301,15 +312,22 @@
 			max-height: 5rem;
 			object-fit: contain;
 		}
+
+		&__title {
+			font-size: 1.4rem;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+		}
 		&__text {
 			font-size: 1.2rem;
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
-		}
-		&__link {
-			text-decoration: underline;
-			color: $primary;
-			font-size: 1rem;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
 		}
 
 		&__icon {
