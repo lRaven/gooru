@@ -93,14 +93,17 @@
 				<div class="the-parser__right-panel">
 					<r-spoiler title="Источник" arrowType="gray">
 						<template v-slot>
-							<input
-								type="text"
-								name=""
-								id=""
-								placeholder="Введите источник"
-								class="the-parser__right-panel__input"
-								:value="parsource.parsource"
-							/>
+							<router-link
+								:to="{
+									path: `/cabinet/parsource/${parsource.id}`,
+									query: { page: 1 },
+								}"
+								v-for="parsource in all_parsources"
+								:key="parsource.id"
+								class="the-parser__right-panel-source"
+							>
+								{{ parsource.name }}
+							</router-link>
 						</template>
 					</r-spoiler>
 
@@ -137,7 +140,7 @@
 						</template>
 					</r-spoiler>
 
-					<label class="the-parser__right-panel__file">
+					<!-- <label class="the-parser__right-panel__file">
 						<input
 							type="file"
 							name=""
@@ -158,7 +161,7 @@
 								{{ file || "Добавить фото" }}
 							</p>
 						</span>
-					</label>
+					</label> -->
 
 					<r-button text="Применить"></r-button>
 				</div>
@@ -193,11 +196,15 @@
 		computed: {
 			...mapState({
 				parsource: (state) => state.parsers.parsource,
+				all_parsources: (state) => state.parsers.all_parsources,
 
 				parsers: (state) => state.parsers.parsers,
 				parsers_pagination: (state) => state.parsers.parsers_pagination,
 			}),
 
+			parsource_id() {
+				return +this.$route.params.id;
+			},
 			page() {
 				return +this.$route.query.page;
 			},
@@ -221,6 +228,14 @@
 					page_size: this.parsers_in_page,
 				});
 			},
+			parsource_id() {
+				this.getParsource(this.parsource_id);
+				this.getParsers({
+					parsource_name: this.parsource_name,
+					page_number: this.page,
+					page_size: this.parsers_in_page,
+				});
+			},
 
 			parsource() {
 				this.getParsers({
@@ -232,7 +247,6 @@
 		},
 		data() {
 			return {
-				parsource_id: +this.$route.params.id,
 				parsers_in_page: 10,
 
 				texts: false,
@@ -245,7 +259,7 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getParsers", "getParsource"]),
+			...mapActions(["getParsers", "getParsource", "getAllParsources"]),
 
 			page_changed(page_number) {
 				this.$router.push({
@@ -258,6 +272,8 @@
 			this.SET_TAB("parsers");
 
 			this.getParsource(this.parsource_id);
+
+			this.getAllParsources();
 		},
 	};
 </script>
@@ -381,6 +397,14 @@
 		}
 
 		&__right-panel {
+			&-source {
+				display: block;
+				padding: 1rem 0;
+				color: $black;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
 			&__input {
 				background-color: transparent;
 				font-size: 1.6rem;

@@ -3,8 +3,10 @@ import axios from 'axios';
 import store from '@/store';
 
 const state = () => ({
+	all_parsources: [],
 	parsources: [],
 	parsources_pagination: {},
+
 	parsource: {},
 
 	parsers: [],
@@ -14,8 +16,10 @@ const state = () => ({
 const getters = {}
 
 const mutations = {
+	SET_ALL_PARSOURCES: (state, payload) => state.all_parsources = payload,
 	SET_PARSOURCES: (state, payload) => state.parsources = payload,
 	SET_PARSOURCES_PAGINATION: (state, payload) => state.parsources_pagination = payload,
+
 	SET_PARSOURCE: (state, payload) => state.parsource = payload,
 
 
@@ -68,6 +72,26 @@ const actions = {
 					}
 				}
 				context.commit('SET_PARSOURCES_PAGINATION', pagination_info);
+			}
+
+		}
+		catch (err) {
+			console.error(`
+∧＿∧
+(｡･ω･｡)つ━☆・*。
+⊂\\  /   ・゜+.
+しーＪ\\  °。+  Something went wrong.`
+			);
+		}
+	},
+
+	getAllParsources: async (context) => {
+		try {
+			const request = await axios.get(`${store.state.baseURL}/parsource/`,
+				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
+
+			if (request.status === 200) {
+				context.commit('SET_ALL_PARSOURCES', request.data.results);
 			}
 
 		}

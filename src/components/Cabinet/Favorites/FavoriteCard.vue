@@ -5,7 +5,7 @@
 				<r-checkbox v-model="isAllSelected"></r-checkbox>
 				<h4 class="favorite-card__source">{{ parsource.source }}</h4>
 				<p class="favorite-card__favorite">
-					{{ 5 }}/{{ 862 }} в избранном
+					{{ parsource.parsers.length || 0 }}/{{ "n" }} в избранном
 				</p>
 				<p class="favorite-card__date">{{ parsource.date }}</p>
 			</div>
