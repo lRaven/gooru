@@ -21,13 +21,25 @@
 				</router-link>
 
 				<p class="page-registration__form-input-description">Логин</p>
-				<r-input v-model="username" input_type="text"></r-input>
+				<r-input
+					v-model="username"
+					:value="username"
+					input_type="text"
+				></r-input>
 
 				<p class="page-registration__form-input-description">E-mail</p>
-				<r-input v-model="email" input_type="email"></r-input>
+				<r-input
+					v-model="email"
+					:value="email"
+					input_type="email"
+				></r-input>
 
 				<p class="page-registration__form-input-description">Пароль</p>
-				<r-input v-model="password" input_type="password"></r-input>
+				<r-input
+					v-model="password"
+					:value="password"
+					input_type="password"
+				></r-input>
 
 				<r-button
 					:disabled="isDisabledBtn"
