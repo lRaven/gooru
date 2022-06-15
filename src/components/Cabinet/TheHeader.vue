@@ -44,7 +44,10 @@
 					>
 						<li
 							class="the-header__account-menu-item"
-							@click="this.$router.push('/cabinet/profile')"
+							@click="
+								this.$router.push({ name: 'profile' });
+								closeProfile();
+							"
 						>
 							<svg
 								width="32"
@@ -81,7 +84,10 @@
 
 						<li
 							class="the-header__account-menu-item"
-							@click="logout"
+							@click="
+								logout();
+								closeProfile();
+							"
 						>
 							<svg
 								width="30"

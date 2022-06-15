@@ -202,6 +202,7 @@
 		}
 		&__title {
 			margin-bottom: 1.5rem;
+			font-weight: 400;
 		}
 
 		&__sort-panel {

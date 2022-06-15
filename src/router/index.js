@@ -5,12 +5,14 @@ import PageLogin from '@/views/PageLogin'
 import PageRegistration from '@/views/PageRegistration'
 
 import PageCabinet from '@/views/PageCabinet'
-import TheAppeals from '@/components/Cabinet/TheAppeals'
+import TheAppeals from '@/components/Cabinet/Pages/TheAppeals'
 
-import TheParsources from '@/components/Cabinet/TheParsources'
-import TheParsource from '@/components/Cabinet/TheParsource'
+import TheParsources from '@/components/Cabinet/Pages/TheParsources'
+import TheParsource from '@/components/Cabinet/Pages/TheParsource'
 
-import TheFavorites from '@/components/Cabinet/TheFavorites'
+import TheFavorites from '@/components/Cabinet/Pages/TheFavorites'
+
+import TheProfile from '@/components/Cabinet/Pages/TheProfile'
 
 import PageBrief from '@/views/PageBrief'
 
@@ -72,6 +74,15 @@ const routes = [
 				component: TheFavorites,
 				meta: {
 					title: 'Избранное',
+					requiresAuth: true,
+				},
+			},
+			{
+				path: 'profile',
+				name: 'profile',
+				component: TheProfile,
+				meta: {
+					title: 'Мой профиль',
 					requiresAuth: true,
 				},
 			},

@@ -4,6 +4,7 @@
 			<ul class="navigation-panel__list">
 				<navigation-item
 					description="Обращения"
+					:pagination="true"
 					value="appeals"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[0].selected"
@@ -45,6 +46,7 @@
 
 				<navigation-item
 					description="Мои парсеры"
+					:pagination="true"
 					value="parsources"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[1].selected"
@@ -91,6 +93,7 @@
 
 				<navigation-item
 					description="Избранное"
+					:pagination="false"
 					value="favorites"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[2].selected"
@@ -123,6 +126,7 @@
 				<navigation-item
 					description="Мой профиль"
 					value="profile"
+					:pagination="false"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[3].selected"
 				>
@@ -190,9 +194,18 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			set_tab(tab) {
+			set_tab(tab, pagination) {
 				this.SET_TAB(tab);
-				this.$router.push({ name: tab, query: { page: 1 } });
+				switch (pagination) {
+					case true: {
+						this.$router.push({ name: tab, query: { page: 1 } });
+						break;
+					}
+					case false: {
+						this.$router.push({ name: tab });
+						break;
+					}
+				}
 			},
 			paint_tab() {
 				this.tabs.forEach((tab) => {

@@ -2,15 +2,11 @@ import cookie from 'vue-cookies';
 import axios from 'axios';
 import store from '@/store';
 
-const state = () => ({
-	favorites: [],
-})
+const state = () => ({ favorites: [], })
 
 const getters = {}
 
-const mutations = {
-	SET_FAVORITES: (state, payload) => state.favorites = payload,
-}
+const mutations = { SET_FAVORITES: (state, payload) => state.favorites = payload, }
 
 const actions = {
 	getFavoriteParsers: async context => {

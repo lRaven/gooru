@@ -43,6 +43,13 @@
 				background-color: $white;
 				color: $primary;
 			}
+			&:disabled {
+				opacity: 0.5;
+				&:hover {
+					background-color: $primary;
+					color: $white;
+				}
+			}
 		}
 		&.white {
 			background-color: $white;
@@ -68,17 +75,6 @@
 			&:hover {
 				outline-color: $primary;
 				color: $primary;
-			}
-		}
-
-		&:disabled {
-			cursor: default;
-			background-color: #eceff7;
-			color: #808080;
-			&:hover {
-				cursor: default;
-				background-color: #eceff7;
-				color: #808080;
 			}
 		}
 	}

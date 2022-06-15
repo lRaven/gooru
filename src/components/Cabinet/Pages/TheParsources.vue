@@ -112,10 +112,12 @@
 		},
 		watch: {
 			page() {
-				this.getParsources({
-					page_number: this.page,
-					page_size: this.parsources_in_page,
-				});
+				if (this.$route.path === this.path) {
+					this.getParsources({
+						page_number: this.page,
+						page_size: this.parsources_in_page,
+					});
+				}
 			},
 
 			selectAll() {
@@ -140,14 +142,18 @@
 				deep: true,
 			},
 		},
-		data: () => ({
-			selectAll: false,
-			postponeSelected: false,
-			deleteSelected: false,
-			sortBy: "none",
+		data() {
+			return {
+				path: this.$route.path,
 
-			parsources_in_page: 10,
-		}),
+				selectAll: false,
+				postponeSelected: false,
+				deleteSelected: false,
+				sortBy: "none",
+
+				parsources_in_page: 10,
+			};
+		},
 		methods: {
 			...mapMutations([
 				"SET_TAB",

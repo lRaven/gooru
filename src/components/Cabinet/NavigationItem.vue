@@ -7,8 +7,8 @@
 				id=""
 				class="navigation-item__radio-real"
 				:checked="isDefaultChecked"
-				@change="this.$emit('set_tab', value)"
-				@click="this.$emit('set_tab', value)"
+				@change="this.$emit('set_tab', value, pagination)"
+				@click="this.$emit('set_tab', value, pagination)"
 			/>
 			<div class="navigation-item__radio-fake" ref="content">
 				<div class="navigation-item__col">
@@ -41,6 +41,10 @@
 				default: false,
 			},
 			value: String,
+			pagination: {
+				value: Boolean,
+				default: false,
+			},
 			counter: {
 				value: Number,
 				default: 0,
