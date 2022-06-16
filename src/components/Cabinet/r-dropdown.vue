@@ -32,9 +32,11 @@
 					class="r-dropdown__list-item"
 					v-for="item in list"
 					:key="item.id"
-					@click="selectValue(item.id, item.description)"
+					@click="
+						selectValue(item.id, item.description || item.title)
+					"
 				>
-					{{ item.description }}
+					{{ item.description || item.title }}
 				</li>
 			</ul>
 		</transition>
@@ -76,6 +78,7 @@
 				this.$refs.arrow.classList.remove("open");
 			},
 		},
+
 		directives: { ClickAway: directive },
 	};
 </script>
@@ -101,9 +104,14 @@
 		&__selected {
 			font-size: 1.6rem;
 			font-weight: 500;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
 		}
 		&__arrow {
 			transition: all 0.2s ease;
+			width: 1rem;
+			min-width: 1rem;
 			&.open {
 				transform: rotate(180deg);
 			}
@@ -118,6 +126,8 @@
 			border: 0.1rem solid rgba(50, 50, 50, 0.1);
 			border-radius: 0.6rem;
 			z-index: 2;
+			max-height: calc(14.6rem);
+			overflow-y: auto;
 			&-item {
 				padding: 1rem;
 				cursor: pointer;

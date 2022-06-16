@@ -3,31 +3,30 @@ import axios from 'axios';
 import store from '@/store';
 
 const state = () => ({
-	all_parsources: [],
 	parsources: [],
 	parsources_pagination: {},
-
+	all_parsources: [],
 	parsource: {},
 
 	parsers: [],
 	parsers_pagination: {},
+	all_parsers: [],
 })
 
 const getters = {}
 
 const mutations = {
-	SET_ALL_PARSOURCES: (state, payload) => state.all_parsources = payload,
 	SET_PARSOURCES: (state, payload) => state.parsources = payload,
 	SET_PARSOURCES_PAGINATION: (state, payload) => state.parsources_pagination = payload,
-
+	SET_ALL_PARSOURCES: (state, payload) => state.all_parsources = payload,
 	SET_PARSOURCE: (state, payload) => state.parsource = payload,
 
 
-	SELECT_ALL_PARSOURCES: (state) => {
+	SELECT_ALL_PARSOURCES: state => {
 		state.parsources.forEach(parsource => parsource.selected = true);
 	},
 
-	UNSELECT_ALL_PARSOURCES: (state) => {
+	UNSELECT_ALL_PARSOURCES: state => {
 		state.parsources.forEach(parsource => parsource.selected = false);
 	},
 
@@ -42,7 +41,7 @@ const mutations = {
 		})
 	},
 
-	DELETE_SELECTED_PARSOURCES: (state) => {
+	DELETE_SELECTED_PARSOURCES: state => {
 		for (let index = 0; index < state.parsources.length; index++) {
 			if (state.parsources[index].selected === true) {
 				state.parsources.splice(index, 1);
@@ -53,9 +52,11 @@ const mutations = {
 
 	SET_PARSERS: (state, payload) => state.parsers = payload,
 	SET_PARSERS_PAGINATION: (state, payload) => state.parsers_pagination = payload,
+	SET_ALL_PARSERS: (state, payload) => state.all_parsers = payload,
 }
 
 const actions = {
+	//*get parsources with pagination
 	getParsources: async (context, args) => {
 		try {
 			const request = await axios.get(`${store.state.baseURL}/parsource/?page=${args.page_number}&page_size=${args.page_size}`,
@@ -85,7 +86,7 @@ const actions = {
 		}
 	},
 
-	getAllParsources: async (context) => {
+	getAllParsources: async context => {
 		try {
 			const request = await axios.get(`${store.state.baseURL}/parsource/`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
@@ -123,6 +124,7 @@ const actions = {
 		}
 	},
 
+	//* get parsers with pagination
 	getParsers: async (context, args) => {
 		try {
 			const request =
@@ -151,6 +153,29 @@ const actions = {
 			);
 		}
 	},
+	getAllParsers: async context => {
+		try {
+			context;
+			const request =
+				await axios.get(`${store.state.baseURL}/parser/?page_size=999`,
+					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
+
+			if (request.status === 200) {
+				context.commit('SET_ALL_PARSERS', request.data.results);
+				console.log('List of parsers is saved');
+			}
+
+		}
+
+		catch (err) {
+			console.error(`
+∧＿∧
+(｡･ω･｡)つ━☆・*。
+⊂\\  /   ・゜+.
+しーＪ\\  °。+  Something went wrong.`
+			);
+		}
+	}
 }
 
 export default {

@@ -2,7 +2,6 @@ import axios from 'axios';
 import store from '@/store';
 import cookie from 'vue-cookies';
 
-
 async function change_password(new_password, current_password) {
 	try {
 		const request = await axios.post(`${store.state.baseURL}/auth/users/set_password/`, {

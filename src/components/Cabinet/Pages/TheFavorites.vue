@@ -191,11 +191,11 @@
 	.the-favorites {
 		display: grid;
 		grid-template-columns: 1fr max-content;
-		padding-right: 0;
+		padding: 0;
 		gap: 3rem;
 
 		&__main {
-			padding: 4rem 0.5rem;
+			padding: 4rem 0 4rem 4rem;
 			width: 100%;
 			height: calc(100vh - 8rem);
 			overflow-y: auto;

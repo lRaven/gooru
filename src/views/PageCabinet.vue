@@ -58,9 +58,6 @@
 			margin-top: 8rem;
 			background-color: #f1f7ff;
 			overflow-y: auto;
-			section {
-				// overflow: visible;
-			}
 		}
 	}
 </style>

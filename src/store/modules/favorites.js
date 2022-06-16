@@ -63,7 +63,7 @@ const actions = {
 				})
 
 				context.commit('SET_FAVORITES', favorites);
-				console.log('Favorite list saved');
+				console.log('Favorites list saved');
 			}
 		}
 		catch (err) {

@@ -5,14 +5,17 @@
 		<div class="the-profile__main">
 			<form class="the-profile__form the-profile__change-personal-data">
 				<h4 class="the-profile__form-title">Личные данные</h4>
-				<button
-					type="button"
-					class="the-profile__form-edit"
-					@click="isPersonalDataFormDisabled = false"
-				>
-					<img src="img/icon/cabinet/edit.svg" alt="" />
-					Редактировать
-				</button>
+				<transition mode="out-in">
+					<button
+						type="button"
+						class="the-profile__form-edit"
+						@click="isPersonalDataFormDisabled = false"
+						v-if="isPersonalDataFormDisabled === true"
+					>
+						<img src="img/icon/cabinet/edit.svg" alt="" />
+						Редактировать
+					</button>
+				</transition>
 
 				<fieldset class="the-profile__form-body">
 					<p class="the-profile__form-input-description">Имя</p>
@@ -68,14 +71,17 @@
 
 			<form class="the-profile__form the-profile__change-password">
 				<h4 class="the-profile__form-title">Пароль</h4>
-				<button
-					type="button"
-					class="the-profile__form-edit"
-					@click="isPasswordsFormDisabled = false"
-				>
-					<img src="img/icon/cabinet/edit.svg" alt="" />
-					Редактировать
-				</button>
+				<transition mode="out-in">
+					<button
+						type="button"
+						class="the-profile__form-edit"
+						@click="isPasswordsFormDisabled = false"
+						v-if="isPasswordsFormDisabled === true"
+					>
+						<img src="img/icon/cabinet/edit.svg" alt="" />
+						Редактировать
+					</button>
+				</transition>
 
 				<fieldset class="the-profile__form-body">
 					<p class="the-profile__form-input-description">
@@ -258,6 +264,8 @@
 					console.log("Send avatar");
 				}
 
+				this.isPersonalDataFormDisabled = true;
+				this.isPasswordsFormDisabled = true;
 				this.isDisabledBtn = true;
 			},
 		},

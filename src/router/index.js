@@ -6,6 +6,7 @@ import PageRegistration from '@/views/PageRegistration'
 
 import PageCabinet from '@/views/PageCabinet'
 import TheAppeals from '@/components/Cabinet/Pages/TheAppeals'
+import TheAppeal from '@/components/Cabinet/Pages/TheAppeal'
 
 import TheParsources from '@/components/Cabinet/Pages/TheParsources'
 import TheParsource from '@/components/Cabinet/Pages/TheParsource'
@@ -39,7 +40,7 @@ const routes = [
 		meta: {
 			title: 'Личный кабинет',
 		},
-		redirect: { name: 'appeals' },
+		redirect: { name: 'appeals', query: { page: 1 } },
 		children: [
 			{
 				path: 'appeals',
@@ -50,6 +51,16 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			{
+				path: 'appeal',
+				name: 'appeal',
+				component: TheAppeal,
+				meta: {
+					title: 'Обращение',
+					requiresAuth: true,
+				},
+			},
+
 			{
 				path: 'parsources',
 				name: 'parsources',

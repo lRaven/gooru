@@ -3,40 +3,42 @@
 		<the-header :isClear="true"></the-header>
 
 		<main class="page-login__main main">
-			<form @submit.prevent="login" class="page-login__form center">
-				<router-link
-					:to="{ name: 'login' }"
-					class="page-login__form-link selected"
-				>
-					Вход
-				</router-link>
-				<router-link
-					:to="{ name: 'registration' }"
-					class="page-login__form-link"
-				>
-					Регистрация
-				</router-link>
+			<section class="page-login__section">
+				<form @submit.prevent="login" class="page-login__form center">
+					<router-link
+						:to="{ name: 'login' }"
+						class="page-login__form-link selected"
+					>
+						Вход
+					</router-link>
+					<router-link
+						:to="{ name: 'registration' }"
+						class="page-login__form-link"
+					>
+						Регистрация
+					</router-link>
 
-				<p class="page-login__form-input-description">Логин</p>
-				<r-input
-					v-model="username"
-					:value="username"
-					input_type="text"
-				></r-input>
+					<p class="page-login__form-input-description">Логин</p>
+					<r-input
+						v-model="username"
+						:value="username"
+						input_type="text"
+					></r-input>
 
-				<p class="page-login__form-input-description">Пароль</p>
-				<r-input
-					v-model="password"
-					:value="password"
-					input_type="password"
-				></r-input>
+					<p class="page-login__form-input-description">Пароль</p>
+					<r-input
+						v-model="password"
+						:value="password"
+						input_type="password"
+					></r-input>
 
-				<button class="page-login__form-forgot" type="button">
-					Забыли пароль
-				</button>
+					<button class="page-login__form-forgot" type="button">
+						Забыли пароль
+					</button>
 
-				<r-button :disabled="isDisabledBtn" text="Войти"></r-button>
-			</form>
+					<r-button :disabled="isDisabledBtn" text="Войти"></r-button>
+				</form>
+			</section>
 		</main>
 	</div>
 </template>

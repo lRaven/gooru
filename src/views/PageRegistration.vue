@@ -3,61 +3,76 @@
 		<the-header :isClear="true"></the-header>
 
 		<main class="page-registration__main main">
-			<form
-				@submit.prevent="registration"
-				class="page-registration__form center"
-			>
-				<router-link
-					:to="{ name: 'login' }"
-					class="page-registration__form-link"
+			<section class="page-registration__section">
+				<form
+					@submit.prevent="registration"
+					class="page-registration__form center"
 				>
-					Вход
-				</router-link>
-				<router-link
-					:to="{ name: 'registration' }"
-					class="page-registration__form-link selected"
-				>
-					Регистрация
-				</router-link>
+					<router-link
+						:to="{ name: 'login' }"
+						class="page-registration__form-link"
+					>
+						Вход
+					</router-link>
+					<router-link
+						:to="{ name: 'registration' }"
+						class="page-registration__form-link selected"
+					>
+						Регистрация
+					</router-link>
 
-				<p class="page-registration__form-input-description">Логин</p>
-				<r-input
-					v-model="username"
-					:value="username"
-					input_type="text"
-				></r-input>
+					<p class="page-registration__form-input-description">
+						Логин
+					</p>
+					<r-input
+						v-model="username"
+						:value="username"
+						input_type="text"
+					></r-input>
 
-				<p class="page-registration__form-input-description">E-mail</p>
-				<r-input
-					v-model="email"
-					:value="email"
-					input_type="email"
-				></r-input>
+					<p class="page-registration__form-input-description">
+						E-mail
+					</p>
+					<r-input
+						v-model="email"
+						:value="email"
+						input_type="email"
+					></r-input>
 
-				<p class="page-registration__form-input-description">Пароль</p>
-				<r-input
-					v-model="password"
-					:value="password"
-					input_type="password"
-				></r-input>
+					<p class="page-registration__form-input-description">
+						Пароль
+					</p>
+					<r-input
+						v-model="password"
+						:value="password"
+						input_type="password"
+					></r-input>
 
-				<r-button
-					:disabled="isDisabledBtn"
-					text="Зарегистрироваться"
-				></r-button>
+					<r-button
+						:disabled="isDisabledBtn"
+						text="Зарегистрироваться"
+					></r-button>
 
-				<p class="page-registration__form-disclaimer">
-					Нажимая кнопку «Зарегистрироваться», я даю свое согласие на
-					сбор и обработку моих персональных данных в соответствии с
-					<a href="#" class="page-registration__form-disclaimer-link">
-						Политикой
-					</a>
-					и принимаю условия
-					<a href="#" class="page-registration__form-disclaimer-link">
-						Пользовательского соглашения
-					</a>
-				</p>
-			</form>
+					<p class="page-registration__form-disclaimer">
+						Нажимая кнопку «Зарегистрироваться», я даю свое согласие
+						на сбор и обработку моих персональных данных в
+						соответствии с
+						<a
+							href="#"
+							class="page-registration__form-disclaimer-link"
+						>
+							Политикой
+						</a>
+						и принимаю условия
+						<a
+							href="#"
+							class="page-registration__form-disclaimer-link"
+						>
+							Пользовательского соглашения
+						</a>
+					</p>
+				</form>
+			</section>
 		</main>
 	</div>
 </template>

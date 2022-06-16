@@ -8,6 +8,7 @@
 					value="appeals"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[0].selected"
+					:counter="0"
 				>
 					<template v-slot:icon>
 						<svg

@@ -6,8 +6,9 @@ import brief from '@/store/modules/brief'
 
 import cabinet from '@/store/modules/cabinet'
 import navigation_panel from '@/store/modules/navigation_panel'
+import appeals from '@/store/modules/appeals'
 import parsers from '@/store/modules/parsers'
-import favorites from '@/store/modules/favorites';
+import favorites from '@/store/modules/favorites'
 
 export default createStore({
 	state: () => ({
@@ -35,6 +36,7 @@ export default createStore({
 		brief,
 		cabinet,
 		navigation_panel,
+		appeals,
 		parsers,
 		favorites,
 	}

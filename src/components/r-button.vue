@@ -35,6 +35,15 @@
 		&:active {
 			transform: translateY(-0.1rem);
 		}
+		&:disabled {
+			cursor: default;
+			opacity: 0.5;
+			transform: none;
+			&:hover {
+				background-color: $primary;
+				color: $white;
+			}
+		}
 
 		&.purple {
 			background-color: $primary;
@@ -44,7 +53,6 @@
 				color: $primary;
 			}
 			&:disabled {
-				opacity: 0.5;
 				&:hover {
 					background-color: $primary;
 					color: $white;

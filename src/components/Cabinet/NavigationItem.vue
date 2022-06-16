@@ -69,31 +69,34 @@
 				display: none;
 				&:checked {
 					+ .navigation-item__radio-fake {
-						background-color: rgba(255, 255, 255, 0.3);
+						.navigation-item__col:first-child {
+							background-color: rgba(255, 255, 255, 0.3);
+						}
 					}
 				}
 			}
 
 			&-fake {
-				cursor: pointer;
-				padding: 0.4rem 0.7rem 0.4rem 2rem;
-				border-radius: 5rem;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				gap: 1rem;
-				transition: all 0.2s ease;
-				&:hover {
-					background-color: rgba(255, 255, 255, 0.3);
-				}
+				gap: 0.5rem;
 			}
 		}
 
 		&__col {
 			display: flex;
 			align-items: center;
+			transition: all 0.2s ease;
+			&:hover {
+				background-color: rgba(255, 255, 255, 0.3);
+			}
 			&:first-child {
+				border-radius: 5rem;
+				padding: 0.4rem 0.7rem 0.4rem 2rem;
+				cursor: pointer;
 				gap: 1.7rem;
+				width: 100%;
 			}
 		}
 
