@@ -10,6 +10,8 @@ import appeals from '@/store/modules/appeals'
 import parsers from '@/store/modules/parsers'
 import favorites from '@/store/modules/favorites'
 
+import messenger from '@/store/modules/messenger'
+
 export default createStore({
 	state: () => ({
 		document_width: null,
@@ -39,5 +41,7 @@ export default createStore({
 		appeals,
 		parsers,
 		favorites,
+
+		messenger,
 	}
 })

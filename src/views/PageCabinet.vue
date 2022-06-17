@@ -49,6 +49,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables";
+
 	.page-cabinet {
 		display: grid;
 		grid-template-columns: 27.5rem 1fr;
@@ -56,7 +58,7 @@
 		&__main {
 			display: block;
 			margin-top: 8rem;
-			background-color: #f1f7ff;
+			background-color: $light-blue;
 			overflow-y: auto;
 		}
 	}

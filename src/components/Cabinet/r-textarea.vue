@@ -4,6 +4,7 @@
 			name=""
 			id=""
 			class="r-textarea__input"
+			:class="bordered === true ? 'bordered' : null"
 			:style="`height: ${height}rem`"
 			:placeholder="placeholder"
 			@input="this.$emit('update:modelValue', $event.target.value)"
@@ -23,6 +24,10 @@
 				value: String,
 				default: "Placeholder",
 			},
+			bordered: {
+				value: Boolean,
+				default: true,
+			},
 		},
 	};
 </script>
@@ -37,9 +42,11 @@
 			padding: 1rem;
 			font-size: 1.3rem;
 			font-weight: 500;
-			border-radius: 0.6rem;
 			background-color: $white;
-			border: 0.1rem solid rgba(50, 50, 50, 0.1);
+			&.bordered {
+				border: 0.1rem solid rgba(50, 50, 50, 0.1);
+				border-radius: 0.6rem;
+			}
 
 			&::placeholder {
 				color: $black-70;

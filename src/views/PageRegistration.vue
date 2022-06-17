@@ -147,7 +147,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: #f1f7ff;
+		background-color: $light-blue;
 
 		&__main {
 			display: flex;
