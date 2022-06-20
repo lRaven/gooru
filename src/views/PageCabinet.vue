@@ -40,10 +40,11 @@
 			}),
 		},
 		methods: {
-			...mapActions(["getFavoriteParsers"]),
+			...mapActions(["getFavoriteParsers", "getUsers"]),
 		},
 		created() {
 			this.getFavoriteParsers();
+			this.getUsers({ page_size: 10, page_number: 1 });
 		},
 	};
 </script>

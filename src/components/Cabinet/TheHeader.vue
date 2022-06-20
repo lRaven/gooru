@@ -8,7 +8,10 @@
 		</div>
 
 		<div class="the-header__col" v-if="!isClear">
-			<r-button text="+ Новый парсинг"></r-button>
+			<r-button
+				text="+ Новый парсинг"
+				@click="this.$router.push({ name: 'new_parser' })"
+			></r-button>
 
 			<div class="the-header__account" v-click-away="closeProfile">
 				<div

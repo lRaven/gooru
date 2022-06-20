@@ -93,23 +93,6 @@
 			ParsourceCard,
 			rPagination,
 		},
-		computed: {
-			...mapState({
-				parsources: (state) => state.parsers.parsources,
-				parsources_pagination: (state) =>
-					state.parsers.parsources_pagination,
-			}),
-			page() {
-				return +this.$route.query.page;
-			},
-			count() {
-				return this.parsources_pagination.count;
-			},
-
-			number_of_pages() {
-				return Math.ceil(this.count / this.parsources_in_page);
-			},
-		},
 		watch: {
 			page() {
 				if (this.$route.path === this.path) {
@@ -140,6 +123,23 @@
 					}
 				},
 				deep: true,
+			},
+		},
+		computed: {
+			...mapState({
+				parsources: (state) => state.parsers.parsources,
+				parsources_pagination: (state) =>
+					state.parsers.parsources_pagination,
+			}),
+			page() {
+				return +this.$route.query.page;
+			},
+			count() {
+				return this.parsources_pagination.count;
+			},
+
+			number_of_pages() {
+				return Math.ceil(this.count / this.parsources_in_page);
 			},
 		},
 		data() {
