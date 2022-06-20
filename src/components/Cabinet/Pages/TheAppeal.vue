@@ -79,6 +79,7 @@
 
 						<r-textarea
 							v-model="message"
+							:value="message"
 							placeholder="Текстовое описание требований для поиска"
 						></r-textarea>
 					</div>

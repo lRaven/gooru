@@ -73,6 +73,7 @@
 		display: flex;
 		flex-direction: column;
 		max-width: 95%;
+		width: fit-content;
 
 		//* styles for my messages
 		&.my {

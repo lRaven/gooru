@@ -5,6 +5,7 @@
 				:height="10"
 				placeholder="Написать сообщение..."
 				v-model="message"
+				:value='message'
 				:bordered="false"
 			></r-textarea>
 			<r-button text="Отправить" color="bordered"></r-button>
@@ -22,8 +23,10 @@
 		components: { rTextarea, rButton },
 		methods: {
 			send_message() {
-				if (this.message.length > 0)
+				if (this.message.length > 0) {
 					this.$emit("send_message", this.message);
+					this.message = "";
+				}
 			},
 		},
 	};

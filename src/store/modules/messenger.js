@@ -4,14 +4,14 @@ import store from '@/store';
 
 const state = () => ({
 	chat_messages: [],
-	manager: {},
+	all_messages: [],
 })
 
 const getters = {}
 
 const mutations = {
 	SET_CHAT_MESSAGES: (state, payload) => state.chat_messages = payload,
-	SET_MANAGER: (state, payload) => state.manager = payload,
+	SET_ALL_MESSAGES: (state, payload) => state.all_messages = payload,
 }
 
 const actions = {
@@ -38,27 +38,28 @@ const actions = {
 		}
 	},
 
-	getManager: async (context, manager_id) => {
+	getAllMessages: async (context) => {
 		try {
 			const request = await axios
-				.get(`${store.state.baseURL}/auth/users/${manager_id}`, {
+				.get(`${store.state.baseURL}/supportchat/`, {
 					headers: { Authorization: `token ${cookie.get("auth_token")}`, },
 				})
 
 			if (request.status === 200) {
-				context.commit('SET_MANAGER', request.data);
+				context.commit('SET_ALL_MESSAGES', request.data);
+				console.log('All messages saved');
 			}
 		}
 
 		catch (err) {
 			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
+	∧＿∧
+	(｡･ω･｡)つ━☆・*。
+	⊂\\  /   ・゜+.
+	しーＪ\\  °。+  Something went wrong.`
 			);
 		}
-	}
+	},
 }
 
 export default {

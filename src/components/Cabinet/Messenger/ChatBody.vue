@@ -1,6 +1,10 @@
 <template>
 	<div class="chat-body">
-		<ul class="chat-body__messages" v-if="chat_messages.length > 0">
+		<ul
+			class="chat-body__messages"
+			ref="message_list"
+			v-if="chat_messages.length > 0"
+		>
 			<r-message
 				v-for="message in chat_messages"
 				:key="message.id"
@@ -12,26 +16,36 @@
 </template>
 
 <script>
-	import { mapState, mapActions } from "vuex";
+	import { mapState } from "vuex";
 	import rMessage from "@/components/Cabinet/Messenger/r-message.vue";
 
 	export default {
 		name: "ChatBody",
-		props: { ticket_id: Number },
+		props: { ticket_id: Number, chat_messages: Array },
 		components: { rMessage },
+
 		watch: {
-			ticket_id() {
-				this.getChatMessages(this.ticket_id);
+			chat_messages: {
+				handler: function () {
+					if (this.chat_messages.length > 0) {
+						this.scrollMessageList();
+					}
+				},
+				deep: true,
 			},
 		},
 		computed: {
 			...mapState({
-				chat_messages: (state) => state.messenger.chat_messages,
 				user: (state) => state.cabinet.user,
 			}),
 		},
 		methods: {
-			...mapActions(["getChatMessages", "getManager"]),
+			scrollMessageList() {
+				this.$nextTick(() => {
+					this.$refs.message_list.scrollTop =
+						this.$refs.message_list.scrollHeight;
+				});
+			},
 		},
 	};
 </script>
@@ -50,6 +64,7 @@
 			gap: 6rem;
 			overflow-y: auto;
 			padding: 1rem;
+			width: 100%;
 		}
 
 		&__empty {

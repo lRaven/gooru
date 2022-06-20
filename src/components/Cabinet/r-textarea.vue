@@ -7,6 +7,7 @@
 			:class="bordered === true ? 'bordered' : null"
 			:style="`height: ${height}rem`"
 			:placeholder="placeholder"
+			:value="value"
 			@input="this.$emit('update:modelValue', $event.target.value)"
 		></textarea>
 	</div>
@@ -16,6 +17,7 @@
 	export default {
 		name: "rTextarea",
 		props: {
+			value: String,
 			height: {
 				value: Number,
 				default: 10,

@@ -12,13 +12,15 @@
 
 		<div class="appeals-card__col">
 			<p class="appeals-card__source">{{ source }}</p>
-			<span class="appeals-card__counter">{{ counter }}</span>
+			<span class="appeals-card__counter">
+				{{ messages_counter === 0 ? "" : messages_counter }}
+			</span>
 		</div>
 
 		<div class="appeals-card__col appeals-card__topic">{{ topic }}</div>
 
 		<p class="appeals-card__col appeals-card__message">
-			{{ appeal.message }}
+			{{ last_message.text || appeal.message }}
 		</p>
 
 		<p class="appeals-card__col appeals-card__date">
@@ -36,6 +38,7 @@
 
 			topics: Array,
 			parsers: Array,
+			messages: Array,
 		},
 		computed: {
 			source() {
@@ -61,6 +64,25 @@
 				}
 
 				return result;
+			},
+
+			last_message() {
+				let result;
+
+				const find = this.messages.filter(
+					(el) => el.ticket === this.appeal.id
+				);
+				result = find.slice(-1)[0];
+
+				return result || {};
+			},
+
+			messages_counter() {
+				const result = this.messages.filter(
+					(el) => el.ticket === this.appeal.id
+				);
+
+				return result.length || 0;
 			},
 		},
 	};

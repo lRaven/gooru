@@ -1,6 +1,6 @@
 <template>
 	<div class="the-messenger">
-		<chat-body :ticket_id="ticket_id"></chat-body>
+		<chat-body :ticket_id="ticket_id" :chat_messages="messages"></chat-body>
 		<chat-send-message @send_message="send_message"></chat-send-message>
 	</div>
 </template>
@@ -8,7 +8,7 @@
 <script>
 	import ChatBody from "@/components/Cabinet/Messenger/ChatBody.vue";
 	import ChatSendMessage from "@/components/Cabinet/Messenger/ChatSendMessage.vue";
-	import { mapState } from "vuex";
+	import { mapState, mapActions } from "vuex";
 
 	export default {
 		name: "TheMessenger",
@@ -18,25 +18,31 @@
 			ChatSendMessage,
 		},
 		watch: {
-			ticket_id() {
-				this.chatSocket = new WebSocket(
-					`ws://localhost:8003/ws/chat/${
-						this.ticket_id
-					}/?Authorization=token ${this.$cookies.get("auth_token")}`
-				);
+			chat_messages() {
+				this.messages = this.chat_messages;
 			},
 		},
 		computed: {
 			...mapState(["baseURL"]),
 			...mapState({
 				user: (state) => state.cabinet.user,
+				chat_messages: (state) => state.messenger.chat_messages,
 			}),
 		},
-		data: () => ({
-			chatSocket: null,
-			messages: [],
-		}),
+		data() {
+			return {
+				chatSocket: new WebSocket(
+					`ws://localhost:8003/ws/chat/${+this.$route.query
+						.appeal_id}/?Authorization=token ${this.$cookies.get(
+						"auth_token"
+					)}`
+				),
+				messages: [],
+			};
+		},
 		methods: {
+			...mapActions(["getChatMessages"]),
+
 			send_message(message) {
 				this.chatSocket.send(
 					JSON.stringify({
@@ -47,10 +53,14 @@
 				);
 				this.message = "";
 			},
+		},
+		created() {
+			this.getChatMessages(+this.$route.query.appeal_id);
 
-			recieve_message(message) {
-				this.messages.push(message);
-			},
+			this.chatSocket.addEventListener("message", (m) => {
+				// console.log(JSON.parse(m.data));
+				this.messages.push(JSON.parse(m.data));
+			});
 		},
 	};
 </script>
