@@ -1,5 +1,5 @@
 <template>
-	<li class="r-message" :class="isMyMessage ? 'my' : 'manager'">
+	<li class="r-message" :class="isMyMessage ? 'my' : 'interlocutor'">
 		<div class="r-message__body">
 			<p class="r-message__text">{{ message.text }}</p>
 		</div>
@@ -82,6 +82,7 @@
 				&__body {
 					background-color: $light-blue;
 					border-radius: 2rem 2rem 0 2rem;
+					margin-left: auto;
 					&::before {
 						right: 0;
 						box-shadow: $light-blue 0 -5rem 0 0;
@@ -95,8 +96,8 @@
 			}
 		}
 
-		//* styles for manager messages
-		&.manager {
+		//* styles for interlocutor messages
+		&.interlocutor {
 			.r-message {
 				&__body {
 					border-radius: 2rem 2rem 2rem 0;
@@ -117,6 +118,8 @@
 			position: relative;
 			padding: 2rem;
 			margin-bottom: 2rem;
+			width: fit-content;
+			min-width: 8rem;
 
 			&::before {
 				content: "";

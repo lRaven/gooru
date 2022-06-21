@@ -1,6 +1,10 @@
 <template>
 	<div class="the-messenger">
-		<chat-body :ticket_id="ticket_id" :chat_messages="messages"></chat-body>
+		<chat-body
+			:ticket_id="ticket_id"
+			:chat_messages="messages"
+			:send_message="isSendMessage"
+		></chat-body>
 		<chat-send-message @send_message="send_message"></chat-send-message>
 	</div>
 </template>
@@ -21,6 +25,13 @@
 			chat_messages() {
 				this.messages = this.chat_messages;
 			},
+			isSendMessage() {
+				if (this.isSendMessage === true) {
+					setTimeout(() => {
+						this.isSendMessage = false;
+					}, 100);
+				}
+			},
 		},
 		computed: {
 			...mapState(["baseURL"]),
@@ -38,6 +49,7 @@
 					)}`
 				),
 				messages: [],
+				isSendMessage: false,
 			};
 		},
 		methods: {
@@ -52,13 +64,13 @@
 					})
 				);
 				this.message = "";
+				this.isSendMessage = true;
 			},
 		},
 		created() {
 			this.getChatMessages(+this.$route.query.appeal_id);
 
 			this.chatSocket.addEventListener("message", (m) => {
-				// console.log(JSON.parse(m.data));
 				this.messages.push(JSON.parse(m.data));
 			});
 		},

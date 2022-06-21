@@ -21,23 +21,25 @@
 
 	export default {
 		name: "ChatBody",
-		props: { ticket_id: Number, chat_messages: Array },
+		props: {
+			ticket_id: Number,
+			chat_messages: Array,
+			send_message: Boolean,
+		},
 		components: { rMessage },
 
 		watch: {
-			chat_messages: {
-				handler: function () {
-					if (this.chat_messages.length > 0) {
+			send_message() {
+				if (this.send_message) {
+					setTimeout(() => {
 						this.scrollMessageList();
-					}
-				},
-				deep: true,
+						console.log("Message send");
+					}, 100);
+				}
 			},
 		},
 		computed: {
-			...mapState({
-				user: (state) => state.cabinet.user,
-			}),
+			...mapState({ user: (state) => state.cabinet.user }),
 		},
 		methods: {
 			scrollMessageList() {
@@ -52,7 +54,7 @@
 
 <style lang="scss" scoped>
 	.chat-body {
-		padding: 4rem;
+		padding: 4rem 4rem 1rem 4rem;
 		display: flex;
 		justify-content: center;
 		height: 100%;

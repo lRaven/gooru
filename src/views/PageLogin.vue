@@ -1,6 +1,6 @@
 <template>
 	<div class="page-login theme-container">
-		<the-header :isClear="true"></the-header>
+		<the-header :isCabinetVersion="true" :isClear="true"></the-header>
 
 		<main class="page-login__main main">
 			<section class="page-login__section">
@@ -47,7 +47,7 @@
 	import axios from "axios";
 	import { mapState, mapActions } from "vuex";
 
-	import TheHeader from "@/components/Cabinet/TheHeader.vue";
+	import TheHeader from "@/components/TheHeader.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
 

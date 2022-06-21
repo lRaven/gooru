@@ -9,8 +9,8 @@ async function logout() {
 		});
 
 		if (request.status === 204) {
+			store.commit('SET_USER_AUTH', false);
 			console.log("Logout successfully");
-			this.$router.push({ name: 'login' })
 		}
 	}
 	catch {
@@ -64,7 +64,6 @@ async function logout() {
 		// ⠀⠀⠀⢨⡇⠀⠉⠓⣶⣦⣤⣄⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀⣀⣤⡾⠿⢳⠀⠀⠀⠀⠀
 		// ⠀⠀⠀⢸⠀⠀⠀⢠⣸⠀⠀⠉⠉⠉⠉⠛⠛⠛⠛⡗⢲⠖⠒⠒⠒⠒⠒⠒⠚⠋⢹⡟⠀⠀⢸⡆⠀⠀⠀⠀
 		// 		`);
-
 	}
 }
 

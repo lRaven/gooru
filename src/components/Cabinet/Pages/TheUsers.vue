@@ -5,7 +5,7 @@
 </template>
 
 <script>
-	import { mapState, mapMutations } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 
 	export default {
 		name: "TheUsers",
@@ -72,9 +72,11 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
+			...mapActions(["getUsers"]),
 		},
 		created() {
 			this.SET_TAB("users");
+			this.getUsers({ page_size: 10, page_number: 1 });
 		},
 	};
 </script>

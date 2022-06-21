@@ -1,6 +1,6 @@
 <template>
 	<div class="page-cabinet theme-container">
-		<the-header />
+		<the-header :isCabinetVersion="true" />
 		<navigation-panel />
 
 		<main class="page-cabinet__main main">
@@ -16,7 +16,7 @@
 <script>
 	import { mapState, mapActions } from "vuex";
 
-	import TheHeader from "@/components/Cabinet/TheHeader";
+	import TheHeader from "@/components/TheHeader";
 
 	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
 
@@ -40,11 +40,10 @@
 			}),
 		},
 		methods: {
-			...mapActions(["getFavoriteParsers", "getUsers"]),
+			...mapActions(["getFavoriteParsers"]),
 		},
 		created() {
 			this.getFavoriteParsers();
-			this.getUsers({ page_size: 10, page_number: 1 });
 		},
 	};
 </script>
