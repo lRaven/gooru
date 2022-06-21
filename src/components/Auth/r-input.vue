@@ -5,6 +5,7 @@
 			@input="this.$emit('update:modelValue', $event.target.value)"
 			:value="value"
 			class="r-input__input"
+			:placeholder="placeholder"
 			:disabled="isDisabled"
 		/>
 		<transition mode="out-in">
@@ -33,6 +34,7 @@
 	export default {
 		name: "r-input",
 		props: {
+			placeholder: String,
 			input_type: {
 				value: String,
 				default: "text",

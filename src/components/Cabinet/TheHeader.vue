@@ -182,6 +182,7 @@
 			align-items: center;
 			&:last-child {
 				justify-content: space-between;
+				gap: 4rem;
 			}
 		}
 
@@ -202,7 +203,6 @@
 			position: relative;
 
 			&-visible {
-				padding: 0 1rem;
 				cursor: pointer;
 				display: flex;
 				align-items: center;
