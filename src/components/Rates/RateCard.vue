@@ -24,7 +24,11 @@
 				<p class="rate-card__checklist-item-text">{{ item.text }}</p>
 			</li>
 		</ul>
-		<r-button text="Выбрать" v-if="isHasButton"></r-button>
+		<r-button
+			text="Выбрать"
+			v-if="isHasButton"
+			@click="this.$router.push({ name: 'login' })"
+		></r-button>
 	</div>
 </template>
 

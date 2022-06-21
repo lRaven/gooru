@@ -37,7 +37,10 @@
 					с использованием алгоритмов искусственного интеллекта
 				</h3>
 				<div class="the-banner__actions">
-					<r-button text="ОТПРАВИТЬ ЗАПРОС"></r-button>
+					<r-button
+						text="ОТПРАВИТЬ ЗАПРОС"
+						@click="this.$router.push({ name: 'brief' })"
+					></r-button>
 					<r-link
 						text="СВЯЗАТЬСЯ С НАМИ"
 						way="https://telegram.im/@compass_pro"

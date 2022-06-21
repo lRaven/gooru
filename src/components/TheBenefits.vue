@@ -3,11 +3,8 @@
 		<r-benefit
 			v-for="benefit in benefits"
 			:key="benefit.id"
-			:direction="benefit.direction"
-			:svg="benefit.svg"
-			:title="benefit.title"
-			:text="benefit.text"
-			:buttonText="benefit.buttonText"
+			:benefit="benefit"
+			@click_btn="click_btn"
 		>
 		</r-benefit>
 	</section>
@@ -851,5 +848,19 @@ class="r-animated-svg__dot-secondary r-animated-svg__dot"
 				},
 			],
 		}),
+		methods: {
+			click_btn(section_id) {
+				switch (section_id) {
+					case 2: {
+						this.$router.push({ name: "registration" });
+						break;
+					}
+					default: {
+						this.$router.push({ name: "brief" });
+						break;
+					}
+				}
+			},
+		},
 	};
 </script>
