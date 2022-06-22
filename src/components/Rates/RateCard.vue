@@ -1,9 +1,10 @@
 <template>
-	<div class="rate-card">
-		<h4 class="rate-card__name">{{ name }}</h4>
+	<div class="rate-card" :class="color">
+		<h4 class="rate-card__name">{{ rate.name }}</h4>
 		<div class="rate-card__price-wrapper">
-			<p class="rate-card__price" v-if="price !== null">
-				{{ price }}₽ <span class="rate-card__price-month">/мес</span>
+			<p class="rate-card__price" v-if="rate.price !== null">
+				{{ rate.price }}₽
+				<span class="rate-card__price-month">/мес</span>
 			</p>
 			<p v-else class="rate-card__price-individually">Индивидуально</p>
 		</div>
@@ -13,7 +14,7 @@
 		<ul class="rate-card__checklist">
 			<li
 				class="rate-card__checklist-item"
-				v-for="item in checklist"
+				v-for="item in rate.checklist"
 				:key="item.id"
 			>
 				<img
@@ -25,9 +26,9 @@
 			</li>
 		</ul>
 		<r-button
-			text="Выбрать"
+			:text="ButtonText"
 			v-if="isHasButton"
-			@click="this.$router.push({ name: 'login' })"
+			@click="this.$emit('click_button')"
 		></r-button>
 	</div>
 </template>
@@ -42,28 +43,17 @@
 				value: Boolean,
 				default: true,
 			},
-			name: {
+			ButtonText: {
 				value: String,
-				default: "'rate name'",
+				default: "button",
 			},
-			price: {
-				value: Number,
-				default: 0,
+			color: {
+				value: String,
+				default: "blue",
 			},
-			checklist: {
-				value: Array,
-				default: [
-					{ id: 1, text: "item1" },
-					{ id: 2, text: "item2" },
-					{ id: 3, text: "item3" },
-					{ id: 4, text: "item4" },
-				],
-			},
-			description: String,
+			rate: Object,
 		},
-		components: {
-			rButton,
-		},
+		components: { rButton },
 	};
 </script>
 
@@ -74,16 +64,22 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		background-color: #197eca0d;
 		padding: 2rem 1.4rem 2rem 1rem;
 		box-shadow: $shadow;
 		border-radius: 1rem;
 		min-height: 47rem;
 		max-width: 33rem;
 		transition: all 0.2s ease;
-		&:hover {
-			background-color: rgba(25, 126, 202, 0.3);
-			transition: all 0.3s ease;
+
+		&.blue {
+			background-color: #197eca0d;
+			&:hover {
+				background-color: rgba(25, 126, 202, 0.3);
+				transition: all 0.3s ease;
+			}
+		}
+		&.white {
+			background-color: $white;
 		}
 
 		&__name {

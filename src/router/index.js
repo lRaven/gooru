@@ -4,7 +4,10 @@ import PageHome from '@/views/PageHome'
 import PageLogin from '@/views/PageLogin'
 import PageRegistration from '@/views/PageRegistration'
 
+//* cabinet 
 import PageCabinet from '@/views/PageCabinet'
+
+import TheRates from '@/components/Cabinet/Pages/TheRates'
 import TheAppeals from '@/components/Cabinet/Pages/TheAppeals'
 import TheAppeal from '@/components/Cabinet/Pages/TheAppeal'
 
@@ -47,6 +50,15 @@ const routes = [
 		},
 		redirect: { name: 'appeals', query: { page: 1 } },
 		children: [
+			{
+				path: 'rates',
+				name: 'rates',
+				component: TheRates,
+				meta: {
+					title: 'Тарифы',
+					requiresAuth: true,
+				},
+			},
 			{
 				path: 'appeals',
 				name: 'appeals',
