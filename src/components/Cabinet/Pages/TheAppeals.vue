@@ -6,7 +6,7 @@
 				class="the-appeals__search-input" 
 				:value="searchValue" 
 				input_type="search"
-				placeHolder="Поиск по почте"
+				placeholder="Поиск по почте"
 				v-if="user.role === 'Manager'"
 			/>
 			<div class="the-appeals__list shadow">

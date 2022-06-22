@@ -7,7 +7,6 @@
 			class="r-input__input"
 			:placeholder="placeholder"
 			:disabled="isDisabled"
-			:placeholder="placeHolder"
 		/>
 		<transition mode="out-in">
 			<img
