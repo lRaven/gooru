@@ -64,13 +64,19 @@
 						</div>
 					</div>
 
-					<ol class="the-parser__content-list">
-						<parser-content
-							v-for="parser in parsers"
-							:key="parser.id"
-							:parser="parser"
-						></parser-content>
-					</ol>
+					<transition mode="out-in">
+						<r-loader v-if="!isParsersLoaded"></r-loader>
+					</transition>
+
+					<transition mode="out-in" v-if="isParsersLoaded">
+						<ol class="the-parser__content-list">
+							<parser-content
+								v-for="parser in parsers"
+								:key="parser.id"
+								:parser="parser"
+							></parser-content>
+						</ol>
+					</transition>
 				</div>
 
 				<div
@@ -176,6 +182,7 @@
 	import ParserContent from "@/components/Cabinet/Parsource/ParserContent";
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
+	import rLoader from "@/components/r-loader.vue";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
 	import rSpoiler from "@/components/r-spoiler";
@@ -188,6 +195,7 @@
 			ParserContent,
 			rButton,
 			rPagination,
+			rLoader,
 
 			RightPanel,
 			rSpoiler,
@@ -221,6 +229,9 @@
 					page_size: this.parsers_in_page,
 				});
 			},
+			parsers() {
+				this.isParsersLoaded = true;
+			},
 		},
 		computed: {
 			...mapState({
@@ -251,6 +262,7 @@
 		},
 		data() {
 			return {
+				isParsersLoaded: false,
 				path: this.$route.path,
 
 				parsers_in_page: 10,
@@ -345,6 +357,7 @@
 
 			&-main {
 				overflow: hidden;
+				position: relative;
 				display: grid;
 				grid-template-rows: max-content minmax(max-content, 1fr);
 

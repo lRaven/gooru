@@ -3,17 +3,23 @@
 		<div class="the-appeals__main">
 			<h2 class="the-appeals__title">Обращения</h2>
 
-			<div class="the-appeals__list shadow">
-				<appeals-card
-					v-for="appeal in appeals"
-					:key="appeal.id"
-					:appeal="appeal"
-					:counter="1"
-					:parsers="all_parsers"
-					:topics="topics"
-					:messages="all_messages"
-				></appeals-card>
-			</div>
+			<transition mode="out-in">
+				<r-loader v-if="!isAppealsLoaded"></r-loader>
+			</transition>
+
+			<transition mode="out-in">
+				<div class="the-appeals__list shadow" v-if="isAppealsLoaded">
+					<appeals-card
+						v-for="appeal in appeals"
+						:key="appeal.id"
+						:appeal="appeal"
+						:counter="1"
+						:parsers="all_parsers"
+						:topics="topics"
+						:messages="all_messages"
+					></appeals-card>
+				</div>
+			</transition>
 
 			<div class="the-appeals__bottom" v-if="number_of_pages > 1">
 				<r-button text="Показать ещё" color="bordered"></r-button>
@@ -99,6 +105,7 @@
 	import rButton from "@/components/r-button.vue";
 	import rPagination from "@/components/r-pagination.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
+	import rLoader from "@/components/r-loader.vue";
 
 	export default {
 		name: "TheAppeals",
@@ -109,6 +116,7 @@
 			rButton,
 			rPagination,
 			AppealsCard,
+			rLoader,
 		},
 		watch: {
 			page() {
@@ -118,6 +126,9 @@
 						page_size: this.appeals_in_page,
 					});
 				}
+			},
+			appeals() {
+				this.isAppealsLoaded = true;
 			},
 		},
 		computed: {
@@ -145,6 +156,7 @@
 		},
 		data() {
 			return {
+				isAppealsLoaded: false,
 				path: this.$route.path,
 
 				topic: "",
@@ -198,6 +210,7 @@
 			flex-direction: column;
 			overflow-y: auto;
 			height: calc(100vh - 8rem);
+			position: relative;
 		}
 
 		&__list {

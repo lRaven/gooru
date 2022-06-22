@@ -14,6 +14,7 @@ import messenger from '@/store/modules/messenger'
 
 //* admin data
 import users from '@/store/modules/admin/users'
+import users_managers from '@/store/modules/admin/users_managers'
 
 export default createStore({
 	state: () => ({
@@ -47,5 +48,6 @@ export default createStore({
 		messenger,
 
 		users,
+		users_managers,
 	}
 })

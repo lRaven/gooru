@@ -1,43 +1,33 @@
 <template>
-	<div class="parsource-card">
+	<div class="user-card">
 		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
-		<div class="parsource-card__content" ref="content">
-			<p class="parsource-card__source">
-				{{ parsource.data_source }}
+		<div class="user-card__content" ref="content">
+			<p class="user-card__id">id{{ user.id }}</p>
+
+			<p class="user-card__name">
+				{{
+					user.first_name.length === 0 && user.last_name.length === 0
+						? user.username
+						: `${user.first_name} ${user.last_name}`
+				}}
 			</p>
 
-			<p class="parsource-card__col parsource-card__date">
-				{{ parsource.date || "1.1.1970" }}
+			<p class="user-card__col user-card__status">
+				{{ user.status || "Разблокирован" }}
 			</p>
 
-			<div class="parsource-card__col">
-				<r-status :status="1 || parsource.condition"></r-status>
-			</div>
-
-			<p class="parsource-card__col parsource-card__found">
-				{{ parsource.find || 0 }}
+			<p class="user-card__col user-card__parsers">
+				{{ user_parsers.length }}
 			</p>
 
-			<p class="parsource-card__col parsource-card__favorite">
-				{{ parsource.favorite || 0 }}
-			</p>
+			<r-button text="Подробнее" color="bordered"></r-button>
 
-			<p class="parsource-card__col parsource-card__time">
-				{{ parsource.lost_time || "0ч" }}
-			</p>
-
-			<div class="parsource-card__col">
-				<r-button
-					text="Подробнее"
-					color="bordered"
-					@click="
+			<!-- @click="
 						this.$router.push({
 							path: `/cabinet/parsource/${parsource.id}`,
 							query: { page: 1 },
 						})
-					"
-				></r-button>
-			</div>
+			" -->
 		</div>
 	</div>
 </template>
@@ -45,38 +35,58 @@
 <script>
 	import rCheckbox from "@/components/r-checkbox";
 	import rButton from "@/components/r-button";
-	import rStatus from "@/components/Cabinet/r-status";
-	import { mapMutations } from "vuex";
+	import { mapState, mapMutations } from "vuex";
 
 	export default {
-		name: "ParsourceCard",
+		name: "UserCard",
+		props: { user: Object, users: Array },
 		components: {
 			rCheckbox,
 			rButton,
-			rStatus,
 		},
 		watch: {
 			isSelected() {
 				if (this.isSelected === true) {
 					this.$refs.content.classList.add("selected");
-					this.SELECT_PARSOURCE(this.parsource.id);
+					this.SELECT_USER(this.user.id);
 				} else {
 					this.$refs.content.classList.remove("selected");
-					this.UNSELECT_PARSOURCE(this.parsource.id);
+					this.UNSELECT_USER(this.user.id);
 				}
 			},
-			"parsource.selected"() {
-				this.isSelected = this.parsource.selected;
+			"user.selected"() {
+				this.isSelected = this.user.selected;
 			},
 		},
-		props: { parsource: Object },
+		computed: {
+			...mapState({
+				all_parsources: (state) => state.parsers.all_parsources,
+				all_parsers: (state) => state.parsers.all_parsers,
+				users_managers: (state) => state.users_managers.users_managers,
+			}),
+
+			user_parsources() {
+				return this.all_parsources.filter(
+					(parsource) => parsource.user === this.user.id
+				);
+			},
+
+			user_parsers() {
+				return this.all_parsers.filter((parser) => {
+					return this.user_parsources.some((parsource) => {
+						return parsource.id === parser.parsource;
+					});
+				});
+			},
+		},
+
 		data() {
 			return {
-				isSelected: this.parsource.selected || false,
+				isSelected: this.user.selected || false,
 			};
 		},
 		methods: {
-			...mapMutations(["SELECT_PARSOURCE", "UNSELECT_PARSOURCE"]),
+			...mapMutations(["SELECT_USER", "UNSELECT_USER"]),
 		},
 	};
 </script>
@@ -84,7 +94,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.parsource-card {
+	.user-card {
 		display: flex;
 		align-items: center;
 		gap: 1rem;

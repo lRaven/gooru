@@ -53,13 +53,20 @@
 				></sort-button>
 			</div>
 
-			<div class="the-parsources__list">
-				<parsource-card
-					v-for="parsource in parsources"
-					:key="parsource.id"
-					:parsource="parsource"
-				></parsource-card>
-			</div>
+			<transition mode="out-in">
+				<r-loader v-if="!isParsourcesLoaded"></r-loader>
+			</transition>
+
+			<transition mode="out-in">
+				<div class="the-parsources__list" v-if="isParsourcesLoaded">
+					<parsource-card
+						v-for="parsource in parsources"
+						:key="parsource.id"
+						:parsource="parsource"
+					></parsource-card>
+				</div>
+			</transition>
+
 			<div class="the-parsources__bottom" v-if="number_of_pages > 1">
 				<r-button text="Показать ещё" color="bordered"></r-button>
 
@@ -80,6 +87,7 @@
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
+	import rLoader from "@/components/r-loader.vue";
 
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
@@ -92,6 +100,7 @@
 			SortButton,
 			ParsourceCard,
 			rPagination,
+			rLoader,
 		},
 		watch: {
 			page() {
@@ -121,6 +130,7 @@
 					if (this.parsources.length === 0) {
 						this.selectAll = false;
 					}
+					this.isParsourcesLoaded = true;
 				},
 				deep: true,
 			},
@@ -144,6 +154,7 @@
 		},
 		data() {
 			return {
+				isParsourcesLoaded: false,
 				path: this.$route.path,
 
 				selectAll: false,
@@ -188,6 +199,7 @@
 	@import "@/assets/scss/variables";
 
 	.the-parsources {
+		position: relative;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
 		padding-top: 4rem;
