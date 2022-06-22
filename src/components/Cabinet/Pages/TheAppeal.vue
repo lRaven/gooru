@@ -26,9 +26,7 @@
 				<p class="the-appeal__topic">{{ appeal_topic }}</p>
 			</div>
 
-			<div class="the-appeal__list shadow">
-				<the-messenger></the-messenger>
-			</div>
+			<the-messenger :ticket_id="appeal.id"></the-messenger>
 		</div>
 
 		<right-panel
@@ -81,6 +79,7 @@
 
 						<r-textarea
 							v-model="message"
+							:value="message"
 							placeholder="Текстовое описание требований для поиска"
 						></r-textarea>
 					</div>
@@ -103,7 +102,7 @@
 	import TheMessenger from "@/components/Cabinet/Messenger/TheMessenger.vue";
 
 	export default {
-		name: "TheAppeals",
+		name: "TheAppeal",
 		components: {
 			RightPanel,
 			rDropdown,
@@ -148,13 +147,11 @@
 				return result;
 			},
 		},
-		data() {
-			return {
-				topic: "",
-				parser: "",
-				message: "",
-			};
-		},
+		data: () => ({
+			topic: "",
+			parser: "",
+			message: "",
+		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllParsers", "getAppeal"]),
@@ -206,7 +203,7 @@
 		}
 
 		&__main {
-			padding: 4rem 0 4rem 4rem;
+			padding: 4rem 0 0 4rem;
 			display: flex;
 			gap: 4rem;
 			flex-direction: column;

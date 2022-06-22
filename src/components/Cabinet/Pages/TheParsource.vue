@@ -193,6 +193,35 @@
 			rSpoiler,
 			TextCheckbox,
 		},
+		watch: {
+			page() {
+				if (this.$route.path === this.path) {
+					this.getParsers({
+						parsource_name: this.parsource_name,
+						page_number: this.page,
+						page_size: this.parsers_in_page,
+					});
+				}
+			},
+			parsource_id() {
+				if (this.$route.path === this.path) {
+					this.getParsource(this.parsource_id);
+					this.getParsers({
+						parsource_name: this.parsource_name,
+						page_number: this.page,
+						page_size: this.parsers_in_page,
+					});
+				}
+			},
+
+			parsource() {
+				this.getParsers({
+					parsource_name: this.parsource_name,
+					page_number: this.page,
+					page_size: this.parsers_in_page,
+				});
+			},
+		},
 		computed: {
 			...mapState({
 				parsource: (state) => state.parsers.parsource,
@@ -220,33 +249,10 @@
 				return this.parsers_pagination.count;
 			},
 		},
-		watch: {
-			page() {
-				this.getParsers({
-					parsource_name: this.parsource_name,
-					page_number: this.page,
-					page_size: this.parsers_in_page,
-				});
-			},
-			parsource_id() {
-				this.getParsource(this.parsource_id);
-				this.getParsers({
-					parsource_name: this.parsource_name,
-					page_number: this.page,
-					page_size: this.parsers_in_page,
-				});
-			},
-
-			parsource() {
-				this.getParsers({
-					parsource_name: this.parsource_name,
-					page_number: this.page,
-					page_size: this.parsers_in_page,
-				});
-			},
-		},
 		data() {
 			return {
+				path: this.$route.path,
+
 				parsers_in_page: 10,
 
 				texts: false,

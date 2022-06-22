@@ -4,8 +4,10 @@
 			name=""
 			id=""
 			class="r-textarea__input"
+			:class="bordered === true ? 'bordered' : null"
 			:style="`height: ${height}rem`"
 			:placeholder="placeholder"
+			:value="value"
 			@input="this.$emit('update:modelValue', $event.target.value)"
 		></textarea>
 	</div>
@@ -15,6 +17,7 @@
 	export default {
 		name: "rTextarea",
 		props: {
+			value: String,
 			height: {
 				value: Number,
 				default: 10,
@@ -22,6 +25,10 @@
 			placeholder: {
 				value: String,
 				default: "Placeholder",
+			},
+			bordered: {
+				value: Boolean,
+				default: true,
 			},
 		},
 	};
@@ -37,9 +44,11 @@
 			padding: 1rem;
 			font-size: 1.3rem;
 			font-weight: 500;
-			border-radius: 0.6rem;
 			background-color: $white;
-			border: 0.1rem solid rgba(50, 50, 50, 0.1);
+			&.bordered {
+				border: 0.1rem solid rgba(50, 50, 50, 0.1);
+				border-radius: 0.6rem;
+			}
 
 			&::placeholder {
 				color: $black-70;

@@ -3,11 +3,8 @@
 		<r-benefit
 			v-for="benefit in benefits"
 			:key="benefit.id"
-			:direction="benefit.direction"
-			:svg="benefit.svg"
-			:title="benefit.title"
-			:text="benefit.text"
-			:buttonText="benefit.buttonText"
+			:benefit="benefit"
+			@click_btn="click_btn"
 		>
 		</r-benefit>
 	</section>
@@ -274,7 +271,7 @@ class="r-animated-svg__dot-secondary r-animated-svg__dot"
 </svg>`,
 					title: "Отправьте запрос нашим специалистам в один клик",
 					text: "Выберите подходящую конфигурацию самостоятельно или обратитесь к нашим специалистам с просьбой подобрать парсер под ваши бизнес-задачи. Подберём оптимальное решение!",
-					buttonText: "ОТПРАВИТЬ ЗАПРОС",
+					buttonText: "ПРОЙТИ БРИФ",
 					direction: "normal",
 				},
 				{
@@ -846,10 +843,24 @@ class="r-animated-svg__dot-secondary r-animated-svg__dot"
 </svg>`,
 					title: "Запускайтe парсеры в облаке или на вашем компьютере",
 					text: "Небольшую по объему информацию вы можете хранить и использовать на своём компьютере. Если же место ограничено, а задач много и результаты занимают приличный объём — то наилучшим решением может стать облачное хранилище. Это удобно, выгодно, надёжно.",
-					buttonText: "ПРОБНЫЙ ПАРСИНГ",
+					buttonText: "ПРОЙТИ БРИФ",
 					direction: "normal",
 				},
 			],
 		}),
+		methods: {
+			click_btn(section_id) {
+				switch (section_id) {
+					case 2: {
+						this.$router.push({ name: "registration" });
+						break;
+					}
+					default: {
+						this.$router.push({ name: "brief" });
+						break;
+					}
+				}
+			},
+		},
 	};
 </script>

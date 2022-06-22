@@ -14,7 +14,7 @@
 				</p>
 				<div class="the-sample-parser__buttons">
 					<r-button
-						text="ОТПРАВИТЬ ЗАПРОС"
+						text="ПРОЙТИ БРИФ"
 						color="white"
 						@click="this.$router.push({ name: 'brief' })"
 					></r-button>

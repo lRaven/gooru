@@ -39,7 +39,7 @@
 
 <script>
 	export default {
-		name: "ParserFilters",
+		name: "RightPanel",
 		props: {
 			icon: {
 				value: String,

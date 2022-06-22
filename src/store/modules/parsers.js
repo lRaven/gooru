@@ -1,6 +1,6 @@
-import cookie from 'vue-cookies';
-import axios from 'axios';
-import store from '@/store';
+import cookie from 'vue-cookies'
+import axios from 'axios'
+import store from '@/store'
 
 const state = () => ({
 	parsources: [],

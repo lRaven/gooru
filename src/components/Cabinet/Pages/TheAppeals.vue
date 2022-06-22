@@ -17,6 +17,7 @@
 					:counter="1"
 					:parsers="all_parsers"
 					:topics="topics"
+					:messages="all_messages"
 				></appeals-card>
 			</div>
 
@@ -83,6 +84,7 @@
 
 						<r-textarea
 							v-model="message"
+							:value="message"
 							placeholder="Текстовое описание требований для поиска"
 						></r-textarea>
 					</div>
@@ -134,6 +136,8 @@
 				user: (state) => state.cabinet.user,
 				appeals: (state) => state.appeals.appeals,
 				appeals_pagination: (state) => state.appeals.appeals_pagination,
+
+				all_messages: (state) => state.messenger.all_messages,
 			}),
 
 			page() {
@@ -182,7 +186,7 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getAllParsers", "getAppeals"]),
+			...mapActions(["getAllParsers", "getAppeals", "getAllMessages"]),
 			add_ticket,
 			page_changed(page_number) {
 				this.$router.push({
@@ -197,6 +201,8 @@
 				page_number: this.page,
 				page_size: this.appeals_in_page,
 			});
+			this.getAllMessages();
+
 			this.getAllParsers();
 		},
 	};

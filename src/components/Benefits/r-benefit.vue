@@ -1,14 +1,17 @@
 <template>
 	<div class="r-benefit">
-		<div class="r-benefit__container center" :class="direction">
+		<div class="r-benefit__container center" :class="benefit.direction">
 			<div class="r-benefit__col" ref="slot">
-				<r-animated-svg v-html="svg"></r-animated-svg>
+				<r-animated-svg v-html="benefit.svg"></r-animated-svg>
 			</div>
 
 			<div class="r-benefit__col">
-				<h2 class="r-benefit__title">{{ title }}</h2>
-				<p class="r-benefit__description">{{ text }}</p>
-				<r-button :text="buttonText"></r-button>
+				<h2 class="r-benefit__title">{{ benefit.title }}</h2>
+				<p class="r-benefit__description">{{ benefit.text }}</p>
+				<r-button
+					:text="benefit.buttonText"
+					@click="this.$emit('click_btn', benefit.id)"
+				></r-button>
 			</div>
 		</div>
 	</div>
@@ -25,23 +28,7 @@
 			rAnimatedSvg,
 		},
 
-		props: {
-			direction: String,
-
-			svg: String,
-			title: {
-				value: String,
-				default: "Title",
-			},
-			text: {
-				value: String,
-				default: "Subitle",
-			},
-			buttonText: {
-				value: String,
-				default: "button",
-			},
-		},
+		props: { benefit: Object },
 	};
 </script>
 

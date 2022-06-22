@@ -15,6 +15,11 @@ import TheFavorites from '@/components/Cabinet/Pages/TheFavorites'
 
 import TheProfile from '@/components/Cabinet/Pages/TheProfile'
 
+import TheNewParser from '@/components/Cabinet/Pages/TheNewParser'
+
+//* admin pages
+import TheUsers from '@/components/Cabinet/Pages/TheUsers'
+
 import PageBrief from '@/views/PageBrief'
 
 import PageNotFound from '@/views/PageNotFound'
@@ -60,7 +65,6 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
-
 			{
 				path: 'parsources',
 				name: 'parsources',
@@ -94,6 +98,25 @@ const routes = [
 				component: TheProfile,
 				meta: {
 					title: 'Мой профиль',
+					requiresAuth: true,
+				},
+			},
+			{
+				path: 'new_parser',
+				name: 'new_parser',
+				component: TheNewParser,
+				meta: {
+					title: 'Новый парсинг',
+					requiresAuth: true,
+				},
+			},
+			//* admin 
+			{
+				path: 'users',
+				name: 'users',
+				component: TheUsers,
+				meta: {
+					title: 'Пользователи',
 					requiresAuth: true,
 				},
 			},

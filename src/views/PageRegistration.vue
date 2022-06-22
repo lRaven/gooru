@@ -1,6 +1,6 @@
 <template>
 	<div class="page-registration theme-container">
-		<the-header :isClear="true"></the-header>
+		<the-header :isCabinetVersion="true" :isClear="true"></the-header>
 
 		<main class="page-registration__main main">
 			<section class="page-registration__section">
@@ -81,7 +81,7 @@
 	import axios from "axios";
 	import { mapState } from "vuex";
 
-	import TheHeader from "@/components/Cabinet/TheHeader.vue";
+	import TheHeader from "@/components/TheHeader.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
 
@@ -149,7 +149,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: #f1f7ff;
+		background-color: $light-blue;
 
 		&__main {
 			display: flex;
