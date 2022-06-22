@@ -37,6 +37,11 @@
 					}, 100);
 				}
 			},
+			chat_messages() {
+				if (this.chat_messages.length > 0) {
+					this.scrollMessageList();
+				}
+			},
 		},
 		computed: {
 			...mapState({ user: (state) => state.cabinet.user }),

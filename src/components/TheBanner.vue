@@ -38,7 +38,7 @@
 				</h3>
 				<div class="the-banner__actions">
 					<r-button
-						text="ОТПРАВИТЬ ЗАПРОС"
+						text="ПРОЙТИ БРИФ"
 						@click="this.$router.push({ name: 'brief' })"
 					></r-button>
 					<r-link
