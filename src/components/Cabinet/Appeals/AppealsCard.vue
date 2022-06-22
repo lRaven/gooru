@@ -11,7 +11,8 @@
 		<p class="appeals-card__col appeals-card__id">#{{ appeal.id }}</p>
 
 		<div class="appeals-card__col">
-			<p class="appeals-card__source">{{ source }}</p>
+			
+			<p class="appeals-card__source">{{ user.role === 'Manager' ? `${appeal.user.first_name}.${appeal.user.last_name[0]}`: source }}</p>
 			<span class="appeals-card__counter">{{ counter }}</span>
 		</div>
 
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
 	export default {
 		name: "AppealsCard",
 		props: {
@@ -38,6 +40,10 @@
 			parsers: Array,
 		},
 		computed: {
+			...mapState({
+				user: (state) => state.cabinet.user
+			}),
+
 			source() {
 				let result = "";
 
@@ -64,6 +70,7 @@
 			},
 		},
 	};
+	
 </script>
 
 <style lang="scss" scoped>

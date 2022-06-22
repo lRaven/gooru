@@ -2,7 +2,13 @@
 	<section class="the-appeals">
 		<div class="the-appeals__main">
 			<h2 class="the-appeals__title">Обращения</h2>
-
+			<r-input 
+				class="the-appeals__search-input" 
+				:value="searchValue" 
+				input_type="search"
+				placeHolder="Поиск по почте"
+				v-if="user.role === 'Manager'"
+			/>
 			<div class="the-appeals__list shadow">
 				<appeals-card
 					v-for="appeal in appeals"
@@ -30,6 +36,7 @@
 			icon="img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			class="the-appeals__right-panel"
+			v-if="user.role === 'DefaultUser'"
 		>
 			<template v-slot>
 				<form
@@ -80,7 +87,7 @@
 						></r-textarea>
 					</div>
 
-					<r-button text="Отправить"></r-button>
+					<r-button text="Отправить" :disabled="isInvalidTicketForm" ></r-button>
 				</form>
 			</template>
 		</right-panel>
@@ -95,6 +102,7 @@
 	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
 	import rTextarea from "@/components/Cabinet/r-textarea.vue";
 	import rButton from "@/components/r-button.vue";
+	import rInput from "@/components/Auth/r-input.vue";
 	import rPagination from "@/components/r-pagination.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
 
@@ -105,6 +113,7 @@
 			rDropdown,
 			rTextarea,
 			rButton,
+			rInput,
 			rPagination,
 			AppealsCard,
 		},
@@ -128,6 +137,7 @@
 			}),
 
 			page() {
+				console.log(this.$route.query.page)
 				return +this.$route.query.page;
 			},
 
@@ -138,14 +148,34 @@
 			number_of_pages() {
 				return Math.ceil(this.count / this.appeals_in_page);
 			},
+			isInvalidTicketForm() {
+				const formValidation = {
+					isInvalidTopic: true,
+					isIvalidParser: true,
+					isInvalidMessage: true
+				}
+				formValidation.isInvalidMessage = this.message.length < 10 ? true : false;
+				if ( this.topic !== 1 && this.topic !== null){
+					formValidation.isIvalidParser = false;
+					formValidation.isInvalidTopic = false;
+				}
+				if (this.topic === 1 && this.parser !== null) {
+					formValidation.isIvalidParser = false
+					formValidation.isInvalidTopic = false
+				}
+
+				return formValidation.isInvalidTopic || formValidation.isIvalidParser || formValidation.isInvalidMessage;
+			}
 		},
 		data() {
 			return {
 				path: this.$route.path,
 
-				topic: "",
-				parser: "",
+				topic: null,
+				parser: null,
 				message: "",
+
+				searchValue: "",
 
 				appeals_in_page: 10,
 			};
@@ -183,23 +213,44 @@
 
 		&__title {
 			font-weight: 400;
+			grid-area: title;
 		}
 
+		&__search-input {
+			width: 60rem;
+			font-size: 1.6rem;
+			font-weight: 500;
+			line-height: 2.6rem;
+			text-align: left;
+			opacity: 0.5;
+			color: $black;
+			grid-area: searchInput;
+		}
+		&__search-input:focus {
+			opacity: 1;
+		}
 		&__main {
 			padding: 4rem 0 4rem 4rem;
-			display: flex;
-			gap: 4rem;
-			flex-direction: column;
+			display: grid;
+			grid-template-columns: 1fr 3fr 1fr;
+			grid-template-rows: min-content max-content min-content;
+			grid-template-areas: 
+			"title . . searchInput"
+			"appealsList appealsList appealsList appealsList"
+			"appealsBottom appealsBottom appealsBottom appealsBottom";
+			row-gap: 3.3rem;
 			overflow-y: auto;
 			height: calc(100vh - 8rem);
 		}
 
 		&__list {
+			display: flex;
+			flex-direction: column;
 			background-color: $white;
 			border-radius: 0.6rem;
 			overflow: hidden;
-			margin-right: 1rem;
 			box-shadow: $shadow;
+			grid-area: appealsList;
 		}
 
 		&__bottom {
@@ -208,6 +259,7 @@
 			justify-content: space-between;
 			gap: 5rem;
 			margin-top: auto;
+			grid-area: appealsBottom;
 		}
 
 		&__right-panel {
