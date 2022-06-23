@@ -110,6 +110,13 @@
 			rButton,
 			TheMessenger,
 		},
+		watch: {
+			appeal_id() {
+				if (this.$route.path === this.path) {
+					this.getAppeal(this.appeal_id);
+				}
+			},
+		},
 		computed: {
 			...mapState({
 				appeal: (state) => state.appeals.appeal,
@@ -147,11 +154,15 @@
 				return result;
 			},
 		},
-		data: () => ({
-			topic: "",
-			parser: "",
-			message: "",
-		}),
+		data() {
+			return {
+				path: this.$route.path,
+
+				topic: "",
+				parser: "",
+				message: "",
+			};
+		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllParsers", "getAppeal"]),

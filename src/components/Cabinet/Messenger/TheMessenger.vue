@@ -32,6 +32,20 @@
 					}, 100);
 				}
 			},
+			"$route.query.appeal_id"() {
+				if (this.$route.path === this.path) {
+					this.remove_get_message();
+					this.chatSocket.close();
+
+					this.createWebSocket(
+						this.BASEURL_WITHOUT_PROTOCOL,
+						this.$route.query.appeal_id,
+						this.$cookies.get("auth_token")
+					);
+					this.getChatMessages(this.$route.query.appeal_id);
+					this.get_messsage();
+				}
+			},
 		},
 		computed: {
 			...mapGetters(["BASEURL_WITHOUT_PROTOCOL"]),
@@ -39,16 +53,12 @@
 				user: (state) => state.cabinet.user,
 				chat_messages: (state) => state.messenger.chat_messages,
 			}),
-			chatSocket() {
-				return new WebSocket(
-					`ws://${this.BASEURL_WITHOUT_PROTOCOL}/ws/chat/${
-						this.$route.query.appeal_id
-					}/?Authorization=token ${this.$cookies.get("auth_token")}`
-				);
-			},
 		},
 		data() {
 			return {
+				chatSocket: null,
+				path: this.$route.path,
+
 				messages: [],
 				isSendMessage: false,
 			};
@@ -67,13 +77,38 @@
 				this.message = "";
 				this.isSendMessage = true;
 			},
+
+			createWebSocket(base_url, chat_id, token) {
+				this.chatSocket = new WebSocket(
+					`ws://${base_url}/ws/chat/${chat_id}/?Authorization=token ${token}`
+				);
+			},
+
+			get_messsage() {
+				this.chatSocket.addEventListener("message", (m) => {
+					this.messages.push(JSON.parse(m.data));
+				});
+			},
+			remove_get_message() {
+				this.chatSocket.removeEventListener(
+					"message",
+					this.get_messsage
+				);
+			},
 		},
 		created() {
-			this.getChatMessages(+this.$route.query.appeal_id);
+			this.createWebSocket(
+				this.BASEURL_WITHOUT_PROTOCOL,
+				this.$route.query.appeal_id,
+				this.$cookies.get("auth_token")
+			);
+			this.getChatMessages(this.$route.query.appeal_id);
 
-			this.chatSocket.addEventListener("message", (m) => {
-				this.messages.push(JSON.parse(m.data));
-			});
+			this.get_messsage();
+		},
+		beforeUnmount() {
+			this.remove_get_message();
+			this.chatSocket.close();
 		},
 	};
 </script>
