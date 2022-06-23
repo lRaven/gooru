@@ -73,6 +73,8 @@ const actions = {
 					}
 				}
 				context.commit('SET_PARSOURCES_PAGINATION', pagination_info);
+
+				console.log('Parsource list saved');
 			}
 
 		}
@@ -113,7 +115,10 @@ const actions = {
 				headers: { Authorization: `token ${cookie.get('auth_token')}` }
 			})
 
-			if (request.status === 200) context.commit('SET_PARSOURCE', request.data);
+			if (request.status === 200) {
+				context.commit('SET_PARSOURCE', request.data);
+				console.log('Parsource saved');
+			}
 		}
 		catch (err) {
 			console.error(`
@@ -143,6 +148,8 @@ const actions = {
 					}
 				}
 				context.commit('SET_PARSERS_PAGINATION', pagination_info);
+
+				console.log('Parser list saved');
 			}
 		}
 		catch (err) {

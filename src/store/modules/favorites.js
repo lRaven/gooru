@@ -19,6 +19,7 @@ const actions = {
 
 			if (request.status === 200) {
 				context.dispatch('getFavoriteParsources', request.data);
+				console.log('Favorite parsers saved');
 			}
 
 		}
@@ -63,7 +64,7 @@ const actions = {
 				})
 
 				context.commit('SET_FAVORITES', favorites);
-				console.log('Favorites list saved');
+				console.log('Favorite parsources saved');
 			}
 		}
 		catch (err) {

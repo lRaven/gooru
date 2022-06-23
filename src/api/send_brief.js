@@ -25,12 +25,10 @@ async function send_brief(brief) {
 		});
 
 		if (request.status === 200) {
-			console.log(request);
+			console.log('Brief sent');
 		}
-
 	}
-	catch (err) {
-		console.log(brief);
+	catch {
 		console.error(`
 ∧＿∧
 (｡･ω･｡)つ━☆・*。

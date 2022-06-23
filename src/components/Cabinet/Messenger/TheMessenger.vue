@@ -12,7 +12,7 @@
 <script>
 	import ChatBody from "@/components/Cabinet/Messenger/ChatBody.vue";
 	import ChatSendMessage from "@/components/Cabinet/Messenger/ChatSendMessage.vue";
-	import { mapState, mapActions } from "vuex";
+	import { mapState, mapGetters, mapActions } from "vuex";
 
 	export default {
 		name: "TheMessenger",
@@ -34,20 +34,21 @@
 			},
 		},
 		computed: {
-			...mapState(["baseURL"]),
+			...mapGetters(["BASEURL_WITHOUT_PROTOCOL"]),
 			...mapState({
 				user: (state) => state.cabinet.user,
 				chat_messages: (state) => state.messenger.chat_messages,
 			}),
+			chatSocket() {
+				return new WebSocket(
+					`ws://${this.BASEURL_WITHOUT_PROTOCOL}/ws/chat/${
+						this.$route.query.appeal_id
+					}/?Authorization=token ${this.$cookies.get("auth_token")}`
+				);
+			},
 		},
 		data() {
 			return {
-				chatSocket: new WebSocket(
-					`ws://localhost:8003/ws/chat/${+this.$route.query
-						.appeal_id}/?Authorization=token ${this.$cookies.get(
-						"auth_token"
-					)}`
-				),
 				messages: [],
 				isSendMessage: false,
 			};

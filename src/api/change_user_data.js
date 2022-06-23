@@ -15,7 +15,7 @@ async function change_user_data(user_id, args) {
 		});
 
 		if (request.status === 200) {
-			console.log('User data has been successfully changed');
+			console.log('User data changed');
 			store.dispatch('getUserData');
 		}
 	}

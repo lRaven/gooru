@@ -113,10 +113,7 @@
 				font-size: 2.4rem;
 				font-weight: 600;
 				&:first-child {
-					margin-bottom: 1rem;
-				}
-				&:last-child {
-					margin-bottom: 1.2rem;
+					margin-bottom: 2rem;
 				}
 
 				&-big {
@@ -125,7 +122,7 @@
 					font-size: 3.2rem;
 					font-weight: 600;
 					&:nth-child(2) {
-						margin-bottom: 1rem;
+						margin-bottom: 3rem;
 						margin-left: auto;
 					}
 				}
@@ -141,7 +138,10 @@
 				height: max-content;
 			}
 		}
+
 		&__help {
+			background: url("/public/img/cabinet/message.png") center / cover
+				no-repeat;
 			display: flex;
 			flex-direction: column;
 			gap: 3rem;
