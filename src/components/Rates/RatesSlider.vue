@@ -33,10 +33,9 @@
 		>
 			<swiper-slide v-for="slide in slides" :key="slide.id">
 				<rate-card
-					:name="slide.name"
-					:price="slide.price"
-					:checklist="slide.checklist"
-					:description="slide.description"
+					:rate="slide"
+					ButtonText="Выбрать"
+					@click_button="this.$router.push({ name: 'login' })"
 				></rate-card>
 			</swiper-slide>
 		</swiper>

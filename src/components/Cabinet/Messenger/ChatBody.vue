@@ -1,23 +1,38 @@
 <template>
 	<div class="chat-body">
-		<ul
-			class="chat-body__messages"
-			ref="message_list"
-			v-if="chat_messages.length > 0"
-		>
-			<r-message
-				v-for="message in chat_messages"
-				:key="message.id"
-				:message="message"
-			></r-message>
-		</ul>
-		<p class="chat-body__empty" v-else>*chat is empty*</p>
+		<transition mode="out-in">
+			<r-loader v-if="!isMessagesLoaded"></r-loader>
+		</transition>
+
+		<transition mode="out-in">
+			<ul
+				class="chat-body__messages"
+				ref="message_list"
+				v-if="chat_messages.length > 0 && isMessagesLoaded"
+			>
+				<r-message
+					v-for="message in chat_messages"
+					:key="message.id"
+					:message="message"
+				></r-message>
+			</ul>
+		</transition>
+
+		<transition mode="out-in">
+			<p
+				class="chat-body__empty"
+				v-if="chat_messages.length === 0 && isMessagesLoaded"
+			>
+				*chat is empty*
+			</p>
+		</transition>
 	</div>
 </template>
 
 <script>
 	import { mapState } from "vuex";
 	import rMessage from "@/components/Cabinet/Messenger/r-message.vue";
+	import rLoader from "@/components/r-loader.vue";
 
 	export default {
 		name: "ChatBody",
@@ -26,8 +41,7 @@
 			chat_messages: Array,
 			send_message: Boolean,
 		},
-		components: { rMessage },
-
+		components: { rMessage, rLoader },
 		watch: {
 			send_message() {
 				if (this.send_message) {
@@ -38,6 +52,7 @@
 				}
 			},
 			chat_messages() {
+				this.isMessagesLoaded = true;
 				if (this.chat_messages.length > 0) {
 					this.scrollMessageList();
 				}
@@ -46,6 +61,9 @@
 		computed: {
 			...mapState({ user: (state) => state.cabinet.user }),
 		},
+		data: () => ({
+			isMessagesLoaded: false,
+		}),
 		methods: {
 			scrollMessageList() {
 				this.$nextTick(() => {
@@ -59,6 +77,7 @@
 
 <style lang="scss" scoped>
 	.chat-body {
+		position: relative;
 		padding: 4rem 4rem 1rem 4rem;
 		display: flex;
 		justify-content: center;

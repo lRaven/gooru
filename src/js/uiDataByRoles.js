@@ -10,6 +10,7 @@ const navBarForUser = [
 	{ id: 2, selected: false, tab: "parsources", icon_fill: "" , text: "Мои парсеры"},
 	{ id: 3, selected: false, tab: "favorites", icon_fill: "", text: "Избраное" },
 	{ id: 4, selected: false, tab: "profile", icon_fill: "", text: "Мой профиль" },
+	{ id: 5, selected: false, tab: "rates", icon_fill: "", text: "Подписки" },
 ]
 
 export { navBarForUser, navBarForManager };

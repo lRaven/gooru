@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import { mapState, mapActions } from "vuex";
+	import { mapState } from "vuex";
 
 	import TheHeader from "@/components/TheHeader";
 
@@ -38,12 +38,6 @@
 				user_auth: (state) => state.cabinet.user_auth,
 				tab: (state) => state.navigation_panel.tab,
 			}),
-		},
-		methods: {
-			...mapActions(["getFavoriteParsers"]),
-		},
-		created() {
-			this.getFavoriteParsers();
 		},
 	};
 </script>

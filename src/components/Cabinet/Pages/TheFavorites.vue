@@ -74,13 +74,19 @@
 				</div>
 			</div>
 
-			<div class="the-favorites__list">
-				<favorite-card
-					v-for="favorite in favorites"
-					:key="favorite.id"
-					:parsource="favorite"
-				></favorite-card>
-			</div>
+			<transition mode="out-in">
+				<r-loader v-if="!isFavoritesLoaded"></r-loader>
+			</transition>
+
+			<transition mode="out-in">
+				<div class="the-favorites__list" v-if="isFavoritesLoaded">
+					<favorite-card
+						v-for="favorite in favorites"
+						:key="favorite.id"
+						:parsource="favorite"
+					></favorite-card>
+				</div>
+			</transition>
 
 			<!-- <div class="the-favorites__bottom">
 				<r-button color="bordered" text="Показать ещё"></r-button>
@@ -143,13 +149,14 @@
 </template>
 
 <script>
-	import { mapState, mapMutations } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 
 	import rButton from "@/components/r-button";
 	import rDropdown from "@/components/Cabinet/r-dropdown";
 	import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
 	import FavoriteCard from "@/components/Cabinet/Favorites/FavoriteCard";
 	// import rPagination from "@/components/r-pagination";
+	import rLoader from "@/components/r-loader.vue";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
 	import rSpoiler from "@/components/r-spoiler";
@@ -162,25 +169,36 @@
 			rDateRangePicker,
 			FavoriteCard,
 			// rPagination,
+			rLoader,
 
 			RightPanel,
 			rSpoiler,
 			rCheckbox,
 			rButton,
 		},
+		watch: {
+			favorites() {
+				this.isFavoritesLoaded = true;
+			},
+		},
 		computed: {
 			...mapState({ favorites: (state) => state.favorites.favorites }),
 		},
 		data: () => ({
+			isFavoritesLoaded: false,
 			isSortPanelVisible: false,
 			show_by_source: "",
 			show_by_content: "",
 
 			total_selected: 0,
 		}),
-		methods: { ...mapMutations(["SET_TAB"]) },
+		methods: {
+			...mapMutations(["SET_TAB"]),
+			...mapActions(["getFavoriteParsers"]),
+		},
 		created() {
 			this.SET_TAB("favorites");
+			this.getFavoriteParsers();
 		},
 	};
 </script>
@@ -195,6 +213,7 @@
 		gap: 3rem;
 
 		&__main {
+			position: relative;
 			padding: 4rem 0 4rem 4rem;
 			width: 100%;
 			height: calc(100vh - 8rem);

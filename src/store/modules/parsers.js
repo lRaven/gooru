@@ -93,6 +93,7 @@ const actions = {
 
 			if (request.status === 200) {
 				context.commit('SET_ALL_PARSOURCES', request.data.results);
+				console.log('Full parsource list saved');
 			}
 
 		}
@@ -162,7 +163,7 @@ const actions = {
 
 			if (request.status === 200) {
 				context.commit('SET_ALL_PARSERS', request.data.results);
-				console.log('List of parsers is saved');
+				console.log('Full parser list saved');
 			}
 
 		}

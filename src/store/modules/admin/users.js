@@ -12,6 +12,26 @@ const getters = {}
 const mutations = {
 	SET_USERS: (state, payload) => state.users = payload,
 	SET_USERS_PAGINATION: (state, payload) => state.users_pagination = payload,
+
+	SELECT_ALL_USERS: state => {
+		state.users.forEach(user => user.selected = true);
+	},
+
+	UNSELECT_ALL_USERS: state => {
+		state.users.forEach(user => user.selected = false);
+	},
+
+
+	SELECT_USER: (state, payload) => {
+		state.users.forEach(user => {
+			if (user.id === payload) { user.selected = true }
+		})
+	},
+	UNSELECT_USER: (state, payload) => {
+		state.users.forEach(user => {
+			if (user.id === payload) { user.selected = false }
+		})
+	},
 }
 
 const actions = {
@@ -22,6 +42,7 @@ const actions = {
 
 			if (request.status === 200) {
 				context.commit('SET_USERS', request.data.results);
+				console.log('Users list saved');
 
 				let pagination_info = {};
 
