@@ -28,7 +28,7 @@
 		<r-button
 			:text="ButtonText"
 			v-if="isHasButton"
-			@click="this.$emit('setRate', this.rate.id)"
+			@click="this.$emit('selectRate', this.rate.id)"
 		></r-button>
 	</div>
 </template>
