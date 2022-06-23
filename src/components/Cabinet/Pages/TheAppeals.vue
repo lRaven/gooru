@@ -98,6 +98,7 @@
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import { add_ticket } from "@/api/add_ticket";
+	import { multiaction_delete } from "@/api/multiaction_delete";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
@@ -170,6 +171,8 @@
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllParsers", "getAppeals", "getAllMessages"]),
 			add_ticket,
+			multiaction_delete,
+
 			page_changed(page_number) {
 				this.$router.push({
 					name: "appeals",
@@ -186,6 +189,9 @@
 			this.getAllMessages();
 
 			this.getAllParsers();
+		},
+		mounted() {
+			// multiaction_delete({ model: "notify", ids: [90, 91, 93] });
 		},
 	};
 </script>

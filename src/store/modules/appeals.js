@@ -52,7 +52,6 @@ const actions = {
 
 			if (request.status === 200) {
 				context.commit('SET_APPEALS', request.data.results);
-				console.log('Appeals list saved');
 
 				let pagination_info = {};
 
@@ -62,6 +61,7 @@ const actions = {
 					}
 				}
 				context.commit('SET_APPEALS_PAGINATION', pagination_info);
+				console.log('Appeals list saved');
 			}
 
 		}

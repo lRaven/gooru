@@ -1,61 +1,93 @@
 <template>
 	<section class="the-rates">
-		<h2 class="the-rates__title">Выберите тариф</h2>
-		<div class="the-rates__body">
-			<rate-card
-				v-for="rate in rates"
-				:key="rate.id"
-				:rate="rate"
-				color="white"
-				ButtonText="Оплатить"
-				@click_button="select_rate"
-			></rate-card>
-
-			<div class="the-rates__brief">
-				<div class="the-rates__brief-col">
-					<p class="the-rates__brief-text">
-						<span class="the-rates__brief-text-big"
-							>не знаете,</span
-						>
-						что вам подходит?
-					</p>
-					<p class="the-rates__brief-text-big">Мы вам поможем!</p>
-					<p class="the-rates__brief-text">
-						Для этого ответьте на 8 простых вопросов
-					</p>
-				</div>
-
-				<r-button
-					text="Ответить на вопросы"
-					@click="this.$router.push({ name: 'brief' })"
-				></r-button>
-			</div>
-
-			<div class="the-rates__help">
-				<div class="the-rates__help-row">
-					<h4 class="the-rates__help-text-bold">
-						Получить<br />помощь
-					</h4>
-					<h4 class="the-rates__help-text">от менеджера</h4>
-				</div>
-
-				<r-button
-					text="Написать менеджеру"
+		<template v-if="!isHasRate">
+			<h2 class="the-rates__title">Выберите тариф</h2>
+			<div class="the-rates__body">
+				<rate-card
+					v-for="rate in rates"
+					:key="rate.id"
+					:rate="rate"
 					color="white"
-					@click="
-						this.$router.push({
-							name: 'appeals',
-							query: { page: 1 },
-						})
-					"
-				></r-button>
+					ButtonText="Оплатить"
+					@click_button="select_rate"
+				></rate-card>
+
+				<div class="the-rates__brief">
+					<div class="the-rates__brief-col">
+						<p class="the-rates__brief-text">
+							<span class="the-rates__brief-text-big"
+								>не знаете,</span
+							>
+							что вам подходит?
+						</p>
+						<p class="the-rates__brief-text-big">Мы вам поможем!</p>
+						<p class="the-rates__brief-text">
+							Для этого ответьте на 8 простых вопросов
+						</p>
+					</div>
+
+					<r-button
+						text="Ответить на вопросы"
+						@click="this.$router.push({ name: 'brief' })"
+					></r-button>
+				</div>
+
+				<div class="the-rates__help">
+					<div class="the-rates__help-row">
+						<h4 class="the-rates__help-text-bold">
+							Получить<br />помощь
+						</h4>
+						<h4 class="the-rates__help-text">от менеджера</h4>
+					</div>
+
+					<r-button
+						text="Написать менеджеру"
+						color="white"
+						@click="
+							this.$router.push({
+								name: 'appeals',
+								query: { page: 1 },
+							})
+						"
+					></r-button>
+				</div>
 			</div>
-		</div>
+		</template>
+
+		<template v-else>
+			<div class="the-rates__stats">
+				<div class="the-rates__stats-item">
+					<h2 class="the-rates__title">Статистика за сегодня</h2>
+					<stats-card :stats_items="stats[0]" />
+				</div>
+
+				<div class="the-rates__stats-item">
+					<h2 class="the-rates__title">Общая статистика</h2>
+					<stats-card :stats_items="stats[1]" />
+				</div>
+
+				<div class="the-rates__stats-item">
+					<h2 class="the-rates__title">Текущий тариф</h2>
+					<stats-card
+						:stats_items="stats[2]"
+						:isRate="true"
+						title="«Ознакомительный»"
+					/>
+				</div>
+
+				<div class="the-rates__stats-buttons">
+					<r-button text="Перейти к оплате" />
+
+					<r-button color="bordered" text="Сменить тариф" />
+				</div>
+			</div>
+		</template>
 	</section>
 </template>
 
 <script>
 	import RateCard from "@/components/Rates/RateCard.vue";
+	import StatsCard from "@/components/Cabinet/Stats/StatsCard.vue";
 	import rButton from "@/components/r-button.vue";
 	import { mapState, mapMutations } from "vuex";
 
@@ -63,16 +95,56 @@
 		name: "TheRates",
 		components: {
 			RateCard,
+			StatsCard,
 			rButton,
 		},
 		computed: {
-			...mapState({ rates: (state) => state.rates.rates }),
+			...mapState({
+				baseURL: (state) => state.baseURL,
+				rates: (state) => state.rates.rates,
+				stats: (state) => state.stats.stats,
+			}),
 		},
+		data: () => ({ isHasRate: false }),
 		methods: {
 			...mapMutations(["SET_TAB"]),
 
-			select_rate() {
-				console.log("Rate select");
+			select_rate(rate_id) {
+				console.log("Rate selected: ", rate_id);
+				console.log("Opening the payment page...");
+
+				switch (rate_id) {
+					case 1: {
+						window
+							.open(
+								`${this.baseURL}/api/pay/${rate_id}`,
+								"_blank"
+							)
+							.focus();
+						break;
+					}
+					case 2: {
+						window
+							.open(
+								`${this.baseURL}/api/pay/${rate_id}`,
+								"_blank"
+							)
+							.focus();
+						break;
+					}
+					case 3: {
+						window
+							.open(`${this.baseURL}/api/pay/${1}`, "_blank")
+							.focus();
+						break;
+					}
+					case 4: {
+						window
+							.open(`${this.baseURL}/api/pay/${2}`, "_blank")
+							.focus();
+						break;
+					}
+				}
 			},
 		},
 		created() {
@@ -162,6 +234,35 @@
 				padding: 1.2rem 3rem;
 				width: 100%;
 				margin-top: auto;
+			}
+		}
+
+		&__stats {
+			display: grid;
+			grid-template-columns: repeat(2, 52rem);
+			grid-gap: 6rem 14rem;
+
+			&-buttons {
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+				padding-top: 6.6rem;
+				.r-button {
+					width: max-content;
+					font-size: 1.4rem;
+					&:first-child {
+						padding: 1.6rem 4rem;
+					}
+					&:last-child {
+						padding: 1rem 2.8rem;
+					}
+				}
+			}
+
+			.the-rates {
+				&__title {
+					margin-bottom: 3rem;
+				}
 			}
 		}
 	}

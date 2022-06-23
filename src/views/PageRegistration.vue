@@ -114,7 +114,7 @@
 		methods: {
 			registration() {
 				axios
-					.post(`${this.baseURL}/auth/users/`, {
+					.post(`${this.baseURL}/user/`, {
 						email: this.email,
 						username: this.username,
 						password: this.password,

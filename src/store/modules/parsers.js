@@ -41,15 +41,6 @@ const mutations = {
 		})
 	},
 
-	DELETE_SELECTED_PARSOURCES: state => {
-		for (let index = 0; index < state.parsources.length; index++) {
-			if (state.parsources[index].selected === true) {
-				state.parsources.splice(index, 1);
-				index--;
-			}
-		}
-	},
-
 	SET_PARSERS: (state, payload) => state.parsers = payload,
 	SET_PARSERS_PAGINATION: (state, payload) => state.parsers_pagination = payload,
 	SET_ALL_PARSERS: (state, payload) => state.all_parsers = payload,
@@ -163,7 +154,6 @@ const actions = {
 	},
 	getAllParsers: async context => {
 		try {
-			context;
 			const request =
 				await axios.get(`${store.state.baseURL}/parser/?page_size=999`,
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
@@ -183,7 +173,12 @@ const actions = {
 しーＪ\\  °。+  Something went wrong.`
 			);
 		}
-	}
+	},
+
+	deleteSelectedParsources: (context, parsources) => {
+		context, parsources,
+			console.log(store.state.parsers.parsources);
+	},
 }
 
 export default {
