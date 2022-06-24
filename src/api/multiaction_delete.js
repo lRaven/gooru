@@ -18,12 +18,13 @@ async function multiaction_delete(args) {
 			);
 
 		if (request.status === 200) {
-			console.log(request);
 			console.log(`Elements ${args.ids} in model ${args.model} deleted`);
+
+			store.dispatch(args.model_update.name, args.model_update.data);
 		}
 	}
 
-	catch (err) {
+	catch {
 		console.error(`
 ∧＿∧
 (｡･ω･｡)つ━☆・*。

@@ -119,7 +119,7 @@
 			},
 			deleteSelected() {
 				if (this.deleteSelected === true) {
-					this.DELETE_SELECTED_PARSOURCES();
+					this.deleteSelectedParsources();
 					setTimeout(() => {
 						this.deleteSelected = false;
 					}, 1000);
@@ -170,9 +170,8 @@
 				"SET_TAB",
 				"SELECT_ALL_PARSOURCES",
 				"UNSELECT_ALL_PARSOURCES",
-				"DELETE_SELECTED_PARSOURCES",
 			]),
-			...mapActions(["getParsources"]),
+			...mapActions(["getParsources", "deleteSelectedParsources"]),
 			sort_list(by) {
 				console.log(by);
 			},

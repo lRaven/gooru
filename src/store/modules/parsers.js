@@ -1,6 +1,7 @@
 import cookie from 'vue-cookies'
 import axios from 'axios'
 import store from '@/store'
+import { multiaction_delete } from '@/api/multiaction_delete'
 
 const state = () => ({
 	parsources: [],
@@ -175,9 +176,23 @@ const actions = {
 		}
 	},
 
-	deleteSelectedParsources: (context, parsources) => {
-		context, parsources,
-			console.log(store.state.parsers.parsources);
+	deleteSelectedParsources: () => {
+		const parsources = store.state.parsers.parsources;
+		const ids = parsources.reduce((acc, current) => {
+			if (current.selected === true) { acc.push(current['id']); }
+			return acc;
+		}, []);
+
+		if (ids.length > 0) {
+			multiaction_delete({
+				model: 'parsource',
+				ids: ids,
+				model_update: {
+					name: "getParsources",
+					data: { page_number: 1, page_size: 10, }
+				}
+			});
+		}
 	},
 }
 

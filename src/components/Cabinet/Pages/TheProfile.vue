@@ -232,7 +232,10 @@
 			},
 
 			change_avatar(target) {
+				//* запись в переменную для отправки на сервер
 				this.changed_avatar = target.files[0];
+
+				//* функционал предпросмотра загруженной аватарки
 				const fileReader = new FileReader();
 				fileReader.addEventListener("load", () => {
 					this.avatar = fileReader.result;
