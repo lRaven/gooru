@@ -257,6 +257,7 @@
 		&__content {
 			display: grid;
 			grid-template-rows: max-content 1fr max-content;
+			overflow: auto;
 		}
 		&__sort {
 			display: grid;
