@@ -53,7 +53,7 @@
 	import rInput from "@/components/Auth/r-input.vue";
 	import rTextarea from "@/components/Cabinet/r-textarea.vue";
 	import rButton from "@/components/r-button.vue";
-	import { send_new_parsource } from "@/api/send_new_parsource";
+	import { send_new_parsource } from "@/api/parser/send_new_parsource";
 
 	export default {
 		name: "TheNewParser",

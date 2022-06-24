@@ -129,9 +129,9 @@
 	import { mapState, mapMutations } from "vuex";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
-	import { change_password } from "@/api/change_password";
-	import { change_user_data } from "@/api/change_user_data";
-	import { upload_avatar } from "@/api/upload_avatar";
+	import { change_password } from "@/api/user/change_password";
+	import { change_user_data } from "@/api/user/change_user_data";
+	import { upload_avatar } from "@/api/user/upload_avatar";
 
 	export default {
 		name: "TheProfile",

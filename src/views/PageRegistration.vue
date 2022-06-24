@@ -112,21 +112,20 @@
 			password: "",
 		}),
 		methods: {
-			registration() {
-				axios
-					.post(`${this.baseURL}/user/`, {
+			async registration() {
+				try {
+					const request = await axios.post(`${this.baseURL}/user/`, {
 						email: this.email,
 						username: this.username,
 						password: this.password,
-					})
-					.then((response) => {
-						if (response.status === 201) {
-							this.$router.push("/login");
-						}
-					})
-					.catch((err) => {
-						throw new Error(err);
 					});
+
+					if (request.status === 201) {
+						this.$router.push({ name: "login" });
+					}
+				} catch (err) {
+					throw new Error(err);
+				}
 			},
 
 			validateForm() {

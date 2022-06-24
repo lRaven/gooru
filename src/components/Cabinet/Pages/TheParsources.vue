@@ -58,12 +58,26 @@
 			</transition>
 
 			<transition mode="out-in">
-				<div class="the-parsources__list" v-if="isParsourcesLoaded">
+				<div
+					class="the-parsources__list"
+					v-if="isParsourcesLoaded && parsources.length > 0"
+				>
 					<parsource-card
 						v-for="parsource in parsources"
 						:key="parsource.id"
 						:parsource="parsource"
 					></parsource-card>
+				</div>
+			</transition>
+
+			<transition mode="out-in">
+				<div class="the-parsources__empty">
+					<p
+						class="the-parsources__empty-text"
+						v-if="parsources.length === 0"
+					>
+						Парсеров нет
+					</p>
 				</div>
 			</transition>
 
@@ -280,6 +294,12 @@
 				padding: 1.2rem 2.8rem;
 				font-weight: 500;
 			}
+		}
+
+		&__empty {
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 	}
 </style>

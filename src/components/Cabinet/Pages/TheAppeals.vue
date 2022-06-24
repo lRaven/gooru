@@ -8,7 +8,10 @@
 			</transition>
 
 			<transition mode="out-in">
-				<div class="the-appeals__list shadow" v-if="isAppealsLoaded">
+				<div
+					class="the-appeals__list shadow"
+					v-if="isAppealsLoaded && appeals.length > 0"
+				>
 					<appeals-card
 						v-for="appeal in appeals"
 						:key="appeal.id"
@@ -19,6 +22,12 @@
 						:messages="all_messages"
 					></appeals-card>
 				</div>
+			</transition>
+
+			<transition mode="out-in">
+				<p class="the-appeals__empty" v-if="appeals.length === 0">
+					Обращений нет
+				</p>
 			</transition>
 
 			<div class="the-appeals__bottom" v-if="number_of_pages > 1">
@@ -97,7 +106,7 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
-	import { add_ticket } from "@/api/add_ticket";
+	import { add_ticket } from "@/api/ticket/add_ticket";
 	import { multiaction_delete } from "@/api/multiaction_delete";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";

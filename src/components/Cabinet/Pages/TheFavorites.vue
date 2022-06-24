@@ -79,13 +79,22 @@
 			</transition>
 
 			<transition mode="out-in">
-				<div class="the-favorites__list" v-if="isFavoritesLoaded">
+				<div
+					class="the-favorites__list"
+					v-if="isFavoritesLoaded && favorites.length > 0"
+				>
 					<favorite-card
 						v-for="favorite in favorites"
 						:key="favorite.id"
 						:parsource="favorite"
 					></favorite-card>
 				</div>
+			</transition>
+
+			<transition mode="out-in">
+				<p class="the-favorites__empty" v-if="favorites.length === 0">
+					Список избранного пуст
+				</p>
 			</transition>
 
 			<!-- <div class="the-favorites__bottom">
