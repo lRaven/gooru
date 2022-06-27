@@ -11,7 +11,7 @@
 			</p>
 			<r-link
 				text="СВЯЗАТЬСЯ С НАМИ"
-				way="https://telegram.im/@compass_pro"
+				way="https://telegram.im/@compas_gooru"
 			>
 				<template v-slot:icon>
 					<svg

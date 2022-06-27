@@ -43,7 +43,7 @@
 				type="submit"
 				:disabled="isDisabledBtn"
 				@click="
-					send_new_parser({
+					send_new_parsource({
 						name: 'name',
 						data_source: this.url,
 						description: this.description,
@@ -60,8 +60,7 @@
 	import rInput from "@/components/Auth/r-input.vue";
 	import rTextarea from "@/components/Cabinet/r-textarea.vue";
 	import rButton from "@/components/r-button.vue";
-	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
-	import { send_new_parser } from "@/api/send_new_parser";
+	import { send_new_parsource } from "@/api/parser/send_new_parsource";
 
 	export default {
 		name: "TheNewParser",
@@ -69,7 +68,6 @@
 			rInput,
 			rTextarea,
 			rButton,
-			rDropdown,
 		},
 		watch: {
 			url() {
@@ -115,7 +113,7 @@
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
-			send_new_parser,
+			send_new_parsource,
 		},
 		created() {
 			this.SET_TAB("new_parser");

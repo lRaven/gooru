@@ -1,5 +1,9 @@
 <template>
-	<div class="r-dropdown" v-click-away="closeDropdown">
+	<div
+		class="r-dropdown"
+		:class="list.length === 0 ? 'disabled' : ''"
+		v-click-away="closeDropdown"
+	>
 		<div
 			class="r-dropdown__header"
 			@click="
@@ -70,8 +74,10 @@
 				this.closeDropdown();
 			},
 			openDropdown() {
-				this.isContentVisible = true;
-				this.$refs.arrow.classList.add("open");
+				if (this.list.length > 0) {
+					this.isContentVisible = true;
+					this.$refs.arrow.classList.add("open");
+				}
 			},
 			closeDropdown() {
 				this.isContentVisible = false;
@@ -89,6 +95,15 @@
 	.r-dropdown {
 		position: relative;
 		user-select: none;
+		&.disabled {
+			.r-dropdown {
+				&__header {
+					cursor: default;
+					opacity: 0.5;
+				}
+			}
+		}
+
 		&__header {
 			cursor: pointer;
 			display: flex;

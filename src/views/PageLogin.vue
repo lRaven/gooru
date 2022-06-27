@@ -79,27 +79,28 @@
 		}),
 		methods: {
 			...mapActions(["getUserData"]),
-			login() {
-				axios
-					.post(`${this.baseURL}/auth/token/login/`, {
-						username: this.username,
-						password: this.password,
-					})
-					.then((response) => {
-						if (response.status === 200) {
-							this.$cookies.set(
-								"auth_token",
-								response.data.auth_token
-							);
-							localStorage.setItem("userAuth", "yes");
-							this.getUserData();
-							this.$router.push("/cabinet");
+			async login() {
+				try {
+					const request = await axios.post(
+						`${this.baseURL}/auth/token/login/`,
+						{
+							username: this.username,
+							password: this.password,
 						}
-					})
-					.catch((err) => {
-						console.log(err)
-						throw new Error(err);
-					});
+					);
+
+					if (request.status === 200) {
+						this.$cookies.set(
+							"auth_token",
+							request.data.auth_token
+						);
+						localStorage.setItem("userAuth", "yes");
+						this.getUserData();
+						this.$router.push({ name: "cabinet" });
+					}
+				} catch (err) {
+					throw new Error(err);
+				}
 			},
 			validateForm() {
 				this.username.length > 0 && this.password.length > 0

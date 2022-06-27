@@ -129,8 +129,9 @@
 	import { mapState, mapMutations } from "vuex";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
-	import { change_password } from "@/api/change_password";
-	import { change_user_data } from "@/api/change_user_data";
+	import { change_password } from "@/api/user/change_password";
+	import { change_user_data } from "@/api/user/change_user_data";
+	import { upload_avatar } from "@/api/user/upload_avatar";
 
 	export default {
 		name: "TheProfile",
@@ -198,27 +199,28 @@
 				return result;
 			},
 		},
-		data() {
-			return {
-				isPersonalDataFormDisabled: true,
-				isPasswordsFormDisabled: true,
+		data: () => ({
+			isPersonalDataFormDisabled: true,
+			isPasswordsFormDisabled: true,
 
-				isDisabledBtn: true,
+			isDisabledBtn: true,
 
-				avatar: "img/icon/cabinet/no-avatar.svg",
-				first_name: "",
-				last_name: "",
-				phone_number: "",
-				email: "",
+			avatar: "img/icon/cabinet/no-avatar.svg",
+			changed_avatar: "",
 
-				password: "",
-				old_password: "",
-			};
-		},
+			first_name: "",
+			last_name: "",
+			phone_number: "",
+			email: "",
+
+			password: "",
+			old_password: "",
+		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			change_user_data,
 			change_password,
+			upload_avatar,
 
 			set_user_data() {
 				this.avatar = this.user_data.avatar;
@@ -230,6 +232,10 @@
 			},
 
 			change_avatar(target) {
+				//* запись в переменную для отправки на сервер
+				this.changed_avatar = target.files[0];
+
+				//* функционал предпросмотра загруженной аватарки
 				const fileReader = new FileReader();
 				fileReader.addEventListener("load", () => {
 					this.avatar = fileReader.result;
@@ -261,7 +267,7 @@
 				}
 
 				if (this.isAvatarChanged === true) {
-					console.log("Send avatar");
+					upload_avatar(this.user_data.id, this.changed_avatar);
 				}
 
 				this.isPersonalDataFormDisabled = true;
@@ -281,11 +287,12 @@
 
 	.the-profile {
 		display: grid;
-		grid-template-columns: 1fr 29rem;
+		grid-template-columns: 1fr minmax(0, 29rem);
 		grid-template-rows: repeat(2, max-content);
 		padding: 4rem 0 4rem 4rem;
 		gap: 3rem;
 		height: 100%;
+		overflow: auto;
 
 		&__title,
 		&__main {

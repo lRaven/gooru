@@ -2,7 +2,6 @@ import axios from 'axios';
 import store from '@/store';
 import cookie from 'vue-cookies';
 
-
 async function change_user_data(user_id, args) {
 	try {
 		const request = await axios.patch(`${store.state.baseURL}/user/${user_id}/`, {
@@ -15,7 +14,7 @@ async function change_user_data(user_id, args) {
 		});
 
 		if (request.status === 200) {
-			console.log('User data has been successfully changed');
+			console.log('User data changed');
 			store.dispatch('getUserData');
 		}
 	}

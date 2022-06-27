@@ -12,7 +12,7 @@
 <script>
 	import ChatBody from "@/components/Cabinet/Messenger/ChatBody.vue";
 	import ChatSendMessage from "@/components/Cabinet/Messenger/ChatSendMessage.vue";
-	import { mapState, mapActions } from "vuex";
+	import { mapState, mapGetters, mapActions } from "vuex";
 
 	export default {
 		name: "TheMessenger",
@@ -32,9 +32,23 @@
 					}, 100);
 				}
 			},
+			"$route.query.appeal_id"() {
+				if (this.$route.path === this.path) {
+					this.remove_get_message();
+					this.chatSocket.close();
+
+					this.createWebSocket(
+						this.BASEURL_WITHOUT_PROTOCOL,
+						this.$route.query.appeal_id,
+						this.$cookies.get("auth_token")
+					);
+					this.getChatMessages(this.$route.query.appeal_id);
+					this.get_messsage();
+				}
+			},
 		},
 		computed: {
-			...mapState(["baseURL"]),
+			...mapGetters(["BASEURL_WITHOUT_PROTOCOL"]),
 			...mapState({
 				user: (state) => state.cabinet.user,
 				chat_messages: (state) => state.messenger.chat_messages,
@@ -42,12 +56,9 @@
 		},
 		data() {
 			return {
-				chatSocket: new WebSocket(
-					`ws://localhost:8003/ws/chat/${+this.$route.query
-						.appeal_id}/?Authorization=token ${this.$cookies.get(
-						"auth_token"
-					)}`
-				),
+				chatSocket: null,
+				path: this.$route.path,
+
 				messages: [],
 				isSendMessage: false,
 			};
@@ -66,13 +77,38 @@
 				this.message = "";
 				this.isSendMessage = true;
 			},
+
+			createWebSocket(base_url, chat_id, token) {
+				this.chatSocket = new WebSocket(
+					`ws://${base_url}/ws/chat/${chat_id}/?Authorization=token ${token}`
+				);
+			},
+
+			get_messsage() {
+				this.chatSocket.addEventListener("message", (m) => {
+					this.messages.push(JSON.parse(m.data));
+				});
+			},
+			remove_get_message() {
+				this.chatSocket.removeEventListener(
+					"message",
+					this.get_messsage
+				);
+			},
 		},
 		created() {
-			this.getChatMessages(+this.$route.query.appeal_id);
+			this.createWebSocket(
+				this.BASEURL_WITHOUT_PROTOCOL,
+				this.$route.query.appeal_id,
+				this.$cookies.get("auth_token")
+			);
+			this.getChatMessages(this.$route.query.appeal_id);
 
-			this.chatSocket.addEventListener("message", (m) => {
-				this.messages.push(JSON.parse(m.data));
-			});
+			this.get_messsage();
+		},
+		beforeUnmount() {
+			this.remove_get_message();
+			this.chatSocket.close();
 		},
 	};
 </script>

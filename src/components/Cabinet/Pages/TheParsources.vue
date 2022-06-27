@@ -58,12 +58,26 @@
 			</transition>
 
 			<transition mode="out-in">
-				<div class="the-parsources__list" v-if="isParsourcesLoaded">
+				<div
+					class="the-parsources__list"
+					v-if="isParsourcesLoaded && parsources.length > 0"
+				>
 					<parsource-card
 						v-for="parsource in parsources"
 						:key="parsource.id"
 						:parsource="parsource"
 					></parsource-card>
+				</div>
+			</transition>
+
+			<transition mode="out-in">
+				<div class="the-parsources__empty">
+					<p
+						class="the-parsources__empty-text"
+						v-if="parsources.length === 0"
+					>
+						Парсеров нет
+					</p>
 				</div>
 			</transition>
 
@@ -119,7 +133,7 @@
 			},
 			deleteSelected() {
 				if (this.deleteSelected === true) {
-					this.DELETE_SELECTED_PARSOURCES();
+					this.deleteSelectedParsources();
 					setTimeout(() => {
 						this.deleteSelected = false;
 					}, 1000);
@@ -170,9 +184,8 @@
 				"SET_TAB",
 				"SELECT_ALL_PARSOURCES",
 				"UNSELECT_ALL_PARSOURCES",
-				"DELETE_SELECTED_PARSOURCES",
 			]),
-			...mapActions(["getParsources"]),
+			...mapActions(["getParsources", "deleteSelectedParsources"]),
 			sort_list(by) {
 				console.log(by);
 			},
@@ -244,6 +257,7 @@
 		&__content {
 			display: grid;
 			grid-template-rows: max-content 1fr max-content;
+			overflow: auto;
 		}
 		&__sort {
 			display: grid;
@@ -281,6 +295,12 @@
 				padding: 1.2rem 2.8rem;
 				font-weight: 500;
 			}
+		}
+
+		&__empty {
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 	}
 </style>

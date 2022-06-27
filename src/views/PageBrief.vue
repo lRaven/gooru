@@ -119,8 +119,7 @@
 						<button
 							type="button"
 							class="page-brief__exit"
-							v-if="page_number === page_progress.length"
-							@click="this.$router.push('/')"
+							@click="this.$router.push({ name: 'home' })"
 						>
 							<img src="img/icon/brief/close.svg" alt="close" />
 						</button>

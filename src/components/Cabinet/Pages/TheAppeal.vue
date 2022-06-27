@@ -93,7 +93,7 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
-	import { add_ticket } from "@/api/add_ticket";
+	import { add_ticket } from "@/api/ticket/add_ticket";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
@@ -109,6 +109,13 @@
 			rTextarea,
 			rButton,
 			TheMessenger,
+		},
+		watch: {
+			appeal_id() {
+				if (this.$route.path === this.path) {
+					this.getAppeal(this.appeal_id);
+				}
+			},
 		},
 		computed: {
 			...mapState({
@@ -147,11 +154,15 @@
 				return result;
 			},
 		},
-		data: () => ({
-			topic: "",
-			parser: "",
-			message: "",
-		}),
+		data() {
+			return {
+				path: this.$route.path,
+
+				topic: "",
+				parser: "",
+				message: "",
+			};
+		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllParsers", "getAppeal"]),

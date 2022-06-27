@@ -8,7 +8,7 @@
 		<div class="the-header__container center-wide">
 			<div class="the-header__col">
 				<router-link
-					to="/"
+					:to="{ name: 'home' }"
 					class="the-header__logo"
 					@click="scrollToId('#header')"
 				>
@@ -180,7 +180,7 @@
 	import { scroll } from "@/js/scrollToLink";
 	import { mapState } from "vuex";
 	import { directive } from "vue3-click-away";
-	import { logout } from "@/api/logout";
+	import { logout } from "@/api/user/logout";
 
 	export default {
 		name: "TheHeader",

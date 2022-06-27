@@ -12,7 +12,7 @@ async function change_password(new_password, current_password) {
 		});
 
 		if (request.status === 204) {
-			console.log('Password has been successfully changed');
+			console.log('Password changed');
 		}
 	}
 	catch {

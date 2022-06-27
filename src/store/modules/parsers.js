@@ -1,6 +1,7 @@
 import cookie from 'vue-cookies'
 import axios from 'axios'
 import store from '@/store'
+import { multiaction_delete } from '@/api/multiaction_delete'
 
 const state = () => ({
 	parsources: [],
@@ -41,15 +42,6 @@ const mutations = {
 		})
 	},
 
-	DELETE_SELECTED_PARSOURCES: state => {
-		for (let index = 0; index < state.parsources.length; index++) {
-			if (state.parsources[index].selected === true) {
-				state.parsources.splice(index, 1);
-				index--;
-			}
-		}
-	},
-
 	SET_PARSERS: (state, payload) => state.parsers = payload,
 	SET_PARSERS_PAGINATION: (state, payload) => state.parsers_pagination = payload,
 	SET_ALL_PARSERS: (state, payload) => state.all_parsers = payload,
@@ -73,6 +65,8 @@ const actions = {
 					}
 				}
 				context.commit('SET_PARSOURCES_PAGINATION', pagination_info);
+
+				console.log('Parsource list saved');
 			}
 
 		}
@@ -113,7 +107,10 @@ const actions = {
 				headers: { Authorization: `token ${cookie.get('auth_token')}` }
 			})
 
-			if (request.status === 200) context.commit('SET_PARSOURCE', request.data);
+			if (request.status === 200) {
+				context.commit('SET_PARSOURCE', request.data);
+				console.log('Parsource saved');
+			}
 		}
 		catch (err) {
 			console.error(`
@@ -143,6 +140,8 @@ const actions = {
 					}
 				}
 				context.commit('SET_PARSERS_PAGINATION', pagination_info);
+
+				console.log('Parser list saved');
 			}
 		}
 		catch (err) {
@@ -156,7 +155,6 @@ const actions = {
 	},
 	getAllParsers: async context => {
 		try {
-			context;
 			const request =
 				await axios.get(`${store.state.baseURL}/parser/?page_size=999`,
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
@@ -176,7 +174,26 @@ const actions = {
 しーＪ\\  °。+  Something went wrong.`
 			);
 		}
-	}
+	},
+
+	deleteSelectedParsources: () => {
+		const parsources = store.state.parsers.parsources;
+		const ids = parsources.reduce((acc, current) => {
+			if (current.selected === true) { acc.push(current['id']); }
+			return acc;
+		}, []);
+
+		if (ids.length > 0) {
+			multiaction_delete({
+				model: 'parsource',
+				ids: ids,
+				model_update: {
+					name: "getParsources",
+					data: { page_number: 1, page_size: 10, }
+				}
+			});
+		}
+	},
 }
 
 export default {
