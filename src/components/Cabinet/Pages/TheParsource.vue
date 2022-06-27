@@ -304,14 +304,16 @@
 		grid-template-columns: 1fr max-content;
 		padding: 0;
 		height: calc(100vh - 8rem);
+		grid-gap: 3rem;
 
 		&__main {
-			padding: 4rem 3rem 4rem 4rem;
+			padding: 4rem 1rem 4rem 4rem;
 			display: grid;
 			grid-template-columns: 41rem 1fr;
 			grid-template-rows: repeat(2, max-content);
 			grid-template-columns: max-content, 1fr;
 			grid-gap: 3rem;
+			overflow-y: auto;
 		}
 
 		&__col {
@@ -325,6 +327,8 @@
 		&__image {
 			width: 100%;
 			margin-bottom: 4rem;
+			max-height: 40rem;
+			object-fit: contain;
 		}
 
 		&__info {

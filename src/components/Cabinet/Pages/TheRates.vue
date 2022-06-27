@@ -158,6 +158,8 @@
 
 	.the-rates {
 		padding: 4rem;
+		height: 100%;
+		overflow: auto;
 
 		&__title {
 			font-weight: 400;
