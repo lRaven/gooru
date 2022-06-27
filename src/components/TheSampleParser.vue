@@ -21,7 +21,7 @@
 					<r-link
 						color="white"
 						:text="link_text"
-						way="https://telegram.im/@compass_pro"
+						way="https://telegram.im/@compas_gooru"
 					>
 						<template v-slot:icon>
 							<svg
