@@ -24,7 +24,7 @@ export default {
       type: String,
     },
     itemValue: {
-      type: String,
+      type: [String, Number],
     },
   },
 };
@@ -61,7 +61,7 @@ export default {
     font-weight: 500;
     line-height: 3.2rem;
     text-align: left;
-    color: $blue-gray;
+    color: $gray;
     &_inline {
       font-size: 1.6rem;
       font-weight: 400;

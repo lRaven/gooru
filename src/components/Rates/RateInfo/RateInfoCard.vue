@@ -71,7 +71,7 @@ export default {
     font-weight: 700;
     line-height: 3.4rem;
     text-align: left;
-    color: $purple;
+    color: $primary;
     margin: 0 0 1.6rem 0
   }
   &__rate-info-item {

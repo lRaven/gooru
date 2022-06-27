@@ -9,5 +9,4 @@ const selectDataByRole = (userRole) => {
           return navBarForUser;
     }
 }
-
 export { selectDataByRole }
