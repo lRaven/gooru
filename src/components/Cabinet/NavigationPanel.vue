@@ -157,7 +157,7 @@
 					:tabValue="tabs[2].tab"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[2].selected"
-					v-if="user.role !== 'AdminCRM'"
+					
 				>
 					<template v-slot:icon>
 						<svg

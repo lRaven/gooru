@@ -13,4 +13,11 @@ const navBarForUser = [
 	{ id: 5, selected: false, tab: "rates", icon_fill: "", text: "Подписки" },
 ]
 
-export { navBarForUser, navBarForManager };
+const navBarForAdmin = [
+	{ id: 1, selected: false, tab: "users", icon_fill: "", text: "Пользователи" },
+    { id: 2, selected: false, tab: "parsources", icon_fill: "", text: "Все парсеры" },
+	{ id: 3, selected: false, tab: "appeals", icon_fill: "", text: "Обращения" },
+	{ id: 4, selected: false, tab: "profile", icon_fill: "", text: "Мой профиль" },
+]
+
+export { navBarForUser, navBarForManager, navBarForAdmin };

@@ -1,5 +1,5 @@
 // import store from '@/store'
-import { navBarForManager, navBarForUser } from './uiDataByRoles'
+import { navBarForManager, navBarForUser, navBarForAdmin } from './uiDataByRoles'
 const selectDataByRole = (userRole) => {
 
     switch(userRole) {
@@ -7,6 +7,8 @@ const selectDataByRole = (userRole) => {
           return navBarForManager
       case 'DefaultUser':
           return navBarForUser;
+      case 'AdminCRM':
+          return navBarForAdmin;
     }
 }
 export { selectDataByRole }
