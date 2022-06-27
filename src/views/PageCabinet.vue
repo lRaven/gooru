@@ -49,6 +49,7 @@
 		display: grid;
 		grid-template-columns: 27.5rem 1fr;
 		height: 100vh;
+		overflow: hidden;
 		&__main {
 			display: block;
 			margin-top: 8rem;
