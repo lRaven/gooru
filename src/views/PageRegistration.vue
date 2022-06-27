@@ -74,6 +74,19 @@
 				</form>
 			</section>
 		</main>
+
+		<transition mode="out-in">
+			<r-notification
+				v-if="isNotificationVisible"
+				@closeNotification="closeNotification"
+				title="Ошибка"
+				description="Пользователь с таким email уже зарегистрирован"
+			>
+				<template v-slot:icon>
+					<img src="img/icon/notifications/error.svg" alt="error" />
+				</template>
+			</r-notification>
+		</transition>
 	</div>
 </template>
 
@@ -84,6 +97,7 @@
 	import TheHeader from "@/components/TheHeader.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
+	import rNotification from "@/components/r-notification.vue";
 
 	export default {
 		name: "PageRegistration",
@@ -91,6 +105,7 @@
 			TheHeader,
 			rInput,
 			rButton,
+			rNotification,
 		},
 		watch: {
 			username() {
@@ -105,6 +120,7 @@
 		},
 		computed: { ...mapState(["baseURL"]) },
 		data: () => ({
+			isNotificationVisible: false,
 			isDisabledBtn: true,
 
 			username: "",
@@ -124,6 +140,7 @@
 						this.$router.push({ name: "login" });
 					}
 				} catch (err) {
+					this.isNotificationVisible = true;
 					throw new Error(err);
 				}
 			},
@@ -134,6 +151,9 @@
 				this.email.length > 0
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
+			},
+			closeNotification() {
+				this.isNotificationVisible = false;
 			},
 		},
 	};
