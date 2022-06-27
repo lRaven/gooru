@@ -27,6 +27,9 @@ import PageBrief from '@/views/PageBrief'
 
 import PageNotFound from '@/views/PageNotFound'
 
+import store from '@/store';
+console.log(store.state.cabinet.user.role)
+
 const routes = [
 	{
 		path: '/',
@@ -48,7 +51,7 @@ const routes = [
 		meta: {
 			title: 'Личный кабинет',
 		},
-		redirect: { name: 'rates' },
+		redirect: { name: 'parsources'},
 		children: [
 			{
 				path: 'rates',

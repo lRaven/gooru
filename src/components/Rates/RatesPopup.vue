@@ -34,7 +34,7 @@
         </h3>
         <div @switch="switchFormState" class="user-credentials__controls">
           <p
-            @click="switchFormState($event, 'registration')"
+            @click.stop="switchFormState($event, 'registration')"
             :class="`user-credentials__control ${
               formType === 'registration'
                 ? 'user-credentials__control_active'
@@ -44,7 +44,7 @@
             Регистрация
           </p>
           <p
-            @click="switchFormState($event, 'login')"
+            @click.stop="switchFormState($event, 'login')"
             :class="`user-credentials__control ${
               formType === 'login' ? 'user-credentials__control_active' : ''
             }`"
@@ -172,7 +172,6 @@ export default {
   methods: {
     ...mapActions(["getUserData"]),
     switchFormState(evt, updatedFormState) {
-      evt.stopPropagation();
       this.formType = updatedFormState;
     },
     async submitForm() {
@@ -212,13 +211,13 @@ export default {
   align-items: center;
   position: fixed;
   z-index: 3;
-  
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   max-width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  scroll-behavior: n;
   &__container {
     display: flex;
     flex-direction: row;

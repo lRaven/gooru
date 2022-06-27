@@ -80,10 +80,11 @@ export default {
     selectRate(id) {
       if (this.isAuth) {
         this.$router.push({ name: 'rates'});
-      }
-      this.selectedRate = this.slides.find((slideItem) => {
+      } else {
+        this.selectedRate = this.slides.find((slideItem) => {
         return slideItem.id == id;
       });
+      }
     },
   },
   computed: {

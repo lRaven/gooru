@@ -1,6 +1,6 @@
 <template>
 	<section class="the-parsources">
-		<h2 class="the-parsources__title">Мои парсеры</h2>
+		<h2 class="the-parsources__title">{{ userRole === 'DefaultUser' ? 'Мои парсеры' : 'Все парсеры' }}</h2>
 		<div class="the-parsources__control">
 			<r-checkbox
 				description="Выбрать всё"
@@ -154,6 +154,7 @@
 				parsources: (state) => state.parsers.parsources,
 				parsources_pagination: (state) =>
 					state.parsers.parsources_pagination,
+				userRole: (state) => state.cabinet.user.role,
 			}),
 			page() {
 				return +this.$route.query.page;
