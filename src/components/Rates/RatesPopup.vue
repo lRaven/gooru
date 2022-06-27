@@ -99,6 +99,19 @@
             :disabled="isInvalidForm"
           />
         </form>
+        <p v-if="formType === 'registration'" class="user-credentials__privacy-policy">
+          Нажимая кнопку «Зарегистрироваться», я даю свое согласие на сбор и
+          обработку моих персональных данных в соответствии с
+          <span
+            class="user-credentials__privacy-policy user-credentials__privacy-policy_accent"
+            >Политикой</span
+          >
+          и принимаю условия
+          <span
+            class="user-credentials__privacy-policy user-credentials__privacy-policy_accent"
+            >Пользовательского соглашения</span
+          >
+        </p>
       </div>
     </div>
   </div>
@@ -145,7 +158,8 @@ export default {
         isInvalidPhoneNumber: this.formState.phoneNumber.length !== 11,
       };
       if (this.formType === "login") {
-        formValidationState.isInvalidEmail = formValidationState.isInvalidPhoneNumber = false;
+        formValidationState.isInvalidEmail =
+          formValidationState.isInvalidPhoneNumber = false;
       }
       return Object.values(formValidationState).reduce(
         (prev, fieldValidationResult) => {
@@ -179,10 +193,7 @@ export default {
           this.getUserData();
           localStorage.setItem("userAuth", "yes");
           window
-            .open(
-              `${this.baseUrl}/api/pay/${this.selectedRate.id}`,
-              "_blank"
-            )
+            .open(`${this.baseUrl}/api/pay/${this.selectedRate.id}`, "_blank")
             .focus();
         } catch (error) {
           console.log(error);
@@ -394,5 +405,15 @@ export default {
       margin: 4rem 0 0 0;
     }
   }
+  &__privacy-policy {
+      max-width: 45rem;
+      font-size: 1.1rem;
+      line-height: 1.5rem;
+      margin: 2rem 0 0 0;
+      color: $black-70;
+      &_accent {
+        color: $primary;
+      }
+    }
 }
 </style>
