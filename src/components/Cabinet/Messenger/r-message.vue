@@ -14,9 +14,11 @@
 				{{
 					isMyMessage
 						? "Вы"
-						: isIManager === true
-						? message.sender.first_name
-						: `Менеджер ${message.sender.first_name}`
+						: isMessageFromManager
+						? `Менеджер ${message.sender.first_name}`
+						: isMessageFromAdmin
+						? `Администратор ${message.sender.first_name}`
+						: `${message.sender.first_name} ${message.sender.last_name}`
 				}}
 			</p>
 
@@ -34,6 +36,7 @@
 		computed: {
 			...mapState({ user: (state) => state.cabinet.user }),
 
+			//* громоздкий кусок кода для преобразования даты в читабельный формат типа: 01.01.1970 00:00
 			message_date() {
 				let result;
 
@@ -59,8 +62,11 @@
 				return this.message.sender.id === this.user.id;
 			},
 
-			isIManager() {
-				return this.user.role === "Manager";
+			isMessageFromManager() {
+				return this.message.sender.role === "Manager";
+			},
+			isMessageFromAdmin() {
+				return this.message.sender.role === "AdminCRM";
 			},
 		},
 	};
