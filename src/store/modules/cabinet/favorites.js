@@ -11,14 +11,13 @@ const mutations = { SET_FAVORITES: (state, payload) => state.favorites = payload
 const actions = {
 	getFavoriteParsers: async context => {
 		try {
-			context
-			const request = await axios
+			const response = await axios
 				.get(`${store.state.baseURL}/myfavorites`, {
 					headers: { Authorization: `token ${cookie.get("auth_token")}`, },
 				})
 
-			if (request.status === 200) {
-				context.dispatch('getFavoriteParsources', request.data);
+			if (response.status === 200) {
+				context.dispatch('getFavoriteParsources', response.data);
 				console.log('Favorite parsers saved');
 			}
 
@@ -35,16 +34,16 @@ const actions = {
 
 	getFavoriteParsources: async (context, parsers) => {
 		try {
-			const request = await axios
+			const response = await axios
 				.get(`${store.state.baseURL}/parsource/`, {
 					headers: { Authorization: `token ${cookie.get("auth_token")}`, },
 				})
 
-			if (request.status === 200) {
+			if (response.status === 200) {
 				let favorites = [];
 
 				//* сборка parsource в которых есть парсеры в избранном
-				request.data.results.forEach(parsource => {
+				response.data.results.forEach(parsource => {
 					parsers.forEach(parser => {
 						if (parsource.id === parser.parsource) {
 							favorites.push(parsource);

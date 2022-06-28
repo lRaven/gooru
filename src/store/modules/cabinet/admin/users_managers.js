@@ -13,11 +13,11 @@ const mutations = {
 const actions = {
 	getUsersManagers: async (context) => {
 		try {
-			const request = await axios.get(`${store.state.baseURL}/usermanager/`,
+			const response = await axios.get(`${store.state.baseURL}/usermanager/`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
-			if (request.status === 200) {
-				context.commit('SET_USERS_MANAGERS', request.data.results);
+			if (response.status === 200) {
+				context.commit('SET_USERS_MANAGERS', response.data.results);
 				console.log('Users managers saved');
 			}
 

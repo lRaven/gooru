@@ -6,7 +6,7 @@
 
 <script>
 	import { mapState } from "vuex";
-	import { send_brief } from "@/api/brief/send_brief";
+	import { send_brief } from "@/api/brief";
 
 	export default {
 		name: "BriefEnd",

@@ -4,7 +4,7 @@ import cookie from 'vue-cookies';
 
 async function add_ticket(args) {
 	try {
-		const request =
+		const response =
 			await axios.post(`${store.state.baseURL}/users/support/`,
 				{
 					name: args.name,
@@ -16,7 +16,7 @@ async function add_ticket(args) {
 				},
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
 
-		if (request.status === 201) {
+		if (response.status === 201) {
 			console.log('Ticket created');
 			store.dispatch('getAppeals', { page_number: 1, page_size: 10 });
 		}

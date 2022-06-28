@@ -93,7 +93,7 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
-	import { add_ticket } from "@/api/ticket/add_ticket";
+	import { add_ticket } from "@/api/tickets";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import rDropdown from "@/components/Cabinet/r-dropdown.vue";

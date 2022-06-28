@@ -126,12 +126,14 @@
 </template>
 
 <script>
-	import { mapState, mapMutations } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
-	import { change_password } from "@/api/user/change_password";
-	import { change_user_data } from "@/api/user/change_user_data";
-	import { upload_avatar } from "@/api/user/upload_avatar";
+	import {
+		change_user_data,
+		upload_avatar,
+		change_password,
+	} from "@/api/userApi";
 
 	export default {
 		name: "TheProfile",
@@ -218,9 +220,7 @@
 		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			change_user_data,
-			change_password,
-			upload_avatar,
+			...mapActions(["getUserData"]),
 
 			set_user_data() {
 				this.avatar = this.user_data.avatar;
@@ -252,26 +252,60 @@
 					: (this.isDisabledBtn = true);
 			},
 
-			postUpdatedData() {
+			async postUpdatedData() {
 				if (this.isUserDataChanged === true) {
-					change_user_data(this.user_data.id, {
-						first_name: this.first_name,
-						last_name: this.last_name,
-						phone_number: this.phone_number,
-						email: this.email,
-					});
+					try {
+						const response = await change_user_data(
+							this.user_data.id,
+							{
+								first_name: this.first_name,
+								last_name: this.last_name,
+								phone_number: this.phone_number,
+								email: this.email,
+							}
+						);
+						if (response.status === 200) {
+							console.log("User data changed");
+							await this.getUserData();
+						}
+					} catch (err) {
+						throw new Error(err);
+					}
 				}
 
 				if (this.isPasswordsChanged === true) {
-					change_password(this.password, this.old_password);
+					try {
+						const response = await change_password({
+							new_password: this.password,
+							current_password: this.old_password,
+						});
+
+						if (response.status === 204) {
+							console.log("Password changed");
+							this.isPasswordsFormDisabled = true;
+						}
+					} catch (err) {
+						throw new Error(err);
+					}
 				}
 
 				if (this.isAvatarChanged === true) {
-					upload_avatar(this.user_data.id, this.changed_avatar);
+					try {
+						const response = await upload_avatar({
+							user_id: this.user_data.id,
+							avatar: this.changed_avatar,
+						});
+
+						if (response.status === 200) {
+							console.log("Avatar changed");
+							await this.getUserData();
+						}
+					} catch (err) {
+						throw new Error(err);
+					}
 				}
 
 				this.isPersonalDataFormDisabled = true;
-				this.isPasswordsFormDisabled = true;
 				this.isDisabledBtn = true;
 			},
 		},

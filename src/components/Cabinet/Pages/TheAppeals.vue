@@ -106,7 +106,7 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
-	import { add_ticket } from "@/api/ticket/add_ticket";
+	import { add_ticket } from "@/api/tickets";
 	import { multiaction_delete } from "@/api/multiaction_delete";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";

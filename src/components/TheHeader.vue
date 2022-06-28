@@ -10,7 +10,7 @@
 				<router-link
 					:to="{ name: 'home' }"
 					class="the-header__logo"
-					@click="scrollToId('#header')"
+					@click="scroll('#header')"
 				>
 					COMPASS
 					<span class="the-header__logo-secondary">PARSING</span>
@@ -26,22 +26,16 @@
 
 				<nav class="the-header__nav" v-if="isCabinetVersion === false">
 					<ul class="the-header__links">
-						<li
-							class="the-header__link"
-							@click="scrollToId('#rates')"
-						>
+						<li class="the-header__link" @click="scroll('#rates')">
 							Тарифы
 						</li>
 						<li
 							class="the-header__link"
-							@click="scrollToId('#how-it-works')"
+							@click="scroll('#how-it-works')"
 						>
 							Как это работает
 						</li>
-						<li
-							class="the-header__link"
-							@click="scrollToId('#about')"
-						>
+						<li class="the-header__link" @click="scroll('#about')">
 							О компании
 						</li>
 					</ul>
@@ -141,7 +135,7 @@
 							<li
 								class="the-header__account-menu-item"
 								@click="
-									logout();
+									logging_out();
 									closeProfile();
 								"
 							>
@@ -178,9 +172,10 @@
 <script>
 	import rButton from "@/components/r-button";
 	import { scroll } from "@/js/scrollToLink";
-	import { mapState } from "vuex";
+	import { mapState, mapMutations } from "vuex";
+	import { logout } from "@/api/userApi";
+
 	import { directive } from "vue3-click-away";
-	import { logout } from "@/api/user/logout";
 
 	export default {
 		name: "TheHeader",
@@ -219,14 +214,13 @@
 			}),
 		},
 		methods: {
+			scroll,
+
 			paintHeaderWhenPageScrolled() {
 				this.$refs.header.classList.add("bg");
 			},
 			resetPaintHeaderWhenPageScrolled() {
 				this.$refs.header.classList.remove("bg");
-			},
-			scrollToId(id) {
-				scroll(id);
 			},
 
 			openProfile() {
@@ -237,7 +231,20 @@
 				this.isProfileOpened = false;
 				this.$refs.arrow.classList.remove("open");
 			},
-			logout,
+
+			...mapMutations(["SET_USER_AUTH"]),
+
+			async logging_out() {
+				try {
+					const response = await logout();
+					if (response.status === 204) {
+						this.SET_USER_AUTH(false);
+						console.log("Logout successfully");
+					}
+				} catch (err) {
+					throw new Error(err);
+				}
+			},
 		},
 		mounted() {
 			if (this.isCabinetVersion === false) {

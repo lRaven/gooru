@@ -4,7 +4,7 @@ import cookie from 'vue-cookies';
 
 async function multiaction_delete(args) {
 	try {
-		const request =
+		const response =
 			await axios.delete(`${store.state.baseURL}/multiaction/delete/`,
 				{
 					data: {
@@ -17,7 +17,7 @@ async function multiaction_delete(args) {
 				}
 			);
 
-		if (request.status === 200) {
+		if (response.status === 200) {
 			console.log(`Elements ${args.ids} in model ${args.model} deleted`);
 
 			store.dispatch(args.model_update.name, args.model_update.data);

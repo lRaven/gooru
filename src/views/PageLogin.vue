@@ -4,7 +4,7 @@
 
 		<main class="page-login__main main">
 			<section class="page-login__section">
-				<form @submit.prevent="login" class="page-login__form center">
+				<form @submit.prevent="auth" class="page-login__form center">
 					<router-link
 						:to="{ name: 'login' }"
 						class="page-login__form-link selected"
@@ -57,13 +57,13 @@
 </template>
 
 <script>
-	import axios from "axios";
 	import { mapState, mapActions } from "vuex";
 
 	import TheHeader from "@/components/TheHeader.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
 	import rNotification from "@/components/r-notification.vue";
+	import { login } from "@/api/userApi";
 
 	export default {
 		name: "PageLogin",
@@ -95,20 +95,17 @@
 		}),
 		methods: {
 			...mapActions(["getUserData"]),
-			async login() {
-				try {
-					const request = await axios.post(
-						`${this.baseURL}/auth/token/login/`,
-						{
-							username: this.username,
-							password: this.password,
-						}
-					);
 
-					if (request.status === 200) {
+			async auth() {
+				try {
+					const response = await login({
+						username: this.username,
+						password: this.password,
+					});
+					if (response.status === 200) {
 						this.$cookies.set(
 							"auth_token",
-							request.data.auth_token
+							response.data.auth_token
 						);
 						localStorage.setItem("userAuth", "yes");
 						this.getUserData();
@@ -119,8 +116,9 @@
 					throw new Error(err);
 				}
 			},
+
 			validateForm() {
-				this.username.length > 0 && this.password.length > 0
+				this.username.length > 0 && this.password.length >= 8
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},

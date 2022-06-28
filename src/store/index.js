@@ -18,9 +18,6 @@ import messenger from '@/store/modules/cabinet/messenger'
 import users from '@/store/modules/cabinet/admin/users'
 import users_managers from '@/store/modules/cabinet/admin/users_managers'
 
-//* notifications
-import notifications from '@/store/modules/notifications'
-
 export default createStore({
 	state: () => ({
 		document_width: null,
@@ -63,7 +60,5 @@ export default createStore({
 
 		users,
 		users_managers,
-
-		notifications,
 	}
 })

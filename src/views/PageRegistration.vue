@@ -5,7 +5,7 @@
 		<main class="page-registration__main main">
 			<section class="page-registration__section">
 				<form
-					@submit.prevent="registration"
+					@submit.prevent="create_account"
 					class="page-registration__form center"
 				>
 					<router-link
@@ -91,13 +91,13 @@
 </template>
 
 <script>
-	import axios from "axios";
 	import { mapState } from "vuex";
 
 	import TheHeader from "@/components/TheHeader.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
 	import rNotification from "@/components/r-notification.vue";
+	import { registration } from "@/api/userApi";
 
 	export default {
 		name: "PageRegistration",
@@ -128,15 +128,17 @@
 			password: "",
 		}),
 		methods: {
-			async registration() {
+			async create_account() {
 				try {
-					const request = await axios.post(`${this.baseURL}/user/`, {
+					const response = await registration({
 						email: this.email,
 						username: this.username,
 						password: this.password,
 					});
 
-					if (request.status === 201) {
+					if (response.status === 201) {
+						console.log("Account created");
+						console.log("Redirect to login page");
 						this.$router.push({ name: "login" });
 					}
 				} catch (err) {
@@ -147,7 +149,7 @@
 
 			validateForm() {
 				this.username.length > 0 &&
-				this.password.length > 0 &&
+				this.password.length >= 8 &&
 				this.email.length > 0
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);

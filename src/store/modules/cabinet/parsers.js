@@ -51,17 +51,17 @@ const actions = {
 	//*get parsources with pagination
 	getParsources: async (context, args) => {
 		try {
-			const request = await axios.get(`${store.state.baseURL}/parsource/?page=${args.page_number}&page_size=${args.page_size}`,
+			const response = await axios.get(`${store.state.baseURL}/parsource/?page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
-			if (request.status === 200) {
-				context.commit('SET_PARSOURCES', request.data.results);
+			if (response.status === 200) {
+				context.commit('SET_PARSOURCES', response.data.results);
 
 				let pagination_info = {};
 
-				for (const iterator in request.data) {
+				for (const iterator in response.data) {
 					if (iterator !== 'results') {
-						pagination_info[iterator] = request.data[iterator]
+						pagination_info[iterator] = response.data[iterator]
 					}
 				}
 				context.commit('SET_PARSOURCES_PAGINATION', pagination_info);
@@ -82,11 +82,11 @@ const actions = {
 
 	getAllParsources: async context => {
 		try {
-			const request = await axios.get(`${store.state.baseURL}/parsource/`,
+			const response = await axios.get(`${store.state.baseURL}/parsource/`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
-			if (request.status === 200) {
-				context.commit('SET_ALL_PARSOURCES', request.data.results);
+			if (response.status === 200) {
+				context.commit('SET_ALL_PARSOURCES', response.data.results);
 				console.log('Full parsource list saved');
 			}
 
@@ -103,12 +103,12 @@ const actions = {
 
 	getParsource: async (context, parsource_id) => {
 		try {
-			const request = await axios.get(`${store.state.baseURL}/parsource/${parsource_id}`, {
+			const response = await axios.get(`${store.state.baseURL}/parsource/${parsource_id}`, {
 				headers: { Authorization: `token ${cookie.get('auth_token')}` }
 			})
 
-			if (request.status === 200) {
-				context.commit('SET_PARSOURCE', request.data);
+			if (response.status === 200) {
+				context.commit('SET_PARSOURCE', response.data);
 				console.log('Parsource saved');
 			}
 		}
@@ -125,18 +125,18 @@ const actions = {
 	//* get parsers with pagination
 	getParsers: async (context, args) => {
 		try {
-			const request =
+			const response =
 				await axios.get(`${store.state.baseURL}/parser/?parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
 
-			if (request.status === 200) {
-				context.commit('SET_PARSERS', request.data.results);
+			if (response.status === 200) {
+				context.commit('SET_PARSERS', response.data.results);
 
 				let pagination_info = {};
 
-				for (const iterator in request.data) {
+				for (const iterator in response.data) {
 					if (iterator !== 'results') {
-						pagination_info[iterator] = request.data[iterator]
+						pagination_info[iterator] = response.data[iterator]
 					}
 				}
 				context.commit('SET_PARSERS_PAGINATION', pagination_info);
@@ -155,12 +155,12 @@ const actions = {
 	},
 	getAllParsers: async context => {
 		try {
-			const request =
+			const response =
 				await axios.get(`${store.state.baseURL}/parser/?page_size=999`,
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
 
-			if (request.status === 200) {
-				context.commit('SET_ALL_PARSERS', request.data.results);
+			if (response.status === 200) {
+				context.commit('SET_ALL_PARSERS', response.data.results);
 				console.log('Full parser list saved');
 			}
 

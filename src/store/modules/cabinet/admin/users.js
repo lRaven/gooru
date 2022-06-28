@@ -37,18 +37,18 @@ const mutations = {
 const actions = {
 	getUsers: async (context, args) => {
 		try {
-			const request = await axios.get(`${store.state.baseURL}/user/?page=${args.page_number}&page_size=${args.page_size}`,
+			const response = await axios.get(`${store.state.baseURL}/user/?page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
-			if (request.status === 200) {
-				context.commit('SET_USERS', request.data.results);
+			if (response.status === 200) {
+				context.commit('SET_USERS', response.data.results);
 				console.log('Users list saved');
 
 				let pagination_info = {};
 
-				for (const iterator in request.data) {
+				for (const iterator in response.data) {
 					if (iterator !== 'results') {
-						pagination_info[iterator] = request.data[iterator]
+						pagination_info[iterator] = response.data[iterator]
 					}
 				}
 				context.commit('SET_USERS_PAGINATION', pagination_info);

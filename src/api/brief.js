@@ -3,7 +3,7 @@ import store from '@/store';
 
 async function send_brief(brief) {
 	try {
-		const request = await axios.post(`${store.state.baseURL}/brief/`, {
+		const response = await axios.post(`${store.state.baseURL}/brief/`, {
 			client_status: brief.client_status,
 			client_status_self_option: brief.client_status_self_option,
 
@@ -24,7 +24,7 @@ async function send_brief(brief) {
 			phone_number: brief.user_contacts.tel,
 		});
 
-		if (request.status === 200) {
+		if (response.status === 200) {
 			console.log('Brief sent');
 		}
 	}
