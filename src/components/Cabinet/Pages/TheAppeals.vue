@@ -50,16 +50,7 @@
 			<template v-slot>
 				<form
 					class="the-appeals__right-panel-form"
-					@submit.prevent="
-						add_ticket({
-							name: user.first_name,
-							phone_number: user.phone_number,
-							email: user.email,
-							message: message,
-							topic_type: topic,
-							parser: parser,
-						})
-					"
+					@submit.prevent="create_ticket"
 				>
 					<div class="the-appeals__right-panel-row">
 						<p class="the-appeals__right-panel-input-description">
@@ -69,7 +60,7 @@
 						<r-dropdown
 							selected_item="Тема обращения"
 							:list="topics"
-							v-model="topic"
+							v-model="appeal.topic"
 						></r-dropdown>
 					</div>
 
@@ -81,7 +72,7 @@
 						<r-dropdown
 							selected_item="Парсер"
 							:list="all_parsers"
-							v-model="parser"
+							v-model="appeal.parser"
 						></r-dropdown>
 					</div>
 
@@ -91,13 +82,17 @@
 						</p>
 
 						<r-textarea
-							v-model="message"
-							:value="message"
+							v-model="appeal.message"
+							:value="appeal.message"
 							placeholder="Текстовое описание требований для поиска"
 						></r-textarea>
 					</div>
 
-					<r-button text="Отправить"></r-button>
+					<r-button
+						type="submit"
+						:disabled="isDisabledBtn"
+						text="Отправить"
+					></r-button>
 				</form>
 			</template>
 		</right-panel>
@@ -107,7 +102,6 @@
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import { add_ticket } from "@/api/tickets";
-	import { multiaction_delete } from "@/api/multiaction_delete";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
@@ -116,6 +110,7 @@
 	import rPagination from "@/components/r-pagination.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
 	import rLoader from "@/components/r-loader.vue";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheAppeals",
@@ -140,6 +135,12 @@
 			appeals() {
 				this.isAppealsLoaded = true;
 			},
+			appeal: {
+				handler() {
+					this.validateForm();
+				},
+				deep: true,
+			},
 		},
 		computed: {
 			...mapState({
@@ -153,7 +154,7 @@
 			}),
 
 			page() {
-				return +this.$route.query.page;
+				return this.$route.query.page;
 			},
 
 			count() {
@@ -166,12 +167,16 @@
 		},
 		data() {
 			return {
+				isDisabledBtn: true,
 				isAppealsLoaded: false,
+
 				path: this.$route.path,
 
-				topic: "",
-				parser: "",
-				message: "",
+				appeal: {
+					topic: "",
+					parser: "",
+					message: "",
+				},
 
 				appeals_in_page: 10,
 			};
@@ -179,14 +184,46 @@
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllParsers", "getAppeals", "getAllMessages"]),
-			add_ticket,
-			multiaction_delete,
+
+			async create_ticket() {
+				try {
+					const response = await add_ticket({
+						name: this.user.first_name,
+						phone_number: this.user.phone_number,
+						email: this.user.email,
+						message: this.appeal.message,
+						topic_type: this.appeal.topic,
+						parser: this.appeal.parser,
+					});
+					if (response.status === 201) {
+						this.getAppeals({
+							page_number: this.page,
+							page_size: this.appeals_in_page,
+						});
+						this.toast.success("Обращение создано");
+						console.log("Ticket created");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка создания обращения");
+					throw new Error(err);
+				}
+			},
 
 			page_changed(page_number) {
 				this.$router.push({
 					name: "appeals",
 					query: { page: page_number },
 				});
+			},
+			validateForm() {
+				if (
+					this.appeal.topic !== "" &&
+					this.appeal.message.length > 0
+				) {
+					this.isDisabledBtn = false;
+				} else {
+					this.isDisabledBtn = true;
+				}
 			},
 		},
 		created() {
@@ -199,8 +236,9 @@
 
 			this.getAllParsers();
 		},
-		mounted() {
-			// multiaction_delete({ model: "notify", ids: [90, 91, 93] });
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>

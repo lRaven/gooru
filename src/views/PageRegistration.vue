@@ -74,19 +74,6 @@
 				</form>
 			</section>
 		</main>
-
-		<transition mode="out-in">
-			<r-notification
-				v-if="isNotificationVisible"
-				@closeNotification="closeNotification"
-				title="Ошибка"
-				description="Пользователь с таким email уже зарегистрирован"
-			>
-				<template v-slot:icon>
-					<img src="img/icon/notifications/error.svg" alt="error" />
-				</template>
-			</r-notification>
-		</transition>
 	</div>
 </template>
 
@@ -96,8 +83,8 @@
 	import TheHeader from "@/components/TheHeader.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
-	import rNotification from "@/components/r-notification.vue";
 	import { registration } from "@/api/userApi";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageRegistration",
@@ -105,7 +92,6 @@
 			TheHeader,
 			rInput,
 			rButton,
-			rNotification,
 		},
 		watch: {
 			username() {
@@ -120,7 +106,6 @@
 		},
 		computed: { ...mapState(["baseURL"]) },
 		data: () => ({
-			isNotificationVisible: false,
 			isDisabledBtn: true,
 
 			username: "",
@@ -137,12 +122,15 @@
 					});
 
 					if (response.status === 201) {
+						this.toast.success("Аккаунт успешно создан");
 						console.log("Account created");
+
 						console.log("Redirect to login page");
+						this.toast.success("Переход на страницу авторизации");
 						this.$router.push({ name: "login" });
 					}
 				} catch (err) {
-					this.isNotificationVisible = true;
+					this.toast.error("Ошибка создания аккаунта");
 					throw new Error(err);
 				}
 			},
@@ -154,9 +142,10 @@
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
-			closeNotification() {
-				this.isNotificationVisible = false;
-			},
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>

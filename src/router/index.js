@@ -48,7 +48,6 @@ const routes = [
 		meta: {
 			title: 'Личный кабинет',
 		},
-		redirect: { name: 'rates' },
 		children: [
 			{
 				path: 'rates',

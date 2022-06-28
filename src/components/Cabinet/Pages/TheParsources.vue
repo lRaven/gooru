@@ -215,13 +215,13 @@
 		position: relative;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
-		padding-top: 4rem;
-		padding-bottom: 4rem;
+		padding: 4rem 3rem;
 		min-height: 100%;
 
 		&__title {
 			font-weight: 400;
 			margin-bottom: 2.4rem;
+			padding: 0 1rem;
 		}
 
 		&__control {
@@ -229,6 +229,7 @@
 			align-items: center;
 			gap: 3rem;
 			margin-bottom: 2rem;
+			padding: 0 1rem;
 		}
 
 		&__postpone,
@@ -258,6 +259,7 @@
 			display: grid;
 			grid-template-rows: max-content 1fr max-content;
 			overflow: auto;
+			padding: 0 1rem;
 		}
 		&__sort {
 			display: grid;

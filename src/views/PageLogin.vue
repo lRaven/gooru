@@ -40,19 +40,6 @@
 				</form>
 			</section>
 		</main>
-
-		<transition mode="out-in">
-			<r-notification
-				v-if="isNotificationVisible"
-				@closeNotification="closeNotification"
-				title="Ошибка"
-				description="Неверный логин или пароль"
-			>
-				<template v-slot:icon>
-					<img src="img/icon/notifications/error.svg" alt="error" />
-				</template>
-			</r-notification>
-		</transition>
 	</div>
 </template>
 
@@ -62,8 +49,8 @@
 	import TheHeader from "@/components/TheHeader.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
-	import rNotification from "@/components/r-notification.vue";
 	import { login } from "@/api/userApi";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageLogin",
@@ -71,7 +58,6 @@
 			TheHeader,
 			rInput,
 			rButton,
-			rNotification,
 		},
 		computed: {
 			...mapState({
@@ -88,7 +74,6 @@
 			},
 		},
 		data: () => ({
-			isNotificationVisible: false,
 			isDisabledBtn: true,
 			username: "",
 			password: "",
@@ -103,6 +88,7 @@
 						password: this.password,
 					});
 					if (response.status === 200) {
+						this.toast.success("Вход выполнен успешно");
 						this.$cookies.set(
 							"auth_token",
 							response.data.auth_token
@@ -112,7 +98,7 @@
 						this.$router.push({ name: "cabinet" });
 					}
 				} catch (err) {
-					this.isNotificationVisible = true;
+					this.toast.error("Неверный логин или пароль");
 					throw new Error(err);
 				}
 			},
@@ -122,9 +108,10 @@
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
-			closeNotification() {
-				this.isNotificationVisible = false;
-			},
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>

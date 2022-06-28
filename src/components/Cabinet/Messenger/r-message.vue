@@ -78,7 +78,7 @@
 	.r-message {
 		display: flex;
 		flex-direction: column;
-		max-width: 95%;
+		max-width: 90%;
 		width: fit-content;
 
 		//* styles for my messages

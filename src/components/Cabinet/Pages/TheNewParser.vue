@@ -2,7 +2,7 @@
 	<section class="the-new-parser">
 		<h2 class="the-new-parser__title">Новый парсинг</h2>
 
-		<form class="the-new-parser__form" @submit.prevent="">
+		<form class="the-new-parser__form" @submit.prevent="create_parsource">
 			<p class="the-new-parser__input-description">
 				URL страницы с данными*
 			</p>
@@ -35,14 +35,6 @@
 				text="Отправить"
 				type="submit"
 				:disabled="isDisabledBtn"
-				@click="
-					send_new_parsource({
-						name: 'name',
-						data_source: this.url,
-						description: this.description,
-						parse_fields: this.parse_fields,
-					})
-				"
 			></r-button>
 		</form>
 	</section>
@@ -54,6 +46,7 @@
 	import rTextarea from "@/components/Cabinet/r-textarea.vue";
 	import rButton from "@/components/r-button.vue";
 	import { send_new_parsource } from "@/api/parser";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheNewParser",
@@ -89,11 +82,32 @@
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
-			send_new_parsource,
+			async create_parsource() {
+				try {
+					const response = await send_new_parsource({
+						name: "name",
+						data_source: this.url,
+						description: this.description,
+						parse_fields: this.parse_fields,
+					});
+
+					if (response.status === 201) {
+						this.toast.success("Новый парсинг создан");
+						console.log("New parsource created");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка создания парсинга");
+					throw new Error(err);
+				}
+			},
 		},
 		created() {
 			this.SET_TAB("new_parser");
 			this.checkFieldsInputs();
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
