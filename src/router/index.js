@@ -27,8 +27,8 @@ import PageBrief from '@/views/PageBrief'
 
 import PageNotFound from '@/views/PageNotFound'
 
-import store from '@/store';
-console.log(store.state.cabinet.user.role)
+// импорты расширяющие функционал
+ 
 
 const routes = [
 	{
@@ -51,7 +51,7 @@ const routes = [
 		meta: {
 			title: 'Личный кабинет',
 		},
-		redirect: { name: 'parsources'},
+		redirect:  { name: 'rates' },
 		children: [
 			{
 				path: 'rates',
@@ -188,7 +188,7 @@ router.beforeEach((to) => {
 	if (to.meta.requiresAuth === true) {
 		if (localStorage.getItem('userAuth') !== 'yes') {
 			return { name: 'login' }
-		} else return true
+		} else return true;
 	}
 })
 

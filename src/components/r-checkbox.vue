@@ -6,7 +6,7 @@
 			id=""
 			:checked="checked"
 			class="r-checkbox__real"
-			@change="this.$emit('update:modelValue', $event.target.checked)"
+			@change="handleChange($event)"
 			ref="checkbox"
 		/>
 		<span class="r-checkbox__fake">
@@ -28,6 +28,11 @@
 				default: false,
 			},
 		},
+		data() {
+			return{
+				modelValue: this.checked,
+			}
+		},
 		watch: {
 			checked() {
 				if (this.checked === true) {
@@ -35,8 +40,17 @@
 				} else {
 					this.$refs.checkbox.checked = false;
 				}
+				this.updateChecked(this.checked);
 			},
 		},
+		methods: {
+			handleChange($event) {
+				this.$emit('update:modelValue', $event.target.checked);
+			},
+			updateChecked(value){
+				this.$emit('update:modelValue', value);
+			}
+		}
 	};
 </script>
 

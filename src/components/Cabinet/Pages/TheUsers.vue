@@ -34,10 +34,10 @@
 		watch: {
 			page() {
 				if (this.$route.path === this.path) {
-					this.getParsources({
+					/* this.getParsources({
 						page_number: this.page,
 						page_size: this.parsources_in_page,
-					});
+					}); */
 				}
 			},
 

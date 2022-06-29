@@ -11,7 +11,6 @@ const mutations = { SET_FAVORITES: (state, payload) => state.favorites = payload
 const actions = {
 	getFavoriteParsers: async context => {
 		try {
-			context
 			const request = await axios
 				.get(`${store.state.baseURL}/myfavorites`, {
 					headers: { Authorization: `token ${cookie.get("auth_token")}`, },
@@ -42,20 +41,18 @@ const actions = {
 
 			if (request.status === 200) {
 				let favorites = [];
-
+				console.log(request.data.results, 'parsourse')
 				//* сборка parsource в которых есть парсеры в избранном
-				request.data.results.forEach(parsource => {
-					parsers.forEach(parser => {
-						if (parsource.id === parser.parsource) {
-							favorites.push(parsource);
-						}
-					})
+				parsers.forEach( parser => {
+					const matchedParsource = request.data.results.find( parsource => parsource.id === parser.parsource);
+					const duplicatedItem = favorites.find( parsource => parsource.id === matchedParsource.id);
+					if(!duplicatedItem) {
+						favorites.push(matchedParsource);
+					}
 				})
-
 				//* сборка parsers в их parsources по id
 				favorites.forEach(parsource => {
 					parsource.parsers = [];
-
 					parsers.forEach(parser => {
 						if (parsource.id === parser.parsource) {
 							parsource.parsers.push(parser);

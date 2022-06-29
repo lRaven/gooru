@@ -10,6 +10,7 @@ async function logout() {
 
 		if (request.status === 204) {
 			store.commit('SET_USER_AUTH', false);
+			cookie.remove("auth_token");
 			console.log("Logout successfully");
 		}
 	}

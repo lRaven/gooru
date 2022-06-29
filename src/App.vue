@@ -1,4 +1,5 @@
 <template>
+	
 	<router-view v-slot="{ Component }">
 		<transition mode="out-in">
 			<component :is="Component" />
@@ -7,7 +8,7 @@
 </template>
 
 <script>
-	import { mapState, mapActions } from "vuex";
+	import { mapActions } from "vuex";
 	// import axios from "axios";
 
 	export default {
@@ -21,7 +22,6 @@
 				document.querySelector("body").classList.remove("locked");
 			},
 		},
-		computed: { ...mapState(["baseURL"]) },
 		methods: {
 			...mapActions(["getDocumentWidth", "getUserData"]),
 

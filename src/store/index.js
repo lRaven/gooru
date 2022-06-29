@@ -31,7 +31,9 @@ export default createStore({
 		}
 	},
 
-	mutations: { SET_DOCUMENT_WIDTH: (state, payload) => state.document_width = payload },
+	mutations: { 
+		SET_DOCUMENT_WIDTH: (state, payload) => state.document_width = payload ,
+	},
 
 	actions: {
 		getDocumentWidth: async (context) => {

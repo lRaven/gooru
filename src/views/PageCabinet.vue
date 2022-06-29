@@ -4,6 +4,7 @@
 		<navigation-panel />
 
 		<main class="page-cabinet__main main">
+
 			<router-view v-slot="{ Component }">
 				<transition mode="out-in">
 					<component :is="Component" />
@@ -15,7 +16,7 @@
 
 <script>
 	import { mapState } from "vuex";
-
+	import AppLoader from '@/components/r-loader.vue';
 	import TheHeader from "@/components/TheHeader";
 
 	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
@@ -24,7 +25,7 @@
 		name: "PageCabinet",
 		components: {
 			TheHeader,
-
+			AppLoader,
 			NavigationPanel,
 		},
 		watch: {
@@ -37,6 +38,7 @@
 			...mapState({
 				user_auth: (state) => state.cabinet.user_auth,
 				tab: (state) => state.navigation_panel.tab,
+				userRole: (state) => state.cabinet.user.role,
 			}),
 		},
 	};
