@@ -1,10 +1,11 @@
 <template>
-	<li
-		class="parser-content"
-		v-click-away="stateReset"
-		@click="isCroppedText === true ? expandArticle() : minimizeArticle()"
-	>
-		<div class="parser-content__row">
+	<li class="parser-content" v-click-away="stateReset">
+		<div
+			class="parser-content__row"
+			@click="
+				isCroppedText === true ? expandArticle() : minimizeArticle()
+			"
+		>
 			<img
 				:src="parser.img"
 				alt="image"
@@ -367,7 +368,6 @@
 	@import "@/assets/scss/variables";
 
 	.parser-content {
-		cursor: pointer;
 		list-style: none;
 		border-top: 0.1rem solid #999;
 		padding: 1rem 3rem 1rem 1rem;
@@ -380,6 +380,7 @@
 				margin-top: 2rem;
 			}
 			&:first-child {
+				cursor: pointer;
 				align-items: center;
 				gap: 1rem;
 			}
@@ -420,7 +421,6 @@
 				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
 				overflow: hidden;
-				max-height: 3.2rem;
 			}
 		}
 		&__link {

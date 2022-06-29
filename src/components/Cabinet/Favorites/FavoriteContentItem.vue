@@ -1,11 +1,21 @@
 <template>
-	<li class="favorite-content-item" v-click-away="hideAllExtras">
-		<div class="favorite-content-item__row">
+	<li class="favorite-content-item" v-click-away="stateReset">
+		<div
+			class="favorite-content-item__row"
+			@click="
+				isCroppedText === true ? expandArticle() : minimizeArticle()
+			"
+		>
 			<div class="favorite-content-item__col">
 				<r-checkbox></r-checkbox>
 
 				<p class="favorite-content-item__title">{{ parser.title }}</p>
-				<p class="favorite-content-item__text">{{ parser.article }}</p>
+				<p
+					class="favorite-content-item__text"
+					:class="isCroppedText === true ? 'cropped' : ''"
+				>
+					{{ parser.article }}
+				</p>
 			</div>
 
 			<div class="favorite-content-item__col">
@@ -45,7 +55,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="favorite-content-item__icon"
-					@click="
+					@click.stop="
 						isShareOpen === true
 							? (isShareOpen = false)
 							: (isShareOpen = true)
@@ -65,7 +75,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="favorite-content-item__icon"
-					@click="
+					@click.stop="
 						isDownloadOpen === true
 							? (isDownloadOpen = false)
 							: (isDownloadOpen = true)
@@ -227,6 +237,8 @@
 			},
 		},
 		data: () => ({
+			isCroppedText: true,
+
 			isShareOpen: false,
 			isDownloadOpen: false,
 
@@ -251,8 +263,20 @@
 				this.isShareOpen = false;
 				this.isDownloadOpen = false;
 			},
+
+			expandArticle() {
+				this.isCroppedText = false;
+			},
+
+			minimizeArticle() {
+				this.isCroppedText = true;
+			},
+
+			stateReset() {
+				this.minimizeArticle();
+				this.hideAllExtras();
+			},
 		},
-		mounted() {},
 
 		directives: { ClickAway: directive },
 	};
@@ -291,6 +315,7 @@
 
 		&__col {
 			&:first-child {
+				cursor: pointer;
 				display: grid;
 				grid-template-columns: max-content 1fr;
 				grid-gap: 0.5rem 3rem;
@@ -323,11 +348,13 @@
 			font-size: 1.2rem;
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
-			text-overflow: ellipsis;
-			display: -webkit-box;
-			-webkit-line-clamp: 2;
-			-webkit-box-orient: vertical;
-			overflow: hidden;
+			&.cropped {
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
 		}
 
 		&__icon {
