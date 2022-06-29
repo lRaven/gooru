@@ -60,7 +60,7 @@
 						<r-dropdown
 							selected_item="Тема обращения"
 							:list="topics"
-							v-model="appeal.topic"
+							v-model="new_appeal.topic"
 						></r-dropdown>
 					</div>
 
@@ -72,7 +72,7 @@
 						<r-dropdown
 							selected_item="Парсер"
 							:list="all_parsers"
-							v-model="appeal.parser"
+							v-model="new_appeal.parser"
 						></r-dropdown>
 					</div>
 
@@ -82,8 +82,8 @@
 						</p>
 
 						<r-textarea
-							v-model="appeal.message"
-							:value="appeal.message"
+							v-model="new_appeal.message"
+							:value="new_appeal.message"
 							placeholder="Текстовое описание требований для поиска"
 						></r-textarea>
 					</div>
@@ -135,7 +135,7 @@
 			appeals() {
 				this.isAppealsLoaded = true;
 			},
-			appeal: {
+			new_appeal: {
 				handler() {
 					this.validateForm();
 				},
@@ -172,7 +172,7 @@
 
 				path: this.$route.path,
 
-				appeal: {
+				new_appeal: {
 					topic: "",
 					parser: "",
 					message: "",
@@ -191,17 +191,19 @@
 						name: this.user.first_name,
 						phone_number: this.user.phone_number,
 						email: this.user.email,
-						message: this.appeal.message,
-						topic_type: this.appeal.topic,
-						parser: this.appeal.parser,
+						message: this.new_appeal.message,
+						topic_type: this.new_appeal.topic,
+						parser: this.new_appeal.parser,
 					});
 					if (response.status === 201) {
+						this.resetForm();
 						this.getAppeals({
 							page_number: this.page,
 							page_size: this.appeals_in_page,
 						});
-						this.toast.success("Обращение создано");
+
 						console.log("Ticket created");
+						this.toast.success("Обращение создано");
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания обращения");
@@ -215,14 +217,23 @@
 					query: { page: page_number },
 				});
 			},
+
 			validateForm() {
 				if (
-					this.appeal.topic !== "" &&
-					this.appeal.message.length > 0
+					this.new_appeal.topic !== "" &&
+					this.new_appeal.message.length > 0
 				) {
 					this.isDisabledBtn = false;
 				} else {
 					this.isDisabledBtn = true;
+				}
+			},
+
+			resetForm() {
+				for (const key in this.new_appeal) {
+					if (Object.hasOwnProperty.call(this.new_appeal, key)) {
+						this.new_appeal[key] = "";
+					}
 				}
 			},
 		},

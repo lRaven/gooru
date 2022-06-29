@@ -37,16 +37,7 @@
 			<template v-slot>
 				<form
 					class="the-appeal__right-panel-form"
-					@submit.prevent="
-						add_ticket({
-							name: user.first_name,
-							phone_number: user.phone_number,
-							email: user.email,
-							message: message,
-							topic_type: topic,
-							parser: parser,
-						})
-					"
+					@submit.prevent="create_ticket"
 				>
 					<div class="the-appeal__right-panel-row">
 						<p class="the-appeal__right-panel-input-description">
@@ -56,7 +47,7 @@
 						<r-dropdown
 							selected_item="Тема обращения"
 							:list="topics"
-							v-model="topic"
+							v-model="new_appeal.topic"
 						></r-dropdown>
 					</div>
 
@@ -68,7 +59,7 @@
 						<r-dropdown
 							selected_item="Парсер"
 							:list="all_parsers"
-							v-model="parser"
+							v-model="new_appeal.parser"
 						></r-dropdown>
 					</div>
 
@@ -78,13 +69,17 @@
 						</p>
 
 						<r-textarea
-							v-model="message"
-							:value="message"
+							v-model="new_appeal.message"
+							:value="new_appeal.message"
 							placeholder="Текстовое описание требований для поиска"
 						></r-textarea>
 					</div>
 
-					<r-button text="Отправить"></r-button>
+					<r-button
+						type="submit"
+						:disabled="isDisabledBtn"
+						text="Отправить"
+					></r-button>
 				</form>
 			</template>
 		</right-panel>
@@ -100,6 +95,7 @@
 	import rTextarea from "@/components/Cabinet/r-textarea.vue";
 	import rButton from "@/components/r-button.vue";
 	import TheMessenger from "@/components/Cabinet/Messenger/TheMessenger.vue";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheAppeal",
@@ -115,6 +111,12 @@
 				if (this.$route.path === this.path) {
 					this.getAppeal(this.appeal_id);
 				}
+			},
+			new_appeal: {
+				handler() {
+					this.validateForm();
+				},
+				deep: true,
 			},
 		},
 		computed: {
@@ -156,22 +158,67 @@
 		},
 		data() {
 			return {
+				isDisabledBtn: true,
+
 				path: this.$route.path,
 
-				topic: "",
-				parser: "",
-				message: "",
+				new_appeal: {
+					topic: "",
+					parser: "",
+					message: "",
+				},
 			};
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllParsers", "getAppeal"]),
-			add_ticket,
+
 			page_changed(appeal_id) {
 				this.$router.push({
 					name: "appeal",
 					query: { appeal_id: appeal_id },
 				});
+			},
+
+			async create_ticket() {
+				try {
+					const response = await add_ticket({
+						name: this.user.first_name,
+						phone_number: this.user.phone_number,
+						email: this.user.email,
+						message: this.new_appeal.message,
+						topic_type: this.new_appeal.topic,
+						parser: this.new_appeal.parser,
+					});
+					if (response.status === 201) {
+						this.resetForm();
+
+						console.log("Ticket created");
+						this.toast.success("Обращение создано");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка создания обращения");
+					throw new Error(err);
+				}
+			},
+
+			validateForm() {
+				if (
+					this.new_appeal.topic !== "" &&
+					this.new_appeal.message.length > 0
+				) {
+					this.isDisabledBtn = false;
+				} else {
+					this.isDisabledBtn = true;
+				}
+			},
+
+			resetForm() {
+				for (const key in this.new_appeal) {
+					if (Object.hasOwnProperty.call(this.new_appeal, key)) {
+						this.new_appeal[key] = "";
+					}
+				}
 			},
 		},
 		created() {
@@ -179,6 +226,10 @@
 			this.getAllParsers();
 
 			this.getAppeal(this.appeal_id);
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>

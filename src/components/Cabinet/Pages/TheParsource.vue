@@ -214,7 +214,7 @@
 				}
 			},
 			parsource_id() {
-				if (this.$route.path === this.path) {
+				if (this.$route.name === "parsource") {
 					this.getParsource(this.parsource_id);
 					this.getParsers({
 						parsource_name: this.parsource_name,

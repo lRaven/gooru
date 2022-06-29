@@ -2,22 +2,26 @@
 	<section class="the-new-parser">
 		<h2 class="the-new-parser__title">Новый парсинг</h2>
 
-		<form class="the-new-parser__form" @submit.prevent="create_parsource">
+		<form
+			class="the-new-parser__form"
+			ref="form"
+			@submit.prevent="create_parsource"
+		>
 			<p class="the-new-parser__input-description">
 				URL страницы с данными*
 			</p>
 			<r-input
 				input_type="url"
-				v-model="url"
-				:value="url"
+				v-model="new_parsource.url"
+				:value="new_parsource.url"
 				placeholder="https://"
 			></r-input>
 
 			<p class="the-new-parser__input-description">Список полей*</p>
 			<r-input
 				input_type="text"
-				v-model="parse_fields"
-				:value="parse_fields"
+				v-model="new_parsource.parse_fields"
+				:value="new_parsource.parse_fields"
 				placeholder="Введите список полей"
 			></r-input>
 
@@ -27,8 +31,8 @@
 			<r-textarea
 				placeholder="Введите требования"
 				:height="14.5"
-				v-model="description"
-				:value="description"
+				v-model="new_parsource.description"
+				:value="new_parsource.description"
 			></r-textarea>
 
 			<r-button
@@ -56,44 +60,55 @@
 			rButton,
 		},
 		watch: {
-			url() {
-				this.checkFieldsInputs();
-			},
-			parse_fields() {
-				this.checkFieldsInputs();
-			},
-			description() {
-				this.checkFieldsInputs();
+			new_parsource: {
+				handler() {
+					this.checkFieldsInputs();
+				},
+				deep: true,
 			},
 		},
 		data: () => ({
 			isDisabledBtn: false,
-			url: "",
-			parse_fields: "",
-			description: "",
+
+			new_parsource: {
+				url: "",
+				parse_fields: "",
+				description: "",
+			},
 		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
 
 			checkFieldsInputs() {
-				this.url.length > 0 &&
-				this.parse_fields.length > 0 &&
-				this.description.length > 0
+				this.new_parsource.url.length > 0 &&
+				this.new_parsource.parse_fields.length > 0 &&
+				this.new_parsource.description.length > 0
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
+
+			resetForm() {
+				for (const key in this.new_parsource) {
+					if (Object.hasOwnProperty.call(this.new_parsource, key)) {
+						this.new_parsource[key] = "";
+					}
+				}
+			},
+
 			async create_parsource() {
 				try {
 					const response = await send_new_parsource({
 						name: "name",
-						data_source: this.url,
-						description: this.description,
-						parse_fields: this.parse_fields,
+						data_source: this.new_parsource.url,
+						description: this.new_parsource.description,
+						parse_fields: this.new_parsource.parse_fields,
 					});
 
 					if (response.status === 201) {
-						this.toast.success("Новый парсинг создан");
+						this.resetForm();
+
 						console.log("New parsource created");
+						this.toast.success("Новый парсинг создан");
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания парсинга");

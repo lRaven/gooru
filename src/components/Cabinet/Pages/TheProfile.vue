@@ -123,7 +123,7 @@
 		change_user_data,
 		upload_avatar,
 		change_password,
-	} from "@/api/userApi";
+	} from "@/api/user";
 	import { useToast } from "vue-toastification";
 
 	export default {

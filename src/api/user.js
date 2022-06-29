@@ -19,6 +19,17 @@ const registration = async ({ email, username, password }) => {
 	}
 }
 
+const registration_by_tel = async () => {
+	try {
+		const response = await axios.post(`${baseURL}/user/auth/tel/`,
+			{}
+		);
+		console.log(response);
+		return response;
+	}
+	catch (err) { throw new Error }
+}
+
 const login = async ({ username, password }) => {
 	try {
 		const response = await axios.post(`${baseURL}/auth/token/login/`, {
@@ -128,4 +139,12 @@ const upload_avatar = async ({ user_id, avatar }) => {
 	catch (err) { throw new Error(err) }
 }
 
-export { registration, login, logout, change_password, change_user_data, upload_avatar };
+export {
+	registration,
+	registration_by_tel,
+	login,
+	logout,
+	change_password,
+	change_user_data,
+	upload_avatar
+};
