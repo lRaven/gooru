@@ -144,15 +144,18 @@
 								page_number: this.page,
 								page_size: this.parsources_in_page,
 							});
+
+							setTimeout(() => {
+								this.deleteSelected = false;
+							}, 1000);
 						}
 					} catch (err) {
 						this.toast.error("Ошибка удаления парсеров");
+						setTimeout(() => {
+							this.deleteSelected = false;
+						}, 1000);
 						throw new Error(err);
 					}
-
-					setTimeout(() => {
-						this.deleteSelected = false;
-					}, 1000);
 				}
 			},
 

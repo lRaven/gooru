@@ -141,7 +141,7 @@
 					<r-spoiler title="Условия поиска" arrowType="gray">
 						<template v-slot>
 							<textarea
-								placeholder="Текстовое описание требований для поиска с возможностью прикрепления фото"
+								placeholder="Текстовое описание требований для поиска"
 								class="the-parsource__right-panel__textarea"
 								v-model="description"
 							></textarea>

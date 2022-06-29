@@ -2,23 +2,30 @@
 	<div class="user-card">
 		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
 		<div class="user-card__content" ref="content">
-			<p class="user-card__id">id{{ user.id }}</p>
+			<div class="user-card__content-col">
+				<p class="user-card__id">id{{ user.id }}</p>
 
-			<p class="user-card__name">
-				{{
-					user.first_name.length === 0 && user.last_name.length === 0
-						? user.username
-						: `${user.first_name} ${user.last_name}`
-				}}
-			</p>
+				<p class="user-card__name">
+					{{
+						user.first_name.length === 0 &&
+						user.last_name.length === 0
+							? user.username
+							: `${user.first_name} ${user.last_name}`
+					}}
+				</p>
 
-			<p class="user-card__col user-card__status">
-				{{ user.status || "Разблокирован" }}
-			</p>
+				<p class="user-card__col user-card__status">
+					{{ user.status || "Разблокирован" }}
+				</p>
 
-			<p class="user-card__col user-card__parsers">
-				{{ user_parsers.length }}
-			</p>
+				<p class="user-card__col user-card__parsers">
+					{{ user_parsers.length }}
+				</p>
+
+				<p class="user-card__col user-card__manager">
+					{{ user_manager !== null ? user_manager.username : "-" }}
+				</p>
+			</div>
 
 			<r-button text="Подробнее" color="bordered"></r-button>
 
@@ -39,11 +46,8 @@
 
 	export default {
 		name: "UserCard",
-		props: { user: Object, users: Array },
-		components: {
-			rCheckbox,
-			rButton,
-		},
+		props: { user: Object },
+		components: { rCheckbox, rButton },
 		watch: {
 			isSelected() {
 				if (this.isSelected === true) {
@@ -62,6 +66,9 @@
 			...mapState({
 				all_parsources: (state) => state.parsers.all_parsources,
 				all_parsers: (state) => state.parsers.all_parsers,
+
+				users: (state) => state.users.users,
+				user_data: (state) => state.cabinet.user,
 				users_managers: (state) => state.users_managers.users_managers,
 			}),
 
@@ -77,6 +84,29 @@
 						return parsource.id === parser.parsource;
 					});
 				});
+			},
+
+			user_manager() {
+				let manager;
+
+				const manager_id = this.users_managers.find(
+					(manager) => manager.user === this.user.id
+				);
+
+				if (manager_id !== undefined) {
+					manager = this.users.find(
+						(user) => user.id === manager_id.manager
+					);
+
+					if (
+						manager === undefined &&
+						manager_id.manager === this.user_data.id
+					) {
+						manager = this.user_data;
+					}
+				}
+
+				return manager || null;
 			},
 		},
 
@@ -100,11 +130,7 @@
 		gap: 1rem;
 
 		&__content {
-			display: grid;
-			grid-template-columns:
-				minmax(20rem, 1fr) 14rem
-				20rem repeat(4, 14rem);
-			grid-gap: 2rem;
+			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			width: 100%;
@@ -123,9 +149,15 @@
 				box-shadow: 0 0.4rem 1.2rem rgba(89, 96, 199, 0.2);
 			}
 			.r-button {
-				width: 100%;
+				width: max-content;
 				font-size: 1.4rem;
 				padding: 1rem 2.8rem;
+			}
+
+			&-col {
+				display: grid;
+				grid-template-columns: 5rem 20rem repeat(3, 15rem);
+				grid-gap: 3rem;
 			}
 		}
 

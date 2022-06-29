@@ -184,14 +184,7 @@ const actions = {
 		}, []);
 
 		if (ids.length > 0) {
-			const response = await multiaction_delete({
-				model: 'parsource',
-				ids: ids,
-				model_update: {
-					name: "getParsources",
-					data: { page_number: 1, page_size: 10, }
-				}
-			});
+			const response = await multiaction_delete('parsource', ids);
 			return response;
 		}
 	},

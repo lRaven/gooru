@@ -2,18 +2,13 @@ import axios from 'axios';
 import store from '@/store';
 import cookie from 'vue-cookies';
 
-const multiaction_delete = async (args) => {
+const multiaction_delete = async (model, ids) => {
 	try {
 		const response =
 			await axios.delete(`${store.state.baseURL}/multiaction/delete/`,
 				{
-					data: {
-						model: args.model,
-						ids: args.ids,
-					},
-					headers: {
-						Authorization: `token ${cookie.get('auth_token')}`
-					}
+					data: { model, ids, },
+					headers: { Authorization: `token ${cookie.get('auth_token')}` }
 				}
 			);
 

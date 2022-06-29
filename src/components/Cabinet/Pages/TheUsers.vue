@@ -12,7 +12,6 @@
 						v-for="user in users"
 						:key="user.id"
 						:user="user"
-						:users="users"
 					></user-card>
 				</div>
 			</transition>
@@ -73,7 +72,7 @@
 				users_pagination: (state) => state.users.users_pagination,
 			}),
 			page() {
-				return +this.$route.query.page;
+				return this.$route.query.page;
 			},
 			count() {
 				return this.parsources_pagination.count;
@@ -100,9 +99,9 @@
 			...mapMutations(["SET_TAB"]),
 			...mapActions([
 				"getUsers",
+				"getUsersManagers",
 				"getAllParsources",
 				"getAllParsers",
-				"getUsersManagers",
 			]),
 		},
 		created() {
