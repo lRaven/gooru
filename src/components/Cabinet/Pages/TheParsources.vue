@@ -105,6 +105,7 @@
 
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheParsources",
@@ -131,14 +132,30 @@
 					? this.SELECT_ALL_PARSOURCES()
 					: this.UNSELECT_ALL_PARSOURCES();
 			},
-			deleteSelected() {
+
+			async deleteSelected() {
 				if (this.deleteSelected === true) {
-					this.deleteSelectedParsources();
+					try {
+						const response = await this.deleteSelectedParsources();
+
+						if (response.status === 200) {
+							this.toast.success("Выбранные парсеры удалены");
+							await this.getParsources({
+								page_number: this.page,
+								page_size: this.parsources_in_page,
+							});
+						}
+					} catch (err) {
+						this.toast.error("Ошибка удаления парсеров");
+						throw new Error(err);
+					}
+
 					setTimeout(() => {
 						this.deleteSelected = false;
 					}, 1000);
 				}
 			},
+
 			parsources: {
 				handler: function () {
 					if (this.parsources.length === 0) {
@@ -205,6 +222,10 @@
 				page_size: this.parsources_in_page,
 			});
 		},
+		setup() {
+			const toast = useToast();
+			return { toast };
+		},
 	};
 </script>
 
@@ -258,7 +279,6 @@
 		&__content {
 			display: grid;
 			grid-template-rows: max-content 1fr max-content;
-			overflow: auto;
 			padding: 0 1rem;
 		}
 		&__sort {

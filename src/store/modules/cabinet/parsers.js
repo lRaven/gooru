@@ -176,7 +176,7 @@ const actions = {
 		}
 	},
 
-	deleteSelectedParsources: () => {
+	deleteSelectedParsources: async () => {
 		const parsources = store.state.parsers.parsources;
 		const ids = parsources.reduce((acc, current) => {
 			if (current.selected === true) { acc.push(current['id']); }
@@ -184,7 +184,7 @@ const actions = {
 		}, []);
 
 		if (ids.length > 0) {
-			multiaction_delete({
+			const response = await multiaction_delete({
 				model: 'parsource',
 				ids: ids,
 				model_update: {
@@ -192,6 +192,7 @@ const actions = {
 					data: { page_number: 1, page_size: 10, }
 				}
 			});
+			return response;
 		}
 	},
 }

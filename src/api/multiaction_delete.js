@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from '@/store';
 import cookie from 'vue-cookies';
 
-async function multiaction_delete(args) {
+const multiaction_delete = async (args) => {
 	try {
 		const response =
 			await axios.delete(`${store.state.baseURL}/multiaction/delete/`,
@@ -17,21 +17,10 @@ async function multiaction_delete(args) {
 				}
 			);
 
-		if (response.status === 200) {
-			console.log(`Elements ${args.ids} in model ${args.model} deleted`);
-
-			store.dispatch(args.model_update.name, args.model_update.data);
-		}
+		return response;
 	}
 
-	catch {
-		console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-		);
-	}
+	catch (err) { throw new Error(err) }
 }
 
 export { multiaction_delete }

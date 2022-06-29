@@ -272,6 +272,7 @@
 						await this.getUserData();
 					}
 				} catch (err) {
+					this.isDisabledBtn = false;
 					this.toast.error("Ошибка обновления контактных данных");
 					throw new Error(err);
 				}
@@ -290,6 +291,7 @@
 						await this.getUserData();
 					}
 				} catch (err) {
+					this.isDisabledBtn = false;
 					this.toast.error("Ошибка смены изображения профиля");
 					throw new Error(err);
 				}
@@ -308,6 +310,7 @@
 						this.isPasswordsFormDisabled = true;
 					}
 				} catch (err) {
+					this.isDisabledBtn = false;
 					this.toast.error("Ошибка изменения пароля");
 					throw new Error(err);
 				}
