@@ -70,14 +70,7 @@ const actions = {
 			}
 
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	getAllParsources: async context => {
@@ -91,14 +84,7 @@ const actions = {
 			}
 
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	getParsource: async (context, parsource_id) => {
@@ -112,14 +98,7 @@ const actions = {
 				console.log('Parsource saved');
 			}
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	//* get parsers with pagination
@@ -144,14 +123,7 @@ const actions = {
 				console.log('Parser list saved');
 			}
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 	getAllParsers: async context => {
 		try {
@@ -166,14 +138,7 @@ const actions = {
 
 		}
 
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	deleteSelectedParsources: async () => {

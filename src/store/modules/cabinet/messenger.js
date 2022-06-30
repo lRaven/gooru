@@ -28,14 +28,7 @@ const actions = {
 			}
 		}
 
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	getAllMessages: async (context) => {
@@ -51,14 +44,7 @@ const actions = {
 			}
 		}
 
-		catch (err) {
-			console.error(`
-	∧＿∧
-	(｡･ω･｡)つ━☆・*。
-	⊂\\  /   ・゜+.
-	しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 }
 

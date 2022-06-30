@@ -1,10 +1,13 @@
 import cookie from 'vue-cookies'
 import axios from 'axios'
 import store from '@/store'
+import { multiaction_delete } from '@/api/multiaction_delete'
 
 const state = () => ({
 	users: [],
 	users_pagination: {},
+
+	users_managers: [],
 })
 
 const getters = {}
@@ -32,6 +35,8 @@ const mutations = {
 			if (user.id === payload) { user.selected = false }
 		})
 	},
+
+	SET_USERS_MANAGERS: (state, payload) => state.users_managers = payload,
 }
 
 const actions = {
@@ -55,14 +60,33 @@ const actions = {
 			}
 
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
+		catch (err) { throw new Error(err) }
+	},
+
+	deleteSelectedUsers: async () => {
+		const users = store.state.users.users;
+		const ids = users.reduce((acc, current) => {
+			if (current.selected === true) { acc.push(current['id']); }
+			return acc;
+		}, []);
+
+		if (ids.length > 0) {
+			const response = await multiaction_delete('user', ids);
+			return response;
 		}
+	},
+
+	getUsersManagers: async (context) => {
+		try {
+			const response = await axios.get(`${store.state.baseURL}/usermanager/`,
+				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
+
+			if (response.status === 200) {
+				context.commit('SET_USERS_MANAGERS', response.data.results);
+				console.log('Users managers saved');
+			}
+		}
+		catch (err) { throw new Error(err) }
 	},
 }
 

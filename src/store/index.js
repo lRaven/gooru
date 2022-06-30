@@ -16,7 +16,6 @@ import messenger from '@/store/modules/cabinet/messenger'
 
 //* cabinet | admin data
 import users from '@/store/modules/cabinet/admin/users'
-import users_managers from '@/store/modules/cabinet/admin/users_managers'
 
 export default createStore({
 	state: () => ({
@@ -59,6 +58,5 @@ export default createStore({
 		messenger,
 
 		users,
-		users_managers,
 	}
 })

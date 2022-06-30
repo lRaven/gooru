@@ -154,7 +154,7 @@
 			}),
 
 			page() {
-				return this.$route.query.page;
+				return +this.$route.query.page;
 			},
 
 			count() {

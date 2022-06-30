@@ -29,27 +29,27 @@
 			<div class="the-parsources__sort">
 				<sort-button
 					description="Источник"
-					@click="sortArrayByObjectKey(parsources, 'data_source')"
+					@click="sort_list(parsources_list, 'data_source')"
 				></sort-button>
 				<sort-button
 					description="Дата"
-					@click="sortArrayByObjectKey(parsources, 'date')"
+					@click="sort_list(parsources_list, 'date')"
 				></sort-button>
 				<sort-button
 					description="Статус"
-					@click="sortArrayByObjectKey(parsources, 'status')"
+					@click="sort_list(parsources_list, 'condition')"
 				></sort-button>
 				<sort-button
 					description="Найдено"
-					@click="sortArrayByObjectKey(parsources, 'found')"
+					@click="sort_list(parsources_list, 'found')"
 				></sort-button>
 				<sort-button
 					description="В избранном"
-					@click="sortArrayByObjectKey(parsources, 'favorite')"
+					@click="sort_list(parsources_list, 'favorite')"
 				></sort-button>
 				<sort-button
 					description="Время парсинга"
-					@click="sortArrayByObjectKey(parsources, 'time')"
+					@click="sort_list(parsources_list, 'lost_time')"
 				></sort-button>
 			</div>
 
@@ -60,10 +60,10 @@
 			<transition mode="out-in">
 				<div
 					class="the-parsources__list"
-					v-if="isParsourcesLoaded && parsources.length > 0"
+					v-if="isParsourcesLoaded && parsources_list.length > 0"
 				>
 					<parsource-card
-						v-for="parsource in parsources"
+						v-for="parsource in parsources_list"
 						:key="parsource.id"
 						:parsource="parsource"
 					></parsource-card>
@@ -74,7 +74,7 @@
 				<div class="the-parsources__empty">
 					<p
 						class="the-parsources__empty-text"
-						v-if="parsources.length === 0"
+						v-if="parsources_list.length === 0"
 					>
 						Парсеров нет
 					</p>
@@ -140,8 +140,16 @@
 
 						if (response.status === 200) {
 							this.toast.success("Выбранные парсеры удалены");
+
+							//* редирект на 1 страницу
+							this.$router.push({
+								name: "parsources",
+								query: { page: 1 },
+							});
+
+							//* получить parsources 1 страницы
 							await this.getParsources({
-								page_number: this.page,
+								page_number: 1,
 								page_size: this.parsources_in_page,
 							});
 
@@ -161,6 +169,7 @@
 
 			parsources: {
 				handler: function () {
+					this.parsources_list = this.parsources;
 					if (this.parsources.length === 0) {
 						this.selectAll = false;
 					}
@@ -194,7 +203,8 @@
 				selectAll: false,
 				postponeSelected: false,
 				deleteSelected: false,
-				sortBy: "none",
+
+				parsources_list: [],
 
 				parsources_in_page: 10,
 			};
@@ -206,10 +216,10 @@
 				"UNSELECT_ALL_PARSOURCES",
 			]),
 			...mapActions(["getParsources", "deleteSelectedParsources"]),
-			sort_list(by) {
-				console.log(by);
+			async sort_list(array, key) {
+				const response = await sortArrayByObjectKey(array, key);
+				this.parsources_list = response;
 			},
-			sortArrayByObjectKey,
 
 			page_changed(page_number) {
 				this.$router.push({

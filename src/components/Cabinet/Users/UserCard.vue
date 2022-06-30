@@ -3,9 +3,9 @@
 		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
 		<div class="user-card__content" ref="content">
 			<div class="user-card__content-col">
-				<p class="user-card__id">id{{ user.id }}</p>
+				<p class="user-card__col user-card__id">id{{ user.id }}</p>
 
-				<p class="user-card__name">
+				<p class="user-card__col user-card__name">
 					{{
 						user.first_name.length === 0 &&
 						user.last_name.length === 0
@@ -15,7 +15,7 @@
 				</p>
 
 				<p class="user-card__col user-card__status">
-					{{ user.status || "Разблокирован" }}
+					{{ user.is_active ? "Разблокирован" : "Заблокирован" }}
 				</p>
 
 				<p class="user-card__col user-card__parsers">
@@ -69,7 +69,7 @@
 
 				users: (state) => state.users.users,
 				user_data: (state) => state.cabinet.user,
-				users_managers: (state) => state.users_managers.users_managers,
+				users_managers: (state) => state.users.users_managers,
 			}),
 
 			user_parsources() {
@@ -128,6 +128,7 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+		height: max-content;
 
 		&__content {
 			display: flex;
@@ -162,26 +163,25 @@
 		}
 
 		&__col {
-			&:nth-child(n + 2) {
+			&:nth-child(n + 3) {
 				justify-self: center;
 			}
-		}
-
-		&__date,
-		&__status,
-		&__found,
-		&__time {
-			font-size: 1.4rem;
-		}
-
-		&__source {
-			font-weight: 500;
-			text-overflow: ellipsis;
-			overflow: hidden;
-		}
-		&__favorite {
-			font-weight: 600;
 			font-size: 1.5rem;
+		}
+		&__id,
+		&__manager {
+			color: $primary;
+		}
+
+		&__id,
+		&__manager,
+		&__name {
+			font-weight: 500;
+		}
+
+		&__name,
+		&__manager {
+			font-size: 1.6rem;
 		}
 	}
 </style>

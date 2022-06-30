@@ -65,14 +65,7 @@ const actions = {
 			}
 
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	getAppeal: async (context, appeal_id) => {
@@ -86,14 +79,7 @@ const actions = {
 			}
 
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 }
 
