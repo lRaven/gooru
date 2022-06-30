@@ -104,45 +104,10 @@
       title="Выбрано"
       class="the-favorites__right-panel"
     >
-      <template v-slot>
-        <p class="the-favorites__right-panel-counter-wrapper">
-          <span class="the-favorites__right-panel-counter">{{
-            totalSelected
-          }}</span>
-          материала
-        </p>
-        <r-spoiler title="Выложить в соц.сети" arrowType="gray">
-          <template v-slot>
-            <div class="the-favorites__right-panel__checkboxes">
-              <r-checkbox description="telegram"></r-checkbox>
-              <r-checkbox description="vk"></r-checkbox>
-              <r-checkbox description="twitter"></r-checkbox>
-              <r-checkbox description="одноклассники"></r-checkbox>
-            </div>
-            <r-button text="Отправить"></r-button>
-          </template>
-        </r-spoiler>
-
-        <r-spoiler title="Скачать" arrowType="gray">
-          <template v-slot>
-            <div class="the-favorites__right-panel__checkboxes">
-              <r-checkbox description="Excel"></r-checkbox>
-              <r-checkbox description="CSV"></r-checkbox>
-              <r-checkbox description="Google Sheets"></r-checkbox>
-            </div>
-            <r-button text="Скачать"></r-button>
-          </template>
-        </r-spoiler>
-
-        <r-spoiler title="Удалить" arrowType="gray">
-          <template v-slot>
-            <div class="the-favorites__right-panel__checkboxes">
-              <r-checkbox description="Подтверждаете удаление"></r-checkbox>
-            </div>
-            <r-button text="Скачать"></r-button>
-          </template>
-        </r-spoiler>
-      </template>
+      <the-favorite-right-panel 
+      :totalSelected="totalSelected"
+      :selectedParsources="selectedParsources"
+      ></the-favorite-right-panel>
     </right-panel>
   </section>
 </template>
@@ -150,16 +115,15 @@
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 
-import rButton from "@/components/r-button";
 import rDropdown from "@/components/Cabinet/r-dropdown";
 import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
 import FavoriteCard from "@/components/Cabinet/Favorites/FavoriteCard";
+import TheFavoriteRightPanel from '@/components/Cabinet/Favorites/TheFavoritesRigthPanel.vue';
 // import rPagination from "@/components/r-pagination";
 import rLoader from "@/components/r-loader.vue";
 
 import RightPanel from "@/components/Cabinet/RightPanel";
-import rSpoiler from "@/components/r-spoiler";
-import rCheckbox from "@/components/r-checkbox";
+
 
 export default {
   name: "TheFavorites",
@@ -171,9 +135,7 @@ export default {
     rLoader,
 
     RightPanel,
-    rSpoiler,
-    rCheckbox,
-    rButton,
+    TheFavoriteRightPanel,
   },
   watch: {
     favorites() {
@@ -182,7 +144,6 @@ export default {
   },
   computed: {
     ...mapState({ favorites: (state) => state.favorites.favorites }),
-
   },
   data: () => ({
     isFavoritesLoaded: false,
@@ -207,6 +168,11 @@ export default {
         this.selectedParsources[matchedIndex].selectedParsers = selectedParsers;
       } else {
         this.selectedParsources.push(favoriteCardObj);
+      }
+      if (!selectedParsers.length) {
+        this.selectedParsources = this.selectedParsources.filter( selectedParsource => {
+          return selectedParsource.parsourceId !== parsourceId; 
+        });
       }
   
       this.updateTotalSelectedParsers();
