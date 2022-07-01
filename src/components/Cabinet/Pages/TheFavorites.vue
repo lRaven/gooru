@@ -106,7 +106,7 @@
     >
       <the-favorite-right-panel 
       :totalSelected="totalSelected"
-      :selectedParsources="selectedParsources"
+      :selectedParsers="selectedParsers"
       ></the-favorite-right-panel>
     </right-panel>
   </section>
@@ -144,6 +144,12 @@ export default {
   },
   computed: {
     ...mapState({ favorites: (state) => state.favorites.favorites }),
+    selectedParsers(){
+      return this.selectedParsources.reduce( (prev, selectedParource) => {
+        return [...prev, ...selectedParource.selectedParsers];
+      }, []);
+
+    }
   },
   data: () => ({
     isFavoritesLoaded: false,

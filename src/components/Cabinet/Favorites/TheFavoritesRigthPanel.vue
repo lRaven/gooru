@@ -5,7 +5,10 @@
   </p>
   <r-spoiler title="Выложить в соц.сети" arrowType="gray">
     <template v-slot>
-      <div class="the-favorites__right-panel-social">
+      <div
+        class="the-favorites__right-panel-social"
+        @click.capture="handleClickSharedIcon($event)"
+      >
         <ShareNetwork
           network="facebook"
           :url="shareContent.url"
@@ -14,6 +17,8 @@
           :media="shareContent.image"
           :quote="shareContent.quote"
           :hashtags="shareContent.hashtags"
+          @open="callbackOpenSharedIcon"
+          @close="callbackCloseSharedIcon"
         >
           <img src="img/icon/cabinet/fb.svg" alt="facebook" />
         </ShareNetwork>
@@ -24,8 +29,10 @@
           :title="shareContent.title"
           :description="shareContent.description"
           :media="shareContent.image"
+          @open="callbackOpenSharedIcon"
+          @close="callbackCloseSharedIcon"
         >
-          <img src="img/icon/cabinet/ok.svg" alt="ok" />
+          <img src="img/icon/cabinet/ok.svg" alt="ok" ref="odnoklassniki"/>
         </ShareNetwork>
 
         <ShareNetwork
@@ -34,8 +41,11 @@
           :title="shareContent.title"
           :description="shareContent.description"
           :media="shareContent.image"
+          @open="callbackOpenSharedIcon"
+          @close="callbackCloseSharedIcon"
+          
         >
-          <img src="img/icon/cabinet/vk.svg" alt="vk"  ref="vk"/>
+          <img src="img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
         </ShareNetwork>
 
         <ShareNetwork
@@ -45,8 +55,10 @@
           :description="shareContent.description"
           :media="shareContent.image"
           :hashtags="shareContent.hashtags"
+          @open="callbackOpenSharedIcon"
+          @close="callbackCloseSharedIcon"
         >
-          <img src="img/icon/cabinet/twtr.svg" alt="twitter" />
+          <img src="img/icon/cabinet/twtr.svg" alt="twitter" ref="twitter"/>
         </ShareNetwork>
 
         <ShareNetwork
@@ -55,10 +67,13 @@
           :title="shareContent.title"
           :description="shareContent.description"
           :media="shareContent.image"
+          @open="callbackOpenSharedIcon"
+          @close="callbackCloseSharedIcon"
         >
-          <img src="img/icon/cabinet/tg.svg" alt="tg" />
+          <img src="img/icon/cabinet/tg.svg" alt="tg" ref="telegram"/>
         </ShareNetwork>
       </div>
+      <p class="the-favorites__right-panel-alert-message">{{ alertMessage }}</p>
     </template>
   </r-spoiler>
 
@@ -84,7 +99,7 @@
       <r-button
         @click="handleClickDownload"
         text="Скачать"
-        :disabled="isDisabledDownlaodButton || !selectedParsources.length"  
+        :disabled="isDisabledDownlaodButton || !selectedParsers.length"
       ></r-button>
     </template>
   </r-spoiler>
@@ -99,7 +114,7 @@
       </div>
       <r-button
         @click="handleClickRemoveButton"
-        :disabled="!confirmRemoveValue || !selectedParsources.length"
+        :disabled="!confirmRemoveValue || !selectedParsers.length"
         text="Удалить"
       ></r-button>
     </template>
@@ -127,7 +142,7 @@ export default {
       type: [Number, String],
       default: 0,
     },
-    selectedParsources: {
+    selectedParsers: {
       type: Array,
       default() {
         return [];
@@ -161,11 +176,13 @@ export default {
         //*fb, twtr only
         hashtags: "",
       },
+      sharedPointer: 0,
+      alertMessage: "",
     };
   },
   computed: {
     ...mapState({
-      favorites: (state) => state.favotites.favotites,
+      favorites: (state) => state.favorites.favorites,
     }),
     ...mapActions(["getFavoriteParsers"]),
     isDisabledDownlaodButton() {
@@ -175,6 +192,13 @@ export default {
         }
       );
     },
+  },
+  watch: {
+    totalSelected() {
+      if(this.totalSelected && this.alertMessage) {
+        this.alertMessage = '';
+      }
+    }
   },
   methods: {
     handleDownloadCheckBox(checkboxData) {
@@ -192,7 +216,39 @@ export default {
     handleRemoveButtonCheckBox(isConfirmed) {
       this.confirmRemoveValue = isConfirmed.isSelected;
     },
-    
+    handleClickSharedIcon($event) {
+      if (this.totalSelected === 0) {
+        this.alertMessage = "Необходимо выбрать новость!";
+        $event.stopPropagation();
+      }
+      let sharedPointer = +sessionStorage.getItem('sharedPointer');
+      const parserId = this.selectedParsers[sharedPointer];
+      let currentParser = null;
+      this.favorites.forEach(({ parsers }) => {
+        currentParser = parsers.find((parser) => parser.id === parserId);
+        if (currentParser) {
+          this.shareContent.url = currentParser.url;
+          this.shareContent.title = currentParser.title;
+          this.shareContent.description = currentParser.article;
+        }
+      });
+    },
+    callbackOpenSharedIcon() {
+      console.log('open callback', this.shareContent)
+    },
+    callbackCloseSharedIcon(networkName, url) {
+      let sharedPointer = sessionStorage.getItem('sharedPointer');
+      if (sharedPointer < this.selectedParsers.length) {
+        sharedPointer++;
+        console.log(sharedPointer, 'sharedPointer')
+        sessionStorage.setItem('sharedPointer', sharedPointer.toString());
+        this.$refs[`${networkName}`].click();
+        
+      } else {
+        sessionStorage.setItem('sharedPointer', '0');
+        console.log('finish', url)
+      }
+    },
     async handleClickDownload() {
       try {
         let selectedCheckBox = null;
@@ -223,7 +279,6 @@ export default {
         document.body.appendChild(linkForDownload);
         linkForDownload.click();
         linkForDownload.remove();
-
       } catch (error) {
         console.log(error);
       }
@@ -244,27 +299,27 @@ export default {
                         return parser.id !== 
                     } )
                 }); */
-        this.selectedParsources.forEach(async (selectedParsource) => {
-          try {
-            await multiaction_delete({
-              model: "favorites",
-              ids: selectedParsource.selectedParsers,
-            });
-          } catch (error) {
-            console.log(error);
-          }
+
+        await multiaction_delete({
+          model: "favorites",
+          ids: this.selectedParsers,
         });
+
         await this.getFavoriteParsers();
         this.confirmRemoveValue = false;
       } catch (error) {
         console.log(error);
       }
     },
+    created(){
+      sessionStorage.setItem('sharedPointer', '0');
+    }
   },
 };
 </script>
 
 <style scopd lang="scss">
+@import "@/assets/scss/variables";
 .the-favorites {
   &__right-panel {
     &-counter {
@@ -274,9 +329,16 @@ export default {
         margin-top: -2rem;
       }
     }
+    &-alert-message {
+      width: 100%;
+      font-size: 1.2rem;
+      font-weight: 500;
+      line-height: 1.7rem;
+      color: $red;
+    }
     &-social {
-        display: flex;
-        justify-content: space-between;
+      display: flex;
+      justify-content: space-between;
     }
     &__checkboxes {
       display: flex;
