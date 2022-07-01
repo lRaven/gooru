@@ -171,7 +171,7 @@
 			&-input {
 				&-description {
 					font-size: 1.5rem;
-					color: $black-70;
+					color: rgba($black, $alpha: 0.7);
 				}
 			}
 

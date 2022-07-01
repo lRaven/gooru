@@ -22,6 +22,8 @@ import TheNewParser from '@/components/Cabinet/Pages/TheNewParser'
 
 //* admin pages
 import TheUsers from '@/components/Cabinet/Pages/TheUsers'
+import TheUser from '@/components/Cabinet/Pages/TheUser'
+//* 
 
 import PageBrief from '@/views/PageBrief'
 
@@ -128,6 +130,15 @@ const routes = [
 				component: TheUsers,
 				meta: {
 					title: 'Пользователи',
+					requiresAuth: true,
+				},
+			},
+			{
+				path: 'user/:id',
+				name: 'user',
+				component: TheUser,
+				meta: {
+					title: 'Пользователь',
 					requiresAuth: true,
 				},
 			},

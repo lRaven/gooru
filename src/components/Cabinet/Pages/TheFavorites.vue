@@ -284,13 +284,11 @@
 			&-description {
 				margin-bottom: 0.5rem;
 				font-size: 1.2rem;
-				color: $black-50;
+				color: rgba($black, $alpha: 0.5);
 			}
 		}
 
 		&__list {
-			// max-height: calc(100vh - 35rem);
-			// overflow-y: auto;
 			margin-bottom: 2rem;
 		}
 		&__bottom {

@@ -276,7 +276,7 @@
 		&__right-panel {
 			&-form {
 				padding: 2rem 0;
-				border-top: 0.05rem solid $black-50;
+				border-top: 0.05rem solid rgba($black, $alpha: 0.5);
 				display: flex;
 				flex-direction: column;
 				gap: 4rem;

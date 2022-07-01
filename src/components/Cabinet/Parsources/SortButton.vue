@@ -35,7 +35,7 @@
 		padding: 1.2rem 0;
 
 		&__description {
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 			font-size: 1.2rem;
 		}
 

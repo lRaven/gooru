@@ -167,13 +167,13 @@
 
 		&__username {
 			font-size: 1.6rem;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 			font-weight: 700;
 			align-self: flex-end;
 		}
 		&__date {
 			font-size: 1.1rem;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 			align-self: flex-start;
 		}
 	}

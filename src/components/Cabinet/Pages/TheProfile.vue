@@ -385,7 +385,7 @@
 			&-input-description {
 				font-size: 1.6rem;
 				line-height: 1.2;
-				color: $black-70;
+				color: rgba($black, $alpha: 0.7);
 			}
 
 			&-avatar {

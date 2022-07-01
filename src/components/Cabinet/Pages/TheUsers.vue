@@ -105,7 +105,12 @@
 					<user-card
 						v-for="user in users_list"
 						:key="user.id"
+						:user_me="user_me"
 						:user="user"
+						:users="all_users"
+						:managers="users_managers"
+						:parsources="all_parsources"
+						:parsers="all_parsers"
 					></user-card>
 				</div>
 			</transition>
@@ -216,8 +221,14 @@
 		},
 		computed: {
 			...mapState({
+				user_me: (state) => state.cabinet.user,
 				users: (state) => state.users.users,
 				users_pagination: (state) => state.users.users_pagination,
+				all_users: (state) => state.users.all_users,
+				users_managers: (state) => state.users.users_managers,
+
+				all_parsources: (state) => state.parsers.all_parsources,
+				all_parsers: (state) => state.parsers.all_parsers,
 			}),
 			page() {
 				return +this.$route.query.page;
@@ -252,6 +263,7 @@
 			]),
 			...mapActions([
 				"getUsers",
+				"getAllUsers",
 				"getUsersManagers",
 				"getAllParsources",
 				"getAllParsers",
@@ -277,6 +289,7 @@
 				page_size: this.users_in_page,
 				page_number: this.page,
 			});
+			this.getAllUsers();
 			this.getUsersManagers();
 
 			this.getAllParsources();
@@ -326,7 +339,7 @@
 				}
 				&-description {
 					font-size: 1.2rem;
-					color: $black-70;
+					color: rgba($black, $alpha: 0.7);
 				}
 			}
 		}

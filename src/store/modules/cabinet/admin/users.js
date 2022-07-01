@@ -7,7 +7,11 @@ const state = () => ({
 	users: [],
 	users_pagination: {},
 
+	all_users: [],
+
 	users_managers: [],
+
+	selected_user: {},
 })
 
 const getters = {}
@@ -16,6 +20,8 @@ const mutations = {
 	SET_USERS: (state, payload) => state.users = payload,
 	SET_USERS_PAGINATION: (state, payload) => state.users_pagination = payload,
 
+	SET_ALL_USERS: (state, payload) => state.all_users = payload,
+
 	SELECT_ALL_USERS: state => {
 		state.users.forEach(user => user.selected = true);
 	},
@@ -23,7 +29,6 @@ const mutations = {
 	UNSELECT_ALL_USERS: state => {
 		state.users.forEach(user => user.selected = false);
 	},
-
 
 	SELECT_USER: (state, payload) => {
 		state.users.forEach(user => {
@@ -37,6 +42,8 @@ const mutations = {
 	},
 
 	SET_USERS_MANAGERS: (state, payload) => state.users_managers = payload,
+
+	SET_SELECTED_USER: (state, payload) => state.selected_user = payload,
 }
 
 const actions = {
@@ -57,6 +64,20 @@ const actions = {
 					}
 				}
 				context.commit('SET_USERS_PAGINATION', pagination_info);
+			}
+
+		}
+		catch (err) { throw new Error(err) }
+	},
+
+	getAllUsers: async (context) => {
+		try {
+			const response = await axios.get(`${store.state.baseURL}/user/`,
+				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
+
+			if (response.status === 200) {
+				context.commit('SET_ALL_USERS', response.data.results);
+				console.log('All users saved');
 			}
 
 		}
@@ -85,6 +106,20 @@ const actions = {
 				context.commit('SET_USERS_MANAGERS', response.data.results);
 				console.log('Users managers saved');
 			}
+		}
+		catch (err) { throw new Error(err) }
+	},
+
+	getSelectedUser: async (context, user_id) => {
+		try {
+			const response = await axios.get(`${store.state.baseURL}/user/${user_id}`,
+				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
+
+			if (response.status === 200) {
+				context.commit('SET_SELECTED_USER', response.data);
+				console.log('Selected user saved');
+			}
+
 		}
 		catch (err) { throw new Error(err) }
 	},

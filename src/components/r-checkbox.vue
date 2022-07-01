@@ -95,15 +95,14 @@
 				height: 1.6rem;
 				border-radius: 0.3rem;
 				background-color: $white;
-				border: 0.1rem solid $black-50;
+				border: 0.1rem solid rgba($black, $alpha: 0.5);
 				transition: all 0.2s ease;
 			}
 		}
 
 		&__description {
 			font-size: 1.2rem;
-			color: $black-70;
-			font-weight: 500;
+			color: rgba($black, $alpha: 0.7);
 		}
 	}
 </style>

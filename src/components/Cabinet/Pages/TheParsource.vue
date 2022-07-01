@@ -341,7 +341,7 @@
 
 			&-key {
 				font-size: 1.6rem;
-				color: $black-70;
+				color: rgba($black, $alpha: 0.7);
 			}
 			&-value {
 				font-size: 1.8rem;
@@ -406,16 +406,16 @@
 			}
 		}
 		&__total-processed {
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 		}
 
 		&__sortby {
 			background-color: transparent;
 			font-size: 1.2rem;
-			color: $black-50;
+			color: rgba($black, $alpha: 0.5);
 			&.selected {
 				font-weight: 600;
-				color: $black-70;
+				color: rgba($black, $alpha: 0.7);
 			}
 		}
 
@@ -467,7 +467,7 @@
 				}
 				&-description {
 					font-size: 1rem;
-					color: $black-70;
+					color: rgba($black, $alpha: 0.7);
 				}
 			}
 

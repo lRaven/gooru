@@ -280,7 +280,7 @@
 
 		&__postpone {
 			&-description {
-				color: $black-70;
+				color: rgba($black, $alpha: 0.7);
 			}
 		}
 		&__remove {

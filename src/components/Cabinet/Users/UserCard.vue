@@ -27,14 +27,16 @@
 				</p>
 			</div>
 
-			<r-button text="Подробнее" color="bordered"></r-button>
-
-			<!-- @click="
-						this.$router.push({
-							path: `/cabinet/parsource/${parsource.id}`,
-							query: { page: 1 },
-						})
-			" -->
+			<r-button
+				text="Подробнее"
+				color="bordered"
+				@click="
+					this.$router.push({
+						path: `/cabinet/user/${user.id}`,
+						query: { page: 1 },
+					})
+				"
+			></r-button>
 		</div>
 	</div>
 </template>
@@ -42,11 +44,19 @@
 <script>
 	import rCheckbox from "@/components/r-checkbox";
 	import rButton from "@/components/r-button";
-	import { mapState, mapMutations } from "vuex";
+	import { mapMutations } from "vuex";
 
 	export default {
 		name: "UserCard",
-		props: { user: Object },
+		props: {
+			user_me: Object,
+			user: Object,
+			users: Array,
+			managers: Array,
+
+			parsources: Array,
+			parsers: Array,
+		},
 		components: { rCheckbox, rButton },
 		watch: {
 			isSelected() {
@@ -63,23 +73,14 @@
 			},
 		},
 		computed: {
-			...mapState({
-				all_parsources: (state) => state.parsers.all_parsources,
-				all_parsers: (state) => state.parsers.all_parsers,
-
-				users: (state) => state.users.users,
-				user_data: (state) => state.cabinet.user,
-				users_managers: (state) => state.users.users_managers,
-			}),
-
 			user_parsources() {
-				return this.all_parsources.filter(
+				return this.parsources.filter(
 					(parsource) => parsource.user === this.user.id
 				);
 			},
 
 			user_parsers() {
-				return this.all_parsers.filter((parser) => {
+				return this.parsers.filter((parser) => {
 					return this.user_parsources.some((parsource) => {
 						return parsource.id === parser.parsource;
 					});
@@ -89,7 +90,7 @@
 			user_manager() {
 				let manager;
 
-				const manager_id = this.users_managers.find(
+				const manager_id = this.managers.find(
 					(manager) => manager.user === this.user.id
 				);
 
@@ -100,9 +101,9 @@
 
 					if (
 						manager === undefined &&
-						manager_id.manager === this.user_data.id
+						manager_id.manager === this.user_me.id
 					) {
-						manager = this.user_data;
+						manager = this.user_me;
 					}
 				}
 
