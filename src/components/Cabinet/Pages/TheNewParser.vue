@@ -4,11 +4,14 @@
 
 		<form class="the-new-parser__form" @submit.prevent="">
 			<template v-if="user.role === 'Manager'">
-				<p class="the-new-parser__input-description">Введите пользователя*</p>
-				<r-dropdown 
+				<p class="the-new-parser__input-description">
+					Введите пользователя*
+				</p>
+				<r-dropdown
 					selected_item="ФИО"
 					:list="managerUsers"
-					v-model="selectedUser" />
+					v-model="selectedUser"
+				/>
 			</template>
 			<p class="the-new-parser__input-description">
 				URL страницы с данными*
@@ -57,6 +60,7 @@
 
 <script>
 	import { mapActions, mapMutations, mapState } from "vuex";
+	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rTextarea from "@/components/Cabinet/r-textarea.vue";
 	import rButton from "@/components/r-button.vue";
@@ -68,6 +72,7 @@
 			rInput,
 			rTextarea,
 			rButton,
+			rDropdown,
 		},
 		watch: {
 			url() {
@@ -80,8 +85,8 @@
 				this.checkFieldsInputs();
 			},
 			selectedUser() {
-				this.checkFieldsInputs()
-			}
+				this.checkFieldsInputs();
+			},
 		},
 		data: () => ({
 			isDisabledBtn: false,
@@ -93,14 +98,14 @@
 		computed: {
 			...mapState({
 				user: (state) => state.cabinet.user,
-				users: (state) => state.users
+				users: (state) => state.users,
 			}),
 			managerUsers() {
 				/* Здесь сортировка по пользователям, т.к. пока что используется не тот запрос*/
-				return this.users.users.filter( user => {
-					return user.role === 'DefaultUser'
-				})
-			}
+				return this.users.users.filter((user) => {
+					return user.role === "DefaultUser";
+				});
+			},
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
@@ -109,7 +114,9 @@
 				this.url.length > 0 &&
 				this.parse_fields.length > 0 &&
 				this.description.length > 0 &&
-				this.selectedUser !== null
+				(this.user.role === "Manager"
+					? this.selectedUser !== null
+					: true)
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
@@ -120,7 +127,7 @@
 			this.checkFieldsInputs();
 			/* Здесь запрос на эндпоинт со всеми пользователями в системе, это временное решение
 			 до появяения эндпоинта со списком пользователей для конкретного менеджера */
-			this.getUsers({ page_number: 1, page_size: 10 })
+			this.getUsers({ page_number: 1, page_size: 10 });
 		},
 	};
 </script>
