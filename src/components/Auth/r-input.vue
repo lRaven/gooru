@@ -1,12 +1,13 @@
 <template>
 	<label class="r-input">
 		<input
-			:type="input_type_changed"
-			@input="this.$emit('update:modelValue', $event.target.value)"
-			:value="value"
 			class="r-input__input"
+			:class="isTransparent ? 'transparent' : ''"
+			:type="input_type_changed"
+			:value="value"
 			:placeholder="placeholder"
 			:disabled="isDisabled"
+			@input="this.$emit('update:modelValue', $event.target.value)"
 		/>
 		<transition mode="out-in">
 			<img
@@ -49,6 +50,10 @@
 				default: "text",
 			},
 			isDisabled: {
+				value: Boolean,
+				default: false,
+			},
+			isTransparent: {
 				value: Boolean,
 				default: false,
 			},
@@ -104,6 +109,10 @@
 				+ .r-input__icon {
 					cursor: default;
 				}
+			}
+			&.transparent {
+				border-color: transparent;
+				background-color: transparent;
 			}
 		}
 		&__icon {

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import store from '@/store';
 
-async function send_brief(brief) {
+const send_brief = async (brief) => {
 	try {
-		const request = await axios.post(`${store.state.baseURL}/brief/`, {
+		const response = await axios.post(`${store.state.baseURL}/brief/`, {
 			client_status: brief.client_status,
 			client_status_self_option: brief.client_status_self_option,
 
@@ -23,19 +23,9 @@ async function send_brief(brief) {
 			name: brief.user_contacts.username,
 			phone_number: brief.user_contacts.tel,
 		});
-
-		if (request.status === 200) {
-			console.log('Brief sent');
-		}
+		return response;
 	}
-	catch {
-		console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-		);
-	}
+	catch (err) { throw new Error(err) }
 }
 
 export { send_brief }

@@ -107,7 +107,7 @@
 		background-color: white;
 		font-weight: 500;
 		+ .appeals-card {
-			border-top: 0.1rem solid $black-50;
+			border-top: 0.1rem solid rgba($black, $alpha: 0.5);
 		}
 
 		&__col {
@@ -118,7 +118,7 @@
 
 		&__id {
 			font-size: 1.4rem;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 		}
 
 		&__source {
@@ -126,7 +126,7 @@
 		}
 
 		&__counter {
-			color: $black-50;
+			color: rgba($black, $alpha: 0.5);
 			font-weight: 300;
 			font-size: 1.4rem;
 		}
@@ -157,7 +157,7 @@
 		&__date {
 			font-size: 1.4rem;
 			font-weight: 400;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 		}
 	}
 </style>

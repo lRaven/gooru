@@ -1,6 +1,11 @@
 <template>
-	<li class="parser-content" v-click-away="hideAllExtras">
-		<div class="parser-content__row">
+	<li class="parser-content" v-click-away="stateReset">
+		<div
+			class="parser-content__row"
+			@click="
+				isCroppedText === true ? expandArticle() : minimizeArticle()
+			"
+		>
 			<img
 				:src="parser.img"
 				alt="image"
@@ -8,7 +13,12 @@
 				v-if="parser.img"
 			/>
 			<div class="parser-content__col">
-				<p class="parser-content__text">{{ parser.article }}</p>
+				<p
+					class="parser-content__text"
+					:class="isCroppedText === true ? 'cropped' : ''"
+				>
+					{{ parser.article }}
+				</p>
 				<a
 					:href="parser.url"
 					target="_blank"
@@ -27,7 +37,7 @@
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
 					v-if="parser.messages"
-					@click="
+					@click.stop="
 						isMessagesOpen === true
 							? (isMessagesOpen = false)
 							: (isMessagesOpen = true)
@@ -46,7 +56,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
-					@click="
+					@click.stop="
 						isMessagesOpen === true
 							? (isMessagesOpen = false)
 							: (isMessagesOpen = true)
@@ -108,7 +118,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
-					@click="
+					@click.stop="
 						isShareOpen === true
 							? (isShareOpen = false)
 							: (isShareOpen = true)
@@ -128,7 +138,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
-					@click="
+					@click.stop="
 						isDownloadOpen === true
 							? (isDownloadOpen = false)
 							: (isDownloadOpen = true)
@@ -307,6 +317,8 @@
 			},
 		},
 		data: () => ({
+			isCroppedText: true,
+
 			isMessagesOpen: false,
 			isShareOpen: false,
 			isDownloadOpen: false,
@@ -333,6 +345,19 @@
 				this.isShareOpen = false;
 				this.isDownloadOpen = false;
 			},
+
+			expandArticle() {
+				this.isCroppedText = false;
+			},
+
+			minimizeArticle() {
+				this.isCroppedText = true;
+			},
+
+			stateReset() {
+				this.minimizeArticle();
+				this.hideAllExtras();
+			},
 		},
 
 		directives: { ClickAway: directive },
@@ -355,6 +380,7 @@
 				margin-top: 2rem;
 			}
 			&:first-child {
+				cursor: pointer;
 				align-items: center;
 				gap: 1rem;
 			}
@@ -386,15 +412,16 @@
 			object-fit: contain;
 		}
 		&__text {
-			text-overflow: ellipsis;
-			display: -webkit-box;
-			-webkit-line-clamp: 2;
-			-webkit-box-orient: vertical;
-			overflow: hidden;
 			font-size: 1.2rem;
 			line-height: 1.3;
-			max-height: 3.2rem;
 			margin-bottom: 0.5rem;
+			&.cropped {
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
 		}
 		&__link {
 			text-decoration: underline;

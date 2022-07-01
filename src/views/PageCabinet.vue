@@ -10,6 +10,10 @@
 					<component :is="Component" />
 				</transition>
 			</router-view>
+
+			<transition mode="out-in">
+				<r-loader v-if="$route.name === 'cabinet'"></r-loader>
+			</transition>
 		</main>
 	</div>
 </template>
@@ -20,6 +24,7 @@
 	import TheHeader from "@/components/TheHeader";
 
 	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
+	import rLoader from "@/components/r-loader.vue";
 
 	export default {
 		name: "PageCabinet",
@@ -27,19 +32,65 @@
 			TheHeader,
 			AppLoader,
 			NavigationPanel,
+			rLoader,
 		},
 		watch: {
 			user_auth() {
 				if (this.user_auth === false)
 					this.$router.push({ name: "login" });
 			},
+			//* при получении юзера, редиректить на дефолтную страницу юзера в случае если находимся на главной странице кабинета
+			user: {
+				handler() {
+					if (this.$route.name === "cabinet") {
+						this.redirectUserByRole(this.user.role);
+					}
+				},
+				deep: true,
+			},
+
+			//* при изменении url смотреть, если находимся на главной странице кабинета, то редирект на дефолтную страницу юзера
+			"$route.path"() {
+				if (this.$route.name === "cabinet") {
+					this.redirectUserByRole(this.user.role);
+				}
+			},
 		},
 		computed: {
 			...mapState({
+				user: (state) => state.cabinet.user,
 				user_auth: (state) => state.cabinet.user_auth,
 				tab: (state) => state.navigation_panel.tab,
 				userRole: (state) => state.cabinet.user.role,
 			}),
+		},
+		methods: {
+			//* редирект на дефолтную страницу кабинета в зависимости от роли юзера
+			redirectUserByRole(role) {
+				switch (role) {
+					case "DefaultUser": {
+						this.$router.push({ name: "rates" });
+						break;
+					}
+					case "Manager": {
+						this.$router.push({
+							name: "appeals",
+							query: { page: 1 },
+						});
+						break;
+					}
+					case "AdminCRM": {
+						this.$router.push({
+							name: "users",
+							query: { page: 1 },
+						});
+						break;
+					}
+				}
+			},
+		},
+		created() {
+			this.redirectUserByRole(this.user.role);
 		},
 	};
 </script>
@@ -51,7 +102,9 @@
 		display: grid;
 		grid-template-columns: 27.5rem 1fr;
 		height: 100vh;
+		overflow: hidden;
 		&__main {
+			position: relative;
 			display: block;
 			margin-top: 8rem;
 			background-color: $light-blue;

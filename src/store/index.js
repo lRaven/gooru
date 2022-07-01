@@ -1,21 +1,21 @@
 import { createStore } from 'vuex'
 
-import rates from '@/store/modules/rates'
-
 import brief from '@/store/modules/brief'
 
-import cabinet from '@/store/modules/cabinet'
-import navigation_panel from '@/store/modules/navigation_panel'
-import stats from '@/store/modules/stats'
-import appeals from '@/store/modules/appeals'
-import parsers from '@/store/modules/parsers'
-import favorites from '@/store/modules/favorites'
+//* cabinet 
+import cabinet from '@/store/modules/cabinet/cabinet'
+import navigation_panel from '@/store/modules/cabinet/navigation_panel'
 
-import messenger from '@/store/modules/messenger'
+import rates from '@/store/modules/cabinet/rates'
+import stats from '@/store/modules/cabinet/stats'
+import appeals from '@/store/modules/cabinet/appeals'
+import parsers from '@/store/modules/cabinet/parsers'
+import favorites from '@/store/modules/cabinet/favorites'
 
-//* admin data
-import users from '@/store/modules/admin/users'
-import users_managers from '@/store/modules/admin/users_managers'
+import messenger from '@/store/modules/cabinet/messenger'
+
+//* cabinet | admin data
+import users from '@/store/modules/cabinet/admin/users'
 
 export default createStore({
 	state: () => ({
@@ -47,11 +47,12 @@ export default createStore({
 	},
 
 	modules: {
-		rates,
 		brief,
+
 		cabinet,
 		navigation_panel,
 
+		rates,
 		stats,
 		appeals,
 		parsers,
@@ -59,6 +60,5 @@ export default createStore({
 		messenger,
 
 		users,
-		users_managers,
 	}
 })

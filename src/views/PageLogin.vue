@@ -4,7 +4,7 @@
 
 		<main class="page-login__main main">
 			<section class="page-login__section">
-				<form @submit.prevent="login" class="page-login__form center">
+				<form @submit.prevent="auth" class="page-login__form center">
 					<router-link
 						:to="{ name: 'login' }"
 						class="page-login__form-link selected"
@@ -44,12 +44,13 @@
 </template>
 
 <script>
-	import axios from "axios";
 	import { mapState, mapActions } from "vuex";
 
 	import TheHeader from "@/components/TheHeader.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
+	import { login } from "@/api/user";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageLogin",
@@ -79,34 +80,38 @@
 		}),
 		methods: {
 			...mapActions(["getUserData"]),
-			async login() {
-				try {
-					const request = await axios.post(
-						`${this.baseURL}/auth/token/login/`,
-						{
-							username: this.username,
-							password: this.password,
-						}
-					);
 
-					if (request.status === 200) {
+			async auth() {
+				try {
+					const response = await login({
+						username: this.username,
+						password: this.password,
+					});
+					if (response.status === 200) {
+						this.toast.success("Вход выполнен успешно");
 						this.$cookies.set(
 							"auth_token",
-							request.data.auth_token
+							response.data.auth_token
 						);
 						localStorage.setItem("userAuth", "yes");
 						this.getUserData();
 						this.$router.push({ name: "cabinet" });
 					}
 				} catch (err) {
+					this.toast.error("Неверный логин или пароль");
 					throw new Error(err);
 				}
 			},
+
 			validateForm() {
-				this.username.length > 0 && this.password.length > 0
+				this.username.length > 0 && this.password.length >= 8
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
@@ -166,7 +171,7 @@
 			&-input {
 				&-description {
 					font-size: 1.5rem;
-					color: $black-70;
+					color: rgba($black, $alpha: 0.7);
 				}
 			}
 

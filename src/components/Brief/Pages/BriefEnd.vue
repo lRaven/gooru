@@ -6,7 +6,8 @@
 
 <script>
 	import { mapState } from "vuex";
-	import { send_brief } from "@/api/brief/send_brief";
+	import { send_brief } from "@/api/brief";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "BriefEnd",
@@ -53,12 +54,30 @@
 				return result;
 			},
 		},
-		methods: { send_brief },
+		methods: {
+			async send_form() {
+				try {
+					const response = await send_brief(this.brief);
+					if (response.status === 201) {
+						this.toast.success("Бриф отправлен");
+						console.log("Brief sent");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка отправки брифа");
+					throw new Error(err);
+				}
+			},
+		},
 		mounted() {
-			this.send_brief(this.brief);
+			this.send_form();
+
 			setTimeout(() => {
 				this.$router.push({ name: "home" });
 			}, 5000);
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>

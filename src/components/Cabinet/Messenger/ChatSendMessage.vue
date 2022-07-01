@@ -5,8 +5,10 @@
 				:height="10"
 				placeholder="Написать сообщение..."
 				v-model="message"
-				:value='message'
+				:value="message"
 				:bordered="false"
+				@keydown.enter.prevent.exact="send_message"
+				@keydown.ctrl.enter.prevent.exact="new_line"
 			></r-textarea>
 			<r-button text="Отправить" color="bordered"></r-button>
 		</div>
@@ -22,11 +24,21 @@
 		data: () => ({ message: "" }),
 		components: { rTextarea, rButton },
 		methods: {
+			//* отправить сообщение
 			send_message() {
+				this.message = this.message.trim();
+
 				if (this.message.length > 0) {
 					this.$emit("send_message", this.message);
 					this.message = "";
 				}
+			},
+
+			//* перенос строки
+			new_line(event) {
+				const caret = event.target.selectionStart;
+				event.target.setRangeText("\n", caret, caret, "end");
+				this.message = event.target.value;
 			},
 		},
 	};

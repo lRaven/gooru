@@ -1,5 +1,4 @@
 <template>
-	
 	<router-view v-slot="{ Component }">
 		<transition mode="out-in">
 			<component :is="Component" />
@@ -8,8 +7,7 @@
 </template>
 
 <script>
-	import { mapActions } from "vuex";
-	// import axios from "axios";
+	import { mapState, mapActions } from "vuex";
 
 	export default {
 		watch: {
@@ -22,30 +20,11 @@
 				document.querySelector("body").classList.remove("locked");
 			},
 		},
-		methods: {
-			...mapActions(["getDocumentWidth", "getUserData"]),
-
-			// //* user account activation
-			// async activation() {
-			// 	try {
-			// 		const request = await axios.post(
-			// 			`${this.baseURL}/auth/users/activation/`,
-			// 			{
-			// 				uid: "NA",
-			// 				token: "b6sziy-95c76eae1aea25ca34a7de50654d5355",
-			// 			}
-			// 		);
-			// 		console.log(request);
-			// 	} catch (err) {
-			// 		console.error(err);
-			// 	}
-			// },
-		},
+		computed: { ...mapState(["baseURL"]) },
+		methods: { ...mapActions(["getDocumentWidth", "getUserData"]) },
 		created() {
 			this.getDocumentWidth();
 			this.getUserData();
-
-			// this.activation();
 		},
 	};
 </script>

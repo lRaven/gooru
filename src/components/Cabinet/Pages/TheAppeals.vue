@@ -2,9 +2,9 @@
 	<section class="the-appeals">
 		<div class="the-appeals__main">
 			<h2 class="the-appeals__title">Обращения</h2>
-			<r-input 
-				class="the-appeals__search-input" 
-				:value="searchValue" 
+			<r-input
+				class="the-appeals__search-input"
+				:value="searchValue"
 				input_type="search"
 				placeholder="Поиск по почте"
 				v-if="user.role === 'Manager'"
@@ -57,16 +57,7 @@
 			<template v-slot>
 				<form
 					class="the-appeals__right-panel-form"
-					@submit.prevent="
-						add_ticket({
-							name: user.first_name,
-							phone_number: user.phone_number,
-							email: user.email,
-							message: message,
-							topic_type: topic,
-							parser: parser,
-						})
-					"
+					@submit.prevent="create_ticket"
 				>
 					<div class="the-appeals__right-panel-row">
 						<p class="the-appeals__right-panel-input-description">
@@ -76,7 +67,7 @@
 						<r-dropdown
 							selected_item="Тема обращения"
 							:list="topics"
-							v-model="topic"
+							v-model="new_appeal.topic"
 						></r-dropdown>
 					</div>
 
@@ -88,7 +79,7 @@
 						<r-dropdown
 							selected_item="Парсер"
 							:list="all_parsers"
-							v-model="parser"
+							v-model="new_appeal.parser"
 						></r-dropdown>
 					</div>
 
@@ -98,8 +89,8 @@
 						</p>
 
 						<r-textarea
-							v-model="message"
-							:value="message"
+							v-model="new_appeal.message"
+							:value="new_appeal.message"
 							placeholder="Текстовое описание требований для поиска"
 						></r-textarea>
 					</div>
@@ -113,8 +104,7 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
-	import { add_ticket } from "@/api/ticket/add_ticket";
-	import { multiaction_delete } from "@/api/multiaction_delete";
+	import { add_ticket } from "@/api/tickets";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
@@ -124,6 +114,7 @@
 	import rPagination from "@/components/r-pagination.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
 	import rLoader from "@/components/r-loader.vue";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheAppeals",
@@ -149,6 +140,12 @@
 			appeals() {
 				this.isAppealsLoaded = true;
 			},
+			new_appeal: {
+				handler() {
+					this.validateForm();
+				},
+				deep: true,
+			},
 		},
 		computed: {
 			...mapState({
@@ -162,7 +159,6 @@
 			}),
 
 			page() {
-				console.log(this.$route.query.page)
 				return +this.$route.query.page;
 			},
 
@@ -197,9 +193,11 @@
 				isAppealsLoaded: false,
 				path: this.$route.path,
 
-				topic: null,
-				parser: null,
-				message: "",
+				new_appeal: {
+					topic: "",
+					parser: "",
+					message: "",
+				},
 
 				searchValue: "",
 
@@ -209,8 +207,32 @@
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllParsers", "getAppeals", "getAllMessages"]),
-			add_ticket,
-			multiaction_delete,
+
+			async create_ticket() {
+				try {
+					const response = await add_ticket({
+						name: this.user.first_name,
+						phone_number: this.user.phone_number,
+						email: this.user.email,
+						message: this.new_appeal.message,
+						topic_type: this.new_appeal.topic,
+						parser: this.new_appeal.parser,
+					});
+					if (response.status === 201) {
+						this.resetForm();
+						this.getAppeals({
+							page_number: this.page,
+							page_size: this.appeals_in_page,
+						});
+
+						console.log("Ticket created");
+						this.toast.success("Обращение создано");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка создания обращения");
+					throw new Error(err);
+				}
+			},
 
 			page_changed(page_number) {
 				this.$router.push({
@@ -229,8 +251,9 @@
 
 			this.getAllParsers();
 		},
-		mounted() {
-			// multiaction_delete({ model: "notify", ids: [90, 91, 93] });
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
@@ -267,7 +290,7 @@
 			display: grid;
 			grid-template-columns: 1fr 3fr 1fr;
 			grid-template-rows: min-content max-content min-content;
-			grid-template-areas: 
+			grid-template-areas:
 			"title . . searchInput"
 			"appealsList appealsList appealsList appealsList"
 			"appealsBottom appealsBottom appealsBottom appealsBottom";
@@ -299,7 +322,7 @@
 		&__right-panel {
 			&-form {
 				padding: 2rem 0;
-				border-top: 0.05rem solid $black-50;
+				border-top: 0.05rem solid rgba($black, $alpha: 0.5);
 				display: flex;
 				flex-direction: column;
 				gap: 4rem;

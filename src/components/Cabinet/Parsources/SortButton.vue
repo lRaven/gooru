@@ -1,11 +1,14 @@
 <template>
 	<button class="sort-button">
 		<p class="sort-button__description">{{ description }}</p>
-		<img
-			src="img/icon/cabinet/arrow.svg"
-			alt="arrow"
-			class="sort-button__arrow"
-		/>
+
+		<slot name="icon">
+			<img
+				src="img/icon/cabinet/arrow.svg"
+				alt="arrow"
+				class="sort-button__icon"
+			/>
+		</slot>
 	</button>
 </template>
 
@@ -28,15 +31,15 @@
 		background-color: transparent;
 		display: flex;
 		align-items: center;
-		gap: 2rem;
+		gap: 1rem;
 		padding: 1.2rem 0;
 
 		&__description {
-			color: $black-50;
+			color: rgba($black, $alpha: 0.7);
 			font-size: 1.2rem;
 		}
 
-		&__arrow {
+		&__icon {
 			width: 0.8rem;
 		}
 	}

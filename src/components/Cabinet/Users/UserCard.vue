@@ -2,32 +2,41 @@
 	<div class="user-card">
 		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
 		<div class="user-card__content" ref="content">
-			<p class="user-card__id">id{{ user.id }}</p>
+			<div class="user-card__content-col">
+				<p class="user-card__col user-card__id">id{{ user.id }}</p>
 
-			<p class="user-card__name">
-				{{
-					user.first_name.length === 0 && user.last_name.length === 0
-						? user.username
-						: `${user.first_name} ${user.last_name}`
-				}}
-			</p>
+				<p class="user-card__col user-card__name">
+					{{
+						user.first_name.length === 0 &&
+						user.last_name.length === 0
+							? user.username
+							: `${user.first_name} ${user.last_name}`
+					}}
+				</p>
 
-			<p class="user-card__col user-card__status">
-				{{ user.status || "Разблокирован" }}
-			</p>
+				<p class="user-card__col user-card__status">
+					{{ user.is_active ? "Разблокирован" : "Заблокирован" }}
+				</p>
 
-			<p class="user-card__col user-card__parsers">
-				{{ user_parsers.length }}
-			</p>
+				<p class="user-card__col user-card__parsers">
+					{{ user_parsers.length }}
+				</p>
 
-			<r-button text="Подробнее" color="bordered"></r-button>
+				<p class="user-card__col user-card__manager">
+					{{ user_manager !== null ? user_manager.username : "-" }}
+				</p>
+			</div>
 
-			<!-- @click="
-						this.$router.push({
-							path: `/cabinet/parsource/${parsource.id}`,
-							query: { page: 1 },
-						})
-			" -->
+			<r-button
+				text="Подробнее"
+				color="bordered"
+				@click="
+					this.$router.push({
+						path: `/cabinet/user/${user.id}`,
+						query: { page: 1 },
+					})
+				"
+			></r-button>
 		</div>
 	</div>
 </template>
@@ -35,15 +44,20 @@
 <script>
 	import rCheckbox from "@/components/r-checkbox";
 	import rButton from "@/components/r-button";
-	import { mapState, mapMutations } from "vuex";
+	import { mapMutations } from "vuex";
 
 	export default {
 		name: "UserCard",
-		props: { user: Object, users: Array },
-		components: {
-			rCheckbox,
-			rButton,
+		props: {
+			user_me: Object,
+			user: Object,
+			users: Array,
+			managers: Array,
+
+			parsources: Array,
+			parsers: Array,
 		},
+		components: { rCheckbox, rButton },
 		watch: {
 			isSelected() {
 				if (this.isSelected === true) {
@@ -59,24 +73,41 @@
 			},
 		},
 		computed: {
-			...mapState({
-				all_parsources: (state) => state.parsers.all_parsources,
-				all_parsers: (state) => state.parsers.all_parsers,
-				users_managers: (state) => state.users_managers.users_managers,
-			}),
-
 			user_parsources() {
-				return this.all_parsources.filter(
+				return this.parsources.filter(
 					(parsource) => parsource.user === this.user.id
 				);
 			},
 
 			user_parsers() {
-				return this.all_parsers.filter((parser) => {
+				return this.parsers.filter((parser) => {
 					return this.user_parsources.some((parsource) => {
 						return parsource.id === parser.parsource;
 					});
 				});
+			},
+
+			user_manager() {
+				let manager;
+
+				const manager_id = this.managers.find(
+					(manager) => manager.user === this.user.id
+				);
+
+				if (manager_id !== undefined) {
+					manager = this.users.find(
+						(user) => user.id === manager_id.manager
+					);
+
+					if (
+						manager === undefined &&
+						manager_id.manager === this.user_me.id
+					) {
+						manager = this.user_me;
+					}
+				}
+
+				return manager || null;
 			},
 		},
 
@@ -98,13 +129,10 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+		height: max-content;
 
 		&__content {
-			display: grid;
-			grid-template-columns:
-				minmax(20rem, 1fr) 14rem
-				20rem repeat(4, 14rem);
-			grid-gap: 2rem;
+			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			width: 100%;
@@ -123,33 +151,38 @@
 				box-shadow: 0 0.4rem 1.2rem rgba(89, 96, 199, 0.2);
 			}
 			.r-button {
-				width: 100%;
+				width: max-content;
 				font-size: 1.4rem;
 				padding: 1rem 2.8rem;
+			}
+
+			&-col {
+				display: grid;
+				grid-template-columns: 5rem 20rem repeat(3, 15rem);
+				grid-gap: 3rem;
 			}
 		}
 
 		&__col {
-			&:nth-child(n + 2) {
+			&:nth-child(n + 3) {
 				justify-self: center;
 			}
-		}
-
-		&__date,
-		&__status,
-		&__found,
-		&__time {
-			font-size: 1.4rem;
-		}
-
-		&__source {
-			font-weight: 500;
-			text-overflow: ellipsis;
-			overflow: hidden;
-		}
-		&__favorite {
-			font-weight: 600;
 			font-size: 1.5rem;
+		}
+		&__id,
+		&__manager {
+			color: $primary;
+		}
+
+		&__id,
+		&__manager,
+		&__name {
+			font-weight: 500;
+		}
+
+		&__name,
+		&__manager {
+			font-size: 1.6rem;
 		}
 	}
 </style>

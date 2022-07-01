@@ -1,14 +1,16 @@
 function sortArrayByObjectKey(array, key) {
-	for (let index = 0; index < array.length - 1; index++) {
-		for (let jndex = 0; jndex < array.length - 1; jndex++) {
-			if (array[jndex][key] > array[jndex + 1][key]) {
-				let first_el = array[jndex];
-				array[jndex] = array[jndex + 1];
-				array[jndex + 1] = first_el;
+	let unsorted_array = array.slice();
+
+	for (let index = 0; index < unsorted_array.length - 1; index++) {
+		for (let jndex = 0; jndex < unsorted_array.length - 1; jndex++) {
+			if (unsorted_array[jndex][key] > unsorted_array[jndex + 1][key]) {
+				const first_el = unsorted_array[jndex];
+				unsorted_array[jndex] = unsorted_array[jndex + 1];
+				unsorted_array[jndex + 1] = first_el;
 			}
 		}
 	}
-	return array;
+	return unsorted_array;
 }
 
 export { sortArrayByObjectKey }

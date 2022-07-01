@@ -150,7 +150,7 @@
 				font-weight: 500;
 				transition: all 0.2s ease;
 				&:hover {
-					background-color: $primary-15;
+					background-color: rgba($primary, $alpha: 0.15);
 				}
 			}
 		}

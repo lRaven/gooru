@@ -2,7 +2,7 @@
 	<section class="the-new-parser">
 		<h2 class="the-new-parser__title">Новый парсинг</h2>
 
-		<form class="the-new-parser__form" @submit.prevent="">
+		<form class="the-new-parser__form" @submit.prevent="create_parsource">
 			<template v-if="user.role === 'Manager'">
 				<p class="the-new-parser__input-description">
 					Введите пользователя*
@@ -18,16 +18,16 @@
 			</p>
 			<r-input
 				input_type="url"
-				v-model="url"
-				:value="url"
+				v-model="new_parsource.url"
+				:value="new_parsource.url"
 				placeholder="https://"
 			></r-input>
 
 			<p class="the-new-parser__input-description">Список полей*</p>
 			<r-input
 				input_type="text"
-				v-model="parse_fields"
-				:value="parse_fields"
+				v-model="new_parsource.parse_fields"
+				:value="new_parsource.parse_fields"
 				placeholder="Введите список полей"
 			></r-input>
 
@@ -37,22 +37,14 @@
 			<r-textarea
 				placeholder="Введите требования"
 				:height="14.5"
-				v-model="description"
-				:value="description"
+				v-model="new_parsource.description"
+				:value="new_parsource.description"
 			></r-textarea>
 
 			<r-button
 				text="Отправить"
 				type="submit"
 				:disabled="isDisabledBtn"
-				@click="
-					send_new_parsource({
-						name: 'name',
-						data_source: this.url,
-						description: this.description,
-						parse_fields: this.parse_fields,
-					})
-				"
 			></r-button>
 		</form>
 	</section>
@@ -64,7 +56,8 @@
 	import rInput from "@/components/Auth/r-input.vue";
 	import rTextarea from "@/components/Cabinet/r-textarea.vue";
 	import rButton from "@/components/r-button.vue";
-	import { send_new_parsource } from "@/api/parser/send_new_parsource";
+	import { send_new_parsource } from "@/api/parser";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheNewParser",
@@ -75,14 +68,11 @@
 			rDropdown,
 		},
 		watch: {
-			url() {
-				this.checkFieldsInputs();
-			},
-			parse_fields() {
-				this.checkFieldsInputs();
-			},
-			description() {
-				this.checkFieldsInputs();
+			new_parsource: {
+				handler() {
+					this.checkFieldsInputs();
+				},
+				deep: true,
 			},
 			selectedUser() {
 				this.checkFieldsInputs();
@@ -90,9 +80,12 @@
 		},
 		data: () => ({
 			isDisabledBtn: false,
-			url: "",
-			parse_fields: "",
-			description: "",
+
+			new_parsource: {
+				url: "",
+				parse_fields: "",
+				description: "",
+			},
 			selectedUser: null,
 		}),
 		computed: {
@@ -111,16 +104,44 @@
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getUsers"]),
 			checkFieldsInputs() {
-				this.url.length > 0 &&
-				this.parse_fields.length > 0 &&
-				this.description.length > 0 &&
+				this.new_parsource.url.length > 0 &&
+				this.new_parsource.parse_fields.length > 0 &&
+				this.new_parsource.description.length > 0 &&
 				(this.user.role === "Manager"
 					? this.selectedUser !== null
 					: true)
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
-			send_new_parsource,
+
+			resetForm() {
+				for (const key in this.new_parsource) {
+					if (Object.hasOwnProperty.call(this.new_parsource, key)) {
+						this.new_parsource[key] = "";
+					}
+				}
+			},
+
+			async create_parsource() {
+				try {
+					const response = await send_new_parsource({
+						name: "name",
+						data_source: this.new_parsource.url,
+						description: this.new_parsource.description,
+						parse_fields: this.new_parsource.parse_fields,
+					});
+
+					if (response.status === 201) {
+						this.resetForm();
+
+						console.log("New parsource created");
+						this.toast.success("Новый парсинг создан");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка создания парсинга");
+					throw new Error(err);
+				}
+			},
 		},
 		created() {
 			this.SET_TAB("new_parser");
@@ -128,6 +149,10 @@
 			/* Здесь запрос на эндпоинт со всеми пользователями в системе, это временное решение
 			 до появяения эндпоинта со списком пользователей для конкретного менеджера */
 			this.getUsers({ page_number: 1, page_size: 10 });
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
@@ -160,7 +185,7 @@
 		}
 		&__input-description {
 			font-size: 1.6rem;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 		}
 		.r-button {
 			max-width: 25rem;
