@@ -1,6 +1,10 @@
 <template>
 	<div class="parsource-card">
-		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
+		<r-checkbox
+			v-model="isSelected"
+			:checked="isSelected"
+			v-if="isCanSelect"
+		></r-checkbox>
 		<div class="parsource-card__content" ref="content">
 			<p class="parsource-card__source">
 				{{ parsource.data_source }}
@@ -69,7 +73,13 @@
 				this.isSelected = this.parsource.selected;
 			},
 		},
-		props: { parsource: Object },
+		props: {
+			parsource: Object,
+			isCanSelect: {
+				value: Boolean,
+				default: true,
+			},
+		},
 		data() {
 			return {
 				isSelected: this.parsource.selected || false,

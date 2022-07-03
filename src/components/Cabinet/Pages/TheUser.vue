@@ -173,13 +173,65 @@
 					class="the-user__tabs-tab the-user__parsers"
 					v-if="tab === 1"
 				>
-					1
+					<div class="the-user__parsers-sort">
+						<sort-button
+							description="Источник"
+							@click="sort_list(parsources_list, 'data_source')"
+						></sort-button>
+						<sort-button
+							description="Дата"
+							@click="sort_list(parsources_list, 'date')"
+						></sort-button>
+						<sort-button
+							description="Статус"
+							@click="sort_list(parsources_list, 'condition')"
+						></sort-button>
+						<sort-button
+							description="Найдено"
+							@click="sort_list(parsources_list, 'found')"
+						></sort-button>
+						<sort-button
+							description="В избранном"
+							@click="sort_list(parsources_list, 'favorite')"
+						></sort-button>
+						<sort-button
+							description="Время парсинга"
+							@click="sort_list(parsources_list, 'lost_time')"
+						></sort-button>
+					</div>
+
+					<transition mode="out-in">
+						<r-loader v-if="!isParsourcesLoaded"></r-loader>
+					</transition>
+
+					<transition mode="out-in">
+						<div
+							class="the-user__parsers-list"
+							v-if="isParsourcesLoaded"
+						>
+							<parsource-card
+								v-for="parsource in all_parsources"
+								:key="parsource.id"
+								:parsource="parsource"
+								:isCanSelect="false"
+							></parsource-card>
+						</div>
+					</transition>
 				</div>
+
 				<div
 					class="the-user__tabs-tab the-user__appeals"
 					v-if="tab === 2"
 				>
-					2
+					<appeals-card
+						v-for="appeal in appeals"
+						:key="appeal.id"
+						:appeal="appeal"
+						:counter="1"
+						:parsers="all_parsers"
+						:topics="topics"
+						:messages="all_messages"
+					></appeals-card>
 				</div>
 			</transition-group>
 		</div>
@@ -190,18 +242,36 @@
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import rButton from "@/components/r-button.vue";
 	import rInput from "@/components/Auth/r-input.vue";
+	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
+	import SortButton from "@/components/Cabinet/Parsources/SortButton";
+	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
+	import rLoader from "@/components/r-loader.vue";
+	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard";
 
 	export default {
 		name: "TheUser",
 		components: {
 			rButton,
 			rInput,
+			ParsourceCard,
+			SortButton,
+			rLoader,
+			AppealsCard,
 		},
 		watch: {
 			user: {
 				handler() {
 					this.user_data.phone_number = this.user.phone_number;
 					this.user_data.email = this.user.email;
+				},
+				deep: true,
+			},
+
+			all_parsources: {
+				handler: function () {
+					this.parsources_list = this.parsources;
+
+					this.isParsourcesLoaded = true;
 				},
 				deep: true,
 			},
@@ -212,6 +282,10 @@
 				user: (state) => state.users.selected_user,
 				users: (state) => state.users.all_users,
 				managers: (state) => state.users.users_managers,
+
+				all_parsources: (state) => state.parsers.all_parsources,
+
+				appeals: (state) => state.appeals.appeals,
 			}),
 
 			user_manager() {
@@ -249,6 +323,11 @@
 				},
 
 				tab: 1,
+
+				parsources_list: [],
+				isParsourcesLoaded: false,
+
+				page: 1,
 			};
 		},
 		methods: {
@@ -257,13 +336,26 @@
 				"getSelectedUser",
 				"getAllUsers",
 				"getUsersManagers",
+				"getAllParsources",
+				"getAppeals",
 			]),
+
+			async sort_list(array, key) {
+				const response = await sortArrayByObjectKey(array, key);
+				this.parsources_list = response;
+			},
 		},
 		created() {
 			this.SET_TAB("users");
 			this.getSelectedUser(this.user_id);
 			this.getAllUsers();
 			this.getUsersManagers();
+			this.getAllParsources();
+
+			this.getAppeals({
+				page_number: this.page,
+				page_size: 10,
+			});
 		},
 	};
 </script>
@@ -276,6 +368,7 @@
 		height: 100%;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
+		overflow-x: auto;
 		&__title {
 			font-weight: 400;
 			margin-bottom: 2rem;
@@ -369,6 +462,31 @@
 				// border: 1px solid #000;
 				height: 100%;
 			}
+		}
+
+		&__parsers {
+			&-sort {
+				display: grid;
+				grid-template-columns: minmax(20rem, 1fr) 14rem 20rem repeat(
+						4,
+						14rem
+					);
+				grid-gap: 2rem;
+				justify-content: space-between;
+				align-items: center;
+				padding: 0 3rem 0 3rem;
+
+				.sort-button {
+					width: max-content;
+
+					&:nth-child(n + 2) {
+						justify-self: center;
+					}
+				}
+			}
+		}
+
+		&__appeals {
 		}
 	}
 </style>
