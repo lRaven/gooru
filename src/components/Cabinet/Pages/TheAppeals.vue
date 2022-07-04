@@ -298,16 +298,15 @@
 			font-weight: 400;
 		}
 
-		&__search-input {
-			width: 60rem;
-			font-size: 1.6rem;
-			font-weight: 500;
-			line-height: 2.6rem;
-			text-align: left;
-			opacity: 0.5;
-			color: $black;
-			&:focus {
-				opacity: 1;
+		.r-input {
+			max-width: 60rem;
+			width: 100%;
+
+			&__input {
+				opacity: 0.5;
+				&:focus {
+					opacity: 1;
+				}
 			}
 		}
 
@@ -325,6 +324,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			gap: 4rem;
 		}
 
 		&__list {
@@ -356,6 +356,19 @@
 			&-input-description {
 				font-size: 1.2rem;
 				margin-bottom: 2rem;
+			}
+		}
+	}
+</style>
+
+<style lang="scss">
+	.the-appeals {
+		.r-input {
+			&__input {
+				opacity: 0.5;
+				&:focus {
+					opacity: 1;
+				}
 			}
 		}
 	}
