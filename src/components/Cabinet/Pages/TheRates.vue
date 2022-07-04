@@ -9,7 +9,7 @@
 					:rate="rate"
 					color="white"
 					ButtonText="Оплатить"
-					@click_button="select_rate"
+					@select_rate="select_rate"
 				></rate-card>
 
 				<div class="the-rates__brief">

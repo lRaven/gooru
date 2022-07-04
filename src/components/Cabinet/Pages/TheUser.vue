@@ -207,7 +207,9 @@
 					<transition mode="out-in">
 						<div
 							class="the-user__parsers-list"
-							v-if="isParsourcesLoaded"
+							v-if="
+								isParsourcesLoaded && user_parsources.length > 0
+							"
 						>
 							<parsource-card
 								v-for="parsource in user_parsources"
@@ -217,17 +219,38 @@
 							></parsource-card>
 						</div>
 					</transition>
+
+					<transition mode="out-in">
+						<div class="the-user__tabs-tab-empty">
+							<p
+								class="the-user__tabs-tab-text"
+								v-if="user_parsources.length === 0"
+							>
+								Парсеров нет
+							</p>
+						</div>
+					</transition>
 				</div>
 
 				<div
 					class="the-user__tabs-tab the-user__appeals"
 					v-if="tab === 2"
 				>
+					<!-- <transition mode="out-in">
+						<div class="the-user__tabs-tab-empty">
+							<p
+								class="the-user__tabs-tab-text"
+								v-if="user_parsources.length === 0"
+							>
+								Парсеров нет
+							</p>
+						</div>
+					</transition> -->
+
 					<appeals-card
 						v-for="appeal in user_appeals"
 						:key="appeal.id"
 						:appeal="appeal"
-						:counter="1"
 						:parsers="all_parsers"
 						:topics="topics"
 						:messages="all_messages"
@@ -284,8 +307,11 @@
 				managers: (state) => state.users.users_managers,
 
 				all_parsources: (state) => state.parsers.all_parsources,
+				all_parsers: (state) => state.parsers.all_parsers,
 
 				all_appeals: (state) => state.appeals.all_appeals,
+				topics: (state) => state.appeals.topics,
+				all_messages: (state) => state.messenger.all_messages,
 			}),
 
 			user_manager() {
@@ -346,8 +372,12 @@
 				"getSelectedUser",
 				"getAllUsers",
 				"getUsersManagers",
+
 				"getAllParsources",
+
 				"getAllAppeals",
+				"getAllParsers",
+				"getAllMessages",
 			]),
 
 			async sort_list(array, key) {
@@ -360,9 +390,12 @@
 			this.getSelectedUser(this.user_id);
 			this.getAllUsers();
 			this.getUsersManagers();
+
 			this.getAllParsources();
 
 			this.getAllAppeals();
+			this.getAllParsers();
+			this.getAllMessages();
 		},
 	};
 </script>
@@ -495,6 +528,11 @@
 				display: flex;
 				flex-direction: column;
 				gap: 1rem;
+				&-empty {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
 			}
 		}
 

@@ -33,6 +33,7 @@
 			icon="img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			class="the-appeal__right-panel"
+			v-if="user.role === 'DefaultUser'"
 		>
 			<template v-slot>
 				<form

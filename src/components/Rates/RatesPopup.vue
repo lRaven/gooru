@@ -163,7 +163,7 @@
 			};
 		},
 		computed: {
-			...mapState({ baseUrl: (state) => state.baseUrl }),
+			...mapState({ baseURL: (state) => state.baseURL }),
 			isInvalidForm() {
 				// Валидация очень примерная, не всегда учитывает поведение пользователя,
 				// но просто хотя бы делает кнопку неактивной и проходит валидацию на сервере
@@ -212,7 +212,7 @@
 						localStorage.setItem("userAuth", "yes");
 						window
 							.open(
-								`${this.baseUrl}/api/pay/${this.selectedRate.id}`,
+								`${this.baseURL}/api/pay/${this.selectedRate.id}`,
 								"_blank"
 							)
 							.focus();
