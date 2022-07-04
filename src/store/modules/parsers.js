@@ -2,6 +2,7 @@ import cookie from 'vue-cookies'
 import axios from 'axios'
 import store from '@/store'
 import { multiaction_delete } from '@/api/multiaction_delete'
+import { getComments } from '@/api/parserApi';
 
 const state = () => ({
 	parsources: [],
@@ -56,7 +57,6 @@ const actions = {
 
 			if (request.status === 200) {
 				context.commit('SET_PARSOURCES', request.data.results);
-
 				let pagination_info = {};
 
 				for (const iterator in request.data) {
@@ -128,9 +128,20 @@ const actions = {
 			const request =
 				await axios.get(`${store.state.baseURL}/parser/?parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
-
 			if (request.status === 200) {
-				context.commit('SET_PARSERS', request.data.results);
+				console.log(request.data.results)
+				
+				const comments = await getComments();
+				console.log(comments)
+				const parsersList = request.data.results.map( parser => {
+					const matchedComment = comments.find( commentItem => commentItem.parser === parser.id );
+					if (matchedComment) {
+						return {...parser, comment: matchedComment.comment};
+					} else {
+						return {...parser, comment: '' };
+					}
+				})
+				context.commit('SET_PARSERS', parsersList);
 
 				let pagination_info = {};
 
@@ -145,6 +156,7 @@ const actions = {
 			}
 		}
 		catch (err) {
+			console.log(err)
 			console.error(`
 ∧＿∧
 (｡･ω･｡)つ━☆・*。

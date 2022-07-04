@@ -146,7 +146,7 @@ export default {
   },
   computed: {
     ...mapState({
-      baseUrl: (state) => state.baseUrl,
+      baseURL: (state) => state.baseURL,
     }),
     isInvalidForm() {
       // Валидация очень примерная, не всегда учитывает поведение пользователя,
@@ -192,7 +192,7 @@ export default {
           this.getUserData();
           localStorage.setItem("userAuth", "yes");
           window
-            .open(`${this.baseUrl}/api/pay/${this.selectedRate.id}`, "_blank")
+            .open(`${this.baseURL}/api/pay/${this.selectedRate.id}`, "_blank")
             .focus();
         } catch (error) {
           console.log(error);
@@ -281,6 +281,9 @@ export default {
     font-size: 2rem;
     line-height: 2.8rem;
     margin: 0 0 2rem 0;
+  }
+  &__checklist {
+    padding: 1rem;
   }
   &__checklist-item {
     display: flex;

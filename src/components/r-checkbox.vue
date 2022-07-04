@@ -2,14 +2,13 @@
   <label class="r-checkbox">
     <input
       type="checkbox"
-      name=""
+      :name="name"
+      :value="modelValue"
       id=""
-      :checked="checked"
+      :checked="modelValue"
       :disabled="disabled"
       class="r-checkbox__real"
-      @change="
-        description ? handleChangeWithDescription($event) : handleChange($event)
-      "
+      @change="handleChange($event)"
       ref="checkbox"
     />
     <div class="r-checkbox__fake">
@@ -41,13 +40,16 @@ export default {
       value: Boolean,
       default: false,
     },
+    name: {
+      type: String,
+      default: "",
+    },
+    modelValue: {
+      type: Boolean,
+      default: false,
+    }
   },
-  data() {
-    return {
-      modelValue: this.checked,
-    };
-  },
-  watch: {
+ watch: {
     checked() {
       if (this.checked === true) {
         this.$refs.checkbox.checked = true;
@@ -59,13 +61,7 @@ export default {
   },
   methods: {
     handleChange($event) {
-      this.$emit("update:modelValue", $event.target.checked);
-    },
-    handleChangeWithDescription($event) {
-      this.$emit("update:modelValue", {
-        description: this.description,
-        isSelected: $event.target.checked,
-      });
+      this.$emit("update:modelValue", { value: $event.target.checked, name: $event.target.name });
     },
     updateChecked(value) {
       this.$emit("update:modelValue", value);

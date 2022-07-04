@@ -32,7 +32,7 @@
           @open="callbackOpenSharedIcon"
           @close="callbackCloseSharedIcon"
         >
-          <img src="img/icon/cabinet/ok.svg" alt="ok" ref="odnoklassniki"/>
+          <img src="img/icon/cabinet/ok.svg" alt="ok" ref="odnoklassniki" />
         </ShareNetwork>
 
         <ShareNetwork
@@ -43,7 +43,6 @@
           :media="shareContent.image"
           @open="callbackOpenSharedIcon"
           @close="callbackCloseSharedIcon"
-          
         >
           <img src="img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
         </ShareNetwork>
@@ -58,7 +57,7 @@
           @open="callbackOpenSharedIcon"
           @close="callbackCloseSharedIcon"
         >
-          <img src="img/icon/cabinet/twtr.svg" alt="twitter" ref="twitter"/>
+          <img src="img/icon/cabinet/twtr.svg" alt="twitter" ref="twitter" />
         </ShareNetwork>
 
         <ShareNetwork
@@ -70,7 +69,7 @@
           @open="callbackOpenSharedIcon"
           @close="callbackCloseSharedIcon"
         >
-          <img src="img/icon/cabinet/tg.svg" alt="tg" ref="telegram"/>
+          <img src="img/icon/cabinet/tg.svg" alt="tg" ref="telegram" />
         </ShareNetwork>
       </div>
       <p class="the-favorites__right-panel-alert-message">{{ alertMessage }}</p>
@@ -84,6 +83,8 @@
           @update:modelValue="handleDownloadCheckBox"
           :disabled="downloadCheckBoxState['Excel'].isDisabled"
           description="Excel"
+          v-model="model"
+
         ></r-checkbox>
         <r-checkbox
           @update:modelValue="handleDownloadCheckBox"
@@ -152,6 +153,7 @@ export default {
   data() {
     return {
       confirmRemoveValue: false,
+      model: null,
       downloadCheckBoxState: {
         Excel: {
           isSelected: false,
@@ -195,10 +197,23 @@ export default {
   },
   watch: {
     totalSelected() {
-      if(this.totalSelected && this.alertMessage) {
-        this.alertMessage = '';
+      if (this.totalSelected && this.alertMessage) {
+        this.alertMessage = "";
       }
-    }
+      if (this.selectedParsers.length) {
+        const parserId = this.selectedParsers[this.sharedPointer];
+        let currentParser = null;
+        this.favorites.forEach(({ parsers }) => {
+          currentParser = parsers.find((parser) => parser.id === parserId);
+          if (currentParser) {
+            this.shareContent.url = currentParser.url;
+            this.shareContent.title = currentParser.title;
+            this.shareContent.description = currentParser.article;
+          }
+        });
+      }
+    },
+
   },
   methods: {
     handleDownloadCheckBox(checkboxData) {
@@ -221,32 +236,32 @@ export default {
         this.alertMessage = "Необходимо выбрать новость!";
         $event.stopPropagation();
       }
-      let sharedPointer = +sessionStorage.getItem('sharedPointer');
-      const parserId = this.selectedParsers[sharedPointer];
-      let currentParser = null;
-      this.favorites.forEach(({ parsers }) => {
-        currentParser = parsers.find((parser) => parser.id === parserId);
-        if (currentParser) {
-          this.shareContent.url = currentParser.url;
-          this.shareContent.title = currentParser.title;
-          this.shareContent.description = currentParser.article;
-        }
-      });
     },
     callbackOpenSharedIcon() {
-      console.log('open callback', this.shareContent)
+      console.log("open callback", this.shareContent);
     },
     callbackCloseSharedIcon(networkName, url) {
-      let sharedPointer = sessionStorage.getItem('sharedPointer');
-      if (sharedPointer < this.selectedParsers.length) {
-        sharedPointer++;
-        console.log(sharedPointer, 'sharedPointer')
-        sessionStorage.setItem('sharedPointer', sharedPointer.toString());
-        this.$refs[`${networkName}`].click();
+      this.sharedPointer += 1;
+      if (this.sharedPointer < this.selectedParsers.length) {
         
+       
+        const parserId = this.selectedParsers[this.sharedPointer];
+        let currentParser = null;
+        this.favorites.forEach(({ parsers }) => {
+          currentParser = parsers.find((parser) => parser.id === parserId);
+          if (currentParser) {
+            this.shareContent.url = currentParser.url;
+            this.shareContent.title = currentParser.title;
+            this.shareContent.description = currentParser.article;
+          }
+        });
+        
+        setTimeout(() => {
+          this.$refs[`${networkName}`].click();
+        }, 0);
       } else {
-        sessionStorage.setItem('sharedPointer', '0');
-        console.log('finish', url)
+        this.sharedPointer = 0;
+        console.log("finish", url);
       }
     },
     async handleClickDownload() {
@@ -311,9 +326,6 @@ export default {
         console.log(error);
       }
     },
-    created(){
-      sessionStorage.setItem('sharedPointer', '0');
-    }
   },
 };
 </script>

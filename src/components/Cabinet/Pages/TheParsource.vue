@@ -73,7 +73,7 @@
 							<parser-content
 								v-for="parser in parsers"
 								:key="parser.id"
-								:parser="parser"
+								:parserProp="parser"
 							></parser-content>
 						</ol>
 					</transition>
