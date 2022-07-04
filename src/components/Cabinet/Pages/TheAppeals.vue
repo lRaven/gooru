@@ -1,14 +1,17 @@
 <template>
 	<section class="the-appeals">
 		<div class="the-appeals__main">
-			<h2 class="the-appeals__title">Обращения</h2>
-			<r-input
-				class="the-appeals__search-input"
-				:value="searchValue"
-				input_type="search"
-				placeholder="Поиск по почте"
-				v-if="user.role === 'Manager'"
-			/>
+			<div class="the-appeals__header">
+				<h2 class="the-appeals__title">Обращения</h2>
+				<r-input
+					class="the-appeals__search-input"
+					:value="searchValue"
+					input_type="search"
+					placeholder="Поиск по почте"
+					v-if="user.role === 'Manager'"
+				/>
+			</div>
+
 			<transition mode="out-in">
 				<r-loader v-if="!isAppealsLoaded"></r-loader>
 			</transition>
@@ -22,7 +25,6 @@
 						v-for="appeal in appeals"
 						:key="appeal.id"
 						:appeal="appeal"
-						:counter="1"
 						:parsers="all_parsers"
 						:topics="topics"
 						:messages="all_messages"
@@ -95,7 +97,11 @@
 						></r-textarea>
 					</div>
 
-					<r-button text="Отправить" :disabled="isInvalidTicketForm" ></r-button>
+					<r-button
+						text="Отправить"
+						type="submit"
+						:disabled="!isNewAppealValid"
+					></r-button>
 				</form>
 			</template>
 		</right-panel>
@@ -172,21 +178,26 @@
 			isInvalidTicketForm() {
 				const formValidation = {
 					isInvalidTopic: true,
-					isIvalidParser: true,
-					isInvalidMessage: true
-				}
-				formValidation.isInvalidMessage = this.message.length < 10 ? true : false;
-				if ( this.topic !== 1 && this.topic !== null){
-					formValidation.isIvalidParser = false;
+					isInvalidParser: true,
+					isInvalidMessage: true,
+				};
+				formValidation.isInvalidMessage =
+					this.message.length < 10 ? true : false;
+				if (this.topic !== 1 && this.topic !== null) {
+					formValidation.isInvalidParser = false;
 					formValidation.isInvalidTopic = false;
 				}
 				if (this.topic === 1 && this.parser !== null) {
-					formValidation.isIvalidParser = false
-					formValidation.isInvalidTopic = false
+					formValidation.isInvalidParser = false;
+					formValidation.isInvalidTopic = false;
 				}
 
-				return formValidation.isInvalidTopic || formValidation.isIvalidParser || formValidation.isInvalidMessage;
-			}
+				return (
+					formValidation.isInvalidTopic ||
+					formValidation.isInvalidParser ||
+					formValidation.isInvalidMessage
+				);
+			},
 		},
 		data() {
 			return {
@@ -198,6 +209,7 @@
 					parser: "",
 					message: "",
 				},
+				isNewAppealValid: false,
 
 				searchValue: "",
 
@@ -240,6 +252,21 @@
 					query: { page: page_number },
 				});
 			},
+
+			validateForm() {
+				this.new_appeal.topic !== "" &&
+				this.new_appeal.message.length > 0
+					? (this.isNewAppealValid = true)
+					: (this.isNewAppealValid = false);
+			},
+
+			resetForm() {
+				for (const key in this.new_appeal) {
+					if (Object.hasOwnProperty.call(this.new_appeal, key)) {
+						this.new_appeal[key] = "";
+					}
+				}
+			},
 		},
 		created() {
 			this.SET_TAB("appeals");
@@ -269,7 +296,6 @@
 
 		&__title {
 			font-weight: 400;
-			grid-area: title;
 		}
 
 		&__search-input {
@@ -280,24 +306,25 @@
 			text-align: left;
 			opacity: 0.5;
 			color: $black;
-			grid-area: searchInput;
+			&:focus {
+				opacity: 1;
+			}
 		}
-		&__search-input:focus {
-			opacity: 1;
-		}
+
 		&__main {
 			padding: 4rem 0 4rem 4rem;
-			display: grid;
-			grid-template-columns: 1fr 3fr 1fr;
-			grid-template-rows: min-content max-content min-content;
-			grid-template-areas:
-			"title . . searchInput"
-			"appealsList appealsList appealsList appealsList"
-			"appealsBottom appealsBottom appealsBottom appealsBottom";
-			row-gap: 3.3rem;
+			display: flex;
+			gap: 4rem;
+			flex-direction: column;
 			overflow-y: auto;
 			height: calc(100vh - 8rem);
 			position: relative;
+		}
+
+		&__header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 		}
 
 		&__list {
@@ -307,7 +334,6 @@
 			border-radius: 0.6rem;
 			overflow: hidden;
 			box-shadow: $shadow;
-			grid-area: appealsList;
 		}
 
 		&__bottom {
@@ -316,7 +342,6 @@
 			justify-content: space-between;
 			gap: 5rem;
 			margin-top: auto;
-			grid-area: appealsBottom;
 		}
 
 		&__right-panel {

@@ -224,7 +224,7 @@
 					v-if="tab === 2"
 				>
 					<appeals-card
-						v-for="appeal in appeals"
+						v-for="appeal in user_appeals"
 						:key="appeal.id"
 						:appeal="appeal"
 						:counter="1"
@@ -285,7 +285,7 @@
 
 				all_parsources: (state) => state.parsers.all_parsources,
 
-				appeals: (state) => state.appeals.appeals,
+				all_appeals: (state) => state.appeals.all_appeals,
 			}),
 
 			user_manager() {
@@ -316,6 +316,12 @@
 					return parsource.user === this.user.id;
 				});
 			},
+
+			user_appeals() {
+				return this.all_appeals.filter((appeal) => {
+					return appeal.user.id === this.user.id;
+				});
+			},
 		},
 		data() {
 			return {
@@ -332,8 +338,6 @@
 
 				parsources_list: [],
 				isParsourcesLoaded: false,
-
-				page: 1,
 			};
 		},
 		methods: {
@@ -343,7 +347,7 @@
 				"getAllUsers",
 				"getUsersManagers",
 				"getAllParsources",
-				"getAppeals",
+				"getAllAppeals",
 			]),
 
 			async sort_list(array, key) {
@@ -358,10 +362,7 @@
 			this.getUsersManagers();
 			this.getAllParsources();
 
-			this.getAppeals({
-				page_number: this.page,
-				page_size: 10,
-			});
+			this.getAllAppeals();
 		},
 	};
 </script>

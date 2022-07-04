@@ -5,6 +5,9 @@ import store from '@/store';
 const state = () => ({
 	appeals: [],
 	appeals_pagination: {},
+
+	all_appeals: [],
+
 	appeal: {},
 
 	topics: [
@@ -40,6 +43,9 @@ const getters = {}
 const mutations = {
 	SET_APPEALS: (state, payload) => state.appeals = payload,
 	SET_APPEALS_PAGINATION: (state, payload) => state.appeals_pagination = payload,
+
+	SET_ALL_APPEALS: (state, payload) => state.all_appeals = payload,
+
 	SET_APPEAL: (state, payload) => state.appeal = payload,
 }
 
@@ -62,6 +68,19 @@ const actions = {
 				}
 				context.commit('SET_APPEALS_PAGINATION', pagination_info);
 				console.log('Appeals list saved');
+			}
+
+		}
+		catch (err) { throw new Error(err) }
+	},
+
+	getAllAppeals: async (context) => {
+		try {
+			const response = await axios.get(`${store.state.baseURL}/users/support/`,
+				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
+
+			if (response.status === 200) {
+				context.commit('SET_ALL_APPEALS', response.data.results);
 			}
 
 		}

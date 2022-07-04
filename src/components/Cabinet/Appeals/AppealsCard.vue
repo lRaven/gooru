@@ -11,9 +11,16 @@
 		<p class="appeals-card__col appeals-card__id">#{{ appeal.id }}</p>
 
 		<div class="appeals-card__col">
-			
-			<p class="appeals-card__source">{{ user.role === 'Manager' ? `${appeal.user.first_name}.${appeal.user.last_name[0]}`: source }}</p>
-			<span class="appeals-card__counter">{{ counter }}</span>
+			<p class="appeals-card__source">
+				{{
+					user.role === "Manager"
+						? `${appeal.user.first_name}.${appeal.user.last_name[0]}`
+						: source
+				}}
+			</p>
+			<span class="appeals-card__counter">{{
+				messages_counter > 0 ? messages_counter : ""
+			}}</span>
 		</div>
 
 		<div class="appeals-card__col appeals-card__topic">{{ topic }}</div>
@@ -34,7 +41,6 @@
 		name: "AppealsCard",
 		props: {
 			appeal: Object,
-			counter: Number,
 
 			topics: Array,
 			parsers: Array,
@@ -42,7 +48,7 @@
 		},
 		computed: {
 			...mapState({
-				user: (state) => state.cabinet.user
+				user: (state) => state.cabinet.user,
 			}),
 
 			source() {
@@ -90,7 +96,6 @@
 			},
 		},
 	};
-	
 </script>
 
 <style lang="scss" scoped>
