@@ -37,10 +37,10 @@
 					v-for="item in list"
 					:key="item.id"
 					@click="
-						selectValue(item.id, item.description || item.title)
+						selectValue(item.id, item.description || item.title || (item.first_name ? `${item.first_name} ${item.last_name}` : ''))
 					"
 				>
-					{{ item.description || item.title }}
+					{{ item.description || item.title || (item.first_name ? `${item.first_name} ${item.last_name}` : '') }}
 				</li>
 			</ul>
 		</transition>

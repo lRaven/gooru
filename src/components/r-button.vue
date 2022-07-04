@@ -26,6 +26,7 @@
 
 	.r-button {
 		display: flex;
+		justify-content: center;
 		align-items: center;
 		justify-content: center;
 		gap: 1rem;

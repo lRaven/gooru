@@ -7,7 +7,10 @@
 			"
 		>
 			<div class="favorite-content-item__col">
-				<r-checkbox></r-checkbox>
+				<r-checkbox
+					@update:modelValue="handleChangeSelectItem"
+					:checked="checked"
+				></r-checkbox>
 
 				<p class="favorite-content-item__title">{{ parser.title }}</p>
 				<p
@@ -201,7 +204,14 @@
 	export default {
 		name: "FavoriteContentItem",
 		components: { rButton, rCheckbox },
-		props: { parser: Object },
+		props: {
+			parser: Object,
+			checked: {
+				type: Boolean,
+				default: false,
+			},
+		},
+		emits: ["change-selected"],
 		watch: {
 			isShareOpen() {
 				if (this.isShareOpen === true) {
@@ -275,6 +285,11 @@
 			stateReset() {
 				this.minimizeArticle();
 				this.hideAllExtras();
+			},
+
+			handleChangeSelectItem(value) {
+				console.log("parser", this.parser.id, value)
+				this.$emit("change-selected", { id: this.parser.id, isSelect: value });
 			},
 		},
 

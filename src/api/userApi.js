@@ -96,7 +96,7 @@ const logout = async () => {
 	}
 }
 
-//* user data edit 
+//* user data edit
 const change_password = async ({ new_password, current_password }) => {
 	try {
 		const response = await axios.post(`${baseURL}/auth/users/set_password/`, {

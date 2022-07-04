@@ -2,11 +2,17 @@
 	<section class="the-new-parser">
 		<h2 class="the-new-parser__title">Новый парсинг</h2>
 
-		<form
-			class="the-new-parser__form"
-			ref="form"
-			@submit.prevent="create_parsource"
-		>
+		<form class="the-new-parser__form" @submit.prevent="create_parsource">
+			<template v-if="user.role === 'Manager'">
+				<p class="the-new-parser__input-description">
+					Введите пользователя*
+				</p>
+				<r-dropdown
+					selected_item="ФИО"
+					:list="managerUsers"
+					v-model="selectedUser"
+				/>
+			</template>
 			<p class="the-new-parser__input-description">
 				URL страницы с данными*
 			</p>
@@ -45,7 +51,8 @@
 </template>
 
 <script>
-	import { mapMutations } from "vuex";
+	import { mapActions, mapMutations, mapState } from "vuex";
+	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rTextarea from "@/components/Cabinet/r-textarea.vue";
 	import rButton from "@/components/r-button.vue";
@@ -58,6 +65,7 @@
 			rInput,
 			rTextarea,
 			rButton,
+			rDropdown,
 		},
 		watch: {
 			new_parsource: {
@@ -65,6 +73,9 @@
 					this.checkFieldsInputs();
 				},
 				deep: true,
+			},
+			selectedUser() {
+				this.checkFieldsInputs();
 			},
 		},
 		data: () => ({
@@ -75,14 +86,30 @@
 				parse_fields: "",
 				description: "",
 			},
+			selectedUser: null,
 		}),
+		computed: {
+			...mapState({
+				user: (state) => state.cabinet.user,
+				users: (state) => state.users,
+			}),
+			managerUsers() {
+				/* Здесь сортировка по пользователям, т.к. пока что используется не тот запрос*/
+				return this.users.users.filter((user) => {
+					return user.role === "DefaultUser";
+				});
+			},
+		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-
+			...mapActions(["getUsers"]),
 			checkFieldsInputs() {
 				this.new_parsource.url.length > 0 &&
 				this.new_parsource.parse_fields.length > 0 &&
-				this.new_parsource.description.length > 0
+				this.new_parsource.description.length > 0 &&
+				(this.user.role === "Manager"
+					? this.selectedUser !== null
+					: true)
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
@@ -119,6 +146,9 @@
 		created() {
 			this.SET_TAB("new_parser");
 			this.checkFieldsInputs();
+			/* Здесь запрос на эндпоинт со всеми пользователями в системе, это временное решение
+			 до появяения эндпоинта со списком пользователей для конкретного менеджера */
+			this.getUsers({ page_number: 1, page_size: 10 });
 		},
 		setup() {
 			const toast = useToast();

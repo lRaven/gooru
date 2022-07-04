@@ -1,11 +1,13 @@
 <template>
 	<section class="the-parsources">
-		<h2 class="the-parsources__title">Мои парсеры</h2>
+		<h2 class="the-parsources__title">
+			{{ userRole === "DefaultUser" ? "Мои парсеры" : "Все парсеры" }}
+		</h2>
 		<div class="the-parsources__control">
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="selectAll"
-				:checked="selectAll"
+				:checked="selectAll.isChecked"
 			></r-checkbox>
 			<button class="the-parsources__postpone" type="button">
 				<img src="img/icon/cabinet/postpone.svg" alt="postpone" />
@@ -127,10 +129,13 @@
 				}
 			},
 
-			selectAll() {
-				this.selectAll === true
-					? this.SELECT_ALL_PARSOURCES()
-					: this.UNSELECT_ALL_PARSOURCES();
+			selectAll: {
+				handler() {
+					this.selectAll.isSelected === true
+						? this.SELECT_ALL_PARSOURCES()
+						: this.UNSELECT_ALL_PARSOURCES();
+				},
+				deep: true,
 			},
 
 			async deleteSelected() {
@@ -171,7 +176,7 @@
 				handler: function () {
 					this.parsources_list = this.parsources;
 					if (this.parsources.length === 0) {
-						this.selectAll = false;
+						this.selectAll.isSelected = false;
 					}
 					this.isParsourcesLoaded = true;
 				},
@@ -183,6 +188,7 @@
 				parsources: (state) => state.parsers.parsources,
 				parsources_pagination: (state) =>
 					state.parsers.parsources_pagination,
+				userRole: (state) => state.cabinet.user.role,
 			}),
 			page() {
 				return +this.$route.query.page;
@@ -200,7 +206,10 @@
 				isParsourcesLoaded: false,
 				path: this.$route.path,
 
-				selectAll: false,
+				selectAll: {
+					description: "",
+					isSelected: false,
+				},
 				postponeSelected: false,
 				deleteSelected: false,
 

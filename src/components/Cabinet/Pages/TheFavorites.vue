@@ -87,6 +87,7 @@
 						v-for="favorite in favorites"
 						:key="favorite.id"
 						:parsource="favorite"
+						@update-selected-parsers="updateSelectedParsers"
 					></favorite-card>
 				</div>
 			</transition>
@@ -108,51 +109,10 @@
 			title="Выбрано"
 			class="the-favorites__right-panel"
 		>
-			<template v-slot>
-				<p class="the-favorites__right-panel-counter-wrapper">
-					<span class="the-favorites__right-panel-counter">{{
-						total_selected
-					}}</span>
-					материала
-				</p>
-				<r-spoiler title="Выложить в соц.сети" arrowType="gray">
-					<template v-slot>
-						<div class="the-favorites__right-panel__checkboxes">
-							<r-checkbox description="telegram"></r-checkbox>
-							<r-checkbox description="vk"></r-checkbox>
-							<r-checkbox description="twitter"></r-checkbox>
-							<r-checkbox
-								description="одноклассники"
-							></r-checkbox>
-						</div>
-						<r-button text="Отправить"></r-button>
-					</template>
-				</r-spoiler>
-
-				<r-spoiler title="Скачать" arrowType="gray">
-					<template v-slot>
-						<div class="the-favorites__right-panel__checkboxes">
-							<r-checkbox description="Excel"></r-checkbox>
-							<r-checkbox description="CSV"></r-checkbox>
-							<r-checkbox
-								description="Google Sheets"
-							></r-checkbox>
-						</div>
-						<r-button text="Скачать"></r-button>
-					</template>
-				</r-spoiler>
-
-				<r-spoiler title="Удалить" arrowType="gray">
-					<template v-slot>
-						<div class="the-favorites__right-panel__checkboxes">
-							<r-checkbox
-								description="Подтверждаете удаление"
-							></r-checkbox>
-						</div>
-						<r-button text="Скачать"></r-button>
-					</template>
-				</r-spoiler>
-			</template>
+			<the-favorite-right-panel
+				:totalSelected="totalSelected"
+				:selectedParsers="selectedParsers"
+			></the-favorite-right-panel>
 		</right-panel>
 	</section>
 </template>
@@ -160,16 +120,15 @@
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
 
-	import rButton from "@/components/r-button";
 	import rDropdown from "@/components/Cabinet/r-dropdown";
 	import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
 	import FavoriteCard from "@/components/Cabinet/Favorites/FavoriteCard";
+	import TheFavoriteRightPanel from "@/components/Cabinet/Favorites/TheFavoritesRigthPanel.vue";
 	// import rPagination from "@/components/r-pagination";
 	import rLoader from "@/components/r-loader.vue";
+	import rButton from "@/components/r-button.vue";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
-	import rSpoiler from "@/components/r-spoiler";
-	import rCheckbox from "@/components/r-checkbox";
 
 	export default {
 		name: "TheFavorites",
@@ -179,11 +138,10 @@
 			FavoriteCard,
 			// rPagination,
 			rLoader,
+			rButton,
 
 			RightPanel,
-			rSpoiler,
-			rCheckbox,
-			rButton,
+			TheFavoriteRightPanel,
 		},
 		watch: {
 			favorites() {
@@ -192,18 +150,65 @@
 		},
 		computed: {
 			...mapState({ favorites: (state) => state.favorites.favorites }),
+			selectedParsers() {
+				return this.selectedParsources.reduce(
+					(prev, selectedParource) => {
+						return [...prev, ...selectedParource.selectedParsers];
+					},
+					[]
+				);
+			},
 		},
 		data: () => ({
 			isFavoritesLoaded: false,
 			isSortPanelVisible: false,
 			show_by_source: "",
 			show_by_content: "",
-
-			total_selected: 0,
+			selectedParsources: [],
+			totalSelected: 0,
 		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getFavoriteParsers"]),
+
+			updateSelectedParsers(favoriteCardObj) {
+				const { parsourceId, selectedParsers } = favoriteCardObj;
+
+				const matchedIndex = this.selectedParsources.findIndex(
+					(selectedParource) => {
+						return selectedParource.parsourceId === parsourceId;
+					}
+				);
+
+				if (matchedIndex !== -1) {
+					this.selectedParsources[matchedIndex].selectedParsers =
+						selectedParsers;
+				} else {
+					this.selectedParsources.push(favoriteCardObj);
+				}
+				if (!selectedParsers.length) {
+					this.selectedParsources = this.selectedParsources.filter(
+						(selectedParsource) => {
+							return (
+								selectedParsource.parsourceId !== parsourceId
+							);
+						}
+					);
+				}
+
+				this.updateTotalSelectedParsers();
+			},
+
+			updateTotalSelectedParsers() {
+				this.totalSelected = this.selectedParsources.reduce(
+					(prev, selectedParourcesItem) => {
+						return (
+							prev + selectedParourcesItem.selectedParsers.length
+						);
+					},
+					0
+				);
+			},
 		},
 		created() {
 			this.SET_TAB("favorites");

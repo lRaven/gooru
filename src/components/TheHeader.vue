@@ -173,7 +173,7 @@
 	import rButton from "@/components/r-button";
 	import { scroll } from "@/js/scrollToLink";
 	import { mapState, mapMutations } from "vuex";
-	import { logout } from "@/api/user";
+	import { logout } from "@/api/userApi";
 
 	import { directive } from "vue3-click-away";
 

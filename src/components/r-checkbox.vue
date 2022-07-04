@@ -5,8 +5,13 @@
 			name=""
 			id=""
 			:checked="checked"
+			:disabled="disabled"
 			class="r-checkbox__real"
-			@change="this.$emit('update:modelValue', $event.target.checked)"
+			@change="
+				description
+					? handleChangeWithDescription($event)
+					: handleChange($event)
+			"
 			ref="checkbox"
 		/>
 		<div class="r-checkbox__fake">
@@ -34,6 +39,15 @@
 				value: Boolean,
 				default: false,
 			},
+			disabled: {
+				value: Boolean,
+				default: false,
+			},
+		},
+		data() {
+			return {
+				modelValue: this.checked,
+			};
 		},
 		watch: {
 			checked() {
@@ -42,6 +56,21 @@
 				} else {
 					this.$refs.checkbox.checked = false;
 				}
+				this.updateChecked(this.checked);
+			},
+		},
+		methods: {
+			handleChange($event) {
+				this.$emit("update:modelValue", $event.target.checked);
+			},
+			handleChangeWithDescription($event) {
+				this.$emit("update:modelValue", {
+					description: this.description,
+					isSelected: $event.target.checked,
+				});
+			},
+			updateChecked(value) {
+				this.$emit("update:modelValue", value);
 			},
 		},
 	};

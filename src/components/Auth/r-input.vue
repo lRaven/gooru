@@ -28,6 +28,15 @@
 				@click="if (isDisabled === false) hidePassword();"
 			/>
 		</transition>
+		<transition mode="out-in">
+			<img
+				src="img/icon/cabinet/search.svg"
+				alt="search-tool"
+				v-if="input_type === 'search'"
+				class="r-input__icon"
+				@click="if (isDisabled === false) hidePassword();"
+			/>
+		</transition>
 	</label>
 </template>
 
@@ -49,6 +58,10 @@
 				default: false,
 			},
 			value: String,
+			placeHolder: {
+				value: String,
+				default: ""
+			}
 		},
 		computed: {
 			isPasswordHide() {

@@ -6,7 +6,7 @@
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="selectAll"
-				:checked="selectAll"
+				:checked="selectAll.isChecked"
 			></r-checkbox>
 
 			<button class="the-users__control-btn" type="button">
@@ -164,10 +164,13 @@
 				}
 			},
 
-			selectAll() {
-				this.selectAll === true
-					? this.SELECT_ALL_USERS()
-					: this.UNSELECT_ALL_USERS();
+			selectAll: {
+				handler() {
+					this.selectAll.isSelected === true
+						? this.SELECT_ALL_USERS()
+						: this.UNSELECT_ALL_USERS();
+				},
+				deep: true,
 			},
 
 			async deleteSelected() {
@@ -246,7 +249,10 @@
 				isUsersLoaded: false,
 				path: this.$route.path,
 
-				selectAll: false,
+				selectAll: {
+					description: "",
+					isSelected: false,
+				},
 				postponeSelected: false,
 				deleteSelected: false,
 				sortBy: "none",

@@ -83,7 +83,7 @@
 	import TheHeader from "@/components/TheHeader.vue";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
-	import { registration } from "@/api/user";
+	import { registration } from "@/api/userApi";
 	import { useToast } from "vue-toastification";
 
 	export default {

@@ -2,12 +2,20 @@
 	<div class="favorite-card" v-click-away="closeContent">
 		<div class="favorite-card__header">
 			<div class="favorite-card__header-col">
-				<r-checkbox v-model="isAllSelected"></r-checkbox>
-				<h4 class="favorite-card__source">{{ parsource.source }}</h4>
+				<r-checkbox
+					v-model="isAllSelected"
+					@update:modelValue="handleChangeAllParsers"
+				></r-checkbox>
+				<h4 class="favorite-card__source">
+					{{ parsource.data_source }}
+				</h4>
 				<p class="favorite-card__favorite">
-					{{ parsource.parsers.length || 0 }}/{{ "n" }} в избранном
+					{{ parsource.parsers.length || 0 }}/{{ parsource.find }} в
+					избранном
 				</p>
-				<p class="favorite-card__date">{{ parsource.date }}</p>
+				<p class="favorite-card__date">
+					{{ parsource.date ? prettyDate(parsource.date) : "" }}
+				</p>
 			</div>
 			<div class="favorite-card__header-col">
 				<r-button
@@ -53,6 +61,8 @@
 				v-for="parser in parsource.parsers"
 				:key="parser.id"
 				:parser="parser"
+				@change-selected="handleChangeSelectedParsers"
+				:checked="isAllSelected"
 			></favorite-content-item>
 		</div>
 	</div>
@@ -62,6 +72,8 @@
 	import rCheckbox from "@/components/r-checkbox";
 	import rButton from "@/components/r-button";
 	import FavoriteContentItem from "@/components/Cabinet/Favorites/FavoriteContentItem";
+
+	import { prettyDate } from "@/js/processStrings";
 
 	import { directive } from "vue3-click-away";
 
@@ -73,10 +85,14 @@
 			FavoriteContentItem,
 		},
 		props: { parsource: Object },
-		data: () => ({
-			isAllSelected: false,
-			isContentVisible: false,
-		}),
+		emits: ["update-selected-parsers"],
+		data() {
+			return {
+				isAllSelected: false,
+				isContentVisible: false,
+				selectedParsers: [],
+			};
+		},
 		methods: {
 			openContent() {
 				this.isContentVisible = true;
@@ -86,6 +102,27 @@
 				this.isContentVisible = false;
 				this.$refs.arrow.classList.remove("open");
 			},
+			handleChangeSelectedParsers(state) {
+				if (state.isSelect) {
+					this.selectedParsers.push(state.id);
+				} else {
+					this.selectedParsers = this.selectedParsers.filter(
+						(selectedParser) => {
+							return selectedParser !== state.id;
+						}
+					);
+				}
+				this.$emit("update-selected-parsers", {
+					parsourceId: this.parsource.id,
+					selectedParsers: this.selectedParsers,
+				});
+			},
+			handleChangeAllParsers(isChecked) {
+				if (isChecked) {
+					console.log(isChecked);
+				}
+			},
+			prettyDate,
 		},
 		directives: { ClickAway: directive },
 	};
@@ -97,6 +134,7 @@
 	.favorite-card {
 		border-radius: 0.8rem;
 		overflow: hidden;
+		box-shadow: $shadow;
 		+ .favorite-card {
 			margin-top: 2rem;
 		}
