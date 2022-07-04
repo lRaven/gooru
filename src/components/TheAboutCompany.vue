@@ -9,6 +9,12 @@
 				Мы имеем собственную проектную деятельность с портфолио
 				проектов.
 			</p>
+
+			<p class="the-about-company__name">
+				общество с ограниченной ответственностью “Компас ПРО”
+			</p>
+			<p class="the-about-company__document">инн 3444258991</p>
+			<p class="the-about-company__document">огрн 1163443065576</p>
 			<r-link
 				text="СВЯЗАТЬСЯ С НАМИ"
 				way="https://telegram.im/@compas_gooru"
@@ -82,6 +88,11 @@
 		}
 		&__description {
 			line-height: 1.5;
+		}
+		&__name,
+		&__document {
+			font-size: 1.2rem;
+			line-height: 1.6;
 		}
 
 		&__image {
