@@ -59,4 +59,21 @@ const createComment = async ({ comment, parser }) => {
   }
 };
 
-export { downloadFile, getComments, createComment };
+const createFavoriteParser = async ({ user, parser }) => {
+  try {
+    const { data } = await axios.post(`${store.state.baseURL}/usersfavorite`, {
+      user,
+      parser,
+    },
+    {
+      headers: {
+        Authorization: `token ${cookie.get("auth_token")}`,
+      }
+    });
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export { downloadFile, getComments, createComment, createFavoriteParser };

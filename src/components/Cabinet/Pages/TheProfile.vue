@@ -302,8 +302,8 @@
 		&__main {
 			display: grid;
 			grid-template-columns: 52rem 30rem;
-			justify-content: space-between;
 			grid-gap: 8rem;
+			column-gap: 25rem;
 		}
 
 		&__title {

@@ -23,7 +23,7 @@
 
 					<p class="the-parser__info-key">Дата</p>
 					<p class="the-parser__info-value">
-						{{ prettyDate(parsource.date) || "1.1.1970" }}
+						{{ parsource.date ? prettyDate(parsource.date) : "1.1.1970" }}
 					</p>
 
 					<p class="the-parser__info-key">Статус</p>
