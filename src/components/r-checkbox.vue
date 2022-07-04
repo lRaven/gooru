@@ -5,7 +5,7 @@
       :name="name"
       :value="modelValue"
       id=""
-      :checked="modelValue"
+      :checked="checked"
       :disabled="disabled"
       class="r-checkbox__real"
       @change="handleChange($event)"
@@ -51,20 +51,19 @@ export default {
   },
  watch: {
     checked() {
-      if (this.checked === true) {
-        this.$refs.checkbox.checked = true;
+      if (this.checked === true && this.modelValue === true) {
+        //this.$refs.checkbox.checked = true;
+        
       } else {
-        this.$refs.checkbox.checked = false;
+        //this.$refs.checkbox.checked = false;
+        this.$emit("update:modelValue", this.checked);
       }
-      this.updateChecked(this.checked);
+      
     },
   },
   methods: {
     handleChange($event) {
-      this.$emit("update:modelValue", { value: $event.target.checked, name: $event.target.name });
-    },
-    updateChecked(value) {
-      this.$emit("update:modelValue", value);
+      this.$emit("update:modelValue", $event.target.checked);
     },
   },
 };

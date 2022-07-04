@@ -80,27 +80,19 @@
     <template v-slot>
       <div class="the-favorites__right-panel__checkboxes">
         <r-checkbox
-          @update:modelValue="handleDownloadCheckBox"
-          :disabled="downloadCheckBoxState['Excel'].isDisabled"
+          v-model="downloadFormatFiles.xls"
           description="Excel"
-          v-model="model"
-
         ></r-checkbox>
+        <r-checkbox v-model="downloadFormatFiles.csv" description="CSV"></r-checkbox>
         <r-checkbox
-          @update:modelValue="handleDownloadCheckBox"
-          :disabled="downloadCheckBoxState['CSV'].isDisabled"
-          description="CSV"
-        ></r-checkbox>
-        <r-checkbox
-          @update:modelValue="handleDownloadCheckBox"
-          :disabled="downloadCheckBoxState['Google Sheets'].isDisabled"
-          description="Google Sheets"
+          v-model="downloadFormatFiles.json"
+          description="JSON"
         ></r-checkbox>
       </div>
       <r-button
         @click="handleClickDownload"
         text="Скачать"
-        :disabled="isDisabledDownlaodButton || !selectedParsers.length"
+        :disabled="isDisabledDownloadButton"
       ></r-button>
     </template>
   </r-spoiler>
@@ -109,7 +101,7 @@
     <template v-slot>
       <div class="the-favorites__right-panel__checkboxes">
         <r-checkbox
-          @update:modelValue="handleRemoveButtonCheckBox"
+          v-model="confirmRemoveValue"
           description="Подтверждаете удаление"
         ></r-checkbox>
       </div>
@@ -154,19 +146,10 @@ export default {
     return {
       confirmRemoveValue: false,
       model: null,
-      downloadCheckBoxState: {
-        Excel: {
-          isSelected: false,
-          isDisabled: false,
-        },
-        CSV: {
-          isSelected: false,
-          isDisabled: false,
-        },
-        "Google Sheets": {
-          isSelected: false,
-          isDisabled: false,
-        },
+      downloadFormatFiles: {
+        xls: false,
+        csv: false,
+        json: false,
       },
       shareContent: {
         url: window.location.href,
@@ -187,11 +170,11 @@ export default {
       favorites: (state) => state.favorites.favorites,
     }),
     ...mapActions(["getFavoriteParsers"]),
-    isDisabledDownlaodButton() {
-      return !Object.values(this.downloadCheckBoxState).find(
-        (currentCheckBoxState) => {
-          return currentCheckBoxState.isSelected === true;
-        }
+    isDisabledDownloadButton() {
+      return (
+        !Object.values(this.downloadFormatFiles).find(
+          (currentItem) => currentItem === true
+        ) || !this.selectedParsers.length
       );
     },
   },
@@ -213,24 +196,8 @@ export default {
         });
       }
     },
-
   },
   methods: {
-    handleDownloadCheckBox(checkboxData) {
-      Object.keys(this.downloadCheckBoxState).forEach((key) => {
-        if (key === checkboxData.description) {
-          this.downloadCheckBoxState[`${key}`].isSelected =
-            checkboxData.isSelected;
-        } else {
-          this.downloadCheckBoxState[`${key}`].isSelected = false;
-          this.downloadCheckBoxState[`${key}`].isDisabled =
-            checkboxData.isSelected;
-        }
-      });
-    },
-    handleRemoveButtonCheckBox(isConfirmed) {
-      this.confirmRemoveValue = isConfirmed.isSelected;
-    },
     handleClickSharedIcon($event) {
       if (this.totalSelected === 0) {
         this.alertMessage = "Необходимо выбрать новость!";
@@ -243,8 +210,6 @@ export default {
     callbackCloseSharedIcon(networkName, url) {
       this.sharedPointer += 1;
       if (this.sharedPointer < this.selectedParsers.length) {
-        
-       
         const parserId = this.selectedParsers[this.sharedPointer];
         let currentParser = null;
         this.favorites.forEach(({ parsers }) => {
@@ -255,7 +220,7 @@ export default {
             this.shareContent.description = currentParser.article;
           }
         });
-        
+
         setTimeout(() => {
           this.$refs[`${networkName}`].click();
         }, 0);
@@ -266,55 +231,38 @@ export default {
     },
     async handleClickDownload() {
       try {
-        let selectedCheckBox = null;
-        Object.keys(this.downloadCheckBoxState).forEach((key) => {
-          if (this.downloadCheckBoxState[`${key}`].isSelected) {
-            selectedCheckBox = key;
-            return;
+        const downloadFilesQueue = [];
+        Object.keys(this.downloadFormatFiles).forEach((key) => {
+          if (this.downloadFormatFiles[key] === true) {
+            downloadFilesQueue.push(downloadFile({ type: key }));
           }
         });
-        let dataFileType = null;
-        switch (selectedCheckBox) {
-          case "Excel":
-            dataFileType = "xls";
-            break;
-          case "CSV":
-            dataFileType = "csv";
-            break;
-          default:
-            dataFileType = "json";
-            break;
-        }
-        const fileData = await downloadFile({ type: dataFileType });
-
-        const downloadUrl = window.URL.createObjectURL(fileData);
-        const linkForDownload = document.createElement("a");
-        linkForDownload.href = downloadUrl;
-        linkForDownload.download = `favoritesParsersData.${dataFileType}`;
-        document.body.appendChild(linkForDownload);
-        linkForDownload.click();
-        linkForDownload.remove();
+        const responses = await Promise.allSettled(downloadFilesQueue);
+        responses.forEach((response) => {
+          if (response.status === "fulfilled") {
+            
+            const downloadUrl = window.URL.createObjectURL(response.value);
+            let dataFileType = response.value.type.split('/')[1];
+            // преобразование mime-типов ответа в расширение
+            if (dataFileType === 'vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+              dataFileType = 'xlsx';
+            } else if (dataFileType === 'application/vnd.ms-excel') {
+              dataFileType = 'xls';
+            }
+            const linkForDownload = document.createElement("a");
+            linkForDownload.href = downloadUrl;
+            linkForDownload.download = `favoritesParsersData.${dataFileType}`;
+            document.body.appendChild(linkForDownload);
+            linkForDownload.click();
+            linkForDownload.remove();
+          }
+        });
       } catch (error) {
         console.log(error);
       }
     },
     async handleClickRemoveButton() {
       try {
-        //  найти объект источника парсинга в сторе
-        //  отфильтровать его парсеры по выбраным
-        // сохранить обновленный стор
-        /* this.selectedParsources.forEach( selectedParsource => {
-                    const matchedIndex = this.favorites.findIndex( favoriteParsource => {
-                        return favoriteParsource.id === selectedParsource.parsourceId;
-                    });
-                    selectedParsource.selectedParsers.map( parserToRemove => {
-                        const indexToRemove = this.favorites[matchedIndex].parsers.findIndex()
-                    })
-                    const filteredParsers = this.favorites[matchedIndex].parsers.filter( parser => {
-                        return parser.id !== 
-                    } )
-                }); */
-
         await multiaction_delete({
           model: "favorites",
           ids: this.selectedParsers,

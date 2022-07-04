@@ -262,21 +262,19 @@
             <r-checkbox
               description="Excel"
               name="xls"
-              :modelValue="downloadFormats.xls"
-              @update:modelValue="handleDownloadFormat"
+              v-model="downloadFormatFiles.excel"
             ></r-checkbox>
           </li>
           <li class="parser-content__download-list-item">
             <r-checkbox
               description="CSV"
               name="csv"
-              :modelValue="downloadFormats.csv"
-              @update:modelValue="handleDownloadFormat"
+              v-model="downloadFormatFiles.csv"
             ></r-checkbox>
           </li>
         </ul>
       </div>
-      <r-button text="Скачать" color="bordered"></r-button>
+      <r-button :disabled="isDisabledDownloadButton" @click="handleClickDownload" text="Скачать" color="bordered"></r-button>
     </div>
   </li>
 </template>
@@ -288,7 +286,7 @@ import rCheckbox from "@/components/r-checkbox";
 import { directive } from "vue3-click-away";
 import { mapState } from "vuex";
 
-import { createComment } from "@/api/parserApi";
+import { createComment, downloadFile } from "@/api/parserApi";
 
 export default {
   name: "ParserContent",
@@ -335,9 +333,12 @@ export default {
 
       return find;
     },
-    isDisabled() {
+    isDisabledCommentButton() {
       return this.comment.length > 0 ? false : true;
     },
+    isDisabledDownloadButton() {
+      return !Object.values(this.downloadFormatFiles).find( downloadFormatFile => downloadFormatFile === true);
+    }
   },
   data() {
     return {
@@ -349,12 +350,12 @@ export default {
       parser: this.parserProp,
 
       comment: this.parserProp.comment,
-      downloadFormats: { xls: false, csv: false },
+      downloadFormatFiles: { excel: false, csv: false },
 
       shareContent: {
-        url: window.location.href,
-        title: "title",
-        description: "description",
+        url: this.parserProp.url,
+        title: this.parserProp.title,
+        description: this.parserProp.article,
         image:
           "https://gitlab.com/uploads/-/system/project/avatar/32004440/Vue.js_Logo_2.svg.png",
 
@@ -372,18 +373,6 @@ export default {
       this.isShareOpen = false;
       this.isDownloadOpen = false;
     },
-    handleDownloadFormat(checkbox) {
-      console.log(checkbox);
-      Object.keys(this.downloadFormats).forEach((key) => {
-        if (key === checkbox.name) {
-          this.downloadFormats[key] = checkbox.value;
-          console.log(this.downloadFormats[key], key);
-        } else {
-          this.downloadFormats[key] = false;
-          console.log(this.downloadFormats[key], key);
-        }
-      });
-    },
     handleEditClick() {
       this.isEditComment = !this.isEditComment;
       if (this.isEditComment === false) {
@@ -397,6 +386,39 @@ export default {
           parser: this.parser.id,
         });
         this.parser.comment = comment;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async handleClickDownload() {
+      try {
+        const downloadFilesQueue = [];
+        Object.keys(this.downloadFormatFiles).forEach((key) => {
+          if (this.downloadFormatFiles[key] === true) {
+
+            downloadFilesQueue.push(downloadFile({ type: key === 'excel' ? 'xls' : key }));
+          }
+        });
+        const responses = await Promise.allSettled(downloadFilesQueue);
+        responses.forEach((response) => {
+          if (response.status === "fulfilled") {
+            
+            const downloadUrl = window.URL.createObjectURL(response.value);
+            let dataFileType = response.value.type.split('/')[1];
+            // преобразование mime-типов ответа в расширение
+            if (dataFileType === 'vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+              dataFileType = 'xlsx';
+            } else if (dataFileType === 'application/vnd.ms-excel') {
+              dataFileType = 'xls';
+            }
+            const linkForDownload = document.createElement("a");
+            linkForDownload.href = downloadUrl;
+            linkForDownload.download = `${this.parser.title}ParserData.${dataFileType}`;
+            document.body.appendChild(linkForDownload);
+            linkForDownload.click();
+            linkForDownload.remove();
+          }
+        });
       } catch (error) {
         console.log(error);
       }

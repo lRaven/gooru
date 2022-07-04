@@ -23,7 +23,7 @@
 
 					<p class="the-parser__info-key">Дата</p>
 					<p class="the-parser__info-value">
-						{{ parsource.date || "1.1.1970" }}
+						{{ prettyDate(parsource.date) || "1.1.1970" }}
 					</p>
 
 					<p class="the-parser__info-key">Статус</p>
@@ -188,6 +188,8 @@
 	import rSpoiler from "@/components/r-spoiler";
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
 
+	import { prettyDate } from '@/js/processStrings';
+
 	export default {
 		name: "TheParsource",
 		components: {
@@ -285,6 +287,7 @@
 					query: { page: page_number },
 				});
 			},
+			prettyDate,
 		},
 		created() {
 			this.SET_TAB("parsers");

@@ -4,6 +4,7 @@
       <div class="favorite-content-item__col">
         <r-checkbox
           @update:modelValue="handleChangeSelectItem"
+          :modelValue="isSelected"
           :checked="checked"
         ></r-checkbox>
 
@@ -163,18 +164,18 @@
           <li class="favorite-content-item__download-list-item">
             <r-checkbox
               description="Excel"
-              v-model="downloadFormats.excel"
+              v-model="downloadFormatFiles.excel"
             ></r-checkbox>
           </li>
           <li class="favorite-content-item__download-list-item">
             <r-checkbox
               description="CSV"
-              v-model="downloadFormats.csv"
+              v-model="downloadFormatFiles.csv"
             ></r-checkbox>
           </li>
         </ul>
       </div>
-      <r-button text="Скачать" color="bordered"></r-button>
+      <r-button @click="handleClickDownload" :disabled="isDisabledDownloadButton" text="Скачать" color="bordered"></r-button>
     </div>
   </li>
 </template>
@@ -185,6 +186,8 @@ import rCheckbox from "@/components/r-checkbox";
 import { directive } from "vue3-click-away";
 
 import { mapState } from "vuex";
+
+import { downloadFile } from '@/api/parserApi';
 
 export default {
   name: "FavoriteContentItem",
@@ -230,27 +233,33 @@ export default {
 
       return find;
     },
+    isDisabledDownloadButton() {
+      return !Object.values(this.downloadFormatFiles).find( downloadFormatFile => downloadFormatFile === true);
+    }
   },
-  data: () => ({
-    isShareOpen: false,
-    isDownloadOpen: false,
+  data() {
+    return {
+      isShareOpen: false,
+      isDownloadOpen: false,
+      isSelected: this.checked,
 
-    comment: "",
-    downloadFormats: { excel: false, csv: false },
+      comment: "",
+      downloadFormatFiles: { excel: false, csv: false },
 
-    shareContent: {
-      url: window.location.href,
-      title: "title",
-      description: "description",
-      image:
-        "https://gitlab.com/uploads/-/system/project/avatar/32004440/Vue.js_Logo_2.svg.png",
+      shareContent: {
+        url: this.parser.url,
+        title: this.parser.title,
+        description: this.parser.article,
+        image:
+          "https://gitlab.com/uploads/-/system/project/avatar/32004440/Vue.js_Logo_2.svg.png",
 
-      // *fb only
-      quote: "",
-      //*fb, twtr only
-      hashtags: "",
-    },
-  }),
+        // *fb only
+        quote: "",
+        //*fb, twtr only
+        hashtags: "",
+      },
+    };
+  },
   methods: {
     hideAllExtras() {
       this.isMessagesOpen = false;
@@ -258,8 +267,42 @@ export default {
       this.isDownloadOpen = false;
     },
     handleChangeSelectItem(value) {
-      console.log("parser", this.parser.id, value)
+      console.log("parser", this.parser.id, value);
       this.$emit("change-selected", { id: this.parser.id, isSelect: value });
+      this.isSelected = value;
+    },
+    async handleClickDownload() {
+      try {
+        const downloadFilesQueue = [];
+        Object.keys(this.downloadFormatFiles).forEach((key) => {
+          if (this.downloadFormatFiles[key] === true) {
+
+            downloadFilesQueue.push(downloadFile({ type: key === 'excel' ? 'xls' : key }));
+          }
+        });
+        const responses = await Promise.allSettled(downloadFilesQueue);
+        responses.forEach((response) => {
+          if (response.status === "fulfilled") {
+            
+            const downloadUrl = window.URL.createObjectURL(response.value);
+            let dataFileType = response.value.type.split('/')[1];
+            // преобразование mime-типов ответа в расширение
+            if (dataFileType === 'vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+              dataFileType = 'xlsx';
+            } else if (dataFileType === 'application/vnd.ms-excel') {
+              dataFileType = 'xls';
+            }
+            const linkForDownload = document.createElement("a");
+            linkForDownload.href = downloadUrl;
+            linkForDownload.download = `favoritesParsersData.${dataFileType}`;
+            document.body.appendChild(linkForDownload);
+            linkForDownload.click();
+            linkForDownload.remove();
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   mounted() {},

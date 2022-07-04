@@ -19,8 +19,8 @@ const downloadFile = async ({ type }) => {
       const fileData = await response.blob();
       return fileData;
     }
-    const { message } = await response.json();
-    return Promise.reject({ message, status: response.status });
+    const { detail } = await response.json();
+    return Promise.reject({ message: detail, status: response.status });
   } catch (error) {
     throw new Error(error);
   }
