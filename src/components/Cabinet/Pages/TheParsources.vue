@@ -72,7 +72,6 @@
 						:key="parsource.id"
 						:parsource="parsource"
 						:isParsourceManagerView="userRole !== 'DefaultUser'"
-						:users="all_users"
 					></parsource-card>
 				</div>
 			</transition>
@@ -187,12 +186,6 @@
 				},
 				deep: true,
 			},
-
-			userRole() {
-				if (this.userRole !== "DefaultUser") {
-					this.getAllUsers();
-				}
-			},
 		},
 		computed: {
 			...mapState({
@@ -200,7 +193,6 @@
 				parsources_pagination: (state) =>
 					state.parsers.parsources_pagination,
 				userRole: (state) => state.cabinet.user.role,
-				all_users: (state) => state.users.all_users,
 			}),
 			page() {
 				return +this.$route.query.page;
@@ -236,11 +228,7 @@
 				"SELECT_ALL_PARSOURCES",
 				"UNSELECT_ALL_PARSOURCES",
 			]),
-			...mapActions([
-				"getParsources",
-				"deleteSelectedParsources",
-				"getAllUsers",
-			]),
+			...mapActions(["getParsources", "deleteSelectedParsources"]),
 			async sort_list(array, key) {
 				const response = await sortArrayByObjectKey(array, key);
 				this.parsources_list = response;

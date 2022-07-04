@@ -115,7 +115,7 @@
 				</div>
 			</transition>
 
-			<div class="the-users__bottom">
+			<div class="the-users__bottom" v-if="number_of_pages > 1">
 				<r-button text="Показать ещё" color="bordered"></r-button>
 
 				<r-pagination

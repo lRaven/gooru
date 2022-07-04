@@ -71,6 +71,7 @@
 
 						<r-dropdown
 							selected_item="Тема обращения"
+							showedValue="description"
 							:list="topics"
 							v-model="new_appeal.topic"
 						></r-dropdown>
@@ -177,29 +178,6 @@
 
 			number_of_pages() {
 				return Math.ceil(this.count / this.appeals_in_page);
-			},
-			isInvalidTicketForm() {
-				const formValidation = {
-					isInvalidTopic: true,
-					isInvalidParser: true,
-					isInvalidMessage: true,
-				};
-				formValidation.isInvalidMessage =
-					this.message.length < 10 ? true : false;
-				if (this.topic !== 1 && this.topic !== null) {
-					formValidation.isInvalidParser = false;
-					formValidation.isInvalidTopic = false;
-				}
-				if (this.topic === 1 && this.parser !== null) {
-					formValidation.isInvalidParser = false;
-					formValidation.isInvalidTopic = false;
-				}
-
-				return (
-					formValidation.isInvalidTopic ||
-					formValidation.isInvalidParser ||
-					formValidation.isInvalidMessage
-				);
 			},
 		},
 		data() {

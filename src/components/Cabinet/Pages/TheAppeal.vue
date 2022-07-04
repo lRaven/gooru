@@ -50,6 +50,7 @@
 
 						<r-dropdown
 							selected_item="Тема обращения"
+							showedValue="description"
 							:list="topics"
 							v-model="new_appeal.topic"
 						></r-dropdown>

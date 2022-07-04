@@ -139,6 +139,29 @@ const upload_avatar = async ({ user_id, avatar }) => {
 	catch (err) { throw new Error(err) }
 }
 
+const change_manager = async ({ user, manager, user_manager }) => {
+	try {
+		const response = await axios.patch(`${baseURL}/usermanager/${user_manager}/`, {
+			user,
+			manager
+		}, { headers: { Authorization: `token ${cookie.get('auth_token')}` } });
+
+		return response;
+	}
+	catch (err) { throw new Error(err) }
+}
+
+const delete_user = async (user_id) => {
+	try {
+		const response = await axios.delete(`${baseURL}/user/${user_id}/`, {
+			headers: { Authorization: `token ${cookie.get('auth_token')}` }
+		});
+		return response;
+	}
+	catch (err) { throw new Error(err) }
+}
+
+
 export {
 	registration,
 	registration_by_tel,
@@ -146,5 +169,7 @@ export {
 	logout,
 	change_password,
 	change_user_data,
-	upload_avatar
+	upload_avatar,
+	change_manager,
+	delete_user,
 };

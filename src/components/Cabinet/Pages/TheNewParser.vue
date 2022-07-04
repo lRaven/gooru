@@ -3,15 +3,16 @@
 		<h2 class="the-new-parser__title">Новый парсинг</h2>
 
 		<form class="the-new-parser__form" @submit.prevent="create_parsource">
-			<template v-if="user.role === 'Manager'">
+			<template v-if="user.role !== 'DefaultUser'">
 				<p class="the-new-parser__input-description">
 					Введите пользователя*
 				</p>
 				<r-dropdown
 					selected_item="ФИО"
 					:list="managerUsers"
+					showedValue="username"
 					v-model="selectedUser"
-				/>
+				></r-dropdown>
 			</template>
 			<p class="the-new-parser__input-description">
 				URL страницы с данными*
@@ -107,7 +108,7 @@
 				this.new_parsource.url.length > 0 &&
 				this.new_parsource.parse_fields.length > 0 &&
 				this.new_parsource.description.length > 0 &&
-				(this.user.role === "Manager"
+				(this.user.role !== "DefaultUser"
 					? this.selectedUser !== null
 					: true)
 					? (this.isDisabledBtn = false)

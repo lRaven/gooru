@@ -49,6 +49,7 @@
 						</p>
 						<r-dropdown
 							v-model="show_by_source"
+							showedValue="description"
 							selected_item="Выберите источник"
 						></r-dropdown>
 					</div>
@@ -66,6 +67,7 @@
 						</p>
 						<r-dropdown
 							v-model="show_by_content"
+							showedValue="description"
 							selected_item="Выберите тип контента"
 						></r-dropdown>
 					</div>

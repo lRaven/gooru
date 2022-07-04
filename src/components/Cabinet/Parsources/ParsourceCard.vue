@@ -14,7 +14,7 @@
 				:title="parsource.user"
 				v-if="isParsourceManagerView"
 			>
-				id{{ user.id }}
+				id{{ parsource.user }}
 			</p>
 
 			<p class="parsource-card__source" :title="parsource.data_source">
@@ -89,7 +89,6 @@
 				value: Boolean,
 				default: false,
 			},
-			users: Array,
 		},
 		components: {
 			rCheckbox,
@@ -108,15 +107,6 @@
 			},
 			"parsource.selected"() {
 				this.isSelected = this.parsource.selected;
-			},
-		},
-		computed: {
-			user() {
-				return (
-					this.users.find(
-						(user) => user.id === this.parsource.user
-					) || {}
-				);
 			},
 		},
 		data() {

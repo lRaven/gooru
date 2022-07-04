@@ -9,7 +9,7 @@
 		</h2>
 
 		<div class="the-user__top">
-			<form class="the-user__data" @submit.prevent="">
+			<form class="the-user__data">
 				<p class="the-user__data-description">Номер</p>
 				<p class="the-user__data-description">Телефон</p>
 				<p class="the-user__data-description">E-mail</p>
@@ -35,19 +35,20 @@
 					v-model="user_data.email"
 					:title="user_data.email"
 				></r-input>
-				<r-input
-					:isDisabled="true"
-					:isTransparent="true"
-					:value="user_manager !== null ? user_manager.username : '-'"
-					:title="user_manager !== null ? user_manager.username : '-'"
-				></r-input>
+				<r-dropdown
+					:selected_item="user_manager.username"
+					:showedValue="'username'"
+					:list="managers"
+					:isDisabled="isFormDisabled"
+					v-model="user_data.selected_manager"
+				></r-dropdown>
 			</form>
 
 			<div class="the-user__actions">
 				<r-button
 					color="bordered"
 					text="Редактировать"
-					@click="isFormDisabled = false"
+					@click.prevent="send_form"
 				>
 					<template v-slot:icon>
 						<svg
@@ -114,7 +115,11 @@
 					</template>
 				</r-button>
 
-				<r-button color="bordered" text="Удалить">
+				<r-button
+					color="bordered"
+					text="Удалить"
+					@click.prevent="delete_this_user"
+				>
 					<template v-slot:icon>
 						<svg
 							width="15"
@@ -279,17 +284,25 @@
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import rButton from "@/components/r-button.vue";
 	import rInput from "@/components/Auth/r-input.vue";
+	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
 	import rLoader from "@/components/r-loader.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard";
+	import {
+		change_user_data,
+		change_manager,
+		delete_user,
+	} from "@/api/userApi";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheUser",
 		components: {
 			rButton,
 			rInput,
+			rDropdown,
 			ParsourceCard,
 			SortButton,
 			rLoader,
@@ -317,13 +330,32 @@
 				},
 				deep: true,
 			},
+			"user_data.selected_manager": {
+				async handler() {
+					try {
+						const response = await change_manager({
+							user: this.user.id,
+							manager: this.user_data.selected_manager,
+							user_manager: this.user_manager.user_manager.id,
+						});
+
+						if (response.status === 200) {
+							console.log("Manager changed");
+							this.toast.success("Менеджер сменён");
+						}
+					} catch (err) {
+						throw new Error(err);
+					}
+				},
+				deep: true,
+			},
 		},
 		computed: {
 			...mapState({
 				user_me: (state) => state.cabinet.user,
 				user: (state) => state.users.selected_user,
 				users: (state) => state.users.all_users,
-				managers: (state) => state.users.users_managers,
+				users_managers: (state) => state.users.users_managers,
 
 				all_parsources: (state) => state.parsers.all_parsources,
 				all_parsers: (state) => state.parsers.all_parsers,
@@ -336,7 +368,7 @@
 			user_manager() {
 				let manager;
 
-				const manager_id = this.managers.find(
+				const manager_id = this.users_managers.find(
 					(manager) => manager.user === this.user.id
 				);
 
@@ -344,16 +376,10 @@
 					manager = this.users.find(
 						(user) => user.id === manager_id.manager
 					);
-
-					if (
-						manager === undefined &&
-						manager_id.manager === this.user_me.id
-					) {
-						manager = this.user_me;
-					}
+					manager.user_manager = manager_id;
 				}
 
-				return manager || null;
+				return manager || { username: "-" };
 			},
 
 			user_parsources() {
@@ -367,6 +393,10 @@
 					return appeal.user.id === this.user.id;
 				});
 			},
+
+			managers() {
+				return this.users.filter((user) => user.role === "Manager");
+			},
 		},
 		data() {
 			return {
@@ -377,6 +407,7 @@
 				user_data: {
 					phone_number: "",
 					email: "",
+					selected_manager: "",
 				},
 
 				tab: 1,
@@ -401,10 +432,53 @@
 				"getAllParsers",
 				"getAllMessages",
 			]),
+			change_user_data,
 
 			async sort_list(array, key) {
 				const response = await sortArrayByObjectKey(array, key);
 				this.parsources_list = response;
+			},
+
+			async send_form() {
+				if (this.isFormDisabled === true) {
+					this.isFormDisabled = false;
+				} else {
+					try {
+						const response = await change_user_data(this.user.id, {
+							phone_number: this.user_data.phone_number,
+							email: this.user_data.email,
+						});
+
+						if (response.status === 200) {
+							console.log("User data changed");
+							this.toast.success("Данные пользователя изменены");
+						}
+					} catch (err) {
+						this.toast.error(
+							"Ошибка изменения данных пользователя"
+						);
+						throw new Error(err);
+					}
+
+					this.isFormDisabled = true;
+				}
+			},
+
+			async delete_this_user() {
+				try {
+					const response = await delete_user(this.user.id);
+
+					if (response.status === 204) {
+						this.toast.success("Пользователь удалён");
+						this.$router.push({
+							path: "/cabinet/users",
+							query: { page: 1 },
+						});
+					}
+				} catch (err) {
+					this.toast.err("Ошибка удаления пользователя");
+					throw new Error(err);
+				}
 			},
 		},
 		created() {
@@ -418,6 +492,10 @@
 			this.getAllAppeals();
 			this.getAllParsers();
 			this.getAllMessages();
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>

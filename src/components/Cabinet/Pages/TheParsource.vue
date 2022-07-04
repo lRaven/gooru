@@ -12,6 +12,24 @@
 					class="the-parsource__image"
 				/>
 				<div class="the-parsource__info">
+					<template v-if="userRole !== 'DefaultUser'">
+						<p class="the-parsource__info-key">Пользователь</p>
+						<router-link
+							:to="{ path: `/cabinet/user/${parsource_id}` }"
+							class="the-parsource__info-value the-parsource__info-source"
+						>
+							#id{{ parsource.id }}
+						</router-link>
+
+						<p class="the-parsource__info-key">Менеджер</p>
+						<r-dropdown
+							:selected_item="user_manager.username"
+							:showedValue="'username'"
+							:list="managers"
+							v-model="selected_manager"
+						></r-dropdown>
+					</template>
+
 					<p class="the-parsource__info-key">Источник</p>
 					<a
 						:href="parsource.data_source"
@@ -147,30 +165,6 @@
 							></textarea>
 						</template>
 					</r-spoiler>
-
-					<!-- <label class="the-parsource__right-panel__file">
-						<input
-							type="file"
-							name=""
-							id=""
-							class="the-parsource__right-panel__file-real"
-							accept="image/*"
-							@change="file = $event.target.files[0].name"
-						/>
-						<span class="the-parsource__right-panel__file-fake">
-							<img
-								src="img/icon/cabinet/camera.svg"
-								alt=""
-								class="the-parsource__right-panel__file-icon"
-							/>
-							<p
-								class="the-parsource__right-panel__file-description"
-							>
-								{{ file || "Добавить фото" }}
-							</p>
-						</span>
-					</label> -->
-
 					<r-button text="Применить"></r-button>
 				</div>
 			</template>
@@ -185,10 +179,13 @@
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
 	import rLoader from "@/components/r-loader.vue";
+	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
 	import rSpoiler from "@/components/r-spoiler";
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
+	import { change_manager } from "@/api/userApi";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheParsource",
@@ -198,6 +195,7 @@
 			rButton,
 			rPagination,
 			rLoader,
+			rDropdown,
 
 			RightPanel,
 			rSpoiler,
@@ -234,6 +232,31 @@
 			parsers() {
 				this.isParsersLoaded = true;
 			},
+
+			userRole() {
+				if (this.userRole !== "DefaultUser") {
+					this.getAllUsers();
+					this.getUsersManagers();
+				}
+			},
+
+			async selected_manager() {
+				try {
+					const response = await change_manager({
+						user: this.parsource.user,
+						manager: this.selected_manager,
+						user_manager: this.user_manager.user_manager.id,
+					});
+
+					if (response.status === 200) {
+						console.log("Manager changed");
+						this.toast.success("Менеджер сменён");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка смены менеджера");
+					throw new Error(err);
+				}
+			},
 		},
 		computed: {
 			...mapState({
@@ -242,6 +265,10 @@
 
 				parsers: (state) => state.parsers.parsers,
 				parsers_pagination: (state) => state.parsers.parsers_pagination,
+
+				userRole: (state) => state.cabinet.user.role,
+				all_users: (state) => state.users.all_users,
+				users_managers: (state) => state.users.users_managers,
 			}),
 
 			parsource_id() {
@@ -261,6 +288,27 @@
 			count() {
 				return this.parsers_pagination.count;
 			},
+
+			user_manager() {
+				let result;
+
+				const manager_id = this.users_managers.find(
+					(manager) => manager.user === this.parsource.user
+				);
+
+				if (manager_id !== undefined) {
+					result = this.all_users.find(
+						(user) => user.id === manager_id.manager
+					);
+					result.user_manager = manager_id;
+				}
+
+				return result || { username: "-" };
+			},
+
+			managers() {
+				return this.all_users.filter((user) => user.role === "Manager");
+			},
 		},
 		data() {
 			return {
@@ -268,6 +316,8 @@
 				path: this.$route.path,
 
 				parsers_in_page: 10,
+
+				selected_manager: "",
 
 				texts: false,
 				images: false,
@@ -279,7 +329,14 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getParsers", "getParsource", "getAllParsources"]),
+			...mapActions([
+				"getParsers",
+				"getParsource",
+				"getAllParsources",
+				"getAllUsers",
+				"getUsersManagers",
+			]),
+			change_manager,
 
 			page_changed(page_number) {
 				this.$router.push({
@@ -294,6 +351,10 @@
 			this.getParsource(this.parsource_id);
 
 			this.getAllParsources();
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
@@ -335,7 +396,7 @@
 
 		&__info {
 			display: grid;
-			grid-template-columns: repeat(2, max-content);
+			grid-template-columns: max-content 1fr;
 			align-items: center;
 			grid-gap: 2rem 3rem;
 
@@ -345,6 +406,7 @@
 			}
 			&-value {
 				font-size: 1.8rem;
+				width: fit-content;
 			}
 			&-source {
 				text-decoration: underline;
