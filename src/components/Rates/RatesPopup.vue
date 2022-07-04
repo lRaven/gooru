@@ -13,8 +13,9 @@
 					К оплате:
 					<strong
 						class="rate-info__amount_accent rate-info__amount_bias"
-						>{{ selectedRate.price }}₽</strong
 					>
+						{{ selectedRate.price }}₽
+					</strong>
 					/мес
 				</p>
 				<p class="rate-info__contain">Что входит:</p>
@@ -70,8 +71,9 @@
 				>
 					<span
 						class="user-credentials-form__caption user-credentials-form_area_name"
-						>Ваше имя*</span
 					>
+						Ваше имя*
+					</span>
 					<r-input
 						class="user-credentials-form__input user-credentials-form_area_name-input"
 						v-model="formState.username"
@@ -79,8 +81,9 @@
 					/>
 					<span
 						class="user-credentials-form__caption user-credentials-form_area_password"
-						>Пароль*</span
 					>
+						Пароль*
+					</span>
 					<r-input
 						class="user-credentials-form__input user-credentials-form_area_password-input"
 						v-model="formState.password"
@@ -122,17 +125,16 @@
 					v-if="formType === 'registration'"
 					class="user-credentials__privacy-policy"
 				>
-					Нажимая кнопку «Зарегистрироваться», я даю свое согласие на
-					сбор и обработку моих персональных данных в соответствии с
-					<span
+					Нажимая кнопку «Зарегистрироваться», я даю согласие на
+					обработку персональных данных, соглашаюсь с тарифами и
+					правилами
+					<a
+						href="docs/Оферта ГУРУ.pdf"
+						target="_blank"
 						class="user-credentials__privacy-policy user-credentials__privacy-policy_accent"
-						>Политикой</span
 					>
-					и принимаю условия
-					<span
-						class="user-credentials__privacy-policy user-credentials__privacy-policy_accent"
-						>Пользовательского соглашения</span
-					>
+						публичной оферты
+					</a>
 				</p>
 			</div>
 		</div>
@@ -145,16 +147,10 @@
 
 	import { mapActions, mapState } from "vuex";
 	import { registration, login } from "@/api/userApi";
+
 	export default {
-		components: {
-			rInput,
-			rButton,
-		},
-		props: {
-			selectedRate: {
-				type: Object,
-			},
-		},
+		components: { rInput, rButton },
+		props: { selectedRate: Object },
 		data() {
 			return {
 				formType: "registration",
@@ -167,9 +163,7 @@
 			};
 		},
 		computed: {
-			...mapState({
-				baseUrl: (state) => state.baseUrl,
-			}),
+			...mapState({ baseUrl: (state) => state.baseUrl }),
 			isInvalidForm() {
 				// Валидация очень примерная, не всегда учитывает поведение пользователя,
 				// но просто хотя бы делает кнопку неактивной и проходит валидацию на сервере
@@ -228,11 +222,18 @@
 				}
 			},
 		},
+		mounted() {
+			document.querySelector("body").classList.add("locked");
+		},
+		unmounted() {
+			document.querySelector("body").classList.remove("locked");
+		},
 	};
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 	@import "@/assets/scss/variables";
+
 	.popup {
 		display: flex;
 		justify-content: center;
@@ -245,7 +246,6 @@
 		left: 0;
 		max-width: 100%;
 		background-color: rgba(0, 0, 0, 0.5);
-		scroll-behavior: n;
 		&__container {
 			display: flex;
 			flex-direction: row;
@@ -310,12 +310,15 @@
 			line-height: 2.8rem;
 			margin: 0 0 2rem 0;
 		}
-		&__checklist-item {
-			display: flex;
-			align-items: center;
-			margin: 0 0 1rem 0;
-			&:last-child {
-				margin: 0;
+		&__checklist {
+			padding-right: 1rem;
+			&-item {
+				display: flex;
+				align-items: center;
+				margin: 0 0 1rem 0;
+				&:last-child {
+					margin: 0;
+				}
 			}
 		}
 		&__tick {
