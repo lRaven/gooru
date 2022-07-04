@@ -7,14 +7,14 @@
 				id=""
 				class="navigation-item__radio-real"
 				:checked="isDefaultChecked"
-				@change="this.$emit('set_tab', tabValue, pagination)"
-				@click="this.$emit('set_tab', tabValue, pagination)"
+				@change="this.$emit('set_tab', value, pagination)"
+				@click="this.$emit('set_tab', value, pagination)"
 			/>
 			<div class="navigation-item__radio-fake" ref="content">
 				<div class="navigation-item__col">
 					<slot name="icon"></slot>
 					<p class="navigation-item__description">
-						{{ text }}
+						{{ description }}
 					</p>
 				</div>
 				<span
@@ -32,7 +32,7 @@
 	export default {
 		name: "NavigationItem",
 		props: {
-			text: {
+			description: {
 				value: String,
 				default: "Nav item",
 			},
@@ -40,7 +40,7 @@
 				value: Boolean,
 				default: false,
 			},
-			tabValue: String,
+			value: String,
 			pagination: {
 				value: Boolean,
 				default: false,
@@ -52,7 +52,7 @@
 		},
 		beforeCreate() {
 			if (this.isDefaultChecked)
-				this.$emit("update:modelValue", this.tabValue);
+				this.$emit("update:modelValue", this.value);
 		},
 	};
 </script>
