@@ -45,7 +45,7 @@
 			<div class="the-users__sort">
 				<sort-button
 					description="Пользователь"
-					@click="sort_list(users_list, 'first_name')"
+					@click="sort_list(users, 'first_name')"
 				>
 					<template v-slot:icon>
 						<svg
@@ -79,19 +79,19 @@
 
 				<sort-button
 					description="Статус"
-					@click="sort_list(users_list, 'is_active')"
+					@click="sort_list(users, 'is_active')"
 				>
 				</sort-button>
 
 				<sort-button
 					description="Кол-во парсеров"
-					@click="sort_list(users_list, '')"
+					@click="sort_list(users, '')"
 				>
 				</sort-button>
 
 				<sort-button
 					description="Менеджер"
-					@click="sort_list(users_list, '')"
+					@click="sort_list(users, '')"
 				>
 				</sort-button>
 			</div>

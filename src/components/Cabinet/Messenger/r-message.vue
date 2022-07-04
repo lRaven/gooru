@@ -80,7 +80,6 @@
 		flex-direction: column;
 		max-width: 90%;
 		width: fit-content;
-		white-space: pre-wrap;
 
 		//* styles for my messages
 		&.my {
@@ -148,6 +147,7 @@
 		&__text {
 			font-size: 1.6rem;
 			position: relative;
+			white-space: pre-wrap;
 		}
 
 		&__user {

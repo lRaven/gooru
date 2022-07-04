@@ -210,7 +210,7 @@
 							v-if="isParsourcesLoaded"
 						>
 							<parsource-card
-								v-for="parsource in all_parsources"
+								v-for="parsource in user_parsources"
 								:key="parsource.id"
 								:parsource="parsource"
 								:isCanSelect="false"
@@ -310,6 +310,12 @@
 
 				return manager || null;
 			},
+
+			user_parsources() {
+				return this.all_parsources.filter((parsource) => {
+					return parsource.user === this.user.id;
+				});
+			},
 		},
 		data() {
 			return {
@@ -368,7 +374,7 @@
 		height: 100%;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
-		overflow-x: auto;
+		overflow: auto;
 		&__title {
 			font-weight: 400;
 			margin-bottom: 2rem;
@@ -483,6 +489,11 @@
 						justify-self: center;
 					}
 				}
+			}
+			&-list {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
 			}
 		}
 

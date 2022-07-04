@@ -37,10 +37,23 @@
 					v-for="item in list"
 					:key="item.id"
 					@click="
-						selectValue(item.id, item.description || item.title || (item.first_name ? `${item.first_name} ${item.last_name}` : ''))
+						selectValue(
+							item.id,
+							item.description ||
+								item.title ||
+								(item.first_name
+									? `${item.first_name} ${item.last_name}`
+									: '')
+						)
 					"
 				>
-					{{ item.description || item.title || (item.first_name ? `${item.first_name} ${item.last_name}` : '') }}
+					{{
+						item.description ||
+						item.title ||
+						(item.first_name
+							? `${item.first_name} ${item.last_name}`
+							: "")
+					}}
 				</li>
 			</ul>
 		</transition>
@@ -143,6 +156,7 @@
 			z-index: 2;
 			max-height: calc(14.6rem);
 			overflow-y: auto;
+			overflow-x: hidden;
 			&-item {
 				padding: 1rem;
 				cursor: pointer;
