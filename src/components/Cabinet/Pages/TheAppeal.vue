@@ -1,5 +1,8 @@
 <template>
-	<section class="the-appeal">
+	<section
+		class="the-appeal"
+		:class="user.role === 'DefaultUser' ? 'has-right-panel' : ''"
+	>
 		<div class="the-appeal__main">
 			<h2 class="the-appeal__title">Обращения</h2>
 
@@ -239,10 +242,16 @@
 	@import "@/assets/scss/variables";
 
 	.the-appeal {
-		display: grid;
-		grid-template-columns: 1fr max-content;
-		grid-gap: 2rem;
 		padding: 0;
+
+		&.has-right-panel {
+			display: grid;
+			grid-template-columns: 1fr max-content;
+			grid-gap: 2rem;
+			.the-appeal__main {
+				padding: 4rem 0 0 4rem;
+			}
+		}
 
 		&__title {
 			font-weight: 400;
@@ -266,7 +275,7 @@
 		}
 
 		&__main {
-			padding: 4rem 0 0 4rem;
+			padding: 4rem 4rem 0 4rem;
 			display: flex;
 			gap: 4rem;
 			flex-direction: column;

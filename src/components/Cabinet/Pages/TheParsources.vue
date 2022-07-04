@@ -28,7 +28,14 @@
 		</div>
 
 		<div class="the-parsources__content">
-			<div class="the-parsources__sort">
+			<div
+				class="the-parsources__sort"
+				:class="userRole !== 'DefaultUser' ? 'manager' : ''"
+			>
+				<sort-button
+					description="Пользователь"
+					@click="sort_list(parsources_list, 'user')"
+				></sort-button>
 				<sort-button
 					description="Источник"
 					@click="sort_list(parsources_list, 'data_source')"
@@ -44,10 +51,6 @@
 				<sort-button
 					description="Найдено"
 					@click="sort_list(parsources_list, 'found')"
-				></sort-button>
-				<sort-button
-					description="В избранном"
-					@click="sort_list(parsources_list, 'favorite')"
 				></sort-button>
 				<sort-button
 					description="Время парсинга"
@@ -68,6 +71,8 @@
 						v-for="parsource in parsources_list"
 						:key="parsource.id"
 						:parsource="parsource"
+						:isParsourceManagerView="userRole !== 'DefaultUser'"
+						:users="all_users"
 					></parsource-card>
 				</div>
 			</transition>
@@ -182,6 +187,12 @@
 				},
 				deep: true,
 			},
+
+			userRole() {
+				if (this.userRole !== "DefaultUser") {
+					this.getAllUsers();
+				}
+			},
 		},
 		computed: {
 			...mapState({
@@ -189,6 +200,7 @@
 				parsources_pagination: (state) =>
 					state.parsers.parsources_pagination,
 				userRole: (state) => state.cabinet.user.role,
+				all_users: (state) => state.users.all_users,
 			}),
 			page() {
 				return +this.$route.query.page;
@@ -224,7 +236,11 @@
 				"SELECT_ALL_PARSOURCES",
 				"UNSELECT_ALL_PARSOURCES",
 			]),
-			...mapActions(["getParsources", "deleteSelectedParsources"]),
+			...mapActions([
+				"getParsources",
+				"deleteSelectedParsources",
+				"getAllUsers",
+			]),
 			async sort_list(array, key) {
 				const response = await sortArrayByObjectKey(array, key);
 				this.parsources_list = response;
@@ -260,6 +276,7 @@
 		grid-template-rows: repeat(2, max-content) 1fr;
 		padding: 4rem 3rem;
 		min-height: 100%;
+		overflow: auto;
 
 		&__title {
 			font-weight: 400;
@@ -313,6 +330,11 @@
 			justify-content: space-between;
 			align-items: center;
 			padding: 0 3rem 0 5.6rem;
+			&.manager {
+				grid-template-columns:
+					18rem 14rem
+					repeat(2, 20rem) repeat(3, 14rem);
+			}
 			.sort-button {
 				width: max-content;
 

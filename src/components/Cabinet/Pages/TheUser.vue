@@ -533,7 +533,7 @@
 					height: 1.8rem;
 					color: $white;
 					border-radius: 50%;
-					font-weight: 400;
+					font-weight: 600;
 				}
 			}
 			&-tab {

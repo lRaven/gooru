@@ -1,5 +1,8 @@
 <template>
-	<section class="the-appeals">
+	<section
+		class="the-appeals"
+		:class="user.role === 'DefaultUser' ? 'has-right-panel' : ''"
+	>
 		<div class="the-appeals__main">
 			<div class="the-appeals__header">
 				<h2 class="the-appeals__title">Обращения</h2>
@@ -8,7 +11,7 @@
 					:value="searchValue"
 					input_type="search"
 					placeholder="Поиск по почте"
-					v-if="user.role === 'Manager'"
+					v-if="user.role !== 'DefaultUser'"
 				/>
 			</div>
 
@@ -289,10 +292,15 @@
 	@import "@/assets/scss/variables";
 
 	.the-appeals {
-		display: grid;
-		grid-template-columns: 1fr max-content;
-		grid-gap: 2rem;
 		padding: 0;
+		&.has-right-panel {
+			display: grid;
+			grid-template-columns: 1fr max-content;
+			grid-gap: 2rem;
+			.the-appeals__main {
+				padding: 4rem 0 4rem 4rem;
+			}
+		}
 
 		&__title {
 			font-weight: 400;
@@ -311,7 +319,7 @@
 		}
 
 		&__main {
-			padding: 4rem 0 4rem 4rem;
+			padding: 4rem;
 			display: flex;
 			gap: 4rem;
 			flex-direction: column;

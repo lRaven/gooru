@@ -1,16 +1,30 @@
 <template>
-	<div class="parsource-card">
+	<div
+		class="parsource-card"
+		:class="isParsourceManagerView ? 'manager' : ''"
+	>
 		<r-checkbox
 			v-model="isSelected"
 			:checked="isSelected"
 			v-if="isCanSelect"
 		></r-checkbox>
 		<div class="parsource-card__content" ref="content">
-			<p class="parsource-card__source">
+			<p
+				class="parsource-card__id"
+				:title="parsource.user"
+				v-if="isParsourceManagerView"
+			>
+				id{{ user.id }}
+			</p>
+
+			<p class="parsource-card__source" :title="parsource.data_source">
 				{{ parsource.data_source }}
 			</p>
 
-			<p class="parsource-card__col parsource-card__date">
+			<p
+				class="parsource-card__col parsource-card__date"
+				:title="parsource.date || '1.1.1970'"
+			>
 				{{ parsource.date || "1.1.1970" }}
 			</p>
 
@@ -18,15 +32,25 @@
 				<r-status :status="1 || parsource.condition"></r-status>
 			</div>
 
-			<p class="parsource-card__col parsource-card__found">
+			<p
+				class="parsource-card__col parsource-card__found"
+				:title="parsource.find || 0"
+			>
 				{{ parsource.find || 0 }}
 			</p>
 
-			<p class="parsource-card__col parsource-card__favorite">
+			<p
+				class="parsource-card__col parsource-card__favorite"
+				:title="parsource.favorite || 0"
+				v-if="!isParsourceManagerView"
+			>
 				{{ parsource.favorite || 0 }}
 			</p>
 
-			<p class="parsource-card__col parsource-card__time">
+			<p
+				class="parsource-card__col parsource-card__time"
+				:title="parsource.lost_time || '0ч'"
+			>
 				{{ parsource.lost_time || "0ч" }}
 			</p>
 
@@ -54,6 +78,19 @@
 
 	export default {
 		name: "ParsourceCard",
+		props: {
+			parsource: Object,
+			isCanSelect: {
+				value: Boolean,
+				default: true,
+			},
+
+			isParsourceManagerView: {
+				value: Boolean,
+				default: false,
+			},
+			users: Array,
+		},
 		components: {
 			rCheckbox,
 			rButton,
@@ -73,11 +110,13 @@
 				this.isSelected = this.parsource.selected;
 			},
 		},
-		props: {
-			parsource: Object,
-			isCanSelect: {
-				value: Boolean,
-				default: true,
+		computed: {
+			user() {
+				return (
+					this.users.find(
+						(user) => user.id === this.parsource.user
+					) || {}
+				);
 			},
 		},
 		data() {
@@ -98,6 +137,15 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+		&.manager {
+			.parsource-card {
+				&__content {
+					grid-template-columns:
+						18rem 14rem
+						repeat(2, 20rem) repeat(3, 14rem);
+				}
+			}
+		}
 
 		&__content {
 			display: grid;
@@ -150,6 +198,12 @@
 		&__favorite {
 			font-weight: 600;
 			font-size: 1.5rem;
+		}
+
+		&__id {
+			color: $primary;
+			font-weight: 600;
+			font-size: 1.4rem;
 		}
 	}
 </style>
