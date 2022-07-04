@@ -165,6 +165,12 @@
 					@click="tab = 2"
 				>
 					<p>Обращения</p>
+					<span
+						class="the-user__tabs-button-counter"
+						v-if="unreadAppealsCounter > 0"
+					>
+						{{ unreadAppealsCounter }}
+					</span>
 				</button>
 			</div>
 
@@ -236,25 +242,33 @@
 					class="the-user__tabs-tab the-user__appeals"
 					v-if="tab === 2"
 				>
-					<!-- <transition mode="out-in">
+					<transition mode="out-in">
+						<r-loader v-if="!isAppealsLoaded"></r-loader>
+					</transition>
+
+					<transition mode="out-in">
+						<div class="the-user__appeals-list">
+							<appeals-card
+								v-for="appeal in user_appeals"
+								:key="appeal.id"
+								:appeal="appeal"
+								:parsers="all_parsers"
+								:topics="topics"
+								:messages="all_messages"
+							></appeals-card>
+						</div>
+					</transition>
+
+					<transition mode="out-in">
 						<div class="the-user__tabs-tab-empty">
 							<p
 								class="the-user__tabs-tab-text"
-								v-if="user_parsources.length === 0"
+								v-if="user_appeals.length === 0"
 							>
-								Парсеров нет
+								Список обращений пуст
 							</p>
 						</div>
-					</transition> -->
-
-					<appeals-card
-						v-for="appeal in user_appeals"
-						:key="appeal.id"
-						:appeal="appeal"
-						:parsers="all_parsers"
-						:topics="topics"
-						:messages="all_messages"
-					></appeals-card>
+					</transition>
 				</div>
 			</transition-group>
 		</div>
@@ -293,8 +307,13 @@
 			all_parsources: {
 				handler: function () {
 					this.parsources_list = this.parsources;
-
 					this.isParsourcesLoaded = true;
+				},
+				deep: true,
+			},
+			all_appeals: {
+				handler() {
+					this.isAppealsLoaded = true;
 				},
 				deep: true,
 			},
@@ -364,6 +383,9 @@
 
 				parsources_list: [],
 				isParsourcesLoaded: false,
+
+				isAppealsLoaded: false,
+				unreadAppealsCounter: 0,
 			};
 		},
 		methods: {
@@ -464,12 +486,17 @@
 			grid-gap: 1.5rem;
 
 			&-buttons {
+				display: flex;
 				border-radius: 1rem 1rem 0 0;
 				height: 6rem;
 				background-color: rgba($secondary, $alpha: 0.1);
 				overflow: hidden;
 			}
 			&-button {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 1rem;
 				position: relative;
 				background-color: transparent;
 				height: 100%;
@@ -496,11 +523,27 @@
 						width: 100%;
 					}
 				}
+
+				&-counter {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					background-color: $red;
+					width: 1.8rem;
+					height: 1.8rem;
+					color: $white;
+					border-radius: 50%;
+					font-weight: 400;
+				}
 			}
 			&-tab {
 				grid-area: 2/1/2/1;
-				// border: 1px solid #000;
 				height: 100%;
+				&-empty {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
 			}
 		}
 
@@ -528,11 +571,6 @@
 				display: flex;
 				flex-direction: column;
 				gap: 1rem;
-				&-empty {
-					display: flex;
-					justify-content: center;
-					align-items: center;
-				}
 			}
 		}
 

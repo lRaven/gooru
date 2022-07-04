@@ -60,8 +60,8 @@
 			value: String,
 			placeHolder: {
 				value: String,
-				default: ""
-			}
+				default: "",
+			},
 		},
 		computed: {
 			isPasswordHide() {
@@ -103,6 +103,7 @@
 			border: 0.1rem solid #3232321a;
 			width: 100%;
 			font-weight: 500;
+			text-overflow: ellipsis;
 			transition: all 0.2s ease;
 			&:disabled {
 				background-color: rgba(255, 255, 255, 0.5);
