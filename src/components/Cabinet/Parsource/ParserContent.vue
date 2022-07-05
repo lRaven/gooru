@@ -1,23 +1,33 @@
 <template>
-  <li class="parser-content" v-click-away="hideAllExtras">
-    <div class="parser-content__row">
-      <img
-        :src="parser.img"
-        alt="image"
-        class="parser-content__image"
-        v-if="parser.img"
-      />
-      <div class="parser-content__col">
-        <p class="parser-content__text">{{ parser.article }}</p>
-        <a
-          :href="parser.url"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="parser-content__link"
-        >
-          {{ parser.url }}
-        </a>
-      </div>
+  <li class="parser-content" v-click-away="stateReset">
+		<div
+			class="parser-content__row"
+			@click="
+				isCroppedText === true ? expandArticle() : minimizeArticle()
+			"
+		>
+			<img
+				:src="parser.img"
+				alt="image"
+				class="parser-content__image"
+				v-if="parser.img"
+			/>
+			<div class="parser-content__col">
+				<p
+					class="parser-content__text"
+					:class="isCroppedText === true ? 'cropped' : ''"
+				>
+					{{ parser.article }}
+				</p>
+				<a
+					:href="parser.url"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="parser-content__link"
+				>
+					{{ parser.url }}
+				</a>
+			</div>
       <div class="parser-content__col">
         <svg
           width="20"
@@ -346,6 +356,7 @@ export default {
       isShareOpen: false,
       isDownloadOpen: false,
       isEditComment: false,
+      isCroppedText: true,
 
       parser: this.parserProp,
 
@@ -373,6 +384,18 @@ export default {
       this.isShareOpen = false;
       this.isDownloadOpen = false;
     },
+    expandArticle() {
+				this.isCroppedText = false;
+			},
+
+			minimizeArticle() {
+				this.isCroppedText = true;
+			},
+
+			stateReset() {
+				this.minimizeArticle();
+				this.hideAllExtras();
+			},
     handleEditClick() {
       this.isEditComment = !this.isEditComment;
       if (this.isEditComment === false) {
@@ -588,18 +611,3 @@ export default {
     }
   }
 }
-</style>
-
-<style lang="scss">
-.parser-content {
-  &__download {
-    &-list {
-      &-item {
-        .r-checkbox__description {
-          font-weight: 500;
-        }
-      }
-    }
-  }
-}
-</style>

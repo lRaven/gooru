@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
-	"dev_https": "vue-cli-service serve --https",
+    "dev_https": "vue-cli-service serve --https",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -19,6 +19,7 @@
     "vue-cookies": "^1.8.1",
     "vue-router": "^4.0.3",
     "vue-social-sharing": "^4.0.0-alpha4",
+    "vue-toastification": "^2.0.0-rc.5",
     "vue3-click-away": "^1.2.4",
     "vuex": "^4.0.0"
   },

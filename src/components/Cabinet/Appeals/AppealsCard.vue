@@ -11,9 +11,16 @@
 		<p class="appeals-card__col appeals-card__id">#{{ appeal.id }}</p>
 
 		<div class="appeals-card__col">
-			
-			<p class="appeals-card__source">{{ user.role === 'Manager' ? `${appeal.user.first_name}.${appeal.user.last_name[0]}`: source }}</p>
-			<span class="appeals-card__counter">{{ counter }}</span>
+			<p class="appeals-card__source">
+				{{
+					user.role === "Manager"
+						? `${appeal.user.first_name}.${appeal.user.last_name[0]}`
+						: source
+				}}
+			</p>
+			<span class="appeals-card__counter">{{
+				messages_counter > 0 ? messages_counter : ""
+			}}</span>
 		</div>
 
 		<div class="appeals-card__col appeals-card__topic">{{ topic }}</div>
@@ -34,7 +41,6 @@
 		name: "AppealsCard",
 		props: {
 			appeal: Object,
-			counter: Number,
 
 			topics: Array,
 			parsers: Array,
@@ -42,7 +48,7 @@
 		},
 		computed: {
 			...mapState({
-				user: (state) => state.cabinet.user
+				user: (state) => state.cabinet.user,
 			}),
 
 			source() {
@@ -90,7 +96,6 @@
 			},
 		},
 	};
-	
 </script>
 
 <style lang="scss" scoped>
@@ -107,7 +112,7 @@
 		background-color: white;
 		font-weight: 500;
 		+ .appeals-card {
-			border-top: 0.1rem solid $black-50;
+			border-top: 0.1rem solid rgba($black, $alpha: 0.5);
 		}
 
 		&__col {
@@ -118,7 +123,7 @@
 
 		&__id {
 			font-size: 1.4rem;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 		}
 
 		&__source {
@@ -126,7 +131,7 @@
 		}
 
 		&__counter {
-			color: $black-50;
+			color: rgba($black, $alpha: 0.5);
 			font-weight: 300;
 			font-size: 1.4rem;
 		}
@@ -157,7 +162,7 @@
 		&__date {
 			font-size: 1.4rem;
 			font-weight: 400;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 		}
 	}
 </style>

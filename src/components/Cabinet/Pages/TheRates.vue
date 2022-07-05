@@ -9,15 +9,15 @@
 					:rate="rate"
 					color="white"
 					ButtonText="Оплатить"
-					@click_button="select_rate"
+					@select_rate="select_rate"
 				></rate-card>
 
 				<div class="the-rates__brief">
 					<div class="the-rates__brief-col">
 						<p class="the-rates__brief-text">
-							<span class="the-rates__brief-text-big"
-								>не знаете,</span
-							>
+							<span class="the-rates__brief-text-big">
+								не знаете,
+							</span>
 							что вам подходит?
 						</p>
 						<p class="the-rates__brief-text-big">Мы вам поможем!</p>

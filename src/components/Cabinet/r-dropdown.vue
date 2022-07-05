@@ -1,13 +1,15 @@
 <template>
 	<div
 		class="r-dropdown"
-		:class="list.length === 0 ? 'disabled' : ''"
+		:class="list.length === 0 || isDisabled ? 'disabled' : ''"
 		v-click-away="closeDropdown"
 	>
 		<div
 			class="r-dropdown__header"
 			@click="
-				isContentVisible === true ? closeDropdown() : openDropdown()
+				isContentVisible === true || isDisabled
+					? closeDropdown()
+					: openDropdown()
 			"
 		>
 			<p class="r-dropdown__selected" ref="selected">
@@ -36,11 +38,9 @@
 					class="r-dropdown__list-item"
 					v-for="item in list"
 					:key="item.id"
-					@click="
-						selectValue(item.id, item.description || item.title || (item.first_name ? `${item.first_name} ${item.last_name}` : ''))
-					"
+					@click="selectValue(item.id, item[showedValue])"
 				>
-					{{ item.description || item.title || (item.first_name ? `${item.first_name} ${item.last_name}` : '') }}
+					{{ item[showedValue] }}
 				</li>
 			</ul>
 		</transition>
@@ -53,6 +53,10 @@
 	export default {
 		name: "rDropdown",
 		props: {
+			isDisabled: {
+				value: Boolean,
+				default: false,
+			},
 			selected_item: {
 				value: String,
 				default: "Selected/placeholder",
@@ -64,6 +68,10 @@
 					{ id: 2, description: "item-2" },
 					{ id: 3, description: "item-3" },
 				],
+			},
+			showedValue: {
+				value: String,
+				default: "description",
 			},
 		},
 		data: () => ({ isContentVisible: false }),
@@ -143,6 +151,7 @@
 			z-index: 2;
 			max-height: calc(14.6rem);
 			overflow-y: auto;
+			overflow-x: hidden;
 			&-item {
 				padding: 1rem;
 				cursor: pointer;
@@ -150,7 +159,7 @@
 				font-weight: 500;
 				transition: all 0.2s ease;
 				&:hover {
-					background-color: $primary-15;
+					background-color: rgba($primary, $alpha: 0.15);
 				}
 			}
 		}

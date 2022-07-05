@@ -14,9 +14,11 @@
 				{{
 					isMyMessage
 						? "Вы"
-						: isIManager === true
-						? message.sender.first_name
-						: `Менеджер ${message.sender.first_name}`
+						: isMessageFromManager
+						? `Менеджер ${message.sender.first_name}`
+						: isMessageFromAdmin
+						? `Администратор ${message.sender.first_name}`
+						: `${message.sender.first_name} ${message.sender.last_name}`
 				}}
 			</p>
 
@@ -34,6 +36,7 @@
 		computed: {
 			...mapState({ user: (state) => state.cabinet.user }),
 
+			//* громоздкий кусок кода для преобразования даты в читабельный формат типа: 01.01.1970 00:00
 			message_date() {
 				let result;
 
@@ -59,8 +62,11 @@
 				return this.message.sender.id === this.user.id;
 			},
 
-			isIManager() {
-				return this.user.role === "Manager";
+			isMessageFromManager() {
+				return this.message.sender.role === "Manager";
+			},
+			isMessageFromAdmin() {
+				return this.message.sender.role === "AdminCRM";
 			},
 		},
 	};
@@ -72,7 +78,7 @@
 	.r-message {
 		display: flex;
 		flex-direction: column;
-		max-width: 95%;
+		max-width: 90%;
 		width: fit-content;
 
 		//* styles for my messages
@@ -141,6 +147,7 @@
 		&__text {
 			font-size: 1.6rem;
 			position: relative;
+			white-space: pre-wrap;
 		}
 
 		&__user {
@@ -161,13 +168,13 @@
 
 		&__username {
 			font-size: 1.6rem;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 			font-weight: 700;
 			align-self: flex-end;
 		}
 		&__date {
 			font-size: 1.1rem;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 			align-self: flex-start;
 		}
 	}

@@ -1,14 +1,20 @@
 <template>
-	<section class="the-appeals">
+	<section
+		class="the-appeals"
+		:class="user.role === 'DefaultUser' ? 'has-right-panel' : ''"
+	>
 		<div class="the-appeals__main">
-			<h2 class="the-appeals__title">Обращения</h2>
-			<r-input 
-				class="the-appeals__search-input" 
-				:value="searchValue" 
-				input_type="search"
-				placeholder="Поиск по почте"
-				v-if="user.role === 'Manager'"
-			/>
+			<div class="the-appeals__header">
+				<h2 class="the-appeals__title">Обращения</h2>
+				<r-input
+					class="the-appeals__search-input"
+					:value="searchValue"
+					input_type="search"
+					placeholder="Поиск по почте"
+					v-if="user.role !== 'DefaultUser'"
+				/>
+			</div>
+
 			<transition mode="out-in">
 				<r-loader v-if="!isAppealsLoaded"></r-loader>
 			</transition>
@@ -22,7 +28,6 @@
 						v-for="appeal in appeals"
 						:key="appeal.id"
 						:appeal="appeal"
-						:counter="1"
 						:parsers="all_parsers"
 						:topics="topics"
 						:messages="all_messages"
@@ -57,16 +62,7 @@
 			<template v-slot>
 				<form
 					class="the-appeals__right-panel-form"
-					@submit.prevent="
-						add_ticket({
-							name: user.first_name,
-							phone_number: user.phone_number,
-							email: user.email,
-							message: message,
-							topic_type: topic,
-							parser: parser,
-						})
-					"
+					@submit.prevent="create_ticket"
 				>
 					<div class="the-appeals__right-panel-row">
 						<p class="the-appeals__right-panel-input-description">
@@ -75,8 +71,9 @@
 
 						<r-dropdown
 							selected_item="Тема обращения"
+							showedValue="description"
 							:list="topics"
-							v-model="topic"
+							v-model="new_appeal.topic"
 						></r-dropdown>
 					</div>
 
@@ -88,7 +85,7 @@
 						<r-dropdown
 							selected_item="Парсер"
 							:list="all_parsers"
-							v-model="parser"
+							v-model="new_appeal.parser"
 						></r-dropdown>
 					</div>
 
@@ -98,13 +95,17 @@
 						</p>
 
 						<r-textarea
-							v-model="message"
-							:value="message"
+							v-model="new_appeal.message"
+							:value="new_appeal.message"
 							placeholder="Текстовое описание требований для поиска"
 						></r-textarea>
 					</div>
 
-					<r-button text="Отправить" :disabled="isInvalidTicketForm" ></r-button>
+					<r-button
+						text="Отправить"
+						type="submit"
+						:disabled="!isNewAppealValid"
+					></r-button>
 				</form>
 			</template>
 		</right-panel>
@@ -113,8 +114,7 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
-	import { add_ticket } from "@/api/ticket/add_ticket";
-	import { multiaction_delete } from "@/api/multiaction_delete";
+	import { add_ticket } from "@/api/tickets";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
@@ -124,6 +124,7 @@
 	import rPagination from "@/components/r-pagination.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
 	import rLoader from "@/components/r-loader.vue";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheAppeals",
@@ -149,6 +150,12 @@
 			appeals() {
 				this.isAppealsLoaded = true;
 			},
+			new_appeal: {
+				handler() {
+					this.validateForm();
+				},
+				deep: true,
+			},
 		},
 		computed: {
 			...mapState({
@@ -162,7 +169,6 @@
 			}),
 
 			page() {
-				console.log(this.$route.query.page)
 				return +this.$route.query.page;
 			},
 
@@ -173,33 +179,18 @@
 			number_of_pages() {
 				return Math.ceil(this.count / this.appeals_in_page);
 			},
-			isInvalidTicketForm() {
-				const formValidation = {
-					isInvalidTopic: true,
-					isIvalidParser: true,
-					isInvalidMessage: true
-				}
-				formValidation.isInvalidMessage = this.message.length < 10 ? true : false;
-				if ( this.topic !== 1 && this.topic !== null){
-					formValidation.isIvalidParser = false;
-					formValidation.isInvalidTopic = false;
-				}
-				if (this.topic === 1 && this.parser !== null) {
-					formValidation.isIvalidParser = false
-					formValidation.isInvalidTopic = false
-				}
-
-				return formValidation.isInvalidTopic || formValidation.isIvalidParser || formValidation.isInvalidMessage;
-			}
 		},
 		data() {
 			return {
 				isAppealsLoaded: false,
 				path: this.$route.path,
 
-				topic: null,
-				parser: null,
-				message: "",
+				new_appeal: {
+					topic: "",
+					parser: "",
+					message: "",
+				},
+				isNewAppealValid: false,
 
 				searchValue: "",
 
@@ -209,14 +200,53 @@
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllParsers", "getAppeals", "getAllMessages"]),
-			add_ticket,
-			multiaction_delete,
+
+			async create_ticket() {
+				try {
+					const response = await add_ticket({
+						name: this.user.first_name,
+						phone_number: this.user.phone_number,
+						email: this.user.email,
+						message: this.new_appeal.message,
+						topic_type: this.new_appeal.topic,
+						parser: this.new_appeal.parser,
+					});
+					if (response.status === 201) {
+						this.resetForm();
+						this.getAppeals({
+							page_number: this.page,
+							page_size: this.appeals_in_page,
+						});
+
+						console.log("Ticket created");
+						this.toast.success("Обращение создано");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка создания обращения");
+					throw new Error(err);
+				}
+			},
 
 			page_changed(page_number) {
 				this.$router.push({
 					name: "appeals",
 					query: { page: page_number },
 				});
+			},
+
+			validateForm() {
+				this.new_appeal.topic !== "" &&
+				this.new_appeal.message.length > 0
+					? (this.isNewAppealValid = true)
+					: (this.isNewAppealValid = false);
+			},
+
+			resetForm() {
+				for (const key in this.new_appeal) {
+					if (Object.hasOwnProperty.call(this.new_appeal, key)) {
+						this.new_appeal[key] = "";
+					}
+				}
 			},
 		},
 		created() {
@@ -229,8 +259,9 @@
 
 			this.getAllParsers();
 		},
-		mounted() {
-			// multiaction_delete({ model: "notify", ids: [90, 91, 93] });
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
@@ -239,42 +270,47 @@
 	@import "@/assets/scss/variables";
 
 	.the-appeals {
-		display: grid;
-		grid-template-columns: 1fr max-content;
-		grid-gap: 2rem;
 		padding: 0;
+		&.has-right-panel {
+			display: grid;
+			grid-template-columns: 1fr max-content;
+			grid-gap: 2rem;
+			.the-appeals__main {
+				padding: 4rem 0 4rem 4rem;
+			}
+		}
 
 		&__title {
 			font-weight: 400;
-			grid-area: title;
 		}
 
-		&__search-input {
-			width: 60rem;
-			font-size: 1.6rem;
-			font-weight: 500;
-			line-height: 2.6rem;
-			text-align: left;
-			opacity: 0.5;
-			color: $black;
-			grid-area: searchInput;
+		.r-input {
+			max-width: 60rem;
+			width: 100%;
+
+			&__input {
+				opacity: 0.5;
+				&:focus {
+					opacity: 1;
+				}
+			}
 		}
-		&__search-input:focus {
-			opacity: 1;
-		}
+
 		&__main {
-			padding: 4rem 0 4rem 4rem;
-			display: grid;
-			grid-template-columns: 1fr 3fr 1fr;
-			grid-template-rows: min-content max-content min-content;
-			grid-template-areas: 
-			"title . . searchInput"
-			"appealsList appealsList appealsList appealsList"
-			"appealsBottom appealsBottom appealsBottom appealsBottom";
-			row-gap: 3.3rem;
+			padding: 4rem;
+			display: flex;
+			gap: 4rem;
+			flex-direction: column;
 			overflow-y: auto;
 			height: calc(100vh - 8rem);
 			position: relative;
+		}
+
+		&__header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 4rem;
 		}
 
 		&__list {
@@ -284,7 +320,6 @@
 			border-radius: 0.6rem;
 			overflow: hidden;
 			box-shadow: $shadow;
-			grid-area: appealsList;
 		}
 		&__empty {
 			width: 100%;
@@ -298,13 +333,12 @@
 			justify-content: space-between;
 			gap: 5rem;
 			margin-top: auto;
-			grid-area: appealsBottom;
 		}
 
 		&__right-panel {
 			&-form {
 				padding: 2rem 0;
-				border-top: 0.05rem solid $black-50;
+				border-top: 0.05rem solid rgba($black, $alpha: 0.5);
 				display: flex;
 				flex-direction: column;
 				gap: 4rem;
@@ -313,6 +347,19 @@
 			&-input-description {
 				font-size: 1.2rem;
 				margin-bottom: 2rem;
+			}
+		}
+	}
+</style>
+
+<style lang="scss">
+	.the-appeals {
+		.r-input {
+			&__input {
+				opacity: 0.5;
+				&:focus {
+					opacity: 1;
+				}
 			}
 		}
 	}

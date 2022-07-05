@@ -1,11 +1,13 @@
 <template>
 	<section class="the-parsources">
-		<h2 class="the-parsources__title">{{ userRole === 'DefaultUser' ? 'Мои парсеры' : 'Все парсеры' }}</h2>
+		<h2 class="the-parsources__title">
+			{{ userRole === "DefaultUser" ? "Мои парсеры" : "Все парсеры" }}
+		</h2>
 		<div class="the-parsources__control">
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="selectAll"
-				:checked="selectAll"
+				:checked="selectAll.isChecked"
 			></r-checkbox>
 			<button class="the-parsources__postpone" type="button">
 				<img src="img/icon/cabinet/postpone.svg" alt="postpone" />
@@ -26,30 +28,33 @@
 		</div>
 
 		<div class="the-parsources__content">
-			<div class="the-parsources__sort">
+			<div
+				class="the-parsources__sort"
+				:class="userRole !== 'DefaultUser' ? 'manager' : ''"
+			>
+				<sort-button
+					description="Пользователь"
+					@click="sort_list(parsources_list, 'user')"
+				></sort-button>
 				<sort-button
 					description="Источник"
-					@click="sortArrayByObjectKey(parsources, 'data_source')"
+					@click="sort_list(parsources_list, 'data_source')"
 				></sort-button>
 				<sort-button
 					description="Дата"
-					@click="sortArrayByObjectKey(parsources, 'date')"
+					@click="sort_list(parsources_list, 'date')"
 				></sort-button>
 				<sort-button
 					description="Статус"
-					@click="sortArrayByObjectKey(parsources, 'status')"
+					@click="sort_list(parsources_list, 'condition')"
 				></sort-button>
 				<sort-button
 					description="Найдено"
-					@click="sortArrayByObjectKey(parsources, 'found')"
-				></sort-button>
-				<sort-button
-					description="В избранном"
-					@click="sortArrayByObjectKey(parsources, 'favorite')"
+					@click="sort_list(parsources_list, 'found')"
 				></sort-button>
 				<sort-button
 					description="Время парсинга"
-					@click="sortArrayByObjectKey(parsources, 'time')"
+					@click="sort_list(parsources_list, 'lost_time')"
 				></sort-button>
 			</div>
 
@@ -60,12 +65,13 @@
 			<transition mode="out-in">
 				<div
 					class="the-parsources__list"
-					v-if="isParsourcesLoaded && parsources.length > 0"
+					v-if="isParsourcesLoaded && parsources_list.length > 0"
 				>
 					<parsource-card
-						v-for="parsource in parsources"
+						v-for="parsource in parsources_list"
 						:key="parsource.id"
 						:parsource="parsource"
+						:isParsourceManagerView="userRole !== 'DefaultUser'"
 					></parsource-card>
 				</div>
 			</transition>
@@ -74,7 +80,7 @@
 				<div class="the-parsources__empty">
 					<p
 						class="the-parsources__empty-text"
-						v-if="parsources.length === 0"
+						v-if="parsources_list.length === 0"
 					>
 						Парсеров нет
 					</p>
@@ -105,6 +111,7 @@
 
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheParsources",
@@ -126,23 +133,54 @@
 				}
 			},
 
-			selectAll() {
-				this.selectAll === true
-					? this.SELECT_ALL_PARSOURCES()
-					: this.UNSELECT_ALL_PARSOURCES();
+			selectAll: {
+				handler() {
+					this.selectAll.isSelected === true
+						? this.SELECT_ALL_PARSOURCES()
+						: this.UNSELECT_ALL_PARSOURCES();
+				},
+				deep: true,
 			},
-			deleteSelected() {
+
+			async deleteSelected() {
 				if (this.deleteSelected === true) {
-					this.deleteSelectedParsources();
-					setTimeout(() => {
-						this.deleteSelected = false;
-					}, 1000);
+					try {
+						const response = await this.deleteSelectedParsources();
+
+						if (response.status === 200) {
+							this.toast.success("Выбранные парсеры удалены");
+
+							//* редирект на 1 страницу
+							this.$router.push({
+								name: "parsources",
+								query: { page: 1 },
+							});
+
+							//* получить parsources 1 страницы
+							await this.getParsources({
+								page_number: 1,
+								page_size: this.parsources_in_page,
+							});
+
+							setTimeout(() => {
+								this.deleteSelected = false;
+							}, 1000);
+						}
+					} catch (err) {
+						this.toast.error("Ошибка удаления парсеров");
+						setTimeout(() => {
+							this.deleteSelected = false;
+						}, 1000);
+						throw new Error(err);
+					}
 				}
 			},
+
 			parsources: {
 				handler: function () {
+					this.parsources_list = this.parsources;
 					if (this.parsources.length === 0) {
-						this.selectAll = false;
+						this.selectAll.isSelected = false;
 					}
 					this.isParsourcesLoaded = true;
 				},
@@ -172,10 +210,14 @@
 				isParsourcesLoaded: false,
 				path: this.$route.path,
 
-				selectAll: false,
+				selectAll: {
+					description: "",
+					isSelected: false,
+				},
 				postponeSelected: false,
 				deleteSelected: false,
-				sortBy: "none",
+
+				parsources_list: [],
 
 				parsources_in_page: 10,
 			};
@@ -187,10 +229,10 @@
 				"UNSELECT_ALL_PARSOURCES",
 			]),
 			...mapActions(["getParsources", "deleteSelectedParsources"]),
-			sort_list(by) {
-				console.log(by);
+			async sort_list(array, key) {
+				const response = await sortArrayByObjectKey(array, key);
+				this.parsources_list = response;
 			},
-			sortArrayByObjectKey,
 
 			page_changed(page_number) {
 				this.$router.push({
@@ -206,6 +248,10 @@
 				page_size: this.parsources_in_page,
 			});
 		},
+		setup() {
+			const toast = useToast();
+			return { toast };
+		},
 	};
 </script>
 
@@ -216,13 +262,14 @@
 		position: relative;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
-		padding-top: 4rem;
-		padding-bottom: 4rem;
+		padding: 4rem 3rem;
 		min-height: 100%;
+		overflow: auto;
 
 		&__title {
 			font-weight: 400;
 			margin-bottom: 2.4rem;
+			padding: 0 1rem;
 		}
 
 		&__control {
@@ -230,6 +277,7 @@
 			align-items: center;
 			gap: 3rem;
 			margin-bottom: 2rem;
+			padding: 0 1rem;
 		}
 
 		&__postpone,
@@ -246,7 +294,7 @@
 
 		&__postpone {
 			&-description {
-				color: $black-70;
+				color: rgba($black, $alpha: 0.7);
 			}
 		}
 		&__remove {
@@ -258,7 +306,7 @@
 		&__content {
 			display: grid;
 			grid-template-rows: max-content 1fr max-content;
-			overflow: auto;
+			padding: 0 1rem;
 		}
 		&__sort {
 			display: grid;
@@ -270,6 +318,11 @@
 			justify-content: space-between;
 			align-items: center;
 			padding: 0 3rem 0 5.6rem;
+			&.manager {
+				grid-template-columns:
+					18rem 14rem
+					repeat(2, 20rem) repeat(3, 14rem);
+			}
 			.sort-button {
 				width: max-content;
 

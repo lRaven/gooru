@@ -21,31 +21,31 @@
 					<p class="the-profile__form-input-description">Имя</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
-						:value="first_name"
-						v-model="first_name"
+						:value="personal_data.first_name"
+						v-model="personal_data.first_name"
 					></r-input>
 
 					<p class="the-profile__form-input-description">Фамилия</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
-						:value="last_name"
-						v-model="last_name"
+						:value="personal_data.last_name"
+						v-model="personal_data.last_name"
 					></r-input>
 
 					<p class="the-profile__form-input-description">Телефон</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
 						input_type="tel"
-						:value="phone_number"
-						v-model="phone_number"
+						:value="personal_data.phone_number"
+						v-model="personal_data.phone_number"
 					></r-input>
 
 					<p class="the-profile__form-input-description">E-mail</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
 						input_type="tel"
-						:value="email"
-						v-model="email"
+						:value="personal_data.email"
+						v-model="personal_data.email"
 					></r-input>
 				</fieldset>
 			</form>
@@ -90,8 +90,8 @@
 					<r-input
 						:isDisabled="isPasswordsFormDisabled"
 						input_type="password"
-						:value="old_password"
-						v-model="old_password"
+						:value="passwords.old_password"
+						v-model="passwords.old_password"
 					></r-input>
 
 					<p class="the-profile__form-input-description">
@@ -100,19 +100,9 @@
 					<r-input
 						:isDisabled="isPasswordsFormDisabled"
 						input_type="password"
-						:value="password"
-						v-model="password"
+						:value="passwords.password"
+						v-model="passwords.password"
 					></r-input>
-
-					<!-- <p class="the-profile__form-input-description">
-						Подтверждение пароля
-					</p>
-					<r-input
-						:isDisabled="isPasswordsFormDisabled"
-						input_type="password"
-						:value="confirm_password"
-						v-model="confirm_password"
-					></r-input> -->
 				</fieldset>
 			</form>
 
@@ -126,12 +116,15 @@
 </template>
 
 <script>
-	import { mapState, mapMutations } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 	import rInput from "@/components/Auth/r-input.vue";
 	import rButton from "@/components/r-button.vue";
-	import { change_password } from "@/api/user/change_password";
-	import { change_user_data } from "@/api/user/change_user_data";
-	import { upload_avatar } from "@/api/user/upload_avatar";
+	import {
+		change_user_data,
+		upload_avatar,
+		change_password,
+	} from "@/api/userApi";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheProfile",
@@ -160,43 +153,37 @@
 			},
 		},
 		computed: {
-			...mapState({
-				user_data: (state) => state.cabinet.user,
-			}),
+			...mapState({ user_data: (state) => state.cabinet.user }),
 
 			isUserDataChanged() {
 				let result = false;
 
-				if (this.user_data.first_name !== this.first_name)
+				if (this.user_data.first_name !== this.personal_data.first_name)
 					result = true;
-				if (this.user_data.last_name !== this.last_name) result = true;
-
-				if (this.user_data.phone_number !== this.phone_number)
+				if (this.user_data.last_name !== this.personal_data.last_name)
 					result = true;
 
-				if (this.user_data.email !== this.email) result = true;
+				if (
+					this.user_data.phone_number !==
+					this.personal_data.phone_number
+				)
+					result = true;
+
+				if (this.user_data.email !== this.personal_data.email)
+					result = true;
 
 				return result;
 			},
 
 			isPasswordsChanged() {
-				let result;
-
-				this.password.length > 0 && this.old_password.length > 0
-					? (result = true)
-					: (result = false);
-
-				return result;
+				return this.passwords.password.length >= 8 &&
+					this.passwords.old_password.length >= 8
+					? true
+					: false;
 			},
 
 			isAvatarChanged() {
-				let result;
-
-				this.user_data.avatar !== this.avatar
-					? (result = true)
-					: (result = false);
-
-				return result;
+				return this.user_data.avatar !== this.avatar ? true : false;
 			},
 		},
 		data: () => ({
@@ -208,27 +195,29 @@
 			avatar: "img/icon/cabinet/no-avatar.svg",
 			changed_avatar: "",
 
-			first_name: "",
-			last_name: "",
-			phone_number: "",
-			email: "",
+			personal_data: {
+				first_name: "",
+				last_name: "",
+				phone_number: "",
+				email: "",
+			},
 
-			password: "",
-			old_password: "",
+			passwords: {
+				password: "",
+				old_password: "",
+			},
 		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			change_user_data,
-			change_password,
-			upload_avatar,
+			...mapActions(["getUserData"]),
 
 			set_user_data() {
 				this.avatar = this.user_data.avatar;
 
-				this.first_name = this.user_data.first_name;
-				this.last_name = this.user_data.last_name;
-				this.phone_number = this.user_data.phone_number;
-				this.email = this.user_data.email;
+				this.personal_data.first_name = this.user_data.first_name;
+				this.personal_data.last_name = this.user_data.last_name;
+				this.personal_data.phone_number = this.user_data.phone_number;
+				this.personal_data.email = this.user_data.email;
 			},
 
 			change_avatar(target) {
@@ -252,32 +241,89 @@
 					: (this.isDisabledBtn = true);
 			},
 
-			postUpdatedData() {
+			async postUpdatedData() {
 				if (this.isUserDataChanged === true) {
-					change_user_data(this.user_data.id, {
-						first_name: this.first_name,
-						last_name: this.last_name,
-						phone_number: this.phone_number,
-						email: this.email,
-					});
+					this.post_personal_data();
 				}
 
 				if (this.isPasswordsChanged === true) {
-					change_password(this.password, this.old_password);
+					this.post_new_password();
 				}
 
 				if (this.isAvatarChanged === true) {
-					upload_avatar(this.user_data.id, this.changed_avatar);
+					this.post_avatar();
 				}
 
-				this.isPersonalDataFormDisabled = true;
-				this.isPasswordsFormDisabled = true;
 				this.isDisabledBtn = true;
+			},
+
+			async post_personal_data() {
+				try {
+					const response = await change_user_data(this.user_data.id, {
+						first_name: this.personal_data.first_name,
+						last_name: this.personal_data.last_name,
+						phone_number: this.personal_data.phone_number,
+						email: this.personal_data.email,
+					});
+					if (response.status === 200) {
+						console.log("User data changed");
+						this.toast.success("Пользовательские данные обновлены");
+						this.isPersonalDataFormDisabled = true;
+						await this.getUserData();
+					}
+				} catch (err) {
+					this.isDisabledBtn = false;
+					this.toast.error("Ошибка обновления контактных данных");
+					throw new Error(err);
+				}
+			},
+
+			async post_avatar() {
+				try {
+					const response = await upload_avatar({
+						user_id: this.user_data.id,
+						avatar: this.changed_avatar,
+					});
+
+					if (response.status === 200) {
+						console.log("Avatar changed");
+						this.toast.success("Изображение профиля изменено");
+						await this.getUserData();
+					}
+				} catch (err) {
+					this.isDisabledBtn = false;
+					this.toast.error("Ошибка смены изображения профиля");
+					throw new Error(err);
+				}
+			},
+
+			async post_new_password() {
+				try {
+					const response = await change_password({
+						new_password: this.passwords.password,
+						current_password: this.passwords.old_password,
+					});
+
+					if (response.status === 204) {
+						this.toast.success("Пароль изменён");
+						console.log("Password changed");
+						this.isPasswordsFormDisabled = true;
+					}
+				} catch (err) {
+					this.isDisabledBtn = false;
+					this.toast.error("Ошибка изменения пароля");
+					throw new Error(err);
+				}
 			},
 		},
 		created() {
 			this.SET_TAB("profile");
 			this.set_user_data();
+		},
+
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
@@ -339,7 +385,7 @@
 			&-input-description {
 				font-size: 1.6rem;
 				line-height: 1.2;
-				color: $black-70;
+				color: rgba($black, $alpha: 0.7);
 			}
 
 			&-avatar {

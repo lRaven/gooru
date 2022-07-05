@@ -1,22 +1,40 @@
 <template>
-	<section class="the-parser">
-		<div class="the-parser__main">
-			<h2 class="the-parser__title">
+	<section class="the-parsource">
+		<div class="the-parsource__main">
+			<h2 class="the-parsource__title">
 				Парсинг сайта {{ parsource.data_source }}
 			</h2>
 
-			<div class="the-parser__col">
+			<div class="the-parsource__col">
 				<img
 					:src="parsource.screenshot || 'img/icon/empty-image.svg'"
 					alt=""
-					class="the-parser__image"
+					class="the-parsource__image"
 				/>
-				<div class="the-parser__info">
-					<p class="the-parser__info-key">Источник</p>
+				<div class="the-parsource__info">
+					<template v-if="userRole !== 'DefaultUser'">
+						<p class="the-parsource__info-key">Пользователь</p>
+						<router-link
+							:to="{ path: `/cabinet/user/${parsource_id}` }"
+							class="the-parsource__info-value the-parsource__info-source"
+						>
+							#id{{ parsource.id }}
+						</router-link>
+
+						<p class="the-parsource__info-key">Менеджер</p>
+						<r-dropdown
+							:selected_item="user_manager.username"
+							:showedValue="'username'"
+							:list="managers"
+							v-model="selected_manager"
+						></r-dropdown>
+					</template>
+
+					<p class="the-parsource__info-key">Источник</p>
 					<a
 						:href="parsource.data_source"
 						target="_blank"
-						class="the-parser__info-value the-parser__info-source"
+						class="the-parsource__info-value the-parsource__info-source"
 					>
 						{{ parsource.data_source }}
 					</a>
@@ -26,39 +44,41 @@
 						{{ parsource.date ? prettyDate(parsource.date) : "1.1.1970" }}
 					</p>
 
-					<p class="the-parser__info-key">Статус</p>
+					<p class="the-parsource__info-key">Статус</p>
 					<r-status :status="1 || parsource.condition"></r-status>
 				</div>
 			</div>
 
-			<div class="the-parser__col the-parser__content">
-				<div class="the-parser__content-main">
-					<div class="the-parser__content-header">
-						<div class="the-parser__content-header-row">
-							<h4 class="the-parser__content-found">
+			<div class="the-parsource__col the-parsource__content">
+				<div class="the-parsource__content-main">
+					<div class="the-parsource__content-header">
+						<div class="the-parsource__content-header-row">
+							<h4 class="the-parsource__content-found">
 								Найдено
-								<span class="the-parser__content-found-number">
+								<span
+									class="the-parsource__content-found-number"
+								>
 									{{ count }}
 								</span>
 							</h4>
-							<p class="the-parser__total-processed">
+							<p class="the-parsource__total-processed">
 								всего обработано
 								{{ count }}
 							</p>
 						</div>
 
-						<div class="the-parser__content-header-row">
+						<div class="the-parsource__content-header-row">
 							<button
 								type="button"
-								class="the-parser__sortby selected"
+								class="the-parsource__sortby selected"
 							>
 								по свежести материала
 							</button>
-							<button type="button" class="the-parser__sortby">
+							<button type="button" class="the-parsource__sortby">
 								отмеченные
 							</button>
 
-							<button type="button" class="the-parser__sortby">
+							<button type="button" class="the-parsource__sortby">
 								с комментариями
 							</button>
 						</div>
@@ -69,7 +89,7 @@
 					</transition>
 
 					<transition mode="out-in" v-if="isParsersLoaded">
-						<ol class="the-parser__content-list">
+						<ol class="the-parsource__content-list">
 							<parser-content
 								v-for="parser in parsers"
 								:key="parser.id"
@@ -80,7 +100,7 @@
 				</div>
 
 				<div
-					class="the-parser__content-bottom"
+					class="the-parsource__content-bottom"
 					v-if="number_of_pages > 1"
 				>
 					<r-button color="bordered" text="Показать ещё"></r-button>
@@ -96,7 +116,7 @@
 
 		<right-panel icon="img/icon/cabinet/filter.svg" title="Фильтр">
 			<template v-slot>
-				<div class="the-parser__right-panel">
+				<div class="the-parsource__right-panel">
 					<r-spoiler title="Источник" arrowType="gray">
 						<template v-slot>
 							<router-link
@@ -106,7 +126,7 @@
 								}"
 								v-for="parsource in all_parsources"
 								:key="parsource.id"
-								class="the-parser__right-panel-source"
+								class="the-parsource__right-panel-source"
 							>
 								{{ parsource.name }}
 							</router-link>
@@ -115,7 +135,7 @@
 
 					<r-spoiler title="Объект поиска" arrowType="gray">
 						<template v-slot>
-							<div class="the-parser__right-panel__checkboxes">
+							<div class="the-parsource__right-panel__checkboxes">
 								<text-checkbox
 									text="Текст"
 									v-model="texts"
@@ -139,36 +159,12 @@
 					<r-spoiler title="Условия поиска" arrowType="gray">
 						<template v-slot>
 							<textarea
-								placeholder="Текстовое описание требований для поиска с возможностью прикрепления фото"
-								class="the-parser__right-panel__textarea"
+								placeholder="Текстовое описание требований для поиска"
+								class="the-parsource__right-panel__textarea"
 								v-model="description"
 							></textarea>
 						</template>
 					</r-spoiler>
-
-					<!-- <label class="the-parser__right-panel__file">
-						<input
-							type="file"
-							name=""
-							id=""
-							class="the-parser__right-panel__file-real"
-							accept="image/*"
-							@change="file = $event.target.files[0].name"
-						/>
-						<span class="the-parser__right-panel__file-fake">
-							<img
-								src="img/icon/cabinet/camera.svg"
-								alt=""
-								class="the-parser__right-panel__file-icon"
-							/>
-							<p
-								class="the-parser__right-panel__file-description"
-							>
-								{{ file || "Добавить фото" }}
-							</p>
-						</span>
-					</label> -->
-
 					<r-button text="Применить"></r-button>
 				</div>
 			</template>
@@ -183,10 +179,13 @@
 	import rButton from "@/components/r-button";
 	import rPagination from "@/components/r-pagination";
 	import rLoader from "@/components/r-loader.vue";
+	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
 	import rSpoiler from "@/components/r-spoiler";
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
+	import { change_manager } from "@/api/userApi";
+	import { useToast } from "vue-toastification";
 
 	import { prettyDate } from '@/js/processStrings';
 
@@ -198,6 +197,7 @@
 			rButton,
 			rPagination,
 			rLoader,
+			rDropdown,
 
 			RightPanel,
 			rSpoiler,
@@ -214,7 +214,7 @@
 				}
 			},
 			parsource_id() {
-				if (this.$route.path === this.path) {
+				if (this.$route.name === "parsource") {
 					this.getParsource(this.parsource_id);
 					this.getParsers({
 						parsource_name: this.parsource_name,
@@ -234,6 +234,31 @@
 			parsers() {
 				this.isParsersLoaded = true;
 			},
+
+			userRole() {
+				if (this.userRole !== "DefaultUser") {
+					this.getAllUsers();
+					this.getUsersManagers();
+				}
+			},
+
+			async selected_manager() {
+				try {
+					const response = await change_manager({
+						user: this.parsource.user,
+						manager: this.selected_manager,
+						user_manager: this.user_manager.user_manager.id,
+					});
+
+					if (response.status === 200) {
+						console.log("Manager changed");
+						this.toast.success("Менеджер сменён");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка смены менеджера");
+					throw new Error(err);
+				}
+			},
 		},
 		computed: {
 			...mapState({
@@ -242,6 +267,10 @@
 
 				parsers: (state) => state.parsers.parsers,
 				parsers_pagination: (state) => state.parsers.parsers_pagination,
+
+				userRole: (state) => state.cabinet.user.role,
+				all_users: (state) => state.users.all_users,
+				users_managers: (state) => state.users.users_managers,
 			}),
 
 			parsource_id() {
@@ -261,6 +290,27 @@
 			count() {
 				return this.parsers_pagination.count;
 			},
+
+			user_manager() {
+				let result;
+
+				const manager_id = this.users_managers.find(
+					(manager) => manager.user === this.parsource.user
+				);
+
+				if (manager_id !== undefined) {
+					result = this.all_users.find(
+						(user) => user.id === manager_id.manager
+					);
+					result.user_manager = manager_id;
+				}
+
+				return result || { username: "-" };
+			},
+
+			managers() {
+				return this.all_users.filter((user) => user.role === "Manager");
+			},
 		},
 		data() {
 			return {
@@ -268,6 +318,8 @@
 				path: this.$route.path,
 
 				parsers_in_page: 10,
+
+				selected_manager: "",
 
 				texts: false,
 				images: false,
@@ -279,7 +331,14 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getParsers", "getParsource", "getAllParsources"]),
+			...mapActions([
+				"getParsers",
+				"getParsource",
+				"getAllParsources",
+				"getAllUsers",
+				"getUsersManagers",
+			]),
+			change_manager,
 
 			page_changed(page_number) {
 				this.$router.push({
@@ -296,27 +355,31 @@
 
 			this.getAllParsources();
 		},
+		setup() {
+			const toast = useToast();
+			return { toast };
+		},
 	};
 </script>
 
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-parser {
+	.the-parsource {
 		display: grid;
 		grid-template-columns: 1fr max-content;
 		padding: 0;
 		height: calc(100vh - 8rem);
-		grid-gap: 3rem;
+		grid-gap: 2rem;
 
 		&__main {
-			padding: 4rem 1rem 4rem 4rem;
+			padding: 4rem 1rem 3rem 4rem;
 			display: grid;
 			grid-template-columns: 41rem 1fr;
-			grid-template-rows: repeat(2, max-content);
+			grid-template-rows: max-content 1fr;
 			grid-template-columns: max-content, 1fr;
-			grid-gap: 3rem;
-			overflow-y: auto;
+			grid-gap: 3rem 2rem;
+			overflow: hidden;
 		}
 
 		&__col {
@@ -336,16 +399,17 @@
 
 		&__info {
 			display: grid;
-			grid-template-columns: repeat(2, max-content);
+			grid-template-columns: max-content 1fr;
 			align-items: center;
 			grid-gap: 2rem 3rem;
 
 			&-key {
 				font-size: 1.6rem;
-				color: $black-70;
+				color: rgba($black, $alpha: 0.7);
 			}
 			&-value {
 				font-size: 1.8rem;
+				width: fit-content;
 			}
 			&-source {
 				text-decoration: underline;
@@ -356,17 +420,17 @@
 
 		&__content {
 			display: grid;
-			grid-template-rows: repeat(2, min-content);
+			grid-template-rows: minmax(0, min-content) max-content;
 			align-content: space-between;
 			grid-gap: 2rem;
-			height: calc(100vh - 18.6rem);
-			padding-bottom: 3rem;
+			overflow: hidden;
+			padding: 1rem;
 
 			&-main {
 				overflow: hidden;
 				position: relative;
 				display: grid;
-				grid-template-rows: max-content minmax(max-content, 1fr);
+				grid-template-rows: max-content minmax(0, 1fr);
 
 				background-color: $white;
 				border-radius: 0.8rem;
@@ -392,9 +456,7 @@
 			}
 
 			&-list {
-				list-style: none;
 				overflow-y: auto;
-				max-height: calc(100vh - 39.3rem);
 			}
 
 			&-bottom {
@@ -409,16 +471,16 @@
 			}
 		}
 		&__total-processed {
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 		}
 
 		&__sortby {
 			background-color: transparent;
 			font-size: 1.2rem;
-			color: $black-50;
+			color: rgba($black, $alpha: 0.5);
 			&.selected {
 				font-weight: 600;
-				color: $black-70;
+				color: rgba($black, $alpha: 0.7);
 			}
 		}
 
@@ -470,7 +532,7 @@
 				}
 				&-description {
 					font-size: 1rem;
-					color: $black-70;
+					color: rgba($black, $alpha: 0.7);
 				}
 			}
 

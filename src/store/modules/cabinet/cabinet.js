@@ -21,14 +21,14 @@ const mutations = {
 const actions = {
 	getUserData: async context => {
 		try {
-			const request = await axios
+			const response = await axios
 				.get(`${store.state.baseURL}/auth/users/me`, {
 					headers: { Authorization: `token ${cookie.get("auth_token")}`, },
 				})
 
-			if (request.status === 200) {
+			if (response.status === 200) {
 				console.log("User is authorized");
-				context.commit('SET_USER_DATA', request.data);
+				context.commit('SET_USER_DATA', response.data);
 				context.commit('SET_USER_AUTH', true);
 				console.log("User data saved");
 			}

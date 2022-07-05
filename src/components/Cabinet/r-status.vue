@@ -26,14 +26,14 @@
 		font-size: 1.4rem;
 		&__works {
 			color: $secondary;
-			background-color: $secondary-10;
+			background-color: rgba($secondary, $alpha: 0.1);
 		}
 		&__completed {
 			color: $primary;
-			background-color: $primary-15;
+			background-color: rgba($primary, $alpha: 0.15);
 		}
 		&__postpone {
-			color: $black-50;
+			color: rgba($black, $alpha: 0.5);
 			background-color: #f0f0f0;
 		}
 	}

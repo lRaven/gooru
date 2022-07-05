@@ -31,7 +31,15 @@
 					<li class="the-footer__list-item">
 						политика конфиденциальности
 					</li>
-					<li class="the-footer__list-item">договор оферты</li>
+					<li class="the-footer__list-item">
+						<a
+							href="docs/Оферта ГУРУ.pdf"
+							target="_blank"
+							class="the-footer__list-item-link"
+						>
+							договор оферты
+						</a>
+					</li>
 					<li class="the-footer__list-item the-footer__copyright">
 						Создание и продвижение сайтов © 2015-{{ current_year }}
 					</li>
@@ -100,6 +108,9 @@
 			&-item {
 				cursor: pointer;
 				width: max-content;
+				&-link {
+					color: currentColor;
+				}
 			}
 		}
 		&__copyright {

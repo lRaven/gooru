@@ -1,12 +1,13 @@
 <template>
 	<label class="r-input">
 		<input
-			:type="input_type_changed"
-			@input="this.$emit('update:modelValue', $event.target.value)"
-			:value="value"
 			class="r-input__input"
+			:class="isTransparent ? 'transparent' : ''"
+			:type="input_type_changed"
+			:value="value"
 			:placeholder="placeholder"
 			:disabled="isDisabled"
+			@input="this.$emit('update:modelValue', $event.target.value)"
 		/>
 		<transition mode="out-in">
 			<img
@@ -52,11 +53,15 @@
 				value: Boolean,
 				default: false,
 			},
+			isTransparent: {
+				value: Boolean,
+				default: false,
+			},
 			value: String,
 			placeHolder: {
 				value: String,
-				default: ""
-			}
+				default: "",
+			},
 		},
 		computed: {
 			isPasswordHide() {
@@ -98,12 +103,17 @@
 			border: 0.1rem solid #3232321a;
 			width: 100%;
 			font-weight: 500;
+			text-overflow: ellipsis;
 			transition: all 0.2s ease;
 			&:disabled {
 				background-color: rgba(255, 255, 255, 0.5);
 				+ .r-input__icon {
 					cursor: default;
 				}
+			}
+			&.transparent {
+				border-color: transparent;
+				background-color: transparent;
 			}
 		}
 		&__icon {

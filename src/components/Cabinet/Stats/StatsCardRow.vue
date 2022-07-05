@@ -60,7 +60,7 @@
 		&__description {
 			max-width: 12rem;
 			font-size: 1.6rem;
-			color: $black-70;
+			color: rgba($black, $alpha: 0.7);
 			line-height: 1.2;
 		}
 

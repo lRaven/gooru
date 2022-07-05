@@ -11,9 +11,9 @@
         <h3 class="rate-info__name">{{ selectedRate.name }}</h3>
         <p v-if="selectedRate.price" class="rate-info__amount">
           К оплате:
-          <strong class="rate-info__amount_accent rate-info__amount_bias"
-            >{{ selectedRate.price }}₽</strong
-          >
+          <strong class="rate-info__amount_accent rate-info__amount_bias">
+            {{ selectedRate.price }}₽
+          </strong>
           /мес
         </p>
         <p class="rate-info__contain">Что входит:</p>
@@ -24,7 +24,9 @@
             :key="item.id"
           >
             <img src="img/icon/tick.svg" alt="tick" class="rate-info__tick" />
-            <p class="rate-info__checklist-item-text">{{ item.text }}</p>
+            <p class="rate-info__checklist-item-text">
+              {{ item.text }}
+            </p>
           </li>
         </ul>
       </div>
@@ -55,8 +57,9 @@
         <form class="user-credentials-form" @submit.prevent="submitForm">
           <span
             class="user-credentials-form__caption user-credentials-form_area_name"
-            >Ваше имя*</span
           >
+            Ваше имя*
+          </span>
           <r-input
             class="user-credentials-form__input user-credentials-form_area_name-input"
             v-model="formState.username"
@@ -64,8 +67,9 @@
           />
           <span
             class="user-credentials-form__caption user-credentials-form_area_password"
-            >Пароль*</span
           >
+            Пароль*
+          </span>
           <r-input
             class="user-credentials-form__input user-credentials-form_area_password-input"
             v-model="formState.password"
@@ -99,18 +103,19 @@
             :disabled="isInvalidForm"
           />
         </form>
-        <p v-if="formType === 'registration'" class="user-credentials__privacy-policy">
-          Нажимая кнопку «Зарегистрироваться», я даю свое согласие на сбор и
-          обработку моих персональных данных в соответствии с
-          <span
+        <p
+          v-if="formType === 'registration'"
+          class="user-credentials__privacy-policy"
+        >
+          Нажимая кнопку «Зарегистрироваться», я даю согласие на обработку
+          персональных данных, соглашаюсь с тарифами и правилами
+          <a
+            href="docs/Оферта ГУРУ.pdf"
+            target="_blank"
             class="user-credentials__privacy-policy user-credentials__privacy-policy_accent"
-            >Политикой</span
           >
-          и принимаю условия
-          <span
-            class="user-credentials__privacy-policy user-credentials__privacy-policy_accent"
-            >Пользовательского соглашения</span
-          >
+            публичной оферты
+          </a>
         </p>
       </div>
     </div>
@@ -395,7 +400,7 @@ export default {
       font-weight: 400;
       line-height: 2.1rem;
       margin: 0 1.5rem 2rem 0;
-      color: $black-70;
+      color: rgba($black, $alpha: 0.7);
     }
     &__submit-button {
       max-width: 27rem;
@@ -409,14 +414,14 @@ export default {
     }
   }
   &__privacy-policy {
-      max-width: 45rem;
-      font-size: 1.1rem;
-      line-height: 1.5rem;
-      margin: 2rem 0 0 0;
-      color: $black-70;
-      &_accent {
-        color: $primary;
-      }
+    max-width: 45rem;
+    font-size: 1.1rem;
+    line-height: 1.5rem;
+    margin: 2rem 0 0 0;
+    color: rgba($black, $alpha: 0.7);
+    &_accent {
+      color: $primary;
     }
+  }
 }
 </style>

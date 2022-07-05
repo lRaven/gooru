@@ -1,5 +1,8 @@
 <template>
-	<button class="r-button" :class="color">{{ text }}</button>
+	<button class="r-button" :class="color">
+		<slot name="icon"></slot>
+		{{ text }}
+	</button>
 </template>
 
 <script>
@@ -22,6 +25,11 @@
 	@import "@/assets/scss/variables";
 
 	.r-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
 		font-size: 1.6rem;
 		font-weight: 700;
 		padding: 2rem 3rem;
@@ -77,8 +85,8 @@
 		}
 		&.bordered {
 			background-color: transparent;
-			outline: 0.1rem solid $black-50;
-			color: $black-50;
+			outline: 0.1rem solid rgba($black, $alpha: 0.5);
+			color: rgba($black, $alpha: 0.5);
 			border-radius: 1rem;
 			&:hover {
 				outline-color: $primary;

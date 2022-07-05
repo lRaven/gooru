@@ -52,16 +52,17 @@ const actions = {
 	//*get parsources with pagination
 	getParsources: async (context, args) => {
 		try {
-			const request = await axios.get(`${store.state.baseURL}/parsource/?page=${args.page_number}&page_size=${args.page_size}`,
+			const response = await axios.get(`${store.state.baseURL}/parsource/?page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
-			if (request.status === 200) {
-				context.commit('SET_PARSOURCES', request.data.results);
+			if (response.status === 200) {
+				context.commit('SET_PARSOURCES', response.data.results);
+
 				let pagination_info = {};
 
-				for (const iterator in request.data) {
+				for (const iterator in response.data) {
 					if (iterator !== 'results') {
-						pagination_info[iterator] = request.data[iterator]
+						pagination_info[iterator] = response.data[iterator]
 					}
 				}
 				context.commit('SET_PARSOURCES_PAGINATION', pagination_info);
@@ -70,70 +71,49 @@ const actions = {
 			}
 
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	getAllParsources: async context => {
 		try {
-			const request = await axios.get(`${store.state.baseURL}/parsource/`,
+			const response = await axios.get(`${store.state.baseURL}/parsource/`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
-			if (request.status === 200) {
-				context.commit('SET_ALL_PARSOURCES', request.data.results);
+			if (response.status === 200) {
+				context.commit('SET_ALL_PARSOURCES', response.data.results);
 				console.log('Full parsource list saved');
 			}
 
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	getParsource: async (context, parsource_id) => {
 		try {
-			const request = await axios.get(`${store.state.baseURL}/parsource/${parsource_id}`, {
+			const response = await axios.get(`${store.state.baseURL}/parsource/${parsource_id}`, {
 				headers: { Authorization: `token ${cookie.get('auth_token')}` }
 			})
 
-			if (request.status === 200) {
-				context.commit('SET_PARSOURCE', request.data);
+			if (response.status === 200) {
+				context.commit('SET_PARSOURCE', response.data);
 				console.log('Parsource saved');
 			}
 		}
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	//* get parsers with pagination
 	getParsers: async (context, args) => {
 		try {
-			const request =
+			const response =
 				await axios.get(`${store.state.baseURL}/parser/?parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
-			if (request.status === 200) {
-				console.log(request.data.results)
+			if (response.status === 200) {
+				console.log(response.data.results)
 				
 				const comments = await getComments();
 				console.log(comments)
-				const parsersList = request.data.results.map( parser => {
+				const parsersList = response.data.results.map( parser => {
 					const matchedComment = comments.find( commentItem => commentItem.parser === parser.id );
 					if (matchedComment) {
 						return {...parser, comment: matchedComment.comment};
@@ -145,9 +125,9 @@ const actions = {
 
 				let pagination_info = {};
 
-				for (const iterator in request.data) {
+				for (const iterator in response.data) {
 					if (iterator !== 'results') {
-						pagination_info[iterator] = request.data[iterator]
+						pagination_info[iterator] = response.data[iterator]
 					}
 				}
 				context.commit('SET_PARSERS_PAGINATION', pagination_info);
@@ -155,40 +135,25 @@ const actions = {
 				console.log('Parser list saved');
 			}
 		}
-		catch (err) {
-			console.log(err)
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 	getAllParsers: async context => {
 		try {
-			const request =
+			const response =
 				await axios.get(`${store.state.baseURL}/parser/?page_size=999`,
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
 
-			if (request.status === 200) {
-				context.commit('SET_ALL_PARSERS', request.data.results);
+			if (response.status === 200) {
+				context.commit('SET_ALL_PARSERS', response.data.results);
 				console.log('Full parser list saved');
 			}
 
 		}
 
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
-	deleteSelectedParsources: () => {
+	deleteSelectedParsources: async () => {
 		const parsources = store.state.parsers.parsources;
 		const ids = parsources.reduce((acc, current) => {
 			if (current.selected === true) { acc.push(current['id']); }
@@ -196,14 +161,8 @@ const actions = {
 		}, []);
 
 		if (ids.length > 0) {
-			multiaction_delete({
-				model: 'parsource',
-				ids: ids,
-				model_update: {
-					name: "getParsources",
-					data: { page_number: 1, page_size: 10, }
-				}
-			});
+			const response = await multiaction_delete('parsource', ids);
+			return response;
 		}
 	},
 }

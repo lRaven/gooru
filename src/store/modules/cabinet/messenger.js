@@ -17,48 +17,34 @@ const mutations = {
 const actions = {
 	getChatMessages: async (context, ticket_id) => {
 		try {
-			const request = await axios
+			const response = await axios
 				.get(`${store.state.baseURL}/supportchat/?ticket__id=${ticket_id}`, {
 					headers: { Authorization: `token ${cookie.get("auth_token")}`, },
 				})
 
-			if (request.status === 200) {
-				context.commit('SET_CHAT_MESSAGES', request.data);
+			if (response.status === 200) {
+				context.commit('SET_CHAT_MESSAGES', response.data);
 				console.log('Messages saved');
 			}
 		}
 
-		catch (err) {
-			console.error(`
-∧＿∧
-(｡･ω･｡)つ━☆・*。
-⊂\\  /   ・゜+.
-しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 
 	getAllMessages: async (context) => {
 		try {
-			const request = await axios
+			const response = await axios
 				.get(`${store.state.baseURL}/supportchat/`, {
 					headers: { Authorization: `token ${cookie.get("auth_token")}`, },
 				})
 
-			if (request.status === 200) {
-				context.commit('SET_ALL_MESSAGES', request.data);
+			if (response.status === 200) {
+				context.commit('SET_ALL_MESSAGES', response.data);
 				console.log('All messages saved');
 			}
 		}
 
-		catch (err) {
-			console.error(`
-	∧＿∧
-	(｡･ω･｡)つ━☆・*。
-	⊂\\  /   ・゜+.
-	しーＪ\\  °。+  Something went wrong.`
-			);
-		}
+		catch (err) { throw new Error(err) }
 	},
 }
 

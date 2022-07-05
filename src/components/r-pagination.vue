@@ -192,7 +192,7 @@
 				gap: 0.8rem;
 				background-color: transparent;
 				font-size: 1rem;
-				color: $black-50;
+				color: rgba($black, $alpha: 0.5);
 				transition: all 0.2s ease;
 				&.disabled {
 					pointer-events: none;
@@ -225,7 +225,7 @@
 				cursor: pointer;
 				background-color: transparent;
 				font-size: 1.2rem;
-				color: $black-50;
+				color: rgba($black, $alpha: 0.5);
 				width: 2.4rem;
 				height: 2.4rem;
 				border-radius: 50%;
@@ -236,8 +236,8 @@
 				&.current {
 					cursor: default;
 					font-weight: 700;
-					color: $black-70;
-					background-color: $primary-20;
+					color: rgba($black, $alpha: 0.7);
+					background-color: rgba($primary, $alpha: 0.2);
 				}
 			}
 		}
@@ -249,7 +249,7 @@
 			font-size: 1.2rem;
 			width: 2.4rem;
 			height: 2.4rem;
-			color: $black-50;
+			color: rgba($black, $alpha: 0.5);
 		}
 	}
 </style>

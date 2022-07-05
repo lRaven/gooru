@@ -22,13 +22,12 @@ import TheNewParser from '@/components/Cabinet/Pages/TheNewParser'
 
 //* admin pages
 import TheUsers from '@/components/Cabinet/Pages/TheUsers'
+import TheUser from '@/components/Cabinet/Pages/TheUser'
+//*
 
 import PageBrief from '@/views/PageBrief'
 
 import PageNotFound from '@/views/PageNotFound'
-
-// импорты расширяющие функционал
- 
 
 const routes = [
 	{
@@ -51,7 +50,6 @@ const routes = [
 		meta: {
 			title: 'Личный кабинет',
 		},
-		redirect:  { name: 'rates' },
 		children: [
 			{
 				path: 'rates',
@@ -135,6 +133,15 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			{
+				path: 'user/:id',
+				name: 'user',
+				component: TheUser,
+				meta: {
+					title: 'Пользователь',
+					requiresAuth: true,
+				},
+			},
 		],
 	},
 
@@ -188,7 +195,7 @@ router.beforeEach((to) => {
 	if (to.meta.requiresAuth === true) {
 		if (localStorage.getItem('userAuth') !== 'yes') {
 			return { name: 'login' }
-		} else return true;
+		} else return true
 	}
 })
 

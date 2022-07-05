@@ -1,6 +1,9 @@
 <template>
-  <li class="favorite-content-item" v-click-away="hideAllExtras">
-    <div class="favorite-content-item__row">
+  <li class="favorite-content-item" v-click-away="stateReset">
+    <div
+      class="favorite-content-item__row"
+      @click="isCroppedText === true ? expandArticle() : minimizeArticle()"
+    >
       <div class="favorite-content-item__col">
         <r-checkbox
           @update:modelValue="handleChangeSelectItem"
@@ -175,7 +178,12 @@
           </li>
         </ul>
       </div>
-      <r-button @click="handleClickDownload" :disabled="isDisabledDownloadButton" text="Скачать" color="bordered"></r-button>
+      <r-button
+        @click="handleClickDownload"
+        :disabled="isDisabledDownloadButton"
+        text="Скачать"
+        color="bordered"
+      ></r-button>
     </div>
   </li>
 </template>
@@ -187,7 +195,7 @@ import { directive } from "vue3-click-away";
 
 import { mapState } from "vuex";
 
-import { downloadFile } from '@/api/parserApi';
+import { downloadFile } from "@/api/parserApi";
 
 export default {
   name: "FavoriteContentItem",
@@ -234,14 +242,17 @@ export default {
       return find;
     },
     isDisabledDownloadButton() {
-      return !Object.values(this.downloadFormatFiles).find( downloadFormatFile => downloadFormatFile === true);
-    }
+      return !Object.values(this.downloadFormatFiles).find(
+        (downloadFormatFile) => downloadFormatFile === true
+      );
+    },
   },
   data() {
     return {
       isShareOpen: false,
       isDownloadOpen: false,
       isSelected: this.checked,
+      isCroppedText: true,
 
       comment: "",
       downloadFormatFiles: { excel: false, csv: false },
@@ -266,6 +277,18 @@ export default {
       this.isShareOpen = false;
       this.isDownloadOpen = false;
     },
+    expandArticle() {
+      this.isCroppedText = false;
+    },
+
+    minimizeArticle() {
+      this.isCroppedText = true;
+    },
+
+    stateReset() {
+      this.minimizeArticle();
+      this.hideAllExtras();
+    },
     handleChangeSelectItem(value) {
       console.log("parser", this.parser.id, value);
       this.$emit("change-selected", { id: this.parser.id, isSelect: value });
@@ -276,21 +299,24 @@ export default {
         const downloadFilesQueue = [];
         Object.keys(this.downloadFormatFiles).forEach((key) => {
           if (this.downloadFormatFiles[key] === true) {
-
-            downloadFilesQueue.push(downloadFile({ type: key === 'excel' ? 'xls' : key }));
+            downloadFilesQueue.push(
+              downloadFile({ type: key === "excel" ? "xls" : key })
+            );
           }
         });
         const responses = await Promise.allSettled(downloadFilesQueue);
         responses.forEach((response) => {
           if (response.status === "fulfilled") {
-            
             const downloadUrl = window.URL.createObjectURL(response.value);
-            let dataFileType = response.value.type.split('/')[1];
+            let dataFileType = response.value.type.split("/")[1];
             // преобразование mime-типов ответа в расширение
-            if (dataFileType === 'vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-              dataFileType = 'xlsx';
-            } else if (dataFileType === 'application/vnd.ms-excel') {
-              dataFileType = 'xls';
+            if (
+              dataFileType ===
+              "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            ) {
+              dataFileType = "xlsx";
+            } else if (dataFileType === "application/vnd.ms-excel") {
+              dataFileType = "xls";
             }
             const linkForDownload = document.createElement("a");
             linkForDownload.href = downloadUrl;
@@ -310,7 +336,6 @@ export default {
   directives: { ClickAway: directive },
 };
 </script>
-
 <style lang="scss" scoped>
 @import "@/assets/scss/variables";
 
@@ -344,6 +369,7 @@ export default {
 
   &__col {
     &:first-child {
+      cursor: pointer;
       display: grid;
       grid-template-columns: max-content 1fr;
       grid-gap: 0.5rem 3rem;
@@ -373,12 +399,16 @@ export default {
     white-space: nowrap;
   }
   &__text {
-    font-size: 1rem;
-    font-style: italic;
-    line-height: 1.4rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    font-size: 1.2rem;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    &.cropped {
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
   }
 
   &__icon {
