@@ -103,7 +103,12 @@
 					class="the-parsource__content-bottom"
 					v-if="number_of_pages > 1"
 				>
-					<r-button color="bordered" text="Показать ещё"></r-button>
+					<r-button
+						:disabled="page >= count"
+						color="bordered"
+						text="Показать ещё"
+						@click="page_changed(page + 1)"
+					></r-button>
 					<r-pagination
 						:start_page="page"
 						:count="count"
@@ -116,7 +121,10 @@
 
 		<right-panel icon="img/icon/cabinet/filter.svg" title="Фильтр">
 			<template v-slot>
-				<div class="the-parsource__right-panel">
+				<form
+					@submit.prevent="filterParsers"
+					class="the-parsource__right-panel"
+				>
 					<r-spoiler title="Источник" arrowType="gray">
 						<template v-slot>
 							<div
@@ -178,19 +186,19 @@
 							<div class="the-parsource__right-panel__checkboxes">
 								<text-checkbox
 									text="Текст"
-									v-model="texts"
+									v-model="filters.texts"
 								></text-checkbox>
 								<text-checkbox
 									text="Изображения"
-									v-model="images"
+									v-model="filters.images"
 								></text-checkbox>
 								<text-checkbox
 									text="Видео"
-									v-model="videos"
+									v-model="filters.videos"
 								></text-checkbox>
 								<text-checkbox
 									text="Товар"
-									v-model="products"
+									v-model="filters.products"
 								></text-checkbox>
 							</div>
 						</template>
@@ -201,15 +209,16 @@
 							<textarea
 								placeholder="Текстовое описание требований для поиска"
 								class="the-parsource__right-panel__textarea"
-								v-model="description"
+								v-model="filters.description"
 							></textarea>
 						</template>
 					</r-spoiler>
+
 					<r-button
 						class="the-parsource__right-panel-submit"
 						text="Применить"
 					></r-button>
-				</div>
+				</form>
 			</template>
 		</right-panel>
 
@@ -368,6 +377,7 @@
 		},
 		data() {
 			return {
+				isFilterFormInvalid: true,
 				isConfirmPopupVisible: false,
 				isParsersLoaded: false,
 				path: this.$route.path,
@@ -378,12 +388,13 @@
 
 				selected_parsource: {},
 
-				texts: false,
-				images: false,
-				videos: false,
-				products: false,
-				description: "",
-				file: "",
+				filters: {
+					texts: false,
+					images: false,
+					videos: false,
+					products: false,
+					description: "",
+				},
 			};
 		},
 		methods: {
@@ -402,6 +413,19 @@
 					name: "parsource",
 					query: { page: page_number },
 				});
+			},
+
+			filterParsers() {
+				this.getParsers({
+					search: this.filters.description,
+					parsource_name: this.parsource_name,
+					page_number: this.page,
+					page_size: this.parsers_in_page,
+				});
+			},
+
+			validateFilterForm() {
+				this.filters.texts;
 			},
 
 			async action_confirm() {
@@ -428,7 +452,6 @@
 					throw new Error(err);
 				}
 			},
-
 			open_confirm_popup(parsource) {
 				this.selected_parsource = parsource;
 				this.isConfirmPopupVisible = true;

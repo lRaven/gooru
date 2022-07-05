@@ -94,7 +94,12 @@
 			</transition>
 
 			<div class="the-parsources__bottom" v-if="number_of_pages > 1">
-				<r-button text="Показать ещё" color="bordered"></r-button>
+				<r-button
+					:disabled="page >= count"
+					color="bordered"
+					text="Показать ещё"
+					@click="page_changed(page + 1)"
+				></r-button>
 
 				<r-pagination
 					:start_page="page"

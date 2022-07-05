@@ -116,7 +116,12 @@
 			</transition>
 
 			<div class="the-users__bottom" v-if="number_of_pages > 1">
-				<r-button text="Показать ещё" color="bordered"></r-button>
+				<r-button
+					:disabled="page >= count"
+					color="bordered"
+					text="Показать ещё"
+					@click="page_changed(page + 1)"
+				></r-button>
 
 				<r-pagination
 					:start_page="page"
@@ -258,7 +263,7 @@
 				sortBy: "none",
 
 				users_list: [],
-				users_in_page: 10,
+				users_in_page: 1,
 			};
 		},
 		methods: {
