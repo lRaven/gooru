@@ -263,7 +263,7 @@
 				sortBy: "none",
 
 				users_list: [],
-				users_in_page: 1,
+				users_in_page: 10,
 			};
 		},
 		methods: {
