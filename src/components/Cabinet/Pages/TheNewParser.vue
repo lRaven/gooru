@@ -1,6 +1,6 @@
 <template>
 	<section class="the-new-parser">
-		<h2 class="the-new-parser__title">Новый парсинг</h2>
+		<h2 class="the-new-parser__title">Новый парсер</h2>
 
 		<form class="the-new-parser__form" @submit.prevent="create_parsource">
 			<template v-if="user.role !== 'DefaultUser'">
@@ -14,6 +14,15 @@
 					v-model="selectedUser"
 				></r-dropdown>
 			</template>
+
+			<p class="the-new-parser__input-description">Название парсера*</p>
+			<r-input
+				input_type="text"
+				v-model="new_parsource.name"
+				:value="new_parsource.name"
+				placeholder="Введите название парсера"
+			></r-input>
+
 			<p class="the-new-parser__input-description">
 				URL страницы с данными*
 			</p>
@@ -108,6 +117,7 @@
 			isDisabledBtn: false,
 
 			new_parsource: {
+				name: "",
 				url: "",
 				parse_fields: "",
 				description: "",
@@ -131,6 +141,7 @@
 			checkFieldsInputs(options) {
 				switch (options) {
 					case "user": {
+						this.new_parsource.name.length > 0 &&
 						this.new_parsource.url.length > 0 &&
 						this.new_parsource.parse_fields.length > 0 &&
 						this.new_parsource.description.length > 0
@@ -139,6 +150,7 @@
 						break;
 					}
 					case "manager": {
+						this.new_parsource.name.length > 0 &&
 						this.new_parsource.url.length > 0 &&
 						this.new_parsource.parse_fields.length > 0 &&
 						this.new_parsource.description.length > 0 &&
@@ -161,7 +173,7 @@
 			async create_parsource() {
 				try {
 					const response = await send_new_parsource({
-						name: "name",
+						name: this.new_parsource.name,
 						data_source: this.new_parsource.url,
 						description: this.new_parsource.description,
 						parse_fields: this.new_parsource.parse_fields,

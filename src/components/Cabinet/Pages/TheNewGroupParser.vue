@@ -20,9 +20,18 @@
 			</template>
 
 			<p class="the-new-group-parser__input-description">
+				Название парсера*
+			</p>
+			<r-input
+				input_type="text"
+				v-model="new_parsource.name"
+				:value="new_parsource.name"
+				placeholder="Введите название парсера"
+			></r-input>
+
+			<p class="the-new-group-parser__input-description">
 				URL страницы с данными*
 			</p>
-
 			<template v-for="(url, index) in new_parsource.urls" :key="url.id">
 				<r-input
 					v-model="url.text"
@@ -163,6 +172,7 @@
 			isDisabledBtn: false,
 
 			new_parsource: {
+				name: "",
 				urls: [{ id: 1, text: "" }],
 				parse_fields: "",
 				description: "",
@@ -199,6 +209,7 @@
 			checkFieldsInputs(options) {
 				switch (options) {
 					case "user": {
+						this.new_parsource.name &&
 						this.new_parsource.url_list.length > 0 &&
 						this.new_parsource.parse_fields.length > 0 &&
 						this.new_parsource.description.length > 0
@@ -207,6 +218,7 @@
 						break;
 					}
 					case "manager": {
+						this.new_parsource.name.length > 0 &&
 						this.new_parsource.url_list.length > 0 &&
 						this.new_parsource.parse_fields.length > 0 &&
 						this.new_parsource.description.length > 0 &&
@@ -219,6 +231,7 @@
 			},
 
 			resetForm() {
+				this.new_parsource.name = "";
 				this.new_parsource.urls = [{ id: 1, text: "" }];
 				this.new_parsource.parse_fields = "";
 				this.new_parsource.description = "";
@@ -227,7 +240,7 @@
 			async create_parsource() {
 				try {
 					const response = await send_new_parsource({
-						name: "name",
+						name: this.new_parsource.name,
 						data_source: this.new_parsource.url_list,
 						description: this.new_parsource.description,
 						parse_fields: this.new_parsource.parse_fields,
@@ -307,6 +320,12 @@
 				grid-column: 2/3;
 				font-size: 1.6rem;
 			}
+
+			&.manager {
+				.the-new-group-parser__add-url {
+					grid-area: 3/3;
+				}
+			}
 		}
 
 		&__input-description,
@@ -319,7 +338,7 @@
 		}
 
 		&__add-url {
-			grid-area: 1/3;
+			grid-area: 2/3;
 			padding: 0;
 			height: 4rem;
 			width: 4rem;

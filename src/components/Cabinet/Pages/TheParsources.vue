@@ -35,6 +35,7 @@
 				<sort-button
 					description="Пользователь"
 					@click="sort_list(parsources_list, 'user')"
+					v-if="userRole !== 'DefaultUser'"
 				></sort-button>
 				<sort-button
 					description="Источник"
@@ -51,6 +52,11 @@
 				<sort-button
 					description="Найдено"
 					@click="sort_list(parsources_list, 'found')"
+				></sort-button>
+				<sort-button
+					description="В избранном"
+					@click="sort_list(parsources_list, '')"
+					v-if="userRole === 'DefaultUser'"
 				></sort-button>
 				<sort-button
 					description="Время парсинга"
