@@ -93,6 +93,10 @@
 				color: $primary;
 			}
 		}
+		&.red {
+			background-color: $red;
+			color: $white;
+		}
 	}
 
 	@media (max-width: 540px) {

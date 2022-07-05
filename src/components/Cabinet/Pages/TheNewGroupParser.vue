@@ -1,10 +1,14 @@
 <template>
-	<section class="the-new-parser">
-		<h2 class="the-new-parser__title">Новый парсинг</h2>
+	<section class="the-new-group-parser">
+		<h2 class="the-new-group-parser__title">Новая группа парсеров</h2>
 
-		<form class="the-new-parser__form" @submit.prevent="create_parsource">
-			<template v-if="user.role !== 'DefaultUser'">
-				<p class="the-new-parser__input-description">
+		<form
+			class="the-new-group-parser__form"
+			:class="userRole !== 'DefaultUser' ? 'manager' : ''"
+			@submit.prevent="create_parsource"
+		>
+			<template v-if="userRole !== 'DefaultUser'">
+				<p class="the-new-group-parser__input-description">
 					Введите пользователя*
 				</p>
 				<r-dropdown
@@ -14,17 +18,67 @@
 					v-model="selectedUser"
 				></r-dropdown>
 			</template>
-			<p class="the-new-parser__input-description">
+
+			<p class="the-new-group-parser__input-description">
 				URL страницы с данными*
 			</p>
-			<r-input
-				input_type="url"
-				v-model="new_parsource.url"
-				:value="new_parsource.url"
-				placeholder="https://"
-			></r-input>
 
-			<p class="the-new-parser__input-description">Список полей*</p>
+			<template v-for="(url, index) in new_parsource.urls" :key="url.id">
+				<r-input
+					v-model="url.text"
+					:value="url.text"
+					input_type="url"
+					placeholder="https://"
+				></r-input>
+
+				<r-button
+					color="red"
+					class="the-new-group-parser__remove-url"
+					type="button"
+					@click="remove_new_url(index)"
+					text=""
+					v-if="index > 0"
+				>
+					<template v-slot:icon>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							class="the-new-group-parser__remove-url-icon"
+						>
+							<path
+								d="M19,13H5a1,1,0,0,1,0-2H19a1,1,0,0,1,0,2Z"
+								fill="#fff"
+							/>
+						</svg>
+					</template>
+				</r-button>
+			</template>
+
+			<r-button
+				class="the-new-group-parser__add-url"
+				type="button"
+				:disabled="isDisabledAddBtn"
+				@click="add_new_url"
+				text=""
+			>
+				<template v-slot:icon>
+					<svg
+						version="1.1"
+						viewBox="0 0 512 512"
+						xml:space="preserve"
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+						class="the-new-group-parser__add-url-icon"
+					>
+						<path
+							d="M381,236H276V131c0-11-9-20-20-20s-20,9-20,20v105H131c-11,0-20,9-20,20s9,20,20,20h105v105c0,11,9,20,20,20  s20-9,20-20V276h105c11,0,20-9,20-20S392,236,381,236z"
+							fill="#fff"
+						/>
+					</svg>
+				</template>
+			</r-button>
+
+			<p class="the-new-group-parser__input-description">Список полей*</p>
 			<r-input
 				input_type="text"
 				v-model="new_parsource.parse_fields"
@@ -32,7 +86,7 @@
 				placeholder="Введите список полей"
 			></r-input>
 
-			<p class="the-new-parser__input-description">
+			<p class="the-new-group-parser__input-description">
 				Основные требования*
 			</p>
 			<r-textarea
@@ -45,6 +99,7 @@
 			<r-button
 				text="Отправить"
 				type="submit"
+				class="the-new-group-parser__submit"
 				:disabled="isDisabledBtn"
 			></r-button>
 		</form>
@@ -61,7 +116,7 @@
 	import { useToast } from "vue-toastification";
 
 	export default {
-		name: "TheNewParser",
+		name: "TheNewGroupParser",
 		components: {
 			rInput,
 			rTextarea,
@@ -108,10 +163,23 @@
 			isDisabledBtn: false,
 
 			new_parsource: {
-				url: "",
+				urls: [{ id: 1, text: "" }],
 				parse_fields: "",
 				description: "",
+				get url_list() {
+					let list = [];
+					this.urls.forEach((url) => {
+						list.push(url.text);
+					});
+
+					list = list.filter((el) => el.length > 0);
+
+					return list.join(", ");
+				},
 			},
+			urls_limit: 10,
+			isDisabledAddBtn: false,
+
 			selectedUser: null,
 		}),
 		computed: {
@@ -131,7 +199,7 @@
 			checkFieldsInputs(options) {
 				switch (options) {
 					case "user": {
-						this.new_parsource.url.length > 0 &&
+						this.new_parsource.url_list.length > 0 &&
 						this.new_parsource.parse_fields.length > 0 &&
 						this.new_parsource.description.length > 0
 							? (this.isDisabledBtn = false)
@@ -139,7 +207,7 @@
 						break;
 					}
 					case "manager": {
-						this.new_parsource.url.length > 0 &&
+						this.new_parsource.url_list.length > 0 &&
 						this.new_parsource.parse_fields.length > 0 &&
 						this.new_parsource.description.length > 0 &&
 						this.selectedUser !== null
@@ -151,18 +219,16 @@
 			},
 
 			resetForm() {
-				for (const key in this.new_parsource) {
-					if (Object.hasOwnProperty.call(this.new_parsource, key)) {
-						this.new_parsource[key] = "";
-					}
-				}
+				this.new_parsource.urls = [{ id: 1, text: "" }];
+				this.new_parsource.parse_fields = "";
+				this.new_parsource.description = "";
 			},
 
 			async create_parsource() {
 				try {
 					const response = await send_new_parsource({
 						name: "name",
-						data_source: this.new_parsource.url,
+						data_source: this.new_parsource.url_list,
 						description: this.new_parsource.description,
 						parse_fields: this.new_parsource.parse_fields,
 					});
@@ -178,9 +244,29 @@
 					throw new Error(err);
 				}
 			},
+
+			add_new_url() {
+				if (this.new_parsource.urls.length + 1 >= this.urls_limit) {
+					this.isDisabledAddBtn = true;
+				}
+
+				if (this.new_parsource.urls.length < this.urls_limit) {
+					this.new_parsource.urls.push({
+						id: this.new_parsource.urls.length + 1,
+						text: "",
+					});
+				}
+			},
+
+			remove_new_url(id) {
+				this.isDisabledAddBtn = false;
+				if (this.new_parsource.urls.length > 1) {
+					this.new_parsource.urls.splice(id, 1);
+				}
+			},
 		},
 		created() {
-			this.SET_TAB("new_parser");
+			this.SET_TAB("new_group_parser");
 
 			if (this.userRole === "DefaultUser") {
 				//* запуск валидации для обычного юзера
@@ -203,7 +289,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-new-parser {
+	.the-new-group-parser {
 		padding: 4rem;
 
 		&__title {
@@ -213,7 +299,7 @@
 
 		&__form {
 			display: grid;
-			grid-template-columns: 32rem 1fr 15rem;
+			grid-template-columns: 32rem 1fr 4rem 12rem;
 			grid-gap: 3rem 4rem;
 			align-items: center;
 			.r-input,
@@ -224,14 +310,54 @@
 		}
 
 		&__input-description,
-		.r-button {
+		&__submit {
 			grid-column: 1/2;
 		}
 		&__input-description {
 			font-size: 1.6rem;
 			color: rgba($black, $alpha: 0.7);
 		}
-		.r-button {
+
+		&__add-url {
+			grid-area: 1/3;
+			padding: 0;
+			height: 4rem;
+			width: 4rem;
+			transition: all 0.2s ease;
+			&:hover {
+				.the-new-group-parser__add-url-icon {
+					path {
+						fill: $primary;
+						transition: all 0.3s ease;
+					}
+				}
+				&:disabled {
+					.the-new-group-parser__add-url-icon {
+						path {
+							fill: $white;
+						}
+					}
+				}
+			}
+			&:active {
+				transform: translateY(-0.1rem);
+			}
+
+			&-icon {
+				path {
+					transition: all 0.2s ease;
+				}
+			}
+		}
+		&__remove-url {
+			grid-column: 3/3;
+			background-color: $red;
+			padding: 0;
+			height: 4rem;
+			width: 4rem;
+		}
+
+		&__submit {
 			max-width: 25rem;
 		}
 	}
