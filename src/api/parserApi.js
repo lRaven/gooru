@@ -59,6 +59,36 @@ const createComment = async ({ comment, parser }) => {
   }
 };
 
+const updateComment = async ({ id, parser, comment }) => {
+  try {
+    const { data } = await axios.put(`${store.state.baseURL}/comment/${id}/`, {
+      parser,
+      comment,
+    },
+    {
+      headers: {
+        Authorization: `token ${cookie.get("auth_token")}`,
+      }
+    });
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const deleteComment = async ({ id }) => {
+  try {
+    await axios.delete(`${store.state.baseURL}/comment/${id}/`,
+    {
+      headers: {
+        Authorization: `token ${cookie.get("auth_token")}`,
+      },
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 const createFavoriteParser = async ({ user, parser }) => {
   try {
     const { data } = await axios.post(`${store.state.baseURL}/usersfavorite`, {
@@ -76,4 +106,4 @@ const createFavoriteParser = async ({ user, parser }) => {
   }
 };
 
-export { downloadFile, getComments, createComment, createFavoriteParser };
+export { downloadFile, getComments, createComment, createFavoriteParser, updateComment, deleteComment };
