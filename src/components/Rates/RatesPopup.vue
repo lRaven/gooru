@@ -256,7 +256,7 @@ export default {
     line-height: 4.5rem;
     text-align: center;
     color: $primary;
-    background-color: $primary-10;
+    background-color: rgba($primary, $alpha: 0.1);
     margin: 1.5rem 0 4.3rem -4rem;
     padding: 1.6rem 4rem;
   }
