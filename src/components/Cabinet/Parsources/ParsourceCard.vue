@@ -184,6 +184,7 @@
 			font-weight: 500;
 			text-overflow: ellipsis;
 			overflow: hidden;
+			white-space: nowrap;
 		}
 		&__favorite {
 			font-weight: 600;

@@ -19,6 +19,7 @@ import TheFavorites from '@/components/Cabinet/Pages/TheFavorites'
 import TheProfile from '@/components/Cabinet/Pages/TheProfile'
 
 import TheNewParser from '@/components/Cabinet/Pages/TheNewParser'
+import TheNewGroupParser from '@/components/Cabinet/Pages/TheNewGroupParser'
 
 //* admin pages
 import TheUsers from '@/components/Cabinet/Pages/TheUsers'
@@ -51,6 +52,7 @@ const routes = [
 			title: 'Личный кабинет',
 		},
 		children: [
+			//* тарифы 
 			{
 				path: 'rates',
 				name: 'rates',
@@ -60,6 +62,7 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			//* обращения 
 			{
 				path: 'appeals',
 				name: 'appeals',
@@ -69,6 +72,7 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			//* обращение/чат
 			{
 				path: 'appeal',
 				name: 'appeal',
@@ -78,6 +82,7 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			//* parsources
 			{
 				path: 'parsources',
 				name: 'parsources',
@@ -87,6 +92,7 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			//* parsource 
 			{
 				path: 'parsource/:id',
 				name: 'parsource',
@@ -96,6 +102,7 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			//* избранное 
 			{
 				path: 'favorites',
 				name: 'favorites',
@@ -105,6 +112,7 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			//* профиль
 			{
 				path: 'profile',
 				name: 'profile',
@@ -114,6 +122,7 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			//* новый парсер
 			{
 				path: 'new_parser',
 				name: 'new_parser',
@@ -123,7 +132,19 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			//* новый парсер (группа url'ов)
+			{
+				path: 'new_group_parser',
+				name: 'new_group_parser',
+				component: TheNewGroupParser,
+				meta: {
+					title: 'Новая группа парсеров',
+					requiresAuth: true,
+				},
+			},
+
 			//* admin 
+			//* юзеры
 			{
 				path: 'users',
 				name: 'users',
@@ -133,6 +154,7 @@ const routes = [
 					requiresAuth: true,
 				},
 			},
+			//* страница юзера
 			{
 				path: 'user/:id',
 				name: 'user',

@@ -18,11 +18,20 @@
 			</div>
 
 			<div class="the-header__col" v-if="!isClear">
-				<r-button
+				<div
+					class="the-header__create"
 					v-if="isCabinetVersion === true"
-					text="+ Новый парсинг"
-					@click="this.$router.push({ name: 'new_parser' })"
-				></r-button>
+				>
+					<r-button
+						text="+ Новый парсер"
+						@click="this.$router.push({ name: 'new_parser' })"
+					></r-button>
+
+					<r-button
+						text="+ Новая группа парсеров"
+						@click="this.$router.push({ name: 'new_group_parser' })"
+					></r-button>
+				</div>
 
 				<nav class="the-header__nav" v-if="isCabinetVersion === false">
 					<ul class="the-header__links">
@@ -95,7 +104,7 @@
 							<li
 								class="the-header__account-menu-item"
 								@click="
-									this.$router.push({ name: 'profile' });
+									this.$router.push({ name: 'cabinet' });
 									closeProfile();
 								"
 							>
@@ -247,7 +256,7 @@
 			},
 		},
 		mounted() {
-			if (this.isCabinetVersion === false) {
+			if (!this.isCabinetVersion) {
 				window.addEventListener("scroll", () => {
 					this.scrollTop = document.documentElement.scrollTop;
 				});
@@ -301,6 +310,11 @@
 				align-items: center;
 				gap: 13rem;
 			}
+		}
+
+		&__create {
+			display: flex;
+			gap: 2rem;
 		}
 
 		&__logo {
@@ -449,6 +463,7 @@
 			}
 		}
 	}
+
 	@media (max-width: 767px) {
 		.the-header {
 			padding: 1.5rem;

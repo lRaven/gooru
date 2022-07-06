@@ -103,7 +103,12 @@
 					class="the-parsource__content-bottom"
 					v-if="number_of_pages > 1"
 				>
-					<r-button color="bordered" text="Показать ещё"></r-button>
+					<r-button
+						:disabled="page >= count"
+						color="bordered"
+						text="Показать ещё"
+						@click="page_changed(page + 1)"
+					></r-button>
 					<r-pagination
 						:start_page="page"
 						:count="count"
@@ -116,20 +121,63 @@
 
 		<right-panel icon="img/icon/cabinet/filter.svg" title="Фильтр">
 			<template v-slot>
-				<div class="the-parsource__right-panel">
+				<form
+					@submit.prevent="filterParsers"
+					class="the-parsource__right-panel"
+				>
 					<r-spoiler title="Источник" arrowType="gray">
 						<template v-slot>
-							<router-link
-								:to="{
-									path: `/cabinet/parsource/${parsource.id}`,
-									query: { page: 1 },
-								}"
+							<div
+								class="the-parsource__right-panel-parsource"
 								v-for="parsource in all_parsources"
 								:key="parsource.id"
-								class="the-parsource__right-panel-source"
 							>
-								{{ parsource.name }}
-							</router-link>
+								<router-link
+									:to="{
+										path: `/cabinet/parsource/${parsource.id}`,
+										query: { page: 1 },
+									}"
+									class="the-parsource__right-panel-source"
+									:title="parsource.name"
+								>
+									{{ parsource.name }}
+								</router-link>
+
+								<r-button
+									color="red"
+									text=""
+									@click="open_confirm_popup(parsource)"
+								>
+									<template v-slot:icon>
+										<svg
+											width="15"
+											height="16"
+											viewBox="0 0 15 16"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<path
+												d="M12.9722 6.24219C12.9722 6.24219 12.5685 11.2484 12.3344 13.3572C12.2229 14.3643 11.6007 14.9545 10.5817 14.9731C8.64237 15.0081 6.70084 15.0103 4.76228 14.9694C3.78186 14.9493 3.17011 14.3517 3.06085 13.3624C2.82522 11.235 2.42383 6.24219 2.42383 6.24219"
+												stroke="#fff"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+											<path
+												d="M13.9996 3.84236H1.39453"
+												stroke="#fff"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+											<path
+												d="M11.5717 3.84244C10.9882 3.84244 10.4858 3.4299 10.3713 2.85829L10.1907 1.95443C10.0792 1.53743 9.70158 1.24902 9.2712 1.24902H6.12477C5.69439 1.24902 5.31679 1.53743 5.20529 1.95443L5.02467 2.85829C4.9102 3.4299 4.40772 3.84244 3.82422 3.84244"
+												stroke="#fff"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+										</svg>
+									</template>
+								</r-button>
+							</div>
 						</template>
 					</r-spoiler>
 
@@ -138,19 +186,19 @@
 							<div class="the-parsource__right-panel__checkboxes">
 								<text-checkbox
 									text="Текст"
-									v-model="texts"
+									v-model="filters.texts"
 								></text-checkbox>
 								<text-checkbox
 									text="Изображения"
-									v-model="images"
+									v-model="filters.images"
 								></text-checkbox>
 								<text-checkbox
 									text="Видео"
-									v-model="videos"
+									v-model="filters.videos"
 								></text-checkbox>
 								<text-checkbox
 									text="Товар"
-									v-model="products"
+									v-model="filters.products"
 								></text-checkbox>
 							</div>
 						</template>
@@ -161,14 +209,27 @@
 							<textarea
 								placeholder="Текстовое описание требований для поиска"
 								class="the-parsource__right-panel__textarea"
-								v-model="description"
+								v-model="filters.description"
 							></textarea>
 						</template>
 					</r-spoiler>
-					<r-button text="Применить"></r-button>
-				</div>
+
+					<r-button
+						class="the-parsource__right-panel-submit"
+						text="Применить"
+					></r-button>
+				</form>
 			</template>
 		</right-panel>
+
+		<transition name="fade" mode="out-in">
+			<r-confirm-popup
+				v-if="isConfirmPopupVisible"
+				@action_confirm="action_confirm"
+				@close_popup="close_popup"
+				:text="`Вы уверены что хотите удалить источник ${selected_parsource.name}?`"
+			></r-confirm-popup>
+		</transition>
 	</section>
 </template>
 
@@ -180,11 +241,14 @@
 	import rPagination from "@/components/r-pagination";
 	import rLoader from "@/components/r-loader.vue";
 	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
+	import rConfirmPopup from "@/components/r-confirm-popup.vue";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
 	import rSpoiler from "@/components/r-spoiler";
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
+
 	import { change_manager } from "@/api/userApi";
+	import { delete_parsource } from "@/api/parser";
 	import { useToast } from "vue-toastification";
 
 	import { prettyDate } from '@/js/processStrings';
@@ -198,6 +262,7 @@
 			rPagination,
 			rLoader,
 			rDropdown,
+			rConfirmPopup,
 
 			RightPanel,
 			rSpoiler,
@@ -314,6 +379,8 @@
 		},
 		data() {
 			return {
+				isFilterFormInvalid: true,
+				isConfirmPopupVisible: false,
 				isParsersLoaded: false,
 				path: this.$route.path,
 
@@ -321,12 +388,15 @@
 
 				selected_manager: "",
 
-				texts: false,
-				images: false,
-				videos: false,
-				products: false,
-				description: "",
-				file: "",
+				selected_parsource: {},
+
+				filters: {
+					texts: false,
+					images: false,
+					videos: false,
+					products: false,
+					description: "",
+				},
 			};
 		},
 		methods: {
@@ -345,6 +415,51 @@
 					name: "parsource",
 					query: { page: page_number },
 				});
+			},
+
+			filterParsers() {
+				this.getParsers({
+					search: this.filters.description,
+					parsource_name: this.parsource_name,
+					page_number: this.page,
+					page_size: this.parsers_in_page,
+				});
+			},
+
+			validateFilterForm() {
+				this.filters.texts;
+			},
+
+			async action_confirm() {
+				try {
+					const response = await delete_parsource(
+						this.selected_parsource.id
+					);
+
+					if (response.status === 204) {
+						this.toast.success("Источник удалён");
+					}
+
+					if (this.parsource.id === this.selected_parsource.id) {
+						this.$router.push({
+							name: "parsources",
+							query: { page: 1 },
+						});
+					} else {
+						this.isConfirmPopupVisible = false;
+						this.getAllParsources();
+					}
+				} catch (err) {
+					this.toast.error("Ошибка удаления источника");
+					throw new Error(err);
+				}
+			},
+			open_confirm_popup(parsource) {
+				this.selected_parsource = parsource;
+				this.isConfirmPopupVisible = true;
+			},
+			close_popup() {
+				this.isConfirmPopupVisible = false;
 			},
 			prettyDate,
 		},
@@ -485,10 +600,22 @@
 		}
 
 		&__right-panel {
+			&-parsource {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 2rem;
+				.r-button {
+					padding: 0;
+					width: 2rem;
+					height: 2rem;
+				}
+			}
 			&-source {
-				display: block;
+				width: 100%;
 				padding: 1rem 0;
 				color: $black;
+				font-size: 1.4rem;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
@@ -513,30 +640,7 @@
 				background-color: transparent;
 			}
 
-			&__file {
-				user-select: none;
-				display: inline-block;
-				padding: 1.2rem 0;
-				margin-bottom: 2.8rem;
-				&-real {
-					display: none;
-				}
-				&-fake {
-					display: flex;
-					align-items: center;
-					gap: 0.6rem;
-					cursor: pointer;
-				}
-				&-icon {
-					width: 2.2rem;
-				}
-				&-description {
-					font-size: 1rem;
-					color: rgba($black, $alpha: 0.7);
-				}
-			}
-
-			.r-button {
+			&-submit {
 				width: 100%;
 				font-size: 1.4rem;
 				padding-top: 1.5rem;

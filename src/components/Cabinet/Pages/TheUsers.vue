@@ -6,7 +6,7 @@
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="selectAll"
-				:checked="selectAll.isChecked"
+				:checked="selectAll"
 			></r-checkbox>
 
 			<button class="the-users__control-btn" type="button">
@@ -116,7 +116,12 @@
 			</transition>
 
 			<div class="the-users__bottom" v-if="number_of_pages > 1">
-				<r-button text="Показать ещё" color="bordered"></r-button>
+				<r-button
+					:disabled="page >= count"
+					color="bordered"
+					text="Показать ещё"
+					@click="page_changed(page + 1)"
+				></r-button>
 
 				<r-pagination
 					:start_page="page"
@@ -166,7 +171,7 @@
 
 			selectAll: {
 				handler() {
-					this.selectAll.isSelected === true
+					this.selectAll === true
 						? this.SELECT_ALL_USERS()
 						: this.UNSELECT_ALL_USERS();
 				},
@@ -249,10 +254,7 @@
 				isUsersLoaded: false,
 				path: this.$route.path,
 
-				selectAll: {
-					description: "",
-					isSelected: false,
-				},
+				selectAll: false,
 				postponeSelected: false,
 				deleteSelected: false,
 				sortBy: "none",

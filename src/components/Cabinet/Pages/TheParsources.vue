@@ -7,7 +7,7 @@
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="selectAll"
-				:checked="selectAll.isChecked"
+				:checked="selectAll"
 			></r-checkbox>
 			<button class="the-parsources__postpone" type="button">
 				<img src="img/icon/cabinet/postpone.svg" alt="postpone" />
@@ -35,6 +35,7 @@
 				<sort-button
 					description="Пользователь"
 					@click="sort_list(parsources_list, 'user')"
+					v-if="userRole !== 'DefaultUser'"
 				></sort-button>
 				<sort-button
 					description="Источник"
@@ -51,6 +52,11 @@
 				<sort-button
 					description="Найдено"
 					@click="sort_list(parsources_list, 'found')"
+				></sort-button>
+				<sort-button
+					description="В избранном"
+					@click="sort_list(parsources_list, '')"
+					v-if="userRole === 'DefaultUser'"
 				></sort-button>
 				<sort-button
 					description="Время парсинга"
@@ -88,7 +94,12 @@
 			</transition>
 
 			<div class="the-parsources__bottom" v-if="number_of_pages > 1">
-				<r-button text="Показать ещё" color="bordered"></r-button>
+				<r-button
+					:disabled="page >= count"
+					color="bordered"
+					text="Показать ещё"
+					@click="page_changed(page + 1)"
+				></r-button>
 
 				<r-pagination
 					:start_page="page"
@@ -135,7 +146,7 @@
 
 			selectAll: {
 				handler() {
-					this.selectAll.isSelected === true
+					this.selectAll === true
 						? this.SELECT_ALL_PARSOURCES()
 						: this.UNSELECT_ALL_PARSOURCES();
 				},
@@ -180,7 +191,7 @@
 				handler: function () {
 					this.parsources_list = this.parsources;
 					if (this.parsources.length === 0) {
-						this.selectAll.isSelected = false;
+						this.selectAll = false;
 					}
 					this.isParsourcesLoaded = true;
 				},
@@ -210,10 +221,7 @@
 				isParsourcesLoaded: false,
 				path: this.$route.path,
 
-				selectAll: {
-					description: "",
-					isSelected: false,
-				},
+				selectAll: false,
 				postponeSelected: false,
 				deleteSelected: false,
 

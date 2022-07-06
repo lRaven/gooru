@@ -175,7 +175,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getUserData"]),
+    ...mapActions(["getUserData", "getUserRate"]),
     switchFormState(evt, updatedFormState) {
       this.formType = updatedFormState;
     },
@@ -195,6 +195,7 @@ export default {
           const { data } = await login(this.formState);
           this.$cookies.set("auth_token", data.auth_token);
           this.getUserData();
+          this.getUserRate();
           localStorage.setItem("userAuth", "yes");
           window
             .open(`${this.baseURL}/api/pay/${this.selectedRate.id}`, "_blank")

@@ -36,7 +36,7 @@
 					<rate-card
 						:rate="slide"
 						ButtonText="Выбрать"
-						@selectRate="selectRate"
+						@select-rate="selectRate"
 					></rate-card>
 				</swiper-slide>
 			</swiper>
