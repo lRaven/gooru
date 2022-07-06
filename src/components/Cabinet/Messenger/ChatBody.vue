@@ -91,6 +91,7 @@
 			overflow-y: auto;
 			padding: 1rem;
 			width: 100%;
+			scroll-behavior: initial;
 		}
 
 		&__empty {

@@ -1,6 +1,7 @@
 <template>
 	<div class="right-panel" ref="filters">
 		<button
+			type="button"
 			class="right-panel__minimize"
 			@click="
 				isMinimized === true

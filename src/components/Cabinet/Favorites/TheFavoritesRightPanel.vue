@@ -314,8 +314,9 @@
 	};
 </script>
 
-<style scopd lang="scss">
+<style lang="scss" scoped>
 	@import "@/assets/scss/variables";
+
 	.the-favorites {
 		&__right-panel {
 			&-counter {
