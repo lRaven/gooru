@@ -398,7 +398,7 @@
 
 		&__col {
 			&:first-child {
-				max-width: 75%;
+				max-width: 90%;
 				overflow: hidden;
 			}
 			&:last-child {

@@ -387,6 +387,7 @@
 			align-self: flex-end;
 			width: 2.4rem;
 			height: 2.4rem;
+			min-height: 2.4rem;
 			border-radius: 50%;
 			box-shadow: 0 0.4rem 1.2rem rgb(0 0 0 / 8%);
 			margin-top: 2rem;
