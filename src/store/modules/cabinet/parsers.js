@@ -105,7 +105,7 @@ const actions = {
 	getParsers: async (context, args) => {
 		try {
 			const response =
-				await axios.get(`${store.state.baseURL}/parser/?parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
+				await axios.get(`${store.state.baseURL}/parser/?${args.search ? `search=${args.search}&` : ''}parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
 
 			if (response.status === 200) {

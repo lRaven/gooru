@@ -397,6 +397,10 @@
 		}
 
 		&__col {
+			&:first-child {
+				max-width: 75%;
+				overflow: hidden;
+			}
 			&:last-child {
 				display: flex;
 				align-items: center;
@@ -415,6 +419,7 @@
 			font-size: 1.2rem;
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
+			word-break: break-word;
 			&.cropped {
 				text-overflow: ellipsis;
 				display: -webkit-box;

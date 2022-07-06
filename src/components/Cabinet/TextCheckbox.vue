@@ -27,6 +27,7 @@
 	@import "@/assets/scss/variables";
 
 	.text-checkbox {
+		user-select: none;
 		display: inline-block;
 		&__real {
 			display: none;

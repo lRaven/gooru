@@ -20,7 +20,9 @@
 						>
 							#id{{ parsource.id }}
 						</router-link>
+					</template>
 
+					<template v-if="userRole === 'AdminCRM'">
 						<p class="the-parsource__info-key">Менеджер</p>
 						<r-dropdown
 							:selected_item="user_manager.username"
@@ -215,8 +217,11 @@
 					</r-spoiler>
 
 					<r-button
+						:disabled="!isFilterFormInvalid"
 						class="the-parsource__right-panel-submit"
 						text="Применить"
+						type="submit"
+						@click.stop=""
 					></r-button>
 				</form>
 			</template>
@@ -248,7 +253,8 @@
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
 
 	import { change_manager } from "@/api/userApi";
-	import { delete_parsource } from "@/api/parser";
+	// import { delete_parsource } from "@/api/parser";
+	import { multiaction_delete } from "@/api/multiaction_delete";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -303,6 +309,14 @@
 					this.getAllUsers();
 					this.getUsersManagers();
 				}
+			},
+
+			filters: {
+				handler() {
+					console.log("hui");
+					this.validateFilterForm();
+				},
+				deep: true,
 			},
 
 			async selected_manager() {
@@ -425,14 +439,31 @@
 			},
 
 			validateFilterForm() {
-				this.filters.texts;
+				let isValid = false;
+
+				for (const key in this.filters) {
+					if (Object.hasOwnProperty.call(this.filters, key)) {
+						if (this.filters[key] === true) isValid = true;
+						if (
+							typeof this.filters[key] === "string" &&
+							this.filters[key].length > 0
+						)
+							isValid = true;
+					}
+				}
+
+				this.isFilterFormInvalid = isValid;
 			},
 
 			async action_confirm() {
+				//*TODO: временно удаление происходит через multiaction_delete передавая id в массиве
 				try {
-					const response = await delete_parsource(
-						this.selected_parsource.id
-					);
+					// const response = await delete_parsource(
+					// 	this.selected_parsource.id
+					// );
+					const response = await multiaction_delete("parsource", [
+						this.selected_parsource.id,
+					]);
 
 					if (response.status === 204) {
 						this.toast.success("Источник удалён");
@@ -462,6 +493,8 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
+
+			this.validateFilterForm();
 
 			this.getParsource(this.parsource_id);
 
