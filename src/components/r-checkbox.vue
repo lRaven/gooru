@@ -2,16 +2,13 @@
 	<label class="r-checkbox">
 		<input
 			type="checkbox"
-			name=""
+			:name="name"
+			:value="modelValue"
 			id=""
 			:checked="checked"
 			:disabled="disabled"
 			class="r-checkbox__real"
-			@change="
-				description
-					? handleChangeWithDescription($event)
-					: handleChange($event)
-			"
+			@change="handleChange($event)"
 			ref="checkbox"
 		/>
 		<div class="r-checkbox__fake">
@@ -22,14 +19,12 @@
 					class="r-checkbox__tick"
 				/>
 			</div>
-
 			<p class="r-checkbox__description" v-if="description">
 				{{ description }}
 			</p>
 		</div>
 	</label>
 </template>
-
 <script>
 	export default {
 		name: "rCheckbox",
@@ -43,42 +38,34 @@
 				value: Boolean,
 				default: false,
 			},
-		},
-		data() {
-			return {
-				modelValue: this.checked,
-			};
+			name: {
+				type: String,
+				default: "",
+			},
+			modelValue: {
+				type: Boolean,
+				default: false,
+			},
 		},
 		watch: {
 			checked() {
-				if (this.checked === true) {
-					this.$refs.checkbox.checked = true;
+				if (this.checked === true && this.modelValue === true) {
+					//this.$refs.checkbox.checked = true;
 				} else {
-					this.$refs.checkbox.checked = false;
+					//this.$refs.checkbox.checked = false;
+					this.$emit("update:modelValue", this.checked);
 				}
-				this.updateChecked(this.checked);
 			},
 		},
 		methods: {
 			handleChange($event) {
 				this.$emit("update:modelValue", $event.target.checked);
 			},
-			handleChangeWithDescription($event) {
-				this.$emit("update:modelValue", {
-					description: this.description,
-					isSelected: $event.target.checked,
-				});
-			},
-			updateChecked(value) {
-				this.$emit("update:modelValue", value);
-			},
 		},
 	};
 </script>
-
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
-
 	.r-checkbox {
 		user-select: none;
 		display: flex;
@@ -110,7 +97,6 @@
 				}
 			}
 		}
-
 		&__fake {
 			cursor: pointer;
 			display: flex;
@@ -128,7 +114,6 @@
 				transition: all 0.2s ease;
 			}
 		}
-
 		&__description {
 			font-size: 1.2rem;
 			color: rgba($black, $alpha: 0.7);

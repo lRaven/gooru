@@ -125,7 +125,7 @@
 	import rDropdown from "@/components/Cabinet/r-dropdown";
 	import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
 	import FavoriteCard from "@/components/Cabinet/Favorites/FavoriteCard";
-	import TheFavoriteRightPanel from "@/components/Cabinet/Favorites/TheFavoritesRigthPanel.vue";
+	import TheFavoriteRightPanel from "@/components/Cabinet/Favorites/TheFavoritesRightPanel.vue";
 	// import rPagination from "@/components/r-pagination";
 	import rLoader from "@/components/r-loader.vue";
 	import rButton from "@/components/r-button.vue";

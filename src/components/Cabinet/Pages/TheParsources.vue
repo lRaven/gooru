@@ -7,7 +7,7 @@
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="selectAll"
-				:checked="selectAll.isChecked"
+				:checked="selectAll"
 			></r-checkbox>
 			<button class="the-parsources__postpone" type="button">
 				<img src="img/icon/cabinet/postpone.svg" alt="postpone" />
@@ -146,7 +146,7 @@
 
 			selectAll: {
 				handler() {
-					this.selectAll.isSelected === true
+					this.selectAll === true
 						? this.SELECT_ALL_PARSOURCES()
 						: this.UNSELECT_ALL_PARSOURCES();
 				},
@@ -191,7 +191,7 @@
 				handler: function () {
 					this.parsources_list = this.parsources;
 					if (this.parsources.length === 0) {
-						this.selectAll.isSelected = false;
+						this.selectAll = false;
 					}
 					this.isParsourcesLoaded = true;
 				},
@@ -221,10 +221,7 @@
 				isParsourcesLoaded: false,
 				path: this.$route.path,
 
-				selectAll: {
-					description: "",
-					isSelected: false,
-				},
+				selectAll: false,
 				postponeSelected: false,
 				deleteSelected: false,
 
