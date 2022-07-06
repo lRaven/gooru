@@ -3,6 +3,7 @@
 		<h2 class="the-parsources__title">
 			{{ userRole === "DefaultUser" ? "Мои парсеры" : "Все парсеры" }}
 		</h2>
+
 		<div class="the-parsources__control">
 			<r-checkbox
 				description="Выбрать всё"
@@ -40,6 +41,11 @@
 				<sort-button
 					description="Источник"
 					@click="sort_list(parsources_list, 'data_source')"
+				></sort-button>
+				<sort-button
+					description="Название"
+					@click="sort_list(parsources_list, 'name')"
+					v-if="userRole === 'DefaultUser'"
 				></sort-button>
 				<sort-button
 					description="Дата"
@@ -318,7 +324,7 @@
 		}
 		&__sort {
 			display: grid;
-			grid-template-columns: minmax(20rem, 1fr) 14rem 20rem repeat(
+			grid-template-columns: minmax(20rem, 1fr) 20rem 14rem 20rem repeat(
 					4,
 					14rem
 				);

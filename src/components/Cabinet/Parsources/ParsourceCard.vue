@@ -8,17 +8,29 @@
 			:checked="isSelected"
 			v-if="isCanSelect"
 		></r-checkbox>
+
 		<div class="parsource-card__content" ref="content">
 			<p
-				class="parsource-card__id"
+				class="parsource-card__col parsource-card__id"
 				:title="parsource.user"
 				v-if="isParsourceManagerView"
 			>
 				id{{ parsource.user }}
 			</p>
 
-			<p class="parsource-card__source" :title="parsource.data_source">
+			<p
+				class="parsource-card__col parsource-card__source"
+				:title="parsource.data_source"
+			>
 				{{ parsource.data_source }}
+			</p>
+
+			<p
+				class="parsource-card__name"
+				:title="parsource.name"
+				v-if="!isParsourceManagerView"
+			>
+				{{ parsource.name }}
 			</p>
 
 			<p
@@ -139,9 +151,10 @@
 
 		&__content {
 			display: grid;
-			grid-template-columns:
-				minmax(20rem, 1fr) 14rem
-				20rem repeat(4, 14rem);
+			grid-template-columns: minmax(20rem, 1fr) 20rem 14rem 20rem repeat(
+					4,
+					14rem
+				);
 			grid-gap: 2rem;
 			justify-content: space-between;
 			align-items: center;
@@ -173,6 +186,7 @@
 			}
 		}
 
+		&__name,
 		&__date,
 		&__status,
 		&__found,
@@ -180,6 +194,12 @@
 			font-size: 1.4rem;
 		}
 
+		&__name {
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			text-align: center;
+		}
 		&__source {
 			font-weight: 500;
 			text-overflow: ellipsis;

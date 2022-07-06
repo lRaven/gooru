@@ -37,7 +37,7 @@
 	.r-status {
 		user-select: none;
 		display: inline-block;
-		width: fit-content;
+		width: max-content;
 		padding: 0.8rem 2.4rem;
 		border-radius: 5rem;
 		font-weight: 600;

@@ -232,10 +232,7 @@
 						</p>
 
 						<p class="the-parsource__info-key">Статус</p>
-						<r-status
-							style="width: max-content"
-							:status="1 || parsource.condition"
-						></r-status>
+						<r-status :status="1 || parsource.condition"></r-status>
 					</div>
 				</div>
 			</template>
