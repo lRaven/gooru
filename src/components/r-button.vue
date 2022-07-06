@@ -92,6 +92,14 @@
 				outline-color: $primary;
 				color: $primary;
 			}
+
+			&:disabled {
+				&:hover {
+					background-color: transparent;
+					color: rgba($black, $alpha: 0.5);
+					outline-color: rgba($black, $alpha: 0.5);
+				}
+			}
 		}
 		&.red {
 			background-color: $red;

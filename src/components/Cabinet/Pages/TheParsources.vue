@@ -95,7 +95,7 @@
 
 			<div class="the-parsources__bottom" v-if="number_of_pages > 1">
 				<r-button
-					:disabled="page >= count"
+					:disabled="page >= number_of_pages"
 					color="bordered"
 					text="Показать ещё"
 					@click="page_changed(page + 1)"
