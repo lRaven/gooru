@@ -4,7 +4,6 @@
 		<navigation-panel />
 
 		<main class="page-cabinet__main main">
-
 			<router-view v-slot="{ Component }">
 				<transition mode="out-in">
 					<component :is="Component" />
@@ -20,7 +19,7 @@
 
 <script>
 	import { mapState } from "vuex";
-	import AppLoader from '@/components/r-loader.vue';
+	import AppLoader from "@/components/r-loader.vue";
 	import TheHeader from "@/components/TheHeader";
 
 	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
@@ -100,7 +99,7 @@
 
 	.page-cabinet {
 		display: grid;
-		grid-template-columns: 27.5rem 1fr;
+		grid-template-columns: max-content 1fr;
 		height: 100vh;
 		overflow: hidden;
 		&__main {

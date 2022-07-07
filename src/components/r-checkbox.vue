@@ -26,7 +26,6 @@
         </div>
     </label>
 </template>
-
 <script>
     export default {
         name: "rCheckbox",
@@ -66,7 +65,6 @@
         },
     };
 </script>
-
 <style lang="scss" scoped>
     @import "@/assets/scss/variables";
 

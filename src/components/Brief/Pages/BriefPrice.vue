@@ -12,7 +12,11 @@
 			<div class="brief-price__row">
 				<p class="brief-price__text">Вам подойдёт тариф</p>
 				<h2 class="brief-price__rate">{{ rate.name }}</h2>
-				<rate-card :isHasButton="false" :rate="rate"></rate-card>
+				<rate-card
+					:isHasButton="false"
+					color="white"
+					:rate="rate"
+				></rate-card>
 			</div>
 		</div>
 

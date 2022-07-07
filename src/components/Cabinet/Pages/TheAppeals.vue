@@ -43,7 +43,7 @@
 
 			<div class="the-appeals__bottom" v-if="number_of_pages > 1">
 				<r-button
-					:disabled="page >= count"
+					:disabled="page >= number_of_pages"
 					color="bordered"
 					text="Показать ещё"
 					@click="page_changed(page + 1)"
@@ -338,6 +338,11 @@
 			justify-content: space-between;
 			gap: 5rem;
 			margin-top: auto;
+			.r-button {
+				font-size: 1.4rem;
+				padding: 1.2rem 2.8rem;
+				font-weight: 500;
+			}
 		}
 
 		&__right-panel {

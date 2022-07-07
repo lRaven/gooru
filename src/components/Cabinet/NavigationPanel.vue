@@ -1,9 +1,33 @@
 <template>
-	<nav class="navigation-panel">
+	<nav class="navigation-panel" :class="isMinimized ? 'minimized' : ''">
+		<button
+			type="button"
+			class="navigation-panel__minimize"
+			@click="
+				isMinimized === true
+					? (isMinimized = false)
+					: (isMinimized = true)
+			"
+		>
+			<svg
+				width="10"
+				height="6"
+				viewBox="0 0 10 6"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+				class="navigation-panel__minimize-icon"
+				ref="arrow"
+			>
+				<path
+					d="M9.60142 1.53033C9.89431 1.23744 9.89431 0.762563 9.60142 0.46967C9.30853 0.176777 8.83365 0.176777 8.54076 0.46967L9.60142 1.53033ZM5.03555 5.03555L4.50522 5.56588C4.79811 5.85877 5.27298 5.85877 5.56588 5.56588L5.03555 5.03555ZM1.53033 0.46967C1.23744 0.176777 0.762563 0.176777 0.46967 0.46967C0.176777 0.762563 0.176777 1.23744 0.46967 1.53033L1.53033 0.46967ZM8.54076 0.46967L4.50522 4.50522L5.56588 5.56588L9.60142 1.53033L8.54076 0.46967ZM5.56588 4.50522L1.53033 0.46967L0.46967 1.53033L4.50522 5.56588L5.56588 4.50522Z"
+					fill="#989898"
+				/>
+			</svg>
+		</button>
 		<div class="navigation-panel__inner">
 			<ul class="navigation-panel__list">
 				<navigation-item
-					description="Подписка"
+					:description="isMinimized ? '' : 'Подписка'"
 					:pagination="false"
 					value="rates"
 					@set_tab="set_tab"
@@ -41,7 +65,7 @@
 				</navigation-item>
 
 				<navigation-item
-					description="Пользователи"
+					:description="isMinimized ? '' : 'Пользователи'"
 					:pagination="true"
 					value="users"
 					@set_tab="set_tab"
@@ -74,7 +98,7 @@
 				</navigation-item>
 
 				<navigation-item
-					description="Обращения"
+					:description="isMinimized ? '' : 'Обращения'"
 					:pagination="true"
 					value="appeals"
 					@set_tab="set_tab"
@@ -118,7 +142,9 @@
 
 				<navigation-item
 					:description="
-						user.role === 'DefaultUser'
+						isMinimized
+							? ''
+							: user.role === 'DefaultUser'
 							? 'Мои парсеры'
 							: 'Все парсеры'
 					"
@@ -168,7 +194,7 @@
 				</navigation-item>
 
 				<navigation-item
-					description="Избранное"
+					:description="isMinimized ? '' : 'Избранное'"
 					:pagination="false"
 					value="favorites"
 					@set_tab="set_tab"
@@ -201,7 +227,7 @@
 				</navigation-item>
 
 				<navigation-item
-					description="Мой профиль"
+					:description="isMinimized ? '' : 'Мой профиль'"
 					value="profile"
 					:pagination="false"
 					@set_tab="set_tab"
@@ -254,6 +280,7 @@
 		name: "NavigationPanel",
 		components: { NavigationItem },
 		data: () => ({
+			isMinimized: false,
 			tabs: [
 				{ id: 1, selected: false, tab: "appeals", icon_fill: "" },
 				{ id: 2, selected: false, tab: "parsers", icon_fill: "" },
@@ -266,6 +293,14 @@
 		watch: {
 			tab() {
 				this.paint_tab();
+			},
+
+			isMinimized() {
+				if (this.isMinimized === true) {
+					this.minimizePanel();
+				} else if (this.isMinimized === false) {
+					this.resetMinimizePanel();
+				}
 			},
 		},
 		computed: {
@@ -302,6 +337,13 @@
 					console.log(key, value);
 				}
 			},
+
+			minimizePanel() {
+				this.$refs.arrow.classList.add("minimized");
+			},
+			resetMinimizePanel() {
+				this.$refs.arrow.classList.remove("minimized");
+			},
 		},
 		created() {
 			this.paint_tab();
@@ -313,18 +355,58 @@
 	@import "@/assets/scss/variables";
 
 	.navigation-panel {
+		position: relative;
+		display: flex;
+		flex-direction: column;
 		background: linear-gradient(
 			350.85deg,
 			#542f7d -40.69%,
 			#338dd0 109.26%
 		);
+		height: calc(100vh - 8rem);
+		margin-top: auto;
+		width: 26rem;
+		transition: all 0.2s ease;
+		&.minimized {
+			width: 8rem;
+			.navigation-panel {
+				&__inner {
+					padding-left: 1rem;
+					padding-right: 1rem;
+				}
+			}
+		}
+
+		&__minimize {
+			position: relative;
+			right: -1.2rem;
+			background-color: #fff;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			align-self: flex-end;
+			width: 2.4rem;
+			height: 2.4rem;
+			min-height: 2.4rem;
+			border-radius: 50%;
+			box-shadow: 0 0.4rem 1.2rem rgb(0 0 0 / 8%);
+			margin-top: 2rem;
+			z-index: 1;
+			transition: all 0.3s ease;
+			&-icon {
+				transition: all 0.2s ease;
+				transform: rotate(90deg);
+				&.minimized {
+					transform: rotate(-90deg);
+				}
+			}
+		}
 
 		&__inner {
-			padding: 12rem 4rem 4rem 4rem;
+			padding: 2rem 3rem 4rem 3rem;
 			height: 100%;
 			background: url("/public/img/icon/cabinet/goo.svg") bottom left /
 				90% no-repeat;
-			margin-bottom: 25rem;
 		}
 
 		&__list {
@@ -332,6 +414,7 @@
 			flex-direction: column;
 			gap: 1.6rem;
 		}
+
 		.navigation-item {
 			&__radio {
 				&-fake {
@@ -353,6 +436,20 @@
 				}
 				path {
 					transition: all 0.2s ease;
+				}
+			}
+		}
+	}
+</style>
+
+<style lang="scss">
+	.navigation-panel {
+		&.minimized {
+			.navigation-item {
+				&__col {
+					padding: 0.4rem;
+					justify-content: center;
+					gap: 0;
 				}
 			}
 		}

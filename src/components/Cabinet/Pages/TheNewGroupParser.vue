@@ -253,7 +253,7 @@
 						this.toast.success("Новый парсинг создан");
 					}
 				} catch (err) {
-					this.toast.error("Ошибка создания парсинга");
+					this.toast.error("Ошибка создания группы парсеров");
 					throw new Error(err);
 				}
 			},

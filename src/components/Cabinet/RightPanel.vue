@@ -1,6 +1,7 @@
 <template>
 	<div class="right-panel" ref="filters">
 		<button
+			type="button"
 			class="right-panel__minimize"
 			@click="
 				isMinimized === true
@@ -85,6 +86,8 @@
 	@import "@/assets/scss/variables";
 
 	.right-panel {
+		display: flex;
+		flex-direction: column;
 		background-color: rgba(255, 255, 255, 0.5);
 		width: 29rem;
 		height: calc(100vh - 8rem);
@@ -127,6 +130,12 @@
 		&__title {
 			font-weight: 600;
 			color: $gray;
+		}
+
+		&__body {
+			overflow-y: auto;
+			overflow-x: hidden;
+			height: 100%;
 		}
 	}
 </style>

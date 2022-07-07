@@ -117,7 +117,7 @@
 
 			<div class="the-users__bottom" v-if="number_of_pages > 1">
 				<r-button
-					:disabled="page >= count"
+					:disabled="page >= number_of_pages"
 					color="bordered"
 					text="Показать ещё"
 					@click="page_changed(page + 1)"
@@ -255,6 +255,7 @@
 				path: this.$route.path,
 
 				selectAll: false,
+
 				postponeSelected: false,
 				deleteSelected: false,
 				sortBy: "none",
@@ -377,9 +378,8 @@
 		}
 
 		&__list {
-			display: grid;
-			grid-template-columns: 1fr;
-			grid-template-rows: max-content;
+			display: flex;
+			flex-direction: column;
 			gap: 1rem;
 			margin-bottom: 2rem;
 		}

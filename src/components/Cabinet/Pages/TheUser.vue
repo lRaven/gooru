@@ -190,6 +190,10 @@
 							@click="sort_list(parsources_list, 'data_source')"
 						></sort-button>
 						<sort-button
+							description="Название"
+							@click="sort_list(parsources_list, 'name')"
+						></sort-button>
+						<sort-button
 							description="Дата"
 							@click="sort_list(parsources_list, 'date')"
 						></sort-button>
@@ -628,7 +632,7 @@
 		&__parsers {
 			&-sort {
 				display: grid;
-				grid-template-columns: minmax(20rem, 1fr) 14rem 20rem repeat(
+				grid-template-columns: minmax(20rem, 1fr) 20rem 14rem 20rem repeat(
 						4,
 						14rem
 					);

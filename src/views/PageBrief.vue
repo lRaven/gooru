@@ -183,7 +183,7 @@
 		},
 		computed: { ...mapState(["document_width"]) },
 		data: () => ({
-			page_number: 1,
+			page_number: 8,
 			page_progress: [
 				{ id: 1, checked: "checked" },
 				{ id: 2, checked: false },

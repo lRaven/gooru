@@ -5,51 +5,7 @@
 				Парсинг сайта {{ parsource.data_source }}
 			</h2>
 
-			<div class="the-parsource__col">
-				<img
-					:src="parsource.screenshot || 'img/icon/empty-image.svg'"
-					alt=""
-					class="the-parsource__image"
-				/>
-				<div class="the-parsource__info">
-					<template v-if="userRole !== 'DefaultUser'">
-						<p class="the-parsource__info-key">Пользователь</p>
-						<router-link
-							:to="{ path: `/cabinet/user/${parsource_id}` }"
-							class="the-parsource__info-value the-parsource__info-source"
-						>
-							#id{{ parsource.id }}
-						</router-link>
-
-						<p class="the-parsource__info-key">Менеджер</p>
-						<r-dropdown
-							:selected_item="user_manager.username"
-							:showedValue="'username'"
-							:list="managers"
-							v-model="selected_manager"
-						></r-dropdown>
-					</template>
-
-					<p class="the-parsource__info-key">Источник</p>
-					<a
-						:href="parsource.data_source"
-						target="_blank"
-						class="the-parsource__info-value the-parsource__info-source"
-					>
-						{{ parsource.data_source }}
-					</a>
-
-					<p class="the-parser__info-key">Дата</p>
-					<p class="the-parser__info-value">
-						{{ parsource.date ? prettyDate(parsource.date) : "1.1.1970" }}
-					</p>
-
-					<p class="the-parsource__info-key">Статус</p>
-					<r-status :status="1 || parsource.condition"></r-status>
-				</div>
-			</div>
-
-			<div class="the-parsource__col the-parsource__content">
+			<div class="the-parsource__content">
 				<div class="the-parsource__content-main">
 					<div class="the-parsource__content-header">
 						<div class="the-parsource__content-header-row">
@@ -104,7 +60,7 @@
 					v-if="number_of_pages > 1"
 				>
 					<r-button
-						:disabled="page >= count"
+						:disabled="page >= number_of_pages"
 						color="bordered"
 						text="Показать ещё"
 						@click="page_changed(page + 1)"
@@ -119,11 +75,15 @@
 			</div>
 		</div>
 
-		<right-panel icon="img/icon/cabinet/filter.svg" title="Фильтр">
+		<right-panel
+			icon="img/icon/cabinet/filter.svg"
+			title="Фильтр"
+			class="the-parsource__right-panel"
+		>
 			<template v-slot>
 				<form
 					@submit.prevent="filterParsers"
-					class="the-parsource__right-panel"
+					class="the-parsource__right-panel-form"
 				>
 					<r-spoiler title="Источник" arrowType="gray">
 						<template v-slot>
@@ -215,10 +175,66 @@
 					</r-spoiler>
 
 					<r-button
+						:disabled="!isFilterFormInvalid"
 						class="the-parsource__right-panel-submit"
 						text="Применить"
+						type="submit"
+						@click.stop=""
 					></r-button>
 				</form>
+
+				<div class="the-parsource__data">
+					<h5 class="the-parsource__data-title">Текущий источник</h5>
+					<img
+						:src="
+							parsource.screenshot || 'img/icon/empty-image.svg'
+						"
+						alt=""
+						class="the-parsource__image"
+					/>
+					<div class="the-parsource__info">
+						<template v-if="userRole !== 'DefaultUser'">
+							<p class="the-parsource__info-key">Пользователь</p>
+							<router-link
+								:to="{
+									path: `/cabinet/user/${parsource.user}`,
+								}"
+								class="the-parsource__info-value the-parsource__info-source"
+							>
+								#id{{ parsource.user }}
+							</router-link>
+						</template>
+
+						<template v-if="userRole === 'AdminCRM'">
+							<p class="the-parsource__info-key">Менеджер</p>
+							<r-dropdown
+								:selected_item="user_manager.username"
+								:showedValue="'username'"
+								:list="managers"
+								v-model="selected_manager"
+								class="the-parsource__info-manager"
+							></r-dropdown>
+						</template>
+
+						<p class="the-parsource__info-key">Источник</p>
+						<a
+							:href="parsource.data_source"
+							target="_blank"
+							class="the-parsource__info-value the-parsource__info-source"
+							:title="parsource.data_source"
+						>
+							{{ parsource.data_source }}
+						</a>
+
+						<p class="the-parsource__info-key">Дата</p>
+						<p class="the-parsource__info-value">
+							{{ parsource.date || "1.1.1970" }}
+						</p>
+
+						<p class="the-parsource__info-key">Статус</p>
+						<r-status :status="1 || parsource.condition"></r-status>
+					</div>
+				</div>
 			</template>
 		</right-panel>
 
@@ -248,7 +264,8 @@
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
 
 	import { change_manager } from "@/api/userApi";
-	import { delete_parsource } from "@/api/parser";
+	// import { delete_parsource } from "@/api/parser";
+	import { multiaction_delete } from "@/api/multiaction_delete";
 	import { useToast } from "vue-toastification";
 
 	import { prettyDate } from '@/js/processStrings';
@@ -305,6 +322,13 @@
 					this.getAllUsers();
 					this.getUsersManagers();
 				}
+			},
+
+			filters: {
+				handler() {
+					this.validateFilterForm();
+				},
+				deep: true,
 			},
 
 			async selected_manager() {
@@ -427,14 +451,31 @@
 			},
 
 			validateFilterForm() {
-				this.filters.texts;
+				let isValid = false;
+
+				for (const key in this.filters) {
+					if (Object.hasOwnProperty.call(this.filters, key)) {
+						if (this.filters[key] === true) isValid = true;
+						if (
+							typeof this.filters[key] === "string" &&
+							this.filters[key].length > 0
+						)
+							isValid = true;
+					}
+				}
+
+				this.isFilterFormInvalid = isValid;
 			},
 
 			async action_confirm() {
+				//*TODO: временно удаление происходит через multiaction_delete передавая id в массиве
 				try {
-					const response = await delete_parsource(
-						this.selected_parsource.id
-					);
+					// const response = await delete_parsource(
+					// 	this.selected_parsource.id
+					// );
+					const response = await multiaction_delete("parsource", [
+						this.selected_parsource.id,
+					]);
 
 					if (response.status === 204) {
 						this.toast.success("Источник удалён");
@@ -466,6 +507,8 @@
 		created() {
 			this.SET_TAB("parsers");
 
+			this.validateFilterForm();
+
 			this.getParsource(this.parsource_id);
 
 			this.getAllParsources();
@@ -490,25 +533,19 @@
 		&__main {
 			padding: 4rem 1rem 3rem 4rem;
 			display: grid;
-			grid-template-columns: 41rem 1fr;
 			grid-template-rows: max-content 1fr;
-			grid-template-columns: max-content, 1fr;
 			grid-gap: 3rem 2rem;
 			overflow: hidden;
 		}
 
-		&__col {
-		}
-
 		&__title {
-			grid-column: 1/3;
 			font-weight: 400;
 		}
 
 		&__image {
 			width: 100%;
 			margin-bottom: 4rem;
-			max-height: 40rem;
+			max-height: 26rem;
 			object-fit: contain;
 		}
 
@@ -516,20 +553,35 @@
 			display: grid;
 			grid-template-columns: max-content 1fr;
 			align-items: center;
-			grid-gap: 2rem 3rem;
+			grid-gap: 1rem;
 
 			&-key {
-				font-size: 1.6rem;
+				font-size: 1.2rem;
 				color: rgba($black, $alpha: 0.7);
 			}
 			&-value {
-				font-size: 1.8rem;
-				width: fit-content;
+				font-size: 1.4rem;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
 			}
 			&-source {
 				text-decoration: underline;
 				font-weight: 700;
 				color: $primary;
+			}
+
+			&-manager {
+			}
+			&-status {
+				width: max-content;
+			}
+		}
+		&__data {
+			&-title {
+				font-weight: 600;
+				color: $gray;
+				margin-bottom: 1rem;
 			}
 		}
 
@@ -600,6 +652,10 @@
 		}
 
 		&__right-panel {
+			&-form {
+				margin-bottom: 3rem;
+			}
+
 			&-parsource {
 				display: flex;
 				align-items: center;
@@ -641,10 +697,31 @@
 			}
 
 			&-submit {
+				margin-top: 2rem;
 				width: 100%;
 				font-size: 1.4rem;
 				padding-top: 1.5rem;
 				padding-bottom: 1.5rem;
+			}
+		}
+	}
+</style>
+
+<style lang="scss">
+	.the-parsource {
+		&__info {
+			.r-dropdown {
+				&__header {
+					min-height: initial;
+				}
+				&__selected {
+					font-size: 1.2rem;
+				}
+				&__list {
+					&-item {
+						font-size: 1.2rem;
+					}
+				}
 			}
 		}
 	}
