@@ -334,6 +334,7 @@
 						<r-checkbox
 							description="Excel"
 							name="xls"
+							:checked="downloadFormatFiles.excel"
 							v-model="downloadFormatFiles.excel"
 						></r-checkbox>
 					</li>
@@ -341,6 +342,7 @@
 						<r-checkbox
 							description="CSV"
 							name="csv"
+							:checked="downloadFormatFiles.csv"
 							v-model="downloadFormatFiles.csv"
 						></r-checkbox>
 					</li>
