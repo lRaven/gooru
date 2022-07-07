@@ -43,7 +43,7 @@ const actions = {
 			updatedRateData.push({ ...stat, value: prettyDate(payload.created) });
 			break;
 		case "Сумма к оплате:":
-			updatedRateData.push({ ...stat, value: `${prettyDate(payload.amount.toString())} р.` });
+			updatedRateData.push({ ...stat, value: `${payload.amount} р.` });
 			break;
       }
     });

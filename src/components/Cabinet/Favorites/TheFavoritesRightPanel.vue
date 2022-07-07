@@ -141,7 +141,7 @@
 	import { mapState, mapActions } from "vuex";
 
 	import { multiaction_delete } from "@/api/multiaction_delete";
-	import { downloadFile } from "@/api/parserApi";
+	import { downloadFile } from "@/api/parser";
 
 	export default {
 		components: {

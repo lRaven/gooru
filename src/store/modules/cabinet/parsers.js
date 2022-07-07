@@ -2,7 +2,7 @@ import cookie from "vue-cookies";
 import axios from "axios";
 import store from "@/store";
 import { multiaction_delete } from "@/api/multiaction_delete";
-import { getComments } from "@/api/parserApi";
+import { getComments, updateParsourceName } from "@/api/parser";
 
 const state = () => ({
 	parsources: [],
@@ -102,6 +102,22 @@ const actions = {
 		catch (err) { throw new Error(err) }
 	},
 
+	updateParsourceName: async (context, payload) => {
+		try {
+			const updatedName = await updateParsourceName({ id: payload.id, name: payload.editedName });
+
+			const updatedParsources = context.state.parsources.map( parsource => {
+				if (parsource.id === payload.id) {
+					parsource.name = updatedName
+				}
+				return parsource;
+			});
+			context.commit("SET_PARSOURCES", updatedParsources);
+		} catch (error) {
+			throw new Error(error);
+		}
+	},
+
   //* get parsers with pagination
   getParsers: async (context, args) => {
     try {
@@ -113,7 +129,6 @@ const actions = {
         console.log(response.data.results);
 
         const comments = await getComments();
-        console.log(comments);
         const parsersList = response.data.results.map((parser) => {
           const matchedComment = comments.find(
             (commentItem) => commentItem.parser === parser.id

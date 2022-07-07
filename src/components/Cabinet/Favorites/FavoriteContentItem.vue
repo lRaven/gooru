@@ -197,7 +197,7 @@ import { directive } from "vue3-click-away";
 
 import { mapState } from "vuex";
 
-import { downloadFile } from "@/api/parserApi";
+import { downloadFile } from "@/api/parser";
 
 export default {
   name: "FavoriteContentItem",

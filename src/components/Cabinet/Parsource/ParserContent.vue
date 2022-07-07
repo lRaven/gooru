@@ -161,6 +161,7 @@
 			<div
 				v-if="parser.comment.text && !isEditComment"
 				class="parser-content__comment"
+       
 			>
 				<p class="parser-content__comment-subtitle">Комментарий:</p>
 				<p class="parser-content__comment-text">
@@ -368,7 +369,7 @@
 		updateComment,
 		deleteComment,
 		downloadFile,
-	} from "@/api/parserApi";
+	} from "@/api/parser";
 
 	export default {
 		name: "ParserContent",
