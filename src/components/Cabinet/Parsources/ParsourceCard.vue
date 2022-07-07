@@ -281,6 +281,7 @@
             gap: 1rem;
         }
         &__edit-button {
+			cursor: pointer;
             path {
                 stroke: $black;
             }
@@ -291,6 +292,7 @@
             }
         }
         &__close-button {
+			cursor: pointer;
             path {
                 fill: $black;
                 opacity: 0.7;
@@ -307,13 +309,6 @@
         &__found,
         &__time {
             font-size: 1.4rem;
-        }
-
-        &__name {
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            text-align: center;
         }
         &__source {
             font-weight: 500;
