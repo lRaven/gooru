@@ -79,7 +79,7 @@
 			password: "",
 		}),
 		methods: {
-			...mapActions(["getUserData"]),
+			...mapActions(["getUserData", "getUserRate"]),
 
 			async auth() {
 				try {
@@ -95,6 +95,7 @@
 						);
 						localStorage.setItem("userAuth", "yes");
 						this.getUserData();
+						this.getUserRate();
 						this.$router.push({ name: "cabinet" });
 					}
 				} catch (err) {

@@ -49,7 +49,7 @@
 							<parser-content
 								v-for="parser in parsers"
 								:key="parser.id"
-								:parser="parser"
+								:parserProp="parser"
 							></parser-content>
 						</ol>
 					</transition>
@@ -267,6 +267,8 @@
 	// import { delete_parsource } from "@/api/parser";
 	import { multiaction_delete } from "@/api/multiaction_delete";
 	import { useToast } from "vue-toastification";
+
+	import { prettyDate } from '@/js/processStrings';
 
 	export default {
 		name: "TheParsource",
@@ -500,6 +502,7 @@
 			close_popup() {
 				this.isConfirmPopupVisible = false;
 			},
+			prettyDate,
 		},
 		created() {
 			this.SET_TAB("parsers");

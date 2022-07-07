@@ -97,6 +97,7 @@
 				}
 			}
 		}
+
 		&__fake {
 			cursor: pointer;
 			display: flex;

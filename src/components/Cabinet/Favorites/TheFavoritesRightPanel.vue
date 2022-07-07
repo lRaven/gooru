@@ -323,7 +323,6 @@
 				font-size: 3.6rem;
 				&-wrapper {
 					margin-bottom: 2rem;
-					margin-top: -2rem;
 				}
 			}
 			&-alert-message {

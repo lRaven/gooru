@@ -96,6 +96,30 @@ const logout = async () => {
 	}
 }
 
+// операции по тарифам для конкртеного пользователя
+
+const getRates = async () => {
+	try {
+		const { data } = await axios.get(`${baseURL}/usertariff`, {
+			headers: { Authorization: `token ${cookie.get('auth_token')}` }
+		});
+		return data.results;
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
+const getUserRate = async ({ id }) => {
+	try {
+		const { data } = await axios.get(`${baseURL}/usertariff/${id}`, {
+			headers: { Authorization: `token ${cookie.get('auth_token')}` }
+		});
+		return data;
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
 //* user data edit
 const change_password = async ({ new_password, current_password }) => {
 	try {
@@ -167,6 +191,8 @@ export {
 	registration_by_tel,
 	login,
 	logout,
+	getRates,
+	getUserRate,
 	change_password,
 	change_user_data,
 	upload_avatar,

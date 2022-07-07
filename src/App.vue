@@ -21,10 +21,11 @@
 			},
 		},
 		computed: { ...mapState(["baseURL"]) },
-		methods: { ...mapActions(["getDocumentWidth", "getUserData"]) },
+		methods: { ...mapActions(["getDocumentWidth", "getUserData", "getUserRate"]) },
 		created() {
 			this.getDocumentWidth();
 			this.getUserData();
+			this.getUserRate();
 		},
 	};
 </script>

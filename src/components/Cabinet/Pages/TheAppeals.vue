@@ -326,6 +326,11 @@
 			overflow: hidden;
 			box-shadow: $shadow;
 		}
+		&__empty {
+			width: 100%;
+			text-align: center;
+			grid-area: appealsList;
+		}
 
 		&__bottom {
 			display: flex;

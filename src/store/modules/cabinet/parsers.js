@@ -1,7 +1,8 @@
-import cookie from 'vue-cookies'
-import axios from 'axios'
-import store from '@/store'
-import { multiaction_delete } from '@/api/multiaction_delete'
+import cookie from "vue-cookies";
+import axios from "axios";
+import store from "@/store";
+import { multiaction_delete } from "@/api/multiaction_delete";
+import { getComments } from "@/api/parserApi";
 
 const state = () => ({
 	parsources: [],
@@ -101,15 +102,32 @@ const actions = {
 		catch (err) { throw new Error(err) }
 	},
 
-	//* get parsers with pagination
-	getParsers: async (context, args) => {
-		try {
-			const response =
-				await axios.get(`${store.state.baseURL}/parser/?${args.search ? `search=${args.search}&` : ''}parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
-					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
+  //* get parsers with pagination
+  getParsers: async (context, args) => {
+    try {
+      const response = await axios.get(
+        `${store.state.baseURL}/parser/?parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
+        { headers: { Authorization: `token ${cookie.get("auth_token")}` } }
+      );
+      if (response.status === 200) {
+        console.log(response.data.results);
 
-			if (response.status === 200) {
-				context.commit('SET_PARSERS', response.data.results);
+        const comments = await getComments();
+        console.log(comments);
+        const parsersList = response.data.results.map((parser) => {
+          const matchedComment = comments.find(
+            (commentItem) => commentItem.parser === parser.id
+          );
+          if (matchedComment) {
+            return {
+              ...parser,
+              comment: { text: matchedComment.comment, id: matchedComment.id },
+            };
+          } else {
+            return { ...parser, comment: { text: "", id: null } };
+          }
+        });
+        context.commit("SET_PARSERS", parsersList);
 
 				let pagination_info = {};
 

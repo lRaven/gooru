@@ -158,12 +158,97 @@
 		</div>
 
 		<div class="parser-content__row" v-if="isMessagesOpen === true">
-			<textarea
-				class="parser-content__textarea"
-				placeholder="Написать комментарий..."
-				v-model="comment"
-			></textarea>
-			<r-button text="Сохранить" color="bordered"></r-button>
+			<div
+				v-if="parser.comment.text && !isEditComment"
+				class="parser-content__comment"
+			>
+				<p class="parser-content__comment-subtitle">Комментарий:</p>
+				<p class="parser-content__comment-text">
+					{{ parser.comment.text }}
+				</p>
+				<div class="parser-content__controls">
+					<svg
+						class="parser-content__contorl-edit-button"
+						@click.stop="handleEditClick"
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M20.9991 10.0457V20.3159C20.9991 21.5221 20.0985 22.4998 18.9876 22.4998H3.5115C2.4006 22.4998 1.5 21.5221 1.5 20.3159V4.81178C1.5 3.60563 2.4006 2.62793 3.5115 2.62793H13.9528"
+							stroke="#5960C7"
+							stroke-miterlimit="10"
+							stroke-linecap="round"
+						/>
+						<path
+							d="M21.8333 4.5408L13.4576 13.1538C13.0311 13.5937 11.7549 13.98 10.5407 14.4252C10.0262 14.6139 9.53041 14.1336 9.70291 13.6134C10.1049 12.4006 10.4559 11.0982 10.8822 10.6582L19.2579 2.04525C19.947 1.3341 21.0822 1.31625 21.7934 2.0055C22.5045 2.6946 22.5224 3.82965 21.8333 4.5408Z"
+							stroke="#5960C7"
+							stroke-miterlimit="10"
+							stroke-linecap="round"
+						/>
+						<path
+							d="M17.8301 3.51855L20.4054 6.0141"
+							stroke="#5960C7"
+							stroke-miterlimit="10"
+							stroke-linecap="round"
+						/>
+					</svg>
+					<svg
+						class="parser-content__contorl-remove-button"
+						@click.stop="handleDeleteComment"
+						width="20"
+						height="21"
+						viewBox="0 0 15 16"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M12.9722 6.24219C12.9722 6.24219 12.5685 11.2484 12.3344 13.3572C12.2229 14.3643 11.6007 14.9545 10.5817 14.9731C8.64237 15.0081 6.70084 15.0103 4.76228 14.9694C3.78186 14.9493 3.17011 14.3517 3.06085 13.3624C2.82522 11.235 2.42383 6.24219 2.42383 6.24219"
+							stroke="#989898"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+						<path
+							d="M13.9996 3.84236H1.39453"
+							stroke="#989898"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+						<path
+							d="M11.5717 3.84244C10.9882 3.84244 10.4858 3.4299 10.3713 2.85829L10.1907 1.95443C10.0792 1.53743 9.70158 1.24902 9.2712 1.24902H6.12477C5.69439 1.24902 5.31679 1.53743 5.20529 1.95443L5.02467 2.85829C4.9102 3.4299 4.40772 3.84244 3.82422 3.84244"
+							stroke="#989898"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+				</div>
+			</div>
+			<template v-else>
+				<textarea
+					class="parser-content__textarea"
+					:placeholder="
+						parser.comment.text
+							? 'Редактировать комментарий...'
+							: 'Написать комментарий...'
+					"
+					v-model="comment"
+				></textarea>
+				<p
+					class="parser-content__contorl-edit-button parser-content__contorl-edit-button_text parser-content__contorl-edit-button_align_end"
+					v-if="parser.comment.text"
+					@click.stop="handleEditClick"
+				>
+					Отменить
+				</p>
+				<r-button
+					@click="handleSubmitComment"
+					text="Сохранить"
+					color="bordered"
+					:disabled="isDisabledCommentButton"
+				></r-button>
+			</template>
 		</div>
 
 		<div class="parser-content__row" v-if="isShareOpen === true">
@@ -247,18 +332,25 @@
 					<li class="parser-content__download-list-item">
 						<r-checkbox
 							description="Excel"
-							v-model="downloadFormats.excel"
+							name="xls"
+							v-model="downloadFormatFiles.excel"
 						></r-checkbox>
 					</li>
 					<li class="parser-content__download-list-item">
 						<r-checkbox
 							description="CSV"
-							v-model="downloadFormats.csv"
+							name="csv"
+							v-model="downloadFormatFiles.csv"
 						></r-checkbox>
 					</li>
 				</ul>
 			</div>
-			<r-button text="Скачать" color="bordered"></r-button>
+			<r-button
+				:disabled="isDisabledDownloadButton"
+				@click="handleClickDownload"
+				text="Скачать"
+				color="bordered"
+			></r-button>
 		</div>
 	</li>
 </template>
@@ -266,12 +358,21 @@
 <script>
 	import rButton from "@/components/r-button";
 	import rCheckbox from "@/components/r-checkbox";
+	import { useToast } from "vue-toastification";
+
 	import { directive } from "vue3-click-away";
 	import { mapState } from "vuex";
 
+	import {
+		createComment,
+		updateComment,
+		deleteComment,
+		downloadFile,
+	} from "@/api/parserApi";
+
 	export default {
 		name: "ParserContent",
-		props: { parser: Object },
+		props: { parserProp: Object },
 		components: { rButton, rCheckbox },
 		watch: {
 			isMessagesOpen() {
@@ -315,29 +416,40 @@
 
 				return find;
 			},
-		},
-		data: () => ({
-			isCroppedText: true,
-
-			isMessagesOpen: false,
-			isShareOpen: false,
-			isDownloadOpen: false,
-
-			comment: "",
-			downloadFormats: { excel: false, csv: false },
-
-			shareContent: {
-				url: window.location.href,
-				title: "title",
-				description: "description",
-				image: "https://gitlab.com/uploads/-/system/project/avatar/32004440/Vue.js_Logo_2.svg.png",
-
-				// *fb only
-				quote: "",
-				//*fb, twtr only
-				hashtags: "",
+			isDisabledCommentButton() {
+				return this.comment.length > 0 ? false : true;
 			},
-		}),
+			isDisabledDownloadButton() {
+				return !Object.values(this.downloadFormatFiles).find(
+					(downloadFormatFile) => downloadFormatFile === true
+				);
+			},
+		},
+		data() {
+			return {
+				isMessagesOpen: false,
+				isShareOpen: false,
+				isDownloadOpen: false,
+				isEditComment: false,
+				isCroppedText: true,
+
+				parser: this.parserProp,
+
+				comment: this.parserProp.comment.text,
+				downloadFormatFiles: { excel: false, csv: false },
+
+				shareContent: {
+					url: this.parserProp.url,
+					title: this.parserProp.title,
+					description: this.parserProp.article,
+					image: "https://gitlab.com/uploads/-/system/project/avatar/32004440/Vue.js_Logo_2.svg.png",
+					// *fb only
+					quote: "",
+					// *fb, twtr only
+					hashtags: "",
+				},
+			};
+		},
 
 		methods: {
 			hideAllExtras() {
@@ -358,9 +470,98 @@
 				this.minimizeArticle();
 				this.hideAllExtras();
 			},
+			handleEditClick() {
+				this.isEditComment = !this.isEditComment;
+				if (this.isEditComment === false) {
+					this.comment = this.parser.comment.text;
+				}
+			},
+			async handleSubmitComment() {
+				try {
+					if (this.parser.comment.text === "") {
+						const { comment, id } = await createComment({
+							comment: this.comment,
+							parser: this.parser.id,
+						});
+						this.parser.comment = { text: comment, id };
+						this.isEditComment = false;
+					} else {
+						const { comment } = await updateComment({
+							comment: this.comment,
+							parser: this.parser.id,
+							id: this.parser.comment.id,
+						});
+						this.parser.comment.text = comment;
+						this.isEditComment = false;
+					}
+				} catch (error) {
+					console.log(error);
+					this.toast.error("Что-то пошло не так!");
+				}
+			},
+			async handleDeleteComment() {
+				try {
+					await deleteComment({ id: this.parser.comment.id });
+					this.parser.comment = { text: "", id: null };
+					this.comment = "";
+				} catch (error) {
+					console.log(error);
+					this.toast.error("Что-то пошло не так!");
+				}
+			},
+			async handleClickDownload() {
+				try {
+					const downloadFilesQueue = [];
+					Object.keys(this.downloadFormatFiles).forEach((key) => {
+						if (this.downloadFormatFiles[key] === true) {
+							downloadFilesQueue.push(
+								downloadFile({
+									type: key === "excel" ? "xls" : key,
+								})
+							);
+						}
+					});
+					const responses = await Promise.allSettled(
+						downloadFilesQueue
+					);
+					responses.forEach((response) => {
+						if (response.status === "fulfilled") {
+							const downloadUrl = window.URL.createObjectURL(
+								response.value
+							);
+							let dataFileType =
+								response.value.type.split("/")[1];
+							// преобразование mime-типов ответа в расширение
+							if (
+								dataFileType ===
+								"vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+							) {
+								dataFileType = "xlsx";
+							} else if (
+								dataFileType === "application/vnd.ms-excel"
+							) {
+								dataFileType = "xls";
+							}
+							const linkForDownload = document.createElement("a");
+							linkForDownload.href = downloadUrl;
+							linkForDownload.download = `${this.parser.title}ParserData.${dataFileType}`;
+							document.body.appendChild(linkForDownload);
+							linkForDownload.click();
+							linkForDownload.remove();
+						}
+					});
+				} catch (error) {
+					console.log(error);
+					this.toast.error("Что-то пошло не так!");
+				}
+			},
 		},
 
 		directives: { ClickAway: directive },
+		setup() {
+			const toast = useToast();
+			return { toast };
+		},
 	};
 </script>
 
@@ -453,6 +654,20 @@
 			}
 		}
 
+		&__comment {
+			display: flex;
+			flex-direction: column;
+			&-subtitle {
+				font-weight: 500;
+				margin: 0 0 0.5rem 0;
+			}
+			&-text {
+				font-size: 1.4rem;
+				font-style: italic;
+				margin: 0 0 1rem 0;
+			}
+		}
+
 		&__textarea {
 			width: 100%;
 			height: 7rem;
@@ -465,6 +680,49 @@
 			&::placeholder {
 				user-select: none;
 				color: $black;
+			}
+		}
+		&__controls {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+		}
+		&__contorl-edit-button {
+			cursor: pointer;
+
+			width: 2rem;
+			height: 2rem;
+			&_text {
+				background: none;
+				width: fit-content;
+				height: fit-content;
+				padding: 0.5rem;
+				font-size: 1.4rem;
+				font-weight: 500;
+			}
+			&_align_end {
+				align-self: flex-end;
+			}
+			path {
+				stroke: $black;
+			}
+			&:hover {
+				path {
+					stroke: $primary;
+				}
+			}
+		}
+		&__contorl-remove-button {
+			cursor: pointer;
+			width: 2rem;
+			height: 2rem;
+			path {
+				stroke: $black;
+			}
+			&:hover {
+				path {
+					stroke: $primary;
+				}
 			}
 		}
 
