@@ -168,12 +168,14 @@
             <r-checkbox
               description="Excel"
               v-model="downloadFormatFiles.excel"
+              :checked="downloadFormatFiles.excel"
             ></r-checkbox>
           </li>
           <li class="favorite-content-item__download-list-item">
             <r-checkbox
               description="CSV"
               v-model="downloadFormatFiles.csv"
+              :checked="downloadFormatFiles.csv"
             ></r-checkbox>
           </li>
         </ul>
