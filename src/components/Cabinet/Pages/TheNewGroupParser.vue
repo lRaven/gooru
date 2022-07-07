@@ -124,6 +124,8 @@
 	import { send_new_parsource } from "@/api/parser";
 	import { useToast } from "vue-toastification";
 
+	import ParsourceNotification from "@/components/Cabinet/Parsources/ParsourceNotification.vue";
+
 	export default {
 		name: "TheNewGroupParser",
 		components: {
@@ -249,8 +251,14 @@
 					if (response.status === 201) {
 						this.resetForm();
 
-						console.log("New parsource created");
-						this.toast.success("Новый парсинг создан");
+						console.log("New parsource group created");
+						this.toast.success("Группа парсеров создана");
+						this.toast.info(ParsourceNotification, {
+							timeout: false,
+							closeButton: false,
+							icon: false,
+							closeOnClick: false,
+						});
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания группы парсеров");

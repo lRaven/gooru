@@ -110,8 +110,8 @@
 			async create_account() {
 				try {
 					const response = await registration({
-						email: this.email,
 						username: this.username,
+						email: this.email,
 						password: this.password,
 					});
 

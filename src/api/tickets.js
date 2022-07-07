@@ -2,10 +2,12 @@ import axios from 'axios';
 import store from '@/store';
 import cookie from 'vue-cookies';
 
+const baseURL = store.state.baseURL;
+
 const add_ticket = async (args) => {
 	try {
 		const response =
-			await axios.post(`${store.state.baseURL}/users/support/`,
+			await axios.post(`${baseURL}/users/support/`,
 				{
 					name: args.name,
 					phone_number: args.phone_number,

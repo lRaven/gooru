@@ -128,7 +128,7 @@ const routes = [
 				name: 'new_parser',
 				component: TheNewParser,
 				meta: {
-					title: 'Новый парсинг',
+					title: 'Новый парсер',
 					requiresAuth: true,
 				},
 			},
