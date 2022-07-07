@@ -100,11 +100,17 @@
 			background-color: $white;
 			padding: 1rem 4rem 1rem 1rem;
 			border-radius: 0.6rem;
-			border: 0.1rem solid #3232321a;
+			border: 0.1rem solid rgba($black, $alpha: 0.1);
 			width: 100%;
 			font-weight: 500;
 			text-overflow: ellipsis;
 			transition: all 0.2s ease;
+			&:hover {
+				border-color: rgba($gray, $alpha: 0.5);
+			}
+			&:focus {
+				border-color: $gray;
+			}
 			&:disabled {
 				background-color: rgba(255, 255, 255, 0.5);
 				+ .r-input__icon {

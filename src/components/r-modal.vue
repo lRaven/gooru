@@ -9,7 +9,9 @@
 						@click.stop="this.$emit('close-modal')"
 					></button>
 				</div>
-				<div class="r-modal__body"></div>
+				<div class="r-modal__body">
+					<slot></slot>
+				</div>
 			</div>
 		</transition>
 	</div>
@@ -49,8 +51,9 @@
 		}
 
 		&__content {
-			width: 500px;
-			height: 400px;
+			width: fit-content;
+			max-width: 50vw;
+			max-height: 80vh;
 			border-radius: 1rem;
 			background-color: #fff;
 			overflow: hidden;
@@ -58,9 +61,12 @@
 		}
 
 		&__header {
+			display: flex;
+			padding: 2rem;
 		}
 
 		&__close {
+			margin-left: auto;
 			height: 2rem;
 			width: 2rem;
 			background: url(/public/img/icon/popupCross.svg) center / contain

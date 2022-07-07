@@ -97,7 +97,54 @@
 		</transition-group>
 
 		<transition name="fade" mode="out-in">
-			<r-modal v-if="isModalVisible" @close-modal="close_modal"></r-modal>
+			<r-modal v-if="isModalVisible" @close-modal="close_modal">
+				<template v-slot>
+					<form
+						class="the-rates__create-appeal"
+						@submit="create_ticket"
+					>
+						<h2 class="the-rates__create-appeal-title">
+							Новое обращение
+						</h2>
+						<fieldset class="the-rates__create-appeal-inputs">
+							<p class="the-rates__create-appeal-description">
+								Выберите тему обращения
+							</p>
+							<r-dropdown
+								selected_item="Тема обращения"
+								showedValue="description"
+								:list="topics"
+								v-model="new_appeal.topic"
+							></r-dropdown>
+
+							<p class="the-rates__create-appeal-description">
+								Выберите парсер
+							</p>
+							<r-dropdown
+								selected_item="Парсер"
+								showedValue="title"
+								:list="all_parsers"
+								v-model="new_appeal.parser"
+							></r-dropdown>
+
+							<p class="the-rates__create-appeal-description">
+								Напишите текст обращения
+							</p>
+							<r-textarea
+								v-model="new_appeal.message"
+								:value="new_appeal.message"
+								placeholder="Текстовое описание требований для поиска"
+							></r-textarea>
+
+							<r-button
+								text="Отправить"
+								type="submit"
+								:disabled="!isNewAppealValid"
+							></r-button>
+						</fieldset>
+					</form>
+				</template>
+			</r-modal>
 		</transition>
 	</section>
 </template>
@@ -109,7 +156,12 @@
 	import StatsCard from "@/components/Cabinet/Stats/StatsCard.vue";
 	import rButton from "@/components/r-button.vue";
 	import rLoader from "@/components/r-loader.vue";
+
 	import rModal from "@/components/r-modal.vue";
+	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
+	import rTextarea from "@/components/Cabinet/r-textarea.vue";
+	import { add_ticket } from "@/api/tickets";
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheRates",
@@ -118,15 +170,30 @@
 			StatsCard,
 			rButton,
 			rLoader,
+
 			rModal,
+			rDropdown,
+			rTextarea,
 		},
-		watch: { userRate() {} },
+		watch: {
+			userRate() {},
+			new_appeal: {
+				handler() {
+					this.validateForm();
+				},
+				deep: true,
+			},
+		},
 		computed: {
 			...mapState({
 				baseURL: (state) => state.baseURL,
 				rates: (state) => state.rates.rates,
 				stats: (state) => state.stats.stats,
 				userRate: (state) => state.cabinet.rate,
+
+				topics: (state) => state.appeals.topics,
+				all_parsers: (state) => state.parsers.all_parsers,
+				user: (state) => state.cabinet.user,
 			}),
 			pendingForCapture() {
 				return this.userRate.status === "payment.waiting_for_capture"
@@ -146,10 +213,18 @@
 		data: () => ({
 			isRatesLoaded: false,
 			isModalVisible: false,
+
+			new_appeal: {
+				topic: "",
+				parser: "",
+				message: "",
+			},
+
+			isNewAppealValid: false,
 		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["updateRateData"]),
+			...mapActions(["updateRateData", "getAllParsers"]),
 			select_rate(rate_id) {
 				console.log("Rate selected: ", rate_id);
 				console.log("Opening the payment page...");
@@ -191,9 +266,56 @@
 			close_modal() {
 				this.isModalVisible = false;
 			},
+
+			async create_ticket() {
+				try {
+					const response = await add_ticket({
+						name: this.user.username,
+						phone_number: this.user.phone_number,
+						email: this.user.email,
+						message: this.new_appeal.message,
+						topic_type: this.new_appeal.topic,
+						parser: this.new_appeal.parser,
+					});
+					if (response.status === 201) {
+						this.resetForm();
+
+						console.log("Ticket created");
+						this.toast.success("Обращение создано");
+
+						this.$router.push({
+							name: "appeals",
+							query: { page: 1 },
+						});
+					}
+				} catch (err) {
+					this.toast.error("Ошибка создания обращения");
+					throw new Error(err);
+				}
+			},
+
+			validateForm() {
+				this.new_appeal.topic !== "" &&
+				this.new_appeal.message.length > 0
+					? (this.isNewAppealValid = true)
+					: (this.isNewAppealValid = false);
+			},
+
+			resetForm() {
+				for (const key in this.new_appeal) {
+					if (Object.hasOwnProperty.call(this.new_appeal, key)) {
+						this.new_appeal[key] = "";
+					}
+				}
+			},
 		},
 		created() {
 			this.SET_TAB("rates");
+			this.getAllParsers();
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
@@ -317,6 +439,57 @@
 			.the-rates {
 				&__title {
 					margin-bottom: 3rem;
+				}
+			}
+		}
+
+		&__create-appeal {
+			padding: 0 2rem 2rem 2rem;
+
+			&-title {
+				text-align: center;
+				margin-bottom: 3rem;
+				font-weight: 600;
+				color: $gray;
+			}
+			&-inputs {
+				display: grid;
+				grid-template-columns: max-content minmax(30rem, max-content);
+				grid-gap: 2rem;
+				align-items: center;
+			}
+
+			&-description {
+				&:nth-child(5) {
+					align-self: flex-start;
+					padding-top: 1rem;
+				}
+			}
+
+			.r-dropdown {
+				&__selected {
+					font-size: 1.8rem;
+				}
+			}
+
+			.r-textarea {
+				font-size: 1.8rem;
+			}
+			.r-button {
+				margin-top: 2rem;
+				grid-column: 1/3;
+			}
+		}
+	}
+</style>
+
+<style lang="scss">
+	.the-rates {
+		&__create-appeal {
+			.r-dropdown {
+				&__selected,
+				&__list-item {
+					font-size: 1.8rem;
 				}
 			}
 		}
