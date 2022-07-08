@@ -34,7 +34,7 @@ const actions = {
 
 			if (response.status === 200) {
 				let favorites = [];
-
+				
 				//* сборка parsource в которых есть парсеры в избранном
 				parsers.forEach( parser => {
 					const matchedParsource = response.data.results.find( parsource => parsource.id === parser.parsource);
@@ -43,6 +43,7 @@ const actions = {
 						favorites.push(matchedParsource);
 					}
 				})
+
 
 				//* сборка parsers в их parsources по id
 				favorites.forEach(parsource => {

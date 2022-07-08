@@ -161,7 +161,6 @@
 			<div
 				v-if="parser.comment.text && !isEditComment"
 				class="parser-content__comment"
-       
 			>
 				<p class="parser-content__comment-subtitle">Комментарий:</p>
 				<p class="parser-content__comment-text">

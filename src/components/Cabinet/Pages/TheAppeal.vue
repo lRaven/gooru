@@ -272,7 +272,7 @@
 			text-overflow: ellipsis;
 			overflow: hidden;
 			white-space: nowrap;
-      padding: 0 0 1rem 0;
+			padding: 0 0 1rem 0;
 		}
 		&__header {
 			display: flex;
@@ -289,8 +289,8 @@
 			background-color: transparent;
 			width: 3rem;
 			margin-right: 2rem;
-			/* &-icon {
-			} */
+			&-icon {
+			}
 		}
 
 		&__main {
