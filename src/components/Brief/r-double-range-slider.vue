@@ -3,7 +3,7 @@
 		v-model="range"
 		:min="min"
 		:max="max"
-		:lazy="false"
+		:lazy="true"
 		:tooltips="false"
 		class="r-double-range-slider"
 		@change="this.$emit('update:modelValue', [selected_min, selected_max])"

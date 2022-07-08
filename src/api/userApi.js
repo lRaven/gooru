@@ -14,9 +14,7 @@ const registration = async ({ username, email, password }) => {
 		});
 		return response;
 
-	} catch (error) {
-		throw new Error(error);
-	}
+	} catch (error) { throw new Error(error); }
 }
 
 const registration_by_tel = async () => {

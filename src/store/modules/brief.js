@@ -11,6 +11,7 @@ const state = () => ({
 	additional_parameters: [],
 	number_of_positions: [],
 	source: {},
+
 	user_contacts: [],
 })
 
@@ -29,6 +30,7 @@ const mutations = {
 	SET_ADDITIONAL_PARAMETERS: (state, payload) => state.additional_parameters = payload,
 	SET_NUMBER_OF_POSITIONS: (state, payload) => state.number_of_positions = payload,
 	SET_SOURCE: (state, payload) => state.source = payload,
+
 	SET_USER_CONTACTS: (state, payload) => state.user_contacts = payload,
 }
 

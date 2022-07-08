@@ -1,6 +1,7 @@
 <template>
 	<label class="r-input">
 		<input
+			:id="id"
 			class="r-input__input"
 			:class="{ transparent: isTransparent }"
 			:type="input_type_changed"
@@ -44,6 +45,11 @@
 	export default {
 		name: "r-input",
 		props: {
+			id: {
+				value: String,
+				Number,
+				default: 1,
+			},
 			placeholder: String,
 			input_type: {
 				value: String,

@@ -117,6 +117,9 @@
 
 					if (response.status === 201) {
 						this.toast.success("Аккаунт успешно создан");
+						this.toast.info(
+							`Электронное письмо с подтверждением было отправлено на: ${this.email}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+						);
 						console.log("Account created");
 
 						console.log("Redirect to login page");
