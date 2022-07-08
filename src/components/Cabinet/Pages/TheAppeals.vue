@@ -1,7 +1,7 @@
 <template>
 	<section
 		class="the-appeals"
-		:class="user.role === 'DefaultUser' ? 'has-right-panel' : ''"
+		:class="{ has_right_panel: user.role === 'DefaultUser' }"
 	>
 		<div class="the-appeals__main">
 			<div class="the-appeals__header">
@@ -277,7 +277,7 @@
 
 	.the-appeals {
 		padding: 0;
-		&.has-right-panel {
+		&.has_right_panel {
 			display: grid;
 			grid-template-columns: 1fr max-content;
 			grid-gap: 2rem;

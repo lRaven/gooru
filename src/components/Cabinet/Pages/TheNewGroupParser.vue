@@ -4,7 +4,7 @@
 
 		<form
 			class="the-new-group-parser__form"
-			:class="userRole !== 'DefaultUser' ? 'manager' : ''"
+			:class="{ manager: userRole !== 'DefaultUser' }"
 			@submit.prevent="create_parsource"
 		>
 			<template v-if="userRole !== 'DefaultUser'">

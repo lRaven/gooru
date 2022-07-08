@@ -158,7 +158,7 @@
 				<button
 					type="button"
 					class="the-user__tabs-button"
-					:class="tab === 1 ? 'current' : ''"
+					:class="{ current: tab === 1 }"
 					@click="tab = 1"
 				>
 					<p>Парсеры</p>
@@ -166,7 +166,7 @@
 				<button
 					type="button"
 					class="the-user__tabs-button"
-					:class="tab === 2 ? 'current' : ''"
+					:class="{ current: tab === 2 }"
 					@click="tab = 2"
 				>
 					<p>Обращения</p>

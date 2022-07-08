@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="parsource-card"
-		:class="isParsourceManagerView ? 'manager' : ''"
-	>
+	<div class="parsource-card" :class="{ manager: isParsourceManagerView }">
 		<r-checkbox
 			v-model="isSelected"
 			:checked="isSelected"

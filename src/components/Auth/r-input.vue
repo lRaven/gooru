@@ -2,7 +2,7 @@
 	<label class="r-input">
 		<input
 			class="r-input__input"
-			:class="isTransparent ? 'transparent' : ''"
+			:class="{ transparent: isTransparent }"
 			:type="input_type_changed"
 			:value="value"
 			:placeholder="placeholder"
