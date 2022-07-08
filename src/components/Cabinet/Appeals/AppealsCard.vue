@@ -13,14 +13,15 @@
 		<div class="appeals-card__col">
 			<p class="appeals-card__source">
 				{{
-					user.role === "Manager"
-						? `${appeal.user.first_name}.${appeal.user.last_name[0]}`
+					user.role !== "DefaultUser"
+						? `${appeal.user.first_name}
+						${appeal.user.last_name.length > 0 ? `${appeal.user.last_name[0]}.` : ""}`
 						: source
 				}}
 			</p>
-			<span class="appeals-card__counter">{{
-				messages_counter > 0 ? messages_counter : ""
-			}}</span>
+			<span class="appeals-card__counter">
+				{{ messages_counter > 0 ? messages_counter : "" }}
+			</span>
 		</div>
 
 		<div class="appeals-card__col appeals-card__topic">{{ topic }}</div>
