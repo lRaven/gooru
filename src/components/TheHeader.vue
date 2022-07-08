@@ -137,7 +137,11 @@
 								<p
 									class="the-header__account-menu-item-description"
 								>
-									Мой профиль
+									{{
+										user.role === "DefaultUser"
+											? "Мои парсы"
+											: "Все парсеры"
+									}}
 								</p>
 							</li>
 
