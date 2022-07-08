@@ -36,10 +36,10 @@ const actions = {
 				let favorites = [];
 
 				//* сборка parsource в которых есть парсеры в избранном
-				parsers.forEach( parser => {
-					const matchedParsource = response.data.results.find( parsource => parsource.id === parser.parsource);
-					const duplicatedItem = favorites.find( parsource => parsource.id === matchedParsource.id);
-					if(!duplicatedItem) {
+				parsers.forEach(parser => {
+					const matchedParsource = response.data.results.find(parsource => parsource.id === parser.parsource);
+					const duplicatedItem = favorites.find(parsource => parsource.id === matchedParsource.id);
+					if (!duplicatedItem && matchedParsource !== undefined) {
 						favorites.push(matchedParsource);
 					}
 				})

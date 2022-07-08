@@ -113,6 +113,8 @@
 			}
 			&:disabled {
 				background-color: rgba(255, 255, 255, 0.5);
+				border-color: rgba($black, $alpha: 0.1);
+
 				+ .r-input__icon {
 					cursor: default;
 				}

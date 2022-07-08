@@ -161,6 +161,7 @@
 			<div
 				v-if="parser.comment.text && !isEditComment"
 				class="parser-content__comment"
+       
 			>
 				<p class="parser-content__comment-subtitle">Комментарий:</p>
 				<p class="parser-content__comment-text">
@@ -333,6 +334,7 @@
 						<r-checkbox
 							description="Excel"
 							name="xls"
+							:checked="downloadFormatFiles.excel"
 							v-model="downloadFormatFiles.excel"
 						></r-checkbox>
 					</li>
@@ -340,6 +342,7 @@
 						<r-checkbox
 							description="CSV"
 							name="csv"
+							:checked="downloadFormatFiles.csv"
 							v-model="downloadFormatFiles.csv"
 						></r-checkbox>
 					</li>
@@ -368,7 +371,7 @@
 		updateComment,
 		deleteComment,
 		downloadFile,
-	} from "@/api/parserApi";
+	} from "@/api/parser";
 
 	export default {
 		name: "ParserContent",

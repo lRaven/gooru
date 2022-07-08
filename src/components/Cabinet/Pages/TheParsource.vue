@@ -175,7 +175,6 @@
 					</r-spoiler>
 
 					<r-button
-						:disabled="!isFilterFormInvalid"
 						class="the-parsource__right-panel-submit"
 						text="Применить"
 						type="submit"
@@ -268,7 +267,7 @@
 	import { multiaction_delete } from "@/api/multiaction_delete";
 	import { useToast } from "vue-toastification";
 
-	import { prettyDate } from '@/js/processStrings';
+	import { prettyDate } from "@/js/processStrings";
 
 	export default {
 		name: "TheParsource",
@@ -322,13 +321,6 @@
 					this.getAllUsers();
 					this.getUsersManagers();
 				}
-			},
-
-			filters: {
-				handler() {
-					this.validateFilterForm();
-				},
-				deep: true,
 			},
 
 			async selected_manager() {
@@ -403,7 +395,6 @@
 		},
 		data() {
 			return {
-				isFilterFormInvalid: true,
 				isConfirmPopupVisible: false,
 				isParsersLoaded: false,
 				path: this.$route.path,
@@ -450,23 +441,6 @@
 				});
 			},
 
-			validateFilterForm() {
-				let isValid = false;
-
-				for (const key in this.filters) {
-					if (Object.hasOwnProperty.call(this.filters, key)) {
-						if (this.filters[key] === true) isValid = true;
-						if (
-							typeof this.filters[key] === "string" &&
-							this.filters[key].length > 0
-						)
-							isValid = true;
-					}
-				}
-
-				this.isFilterFormInvalid = isValid;
-			},
-
 			async action_confirm() {
 				//*TODO: временно удаление происходит через multiaction_delete передавая id в массиве
 				try {
@@ -506,8 +480,6 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
-
-			this.validateFilterForm();
 
 			this.getParsource(this.parsource_id);
 
