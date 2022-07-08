@@ -289,8 +289,8 @@
 			background-color: transparent;
 			width: 3rem;
 			margin-right: 2rem;
-			&-icon {
-			}
+			/* &-icon {
+			} */
 		}
 
 		&__main {
