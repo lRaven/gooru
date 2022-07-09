@@ -5,18 +5,16 @@ import cookie from 'vue-cookies';
 const baseURL = store.state.baseURL;
 
 //* auth
-const registration = async ({ email, username, password }) => {
+const registration = async ({ username, email, password }) => {
 	try {
 		const response = await axios.post(`${baseURL}/auth/users/`, {
-			email,
 			username,
+			email,
 			password,
 		});
 		return response;
 
-	} catch (error) {
-		throw new Error(error);
-	}
+	} catch (error) { throw new Error(error); }
 }
 
 const registration_by_tel = async () => {

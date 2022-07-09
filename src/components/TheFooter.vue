@@ -1,6 +1,6 @@
 <template>
 	<footer class="the-footer">
-		<div class="the-footer__container center-wide">
+		<div class="the-footer__container center__wide">
 			<div class="the-footer__col">
 				<div class="the-footer__company">
 					<img

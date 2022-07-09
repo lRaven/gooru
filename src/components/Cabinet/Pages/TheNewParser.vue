@@ -69,6 +69,8 @@
 	import { send_new_parsource } from "@/api/parser";
 	import { useToast } from "vue-toastification";
 
+	import ParsourceNotification from "@/components/Cabinet/Parsources/ParsourceNotification.vue";
+
 	export default {
 		name: "TheNewParser",
 		components: {
@@ -183,7 +185,13 @@
 						this.resetForm();
 
 						console.log("New parsource created");
-						this.toast.success("Новый парсинг создан");
+						this.toast.success("Парсер создан");
+						this.toast.info(ParsourceNotification, {
+							timeout: false,
+							closeButton: false,
+							icon: false,
+							closeOnClick: false,
+						});
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания парсера");

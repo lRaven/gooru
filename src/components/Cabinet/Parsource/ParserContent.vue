@@ -15,7 +15,7 @@
 			<div class="parser-content__col">
 				<p
 					class="parser-content__text"
-					:class="isCroppedText === true ? 'cropped' : ''"
+					:class="{ cropped: isCroppedText }"
 				>
 					{{ parser.article }}
 				</p>

@@ -1,6 +1,6 @@
 <template>
 	<div class="page-brief theme-container" style="background">
-		<div class="page-brief__container center-wide">
+		<div class="page-brief__container center__wide">
 			<img
 				src="img/brief/brief-bg.png"
 				ref="bg"
@@ -183,7 +183,7 @@
 		},
 		computed: { ...mapState(["document_width"]) },
 		data: () => ({
-			page_number: 8,
+			page_number: 1,
 			page_progress: [
 				{ id: 1, checked: "checked" },
 				{ id: 2, checked: false },

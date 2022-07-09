@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="parsource-card"
-		:class="isParsourceManagerView ? 'manager' : ''"
-	>
+	<div class="parsource-card" :class="{ manager: isParsourceManagerView }">
 		<r-checkbox
 			v-model="isSelected"
 			:checked="isSelected"
@@ -26,7 +23,7 @@
 			</p>
 
 			<div
-				class="parsource-card__name"
+				class="parsource-card__col parsource-card__name"
 				v-if="!isParsourceManagerView"
 				v-click-away="handleCloseEditParsourceMode"
 			>

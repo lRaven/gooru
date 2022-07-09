@@ -35,6 +35,8 @@
 		padding: 2rem 3rem;
 		border-radius: 0.5rem;
 		min-width: max-content;
+		height: max-content;
+		opacity: 1;
 		transition: all 0.2s ease;
 		&:hover {
 			transform: translateY(-0.3rem);

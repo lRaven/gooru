@@ -31,7 +31,7 @@
 		<div class="the-parsources__content">
 			<div
 				class="the-parsources__sort"
-				:class="userRole !== 'DefaultUser' ? 'manager' : ''"
+				:class="{ manager: userRole !== 'DefaultUser' }"
 			>
 				<sort-button
 					description="Пользователь"

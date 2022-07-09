@@ -106,7 +106,7 @@ const actions = {
 		try {
 			const updatedName = await updateParsourceName({ id: payload.id, name: payload.editedName });
 
-			const updatedParsources = context.state.parsources.map( parsource => {
+			const updatedParsources = context.state.parsources.map(parsource => {
 				if (parsource.id === payload.id) {
 					parsource.name = updatedName
 				}
@@ -118,31 +118,31 @@ const actions = {
 		}
 	},
 
-  //* get parsers with pagination
-  getParsers: async (context, args) => {
-    try {
-      const response = await axios.get(
-        `${store.state.baseURL}/parser/?parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
-        { headers: { Authorization: `token ${cookie.get("auth_token")}` } }
-      );
-      if (response.status === 200) {
-        console.log(response.data.results);
+	//* get parsers with pagination
+	getParsers: async (context, args) => {
+		try {
+			const response = await axios.get(
+				`${store.state.baseURL}/parser/?${args.search ? `search=${args.search}&` : ''}parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
+				{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
+			);
+			if (response.status === 200) {
+				console.log(response.data.results);
 
-        const comments = await getComments();
-        const parsersList = response.data.results.map((parser) => {
-          const matchedComment = comments.find(
-            (commentItem) => commentItem.parser === parser.id
-          );
-          if (matchedComment) {
-            return {
-              ...parser,
-              comment: { text: matchedComment.comment, id: matchedComment.id },
-            };
-          } else {
-            return { ...parser, comment: { text: "", id: null } };
-          }
-        });
-        context.commit("SET_PARSERS", parsersList);
+				const comments = await getComments();
+				const parsersList = response.data.results.map((parser) => {
+					const matchedComment = comments.find(
+						(commentItem) => commentItem.parser === parser.id
+					);
+					if (matchedComment) {
+						return {
+							...parser,
+							comment: { text: matchedComment.comment, id: matchedComment.id },
+						};
+					} else {
+						return { ...parser, comment: { text: "", id: null } };
+					}
+				});
+				context.commit("SET_PARSERS", parsersList);
 
 				let pagination_info = {};
 

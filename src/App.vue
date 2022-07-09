@@ -21,7 +21,9 @@
 			},
 		},
 		computed: { ...mapState(["baseURL"]) },
-		methods: { ...mapActions(["getDocumentWidth", "getUserData", "getUserRate"]) },
+		methods: {
+			...mapActions(["getDocumentWidth", "getUserData", "getUserRate"]),
+		},
 		created() {
 			this.getDocumentWidth();
 			this.getUserData();

@@ -16,7 +16,7 @@
 			<input
 				type="text"
 				name=""
-				id=""
+				:id="text_input_id"
 				class="r-radio-select__text"
 				:placeholder="description"
 				@input="
@@ -38,6 +38,11 @@
 	export default {
 		name: "rRadioSelect",
 		props: {
+			text_input_id: {
+				value: String,
+				Number,
+				default: 1,
+			},
 			hasInputField: {
 				value: Boolean,
 				default: false,

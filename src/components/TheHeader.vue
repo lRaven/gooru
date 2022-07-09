@@ -1,11 +1,17 @@
 <template>
 	<header
 		class="the-header"
-		:class="isCabinetVersion === true ? 'bg bg-cabinet' : null"
+		:class="{
+			bg: isCabinetVersion,
+			bg__cabinet: isCabinetVersion,
+		}"
 		id="header"
 		ref="header"
 	>
-		<div class="the-header__container center-wide">
+		<div
+			class="the-header__container"
+			:class="{ center__wide: !isCabinetVersion }"
+		>
 			<div class="the-header__col">
 				<router-link
 					:to="{ name: 'home' }"
@@ -287,7 +293,7 @@
 			box-shadow: $shadow;
 			padding: 2rem 4rem;
 			transition: all 0.5s ease;
-			&.bg-cabinet {
+			&.bg__cabinet {
 				padding: 1rem 4rem;
 				.the-header {
 					&__container {

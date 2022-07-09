@@ -1,9 +1,9 @@
 <template>
-	<div class="stats-card-row" :class="isRate ? 'rate' : ''">
+	<div class="stats-card-row" :class="{ rate: isRate }">
 		<p class="stats-card-row__description">{{ description }}</p>
 		<span
 			class="stats-card-row__value"
-			:class="isRate && id === 3 ? 'bold' : ''"
+			:class="{ bold: isRate && id === 3 }"
 		>
 			{{ value }}
 		</span>

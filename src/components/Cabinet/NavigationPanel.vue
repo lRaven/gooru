@@ -1,5 +1,5 @@
 <template>
-	<nav class="navigation-panel" :class="isMinimized ? 'minimized' : ''">
+	<nav class="navigation-panel" :class="{ minimized: isMinimized }">
 		<button
 			type="button"
 			class="navigation-panel__minimize"

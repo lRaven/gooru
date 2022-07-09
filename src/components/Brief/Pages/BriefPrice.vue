@@ -37,9 +37,9 @@
 				</p>
 			</div>
 
-			<div class="brief-price__row">
+			<form @submit.prevent="create_user" class="brief-price__row">
 				<div class="brief-price__contacts">
-					<label class="brief-price__contact">
+					<div class="brief-price__contact">
 						<div class="brief-price__contact-hint">
 							<img
 								src="img/icon/brief/profile.svg"
@@ -48,53 +48,67 @@
 							/>
 						</div>
 
-						<input
-							type="text"
-							name=""
-							id=""
+						<r-input
+							id="username"
+							input_type="text"
 							class="brief-price__contact-input"
 							placeholder="Имя"
-							v-model="user_data.username.content"
-							pattern="^[A-Za-zА-Яа-яЁё\s]+$"
-							@input="
-								user_data.username.valid =
-									$event.target.checkValidity()
-							"
-						/>
-					</label>
+							v-model="user_data.username"
+							:value="user_data.username"
+						></r-input>
+					</div>
 
-					<label class="brief-price__contact">
+					<div class="brief-price__contact">
 						<div class="brief-price__contact-hint">
 							<img
-								src="img/icon/brief/mobile.svg"
+								src="img/icon/at.svg"
 								alt="icon"
 								class="brief-price__contact-icon"
 							/>
 						</div>
 
-						<input
-							type="tel"
+						<r-input
+							id="email"
+							input_type="email"
 							class="brief-price__contact-input"
-							placeholder="Телефон"
-							v-model="user_data.tel.content"
-							pattern="[\+]*[7-8]{1}\s?[\(]*9[0-9]{2}[\)]*\s?\d{3}[-]*\d{2}[-]*\d{2}"
-							@input="
-								user_data.tel.valid =
-									$event.target.checkValidity()
-							"
-						/>
-					</label>
+							placeholder="E-mail"
+							v-model="user_data.email"
+							:value="user_data.email"
+							@click="isPasswordInputVisible = true"
+						></r-input>
+					</div>
+
+					<transition mode="out-in">
+						<div
+							class="brief-price__contact"
+							v-if="isPasswordInputVisible"
+						>
+							<div class="brief-price__contact-hint">
+								<img
+									src="img/icon/key.svg"
+									alt="icon"
+									class="brief-price__contact-icon"
+								/>
+							</div>
+
+							<r-input
+								id="password"
+								input_type="password"
+								class="brief-price__contact-input"
+								placeholder="Введите пароль"
+								v-model="user_data.password"
+								:value="user_data.password"
+							></r-input>
+						</div>
+					</transition>
 				</div>
 
 				<r-button
+					type="submit"
 					:disabled="isDisabledBtn"
 					description="Да не вопрос! Держите!"
-					@click="
-						SET_USER_CONTACTS(send_user_data);
-						this.$emit('moveToNextPage');
-					"
 				></r-button>
-			</div>
+			</form>
 		</div>
 	</section>
 </template>
@@ -102,26 +116,34 @@
 <script>
 	import RateCard from "@/components/Rates/RateCard";
 	import rButton from "@/components/Brief/r-button";
-	import { mapState, mapMutations } from "vuex";
+	import rInput from "@/components/Auth/r-input.vue";
+	import { mapMutations, mapState } from "vuex";
+	import { registration } from "@/api/userApi";
+
+	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "BriefPrice",
 		components: {
 			RateCard,
 			rButton,
+			rInput,
 		},
 		watch: {
 			user_data: {
 				handler: function () {
 					if (
-						this.user_data.username.content.length > 0 &&
-						this.user_data.username.valid === true &&
-						this.user_data.tel.content > 0 &&
-						this.user_data.tel.valid === true
+						this.user_data.username.length > 0 &&
+						this.user_data.email.length > 0 &&
+						this.user_data.password.length >= 8
 					) {
 						this.isDisabledBtn = false;
 					} else {
 						this.isDisabledBtn = true;
+					}
+
+					if (this.user_data.email.length > 0) {
+						this.isPasswordInputVisible = true;
 					}
 				},
 				deep: true,
@@ -146,29 +168,54 @@
 			send_user_data() {
 				let result = {};
 
-				result.username = this.user_data.username.content;
-				result.tel = this.user_data.tel.content;
+				result.username = this.user_data.username;
+				result.email = this.user_data.email;
+				result.password = this.user_data.password;
 
 				return result;
 			},
 		},
 		data: () => ({
 			isDisabledBtn: true,
+			isPasswordInputVisible: false,
 
 			user_data: {
-				username: {
-					content: "",
-					valid: null,
-				},
-				tel: {
-					content: "",
-					valid: null,
-				},
+				username: "",
+				email: "",
+				password: "",
 			},
 		}),
 
 		methods: {
 			...mapMutations(["SET_USER_CONTACTS"]),
+			async create_user() {
+				try {
+					const response = await registration({
+						username: this.user_data.username,
+						email: this.user_data.email,
+						password: this.user_data.password,
+					});
+
+					if (response.status === 201) {
+						this.toast.success("Аккаунт создан");
+						this.toast.info(
+							`Электронное письмо с подтверждением было отправлено на: ${this.user_data.email}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+						);
+						console.log("User created from brief");
+						this.SET_USER_CONTACTS(this.send_user_data);
+						this.$emit("moveToNextPage");
+					}
+				} catch (err) {
+					this.toast.error(
+						"Ошибка отправки контактов, проверьте правильность введённых данных"
+					);
+					throw new Error(err);
+				}
+			},
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
@@ -278,12 +325,14 @@
 				height: 5rem;
 			}
 			&-icon {
+				width: 1.5rem;
+				height: 1.5rem;
+				object-fit: contain;
 			}
 			&-input {
-				padding: 1.5rem;
 				width: 100%;
-				font-size: 1.5rem;
-				font-weight: 500;
+				height: 5rem;
+				overflow: hidden;
 			}
 		}
 	}
@@ -316,6 +365,21 @@
 			.r-button {
 				width: max-content;
 				margin: 0 auto;
+			}
+		}
+	}
+</style>
+
+<style lang="scss">
+	.brief-price {
+		&__contact {
+			&-input {
+				&.r-input {
+					.r-input__input {
+						border-radius: 0 1rem 1rem 0;
+						height: 100%;
+					}
+				}
 			}
 		}
 	}

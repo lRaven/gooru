@@ -13,5 +13,8 @@ app.use(store);
 app.use(router);
 app.use(VueCookies);
 app.use(VueSocialSharing);
-app.use(Toast, { position: POSITION.BOTTOM_RIGHT })
+app.use(Toast, {
+	position: POSITION.BOTTOM_RIGHT,
+	newestOnTop: false,
+})
 app.mount('#app');

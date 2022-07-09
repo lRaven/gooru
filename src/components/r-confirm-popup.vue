@@ -24,22 +24,14 @@
 	export default {
 		name: "rConfirmPopup",
 		props: {
-			isConfirmPopupVisible: {
-				value: Boolean,
-				default: false,
-			},
 			text: {
 				value: String,
 				default: "Action confirmation",
 			},
 		},
-		data: () => ({
-			isPopupBodyVisible: false,
-		}),
-		components: {
-			rButton,
-		},
-		created() {
+		data: () => ({ isPopupBodyVisible: false }),
+		components: { rButton },
+		mounted() {
 			setTimeout(() => {
 				this.isPopupBodyVisible = true;
 			}, 200);

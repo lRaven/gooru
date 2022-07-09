@@ -3,7 +3,7 @@
 		name=""
 		id=""
 		class="r-textarea"
-		:class="bordered === true ? 'bordered' : null"
+		:class="{ bordered: bordered }"
 		:style="`height: ${height}rem`"
 		:placeholder="placeholder"
 		:value="value"

@@ -1,7 +1,7 @@
 <template>
 	<section
 		class="the-appeals"
-		:class="user.role === 'DefaultUser' ? 'has-right-panel' : ''"
+		:class="{ has_right_panel: user.role === 'DefaultUser' }"
 	>
 		<div class="the-appeals__main">
 			<div class="the-appeals__header">
@@ -91,6 +91,7 @@
 
 						<r-dropdown
 							selected_item="Парсер"
+							showedValue="title"
 							:list="all_parsers"
 							v-model="new_appeal.parser"
 						></r-dropdown>
@@ -219,7 +220,7 @@
 			async create_ticket() {
 				try {
 					const response = await add_ticket({
-						name: this.user.first_name,
+						name: this.user.username,
 						phone_number: this.user.phone_number,
 						email: this.user.email,
 						message: this.new_appeal.message,
@@ -298,7 +299,7 @@
 
 	.the-appeals {
 		padding: 0;
-		&.has-right-panel {
+		&.has_right_panel {
 			display: grid;
 			grid-template-columns: 1fr max-content;
 			grid-gap: 2rem;
