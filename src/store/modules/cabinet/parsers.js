@@ -126,8 +126,6 @@ const actions = {
 				{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 			);
 			if (response.status === 200) {
-				console.log(response.data.results);
-
 				const comments = await getComments();
 				const parsersList = response.data.results.map((parser) => {
 					const matchedComment = comments.find(

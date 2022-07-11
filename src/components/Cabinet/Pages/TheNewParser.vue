@@ -60,7 +60,7 @@
 </template>
 
 <script>
-	import { mapActions, mapMutations, mapState } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 	import { send_new_parsource } from "@/api/parser";
 	import { useToast } from "vue-toastification";
 
@@ -127,7 +127,7 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getAllUsers"]),
+			...mapActions(["getAllUsers", "getNotifications"]),
 
 			checkFieldsInputs(options) {
 				switch (options) {
@@ -181,6 +181,7 @@
 							icon: false,
 							closeOnClick: false,
 						});
+						this.getNotifications();
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания парсера");

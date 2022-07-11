@@ -420,8 +420,8 @@
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
 			&.cropped {
-				text-overflow: ellipsis;
 				display: -webkit-box;
+				text-overflow: ellipsis;
 				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
 				overflow: hidden;

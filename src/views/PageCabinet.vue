@@ -1,7 +1,8 @@
 <template>
 	<div class="page-cabinet theme-container">
-		<the-header :isCabinetVersion="true" />
-		<navigation-panel />
+		<the-header :isCabinetVersion="true"></the-header>
+
+		<navigation-panel :notifications="notifications"></navigation-panel>
 
 		<main class="page-cabinet__main main">
 			<router-view v-slot="{ Component }">
@@ -18,9 +19,8 @@
 </template>
 
 <script>
-	import { mapState } from "vuex";
+	import { mapState, mapActions } from "vuex";
 	import TheHeader from "@/components/TheHeader";
-
 	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
 
 	export default {
@@ -35,10 +35,10 @@
 					this.$router.push({ name: "login" });
 			},
 			//* при получении юзера, редиректить на дефолтную страницу юзера в случае если находимся на главной странице кабинета
-			user: {
+			userRole: {
 				handler() {
 					if (this.$route.name === "cabinet") {
-						this.redirectUserByRole(this.user.role);
+						this.redirectUserByRole(this.userRole);
 					}
 				},
 				deep: true,
@@ -47,19 +47,21 @@
 			//* при изменении url смотреть, если находимся на главной странице кабинета, то редирект на дефолтную страницу юзера
 			"$route.path"() {
 				if (this.$route.name === "cabinet") {
-					this.redirectUserByRole(this.user.role);
+					this.redirectUserByRole(this.userRole);
 				}
 			},
 		},
 		computed: {
 			...mapState({
-				user: (state) => state.cabinet.user,
-				user_auth: (state) => state.cabinet.user_auth,
 				tab: (state) => state.navigation_panel.tab,
+				user_auth: (state) => state.cabinet.user_auth,
 				userRole: (state) => state.cabinet.user.role,
+				notifications: (state) => state.notifications.notifications,
 			}),
 		},
 		methods: {
+			...mapActions(["getNotifications"]),
+
 			//* редирект на дефолтную страницу кабинета в зависимости от роли юзера
 			redirectUserByRole(role) {
 				switch (role) {
@@ -85,7 +87,8 @@
 			},
 		},
 		created() {
-			this.redirectUserByRole(this.user.role);
+			this.getNotifications();
+			this.redirectUserByRole(this.userRole);
 		},
 	};
 </script>

@@ -13,6 +13,7 @@ import parsers from '@/store/modules/cabinet/parsers'
 import favorites from '@/store/modules/cabinet/favorites'
 
 import messenger from '@/store/modules/cabinet/messenger'
+import notifications from '@/store/modules/cabinet/notifications'
 
 //* cabinet | admin data
 import users from '@/store/modules/cabinet/admin/users'
@@ -31,8 +32,8 @@ export default createStore({
 		}
 	},
 
-	mutations: { 
-		SET_DOCUMENT_WIDTH: (state, payload) => state.document_width = payload ,
+	mutations: {
+		SET_DOCUMENT_WIDTH: (state, payload) => state.document_width = payload,
 	},
 
 	actions: {
@@ -58,6 +59,7 @@ export default createStore({
 		parsers,
 		favorites,
 		messenger,
+		notifications,
 
 		users,
 	}

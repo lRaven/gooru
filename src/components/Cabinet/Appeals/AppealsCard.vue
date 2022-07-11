@@ -29,7 +29,7 @@
 		</div>
 
 		<p
-			class="appeals-card__col appeals-card__message"
+			class="appeals-card__message"
 			:title="last_message.text || appeal.message"
 		>
 			{{ last_message.text || appeal.message }}
@@ -158,8 +158,8 @@
 		}
 
 		&__message {
-			text-overflow: ellipsis;
 			display: -webkit-box;
+			text-overflow: ellipsis;
 			-webkit-line-clamp: 2;
 			-webkit-box-orient: vertical;
 			overflow: hidden;

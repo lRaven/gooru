@@ -122,7 +122,8 @@
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+	import { read_notification } from "@/api/notifications";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
 	import { useToast } from "vue-toastification";
 
@@ -195,6 +196,13 @@
 				},
 				deep: true,
 			},
+
+			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+			parsources_notifications() {
+				this.parsources_notifications.forEach((notification) => {
+					this.clear_notifications(notification.id);
+				});
+			},
 		},
 		computed: {
 			...mapState({
@@ -202,7 +210,10 @@
 				parsources_pagination: (state) =>
 					state.parsers.parsources_pagination,
 				userRole: (state) => state.cabinet.user.role,
+				userId: (state) => state.cabinet.user.id,
 			}),
+			...mapGetters(["parsources_notifications"]),
+
 			page() {
 				return +this.$route.query.page;
 			},
@@ -234,7 +245,11 @@
 				"SELECT_ALL_PARSOURCES",
 				"UNSELECT_ALL_PARSOURCES",
 			]),
-			...mapActions(["getParsources", "deleteSelectedParsources"]),
+			...mapActions([
+				"getParsources",
+				"deleteSelectedParsources",
+				"getNotifications",
+			]),
 			async sort_list(array, key) {
 				const response = await sortArrayByObjectKey(array, key);
 				this.parsources_list = response;
@@ -246,9 +261,29 @@
 					query: { page: page_number },
 				});
 			},
+
+			async clear_notifications(notification_id) {
+				try {
+					const response = await read_notification({
+						notification_id: notification_id,
+						read: true,
+						user_id: this.userId,
+					});
+					if (response.status === 200) {
+						this.getNotifications();
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
 		},
 		created() {
 			this.SET_TAB("parsers");
+
+			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+			this.parsources_notifications.forEach((notification) => {
+				this.clear_notifications(notification.id);
+			});
 			this.getParsources({
 				page_number: this.page,
 				page_size: this.parsources_in_page,

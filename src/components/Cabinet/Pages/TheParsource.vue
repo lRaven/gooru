@@ -249,7 +249,7 @@
 </template>
 
 <script>
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 	import rStatus from "@/components/Cabinet/r-status";
 	import ParserContent from "@/components/Cabinet/Parsource/ParserContent";
 
@@ -257,11 +257,10 @@
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
 
 	import { change_manager } from "@/api/userApi";
+	import { read_notification } from "@/api/notifications";
 	// import { delete_parsource } from "@/api/parser";
 	import { multiaction_delete } from "@/api/multiaction_delete";
 	import { useToast } from "vue-toastification";
-
-	import { prettyDate } from "@/js/processStrings";
 
 	export default {
 		name: "TheParsource",
@@ -328,6 +327,13 @@
 					throw new Error(err);
 				}
 			},
+
+			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+			parsers_notifications() {
+				this.parsers_notifications.forEach((notification) => {
+					this.clear_notifications(notification.id);
+				});
+			},
 		},
 		computed: {
 			...mapState({
@@ -341,6 +347,7 @@
 				all_users: (state) => state.users.all_users,
 				users_managers: (state) => state.users.users_managers,
 			}),
+			...mapGetters(["parsers_notifications"]),
 
 			parsource_id() {
 				return +this.$route.params.id;
@@ -410,8 +417,8 @@
 				"getAllParsources",
 				"getAllUsers",
 				"getUsersManagers",
+				"getNotifications",
 			]),
-			change_manager,
 
 			page_changed(page_number) {
 				this.$router.push({
@@ -464,10 +471,34 @@
 			close_popup() {
 				this.isConfirmPopupVisible = false;
 			},
-			prettyDate,
+
+			async clear_notifications(notification_id) {
+				try {
+					const response = await read_notification({
+						notification_id: notification_id,
+						read: true,
+						user_id: this.userId,
+					});
+					if (response.status === 200) {
+						this.getNotifications();
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
 		},
 		created() {
 			this.SET_TAB("parsers");
+			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+			this.parsers_notifications.forEach((notification) => {
+				const id = +notification.url.slice(7);
+
+				let bool = this.parsers.find((parser) => parser.id === id);
+
+				if (bool) {
+					this.clear_notifications(notification.id);
+				}
+			});
 
 			this.getParsource(this.parsource_id);
 

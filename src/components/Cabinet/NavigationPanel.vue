@@ -24,6 +24,7 @@
 				/>
 			</svg>
 		</button>
+
 		<div class="navigation-panel__inner">
 			<ul class="navigation-panel__list">
 				<navigation-item
@@ -103,7 +104,7 @@
 					value="appeals"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[0].selected"
-					:counter="0"
+					:counter="appeals_notifications.length"
 				>
 					<template v-slot:icon>
 						<svg
@@ -152,6 +153,10 @@
 					value="parsources"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[1].selected"
+					:counter="
+						parsources_notifications.length +
+						parsers_notifications.length
+					"
 				>
 					<template v-slot:icon>
 						<svg
@@ -274,11 +279,28 @@
 
 <script>
 	import NavigationItem from "@/components/Cabinet/NavigationItem";
-	import { mapState, mapMutations } from "vuex";
+	import { mapState, mapGetters, mapMutations } from "vuex";
 
 	export default {
 		name: "NavigationPanel",
 		components: { NavigationItem },
+		props: {
+			notifications: {
+				value: Array,
+				required: true,
+			},
+		},
+		computed: {
+			...mapState({
+				tab: (state) => state.navigation_panel.tab,
+				user: (state) => state.cabinet.user,
+			}),
+			...mapGetters([
+				"appeals_notifications",
+				"parsources_notifications",
+				"parsers_notifications",
+			]),
+		},
 		data: () => ({
 			isMinimized: false,
 			tabs: [
@@ -303,12 +325,7 @@
 				}
 			},
 		},
-		computed: {
-			...mapState({
-				tab: (state) => state.navigation_panel.tab,
-				user: (state) => state.cabinet.user,
-			}),
-		},
+
 		methods: {
 			...mapMutations(["SET_TAB"]),
 

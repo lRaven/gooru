@@ -22,7 +22,6 @@ const registration_by_tel = async () => {
 		const response = await axios.post(`${baseURL}/user/auth/tel/`,
 			{}
 		);
-		console.log(response);
 		return response;
 	}
 	catch (err) { throw new Error }
