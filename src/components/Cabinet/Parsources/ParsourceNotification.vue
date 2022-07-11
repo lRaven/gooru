@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import rButton from "@/components/r-button.vue";
+	import rButton from "@/components/UI/r-button.vue";
 
 	export default {
 		name: "yoo_test",

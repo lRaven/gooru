@@ -19,8 +19,6 @@
 </template>
 
 <script>
-	import rButton from "@/components/r-button.vue";
-
 	export default {
 		name: "rConfirmPopup",
 		props: {
@@ -30,7 +28,6 @@
 			},
 		},
 		data: () => ({ isPopupBodyVisible: false }),
-		components: { rButton },
 		mounted() {
 			setTimeout(() => {
 				this.isPopupBodyVisible = true;

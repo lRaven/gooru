@@ -115,8 +115,7 @@
 
 <script>
 	import RateCard from "@/components/Rates/RateCard";
-	import rButton from "@/components/Brief/r-button";
-	import rInput from "@/components/Auth/r-input.vue";
+	import rButton from "@/components/Brief/r-button.vue";
 	import { mapMutations, mapState } from "vuex";
 	import { registration } from "@/api/userApi";
 
@@ -127,7 +126,6 @@
 		components: {
 			RateCard,
 			rButton,
-			rInput,
 		},
 		watch: {
 			user_data: {

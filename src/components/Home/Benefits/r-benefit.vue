@@ -18,16 +18,11 @@
 </template>
 
 <script>
-	import rButton from "@/components/r-button";
-	import rAnimatedSvg from "@/components/r-animated-svg";
+	import rAnimatedSvg from "@/components/Home/r-animated-svg";
 
 	export default {
 		name: "rBenefit",
-		components: {
-			rButton,
-			rAnimatedSvg,
-		},
-
+		components: { rAnimatedSvg },
 		props: { benefit: Object },
 	};
 </script>

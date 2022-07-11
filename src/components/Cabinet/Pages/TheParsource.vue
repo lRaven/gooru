@@ -41,7 +41,7 @@
 					</div>
 
 					<transition mode="out-in">
-						<r-loader v-if="!isParsersLoaded"></r-loader>
+						<r-loader v-if="!isParsersLoaded" />
 					</transition>
 
 					<transition mode="out-in" v-if="isParsersLoaded">
@@ -178,7 +178,7 @@
 						class="the-parsource__right-panel-submit"
 						text="Применить"
 						type="submit"
-						@click.stop=""
+						@click.stop
 					></r-button>
 				</form>
 
@@ -252,14 +252,8 @@
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import rStatus from "@/components/Cabinet/r-status";
 	import ParserContent from "@/components/Cabinet/Parsource/ParserContent";
-	import rButton from "@/components/r-button";
-	import rPagination from "@/components/r-pagination";
-	import rLoader from "@/components/r-loader.vue";
-	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
-	import rConfirmPopup from "@/components/r-confirm-popup.vue";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
-	import rSpoiler from "@/components/r-spoiler";
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
 
 	import { change_manager } from "@/api/userApi";
@@ -274,14 +268,8 @@
 		components: {
 			rStatus,
 			ParserContent,
-			rButton,
-			rPagination,
-			rLoader,
-			rDropdown,
-			rConfirmPopup,
 
 			RightPanel,
-			rSpoiler,
 			TextCheckbox,
 		},
 		watch: {

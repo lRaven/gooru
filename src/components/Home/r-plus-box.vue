@@ -8,7 +8,7 @@
 </template>
 
 <script>
-	import rPlus from "@/components/r-plus";
+	import rPlus from "@/components/Home/r-plus";
 
 	export default {
 		name: "rPlusBox",

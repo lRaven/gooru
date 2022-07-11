@@ -106,6 +106,7 @@
 			justify-content: center;
 			width: 2.4rem;
 			height: 2.4rem;
+			min-height: 2.4rem;
 			border-radius: 50%;
 			box-shadow: $shadow;
 			margin-bottom: 1rem;
@@ -136,6 +137,13 @@
 			overflow-y: auto;
 			overflow-x: hidden;
 			height: 100%;
+
+			//*chrome/safari
+			&::-webkit-scrollbar {
+				width: 0; /* ширина scrollbar */
+			}
+			//*firefox
+			scrollbar-width: 0; /* "auto" или "thin"  */
 		}
 	}
 </style>

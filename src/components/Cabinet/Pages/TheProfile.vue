@@ -117,8 +117,6 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
-	import rInput from "@/components/Auth/r-input.vue";
-	import rButton from "@/components/r-button.vue";
 	import {
 		change_user_data,
 		upload_avatar,
@@ -128,10 +126,6 @@
 
 	export default {
 		name: "TheProfile",
-		components: {
-			rInput,
-			rButton,
-		},
 		watch: {
 			user_data: {
 				handler() {

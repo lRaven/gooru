@@ -25,6 +25,7 @@
 						Логин
 					</p>
 					<r-input
+						id="username"
 						v-model="username"
 						:value="username"
 						input_type="text"
@@ -34,6 +35,7 @@
 						E-mail
 					</p>
 					<r-input
+						id="email"
 						v-model="email"
 						:value="email"
 						input_type="email"
@@ -43,6 +45,7 @@
 						Пароль
 					</p>
 					<r-input
+						id="password"
 						v-model="password"
 						:value="password"
 						input_type="password"
@@ -75,18 +78,12 @@
 	import { mapState } from "vuex";
 
 	import TheHeader from "@/components/TheHeader.vue";
-	import rInput from "@/components/Auth/r-input.vue";
-	import rButton from "@/components/r-button.vue";
 	import { registration } from "@/api/userApi";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageRegistration",
-		components: {
-			TheHeader,
-			rInput,
-			rButton,
-		},
+		components: { TheHeader },
 		watch: {
 			username() {
 				this.validateForm();

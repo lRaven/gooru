@@ -100,7 +100,6 @@
 			</p>
 			<r-textarea
 				placeholder="Введите требования"
-				:height="14.5"
 				v-model="new_parsource.description"
 				:value="new_parsource.description"
 			></r-textarea>
@@ -117,10 +116,6 @@
 
 <script>
 	import { mapActions, mapMutations, mapState } from "vuex";
-	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
-	import rInput from "@/components/Auth/r-input.vue";
-	import rTextarea from "@/components/Cabinet/r-textarea.vue";
-	import rButton from "@/components/r-button.vue";
 	import { send_new_parsource } from "@/api/parser";
 	import { useToast } from "vue-toastification";
 
@@ -128,12 +123,6 @@
 
 	export default {
 		name: "TheNewGroupParser",
-		components: {
-			rInput,
-			rTextarea,
-			rButton,
-			rDropdown,
-		},
 		watch: {
 			new_parsource: {
 				handler() {
@@ -328,6 +317,9 @@
 				grid-column: 2/3;
 				font-size: 1.6rem;
 			}
+			.r-textarea {
+				height: 14.5rem;
+			}
 
 			&.manager {
 				.the-new-group-parser__add-url {
@@ -347,10 +339,9 @@
 
 		&__add-url {
 			grid-area: 2/3;
-			padding: 0;
+			padding: 0 !important;
 			height: 4rem;
 			width: 4rem;
-			transition: all 0.2s ease;
 			&:hover {
 				.the-new-group-parser__add-url-icon {
 					path {
@@ -365,9 +356,6 @@
 						}
 					}
 				}
-			}
-			&:active {
-				transform: translateY(-0.1rem);
 			}
 
 			&-icon {

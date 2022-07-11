@@ -138,10 +138,7 @@
 </template>
 
 <script>
-	import rCheckbox from "@/components/r-checkbox";
-	import rButton from "@/components/r-button";
 	import rStatus from "@/components/Cabinet/r-status";
-	import rInput from "@/components/Auth/r-input.vue";
 
 	import { mapMutations, mapActions } from "vuex";
 	import { directive } from "vue3-click-away";
@@ -163,12 +160,7 @@
 				default: false,
 			},
 		},
-		components: {
-			rCheckbox,
-			rButton,
-			rStatus,
-			rInput,
-		},
+		components: { rStatus },
 		watch: {
 			isSelected() {
 				if (this.isSelected === true) {

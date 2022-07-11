@@ -29,6 +29,7 @@
 				@click="if (isDisabled === false) hidePassword();"
 			/>
 		</transition>
+
 		<transition mode="out-in">
 			<img
 				src="img/icon/cabinet/search.svg"

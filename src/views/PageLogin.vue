@@ -20,6 +20,7 @@
 
 					<p class="page-login__form-input-description">Логин</p>
 					<r-input
+						id="username"
 						v-model="username"
 						:value="username"
 						input_type="text"
@@ -27,6 +28,7 @@
 
 					<p class="page-login__form-input-description">Пароль</p>
 					<r-input
+						id="password"
 						v-model="password"
 						:value="password"
 						input_type="password"
@@ -47,18 +49,12 @@
 	import { mapState, mapActions } from "vuex";
 
 	import TheHeader from "@/components/TheHeader.vue";
-	import rInput from "@/components/Auth/r-input.vue";
-	import rButton from "@/components/r-button.vue";
 	import { login } from "@/api/userApi";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageLogin",
-		components: {
-			TheHeader,
-			rInput,
-			rButton,
-		},
+		components: { TheHeader },
 		computed: {
 			...mapState({
 				baseURL: (state) => state.baseURL,

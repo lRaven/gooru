@@ -1,7 +1,7 @@
 <template>
 	<div class="chat-body">
 		<transition mode="out-in">
-			<r-loader v-if="!isMessagesLoaded"></r-loader>
+			<r-loader v-if="!isMessagesLoaded" />
 		</transition>
 
 		<transition mode="out-in">
@@ -32,7 +32,6 @@
 <script>
 	import { mapState } from "vuex";
 	import rMessage from "@/components/Cabinet/Messenger/r-message.vue";
-	import rLoader from "@/components/r-loader.vue";
 
 	export default {
 		name: "ChatBody",
@@ -41,7 +40,7 @@
 			chat_messages: Array,
 			send_message: Boolean,
 		},
-		components: { rMessage, rLoader },
+		components: { rMessage },
 		watch: {
 			send_message() {
 				if (this.send_message) {

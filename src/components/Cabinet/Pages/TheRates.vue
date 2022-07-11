@@ -154,12 +154,6 @@
 
 	import RateCard from "@/components/Rates/RateCard.vue";
 	import StatsCard from "@/components/Cabinet/Stats/StatsCard.vue";
-	import rButton from "@/components/r-button.vue";
-	import rLoader from "@/components/r-loader.vue";
-
-	import rModal from "@/components/r-modal.vue";
-	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
-	import rTextarea from "@/components/Cabinet/r-textarea.vue";
 	import { add_ticket } from "@/api/tickets";
 	import { useToast } from "vue-toastification";
 
@@ -168,12 +162,6 @@
 		components: {
 			RateCard,
 			StatsCard,
-			rButton,
-			rLoader,
-
-			rModal,
-			rDropdown,
-			rTextarea,
 		},
 		watch: {
 			userRate() {},
@@ -454,7 +442,7 @@
 			}
 			&-inputs {
 				display: grid;
-				grid-template-columns: max-content minmax(30rem, max-content);
+				grid-template-columns: max-content minmax(40rem, max-content);
 				grid-gap: 2rem;
 				align-items: center;
 			}
@@ -474,6 +462,7 @@
 
 			.r-textarea {
 				font-size: 1.8rem;
+				height: 14rem;
 			}
 			.r-button {
 				margin-top: 2rem;

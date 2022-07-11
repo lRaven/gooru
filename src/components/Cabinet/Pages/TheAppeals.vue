@@ -18,7 +18,7 @@
 			</div>
 
 			<transition mode="out-in">
-				<r-loader v-if="!isAppealsLoaded"></r-loader>
+				<r-loader v-if="!isAppealsLoaded" />
 			</transition>
 
 			<transition mode="out-in">
@@ -125,26 +125,14 @@
 	import { add_ticket } from "@/api/tickets";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
-	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
-	import rTextarea from "@/components/Cabinet/r-textarea.vue";
-	import rButton from "@/components/r-button.vue";
-	import rInput from "@/components/Auth/r-input.vue";
-	import rPagination from "@/components/r-pagination.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
-	import rLoader from "@/components/r-loader.vue";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheAppeals",
 		components: {
 			RightPanel,
-			rDropdown,
-			rTextarea,
-			rButton,
-			rInput,
-			rPagination,
 			AppealsCard,
-			rLoader,
 		},
 		watch: {
 			page() {
@@ -346,7 +334,7 @@
 			flex-direction: column;
 			background-color: $white;
 			border-radius: 0.6rem;
-			overflow: hidden;
+			overflow-y: auto;
 			box-shadow: $shadow;
 		}
 		&__empty {

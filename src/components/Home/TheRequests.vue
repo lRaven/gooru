@@ -10,7 +10,7 @@
 </template>
 
 <script>
-	import RequestsSlider from "@/components/Requests/RequestsSlider";
+	import RequestsSlider from "@/components/Home/Requests/RequestsSlider";
 
 	export default {
 		name: "TheRequests",

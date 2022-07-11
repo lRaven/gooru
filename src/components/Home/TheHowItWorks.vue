@@ -317,12 +317,11 @@
 </template>
 
 <script>
-	import rAnimatedSvg from "@/components/r-animated-svg";
-	import rSpoiler from "@/components/r-spoiler";
+	import rAnimatedSvg from "@/components/Home/r-animated-svg";
 
 	export default {
 		name: "TheHowItWorks",
-		components: { rAnimatedSvg, rSpoiler },
+		components: { rAnimatedSvg },
 	};
 </script>
 

@@ -2,7 +2,6 @@
 	<form class="chat-send-message" @submit.prevent="send_message">
 		<div class="chat-send-message__content">
 			<r-textarea
-				:height="10"
 				placeholder="Написать сообщение..."
 				v-model="message"
 				:value="message"
@@ -16,13 +15,9 @@
 </template>
 
 <script>
-	import rTextarea from "@/components/Cabinet/r-textarea.vue";
-	import rButton from "@/components/r-button.vue";
-
 	export default {
 		name: "ChatSendMessage",
 		data: () => ({ message: "" }),
-		components: { rTextarea, rButton },
 		methods: {
 			//* отправить сообщение
 			send_message() {

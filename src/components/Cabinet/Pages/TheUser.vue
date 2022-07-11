@@ -216,7 +216,7 @@
 					</div>
 
 					<transition mode="out-in">
-						<r-loader v-if="!isParsourcesLoaded"></r-loader>
+						<r-loader v-if="!isParsourcesLoaded" />
 					</transition>
 
 					<transition mode="out-in">
@@ -252,7 +252,7 @@
 					v-if="tab === 2"
 				>
 					<transition mode="out-in">
-						<r-loader v-if="!isAppealsLoaded"></r-loader>
+						<r-loader v-if="!isAppealsLoaded" />
 					</transition>
 
 					<transition mode="out-in">
@@ -286,13 +286,9 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
-	import rButton from "@/components/r-button.vue";
-	import rInput from "@/components/Auth/r-input.vue";
-	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
-	import rLoader from "@/components/r-loader.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard";
 	import {
 		change_user_data,
@@ -304,12 +300,8 @@
 	export default {
 		name: "TheUser",
 		components: {
-			rButton,
-			rInput,
-			rDropdown,
 			ParsourceCard,
 			SortButton,
-			rLoader,
 			AppealsCard,
 		},
 		watch: {

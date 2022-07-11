@@ -103,9 +103,6 @@
 	import { add_ticket } from "@/api/tickets";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
-	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
-	import rTextarea from "@/components/Cabinet/r-textarea.vue";
-	import rButton from "@/components/r-button.vue";
 	import TheMessenger from "@/components/Cabinet/Messenger/TheMessenger.vue";
 	import { useToast } from "vue-toastification";
 
@@ -113,9 +110,6 @@
 		name: "TheAppeal",
 		components: {
 			RightPanel,
-			rDropdown,
-			rTextarea,
-			rButton,
 			TheMessenger,
 		},
 		watch: {

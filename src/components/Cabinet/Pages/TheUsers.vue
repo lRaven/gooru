@@ -97,7 +97,7 @@
 			</div>
 
 			<transition mode="out-in">
-				<r-loader v-if="!isUsersLoaded"></r-loader>
+				<r-loader v-if="!isUsersLoaded" />
 			</transition>
 
 			<transition mode="out-in">
@@ -137,13 +137,8 @@
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import UserCard from "@/components/Cabinet/Users/UserCard.vue";
-	import rCheckbox from "@/components/r-checkbox.vue";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
 
-	import rButton from "@/components/r-button.vue";
-	import rPagination from "@/components/r-pagination.vue";
-
-	import rLoader from "@/components/r-loader.vue";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
 	import { useToast } from "vue-toastification";
 
@@ -151,13 +146,7 @@
 		name: "TheUsers",
 		components: {
 			UserCard,
-			rCheckbox,
 			SortButton,
-
-			rButton,
-			rPagination,
-
-			rLoader,
 		},
 		watch: {
 			page() {
@@ -205,7 +194,7 @@
 							}, 1000);
 						}
 					} catch (err) {
-						this.toast.error("Ошибка удаления парсеров");
+						this.toast.error("Ошибка удаления пользователей");
 						setTimeout(() => {
 							this.deleteSelected = false;
 						}, 1000);
