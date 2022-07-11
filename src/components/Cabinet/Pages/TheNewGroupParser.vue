@@ -340,10 +340,9 @@
 
 		&__add-url {
 			grid-area: 2/3;
-			padding: 0;
+			padding: 0 !important;
 			height: 4rem;
 			width: 4rem;
-			transition: all 0.2s ease;
 			&:hover {
 				.the-new-group-parser__add-url-icon {
 					path {
@@ -358,9 +357,6 @@
 						}
 					}
 				}
-			}
-			&:active {
-				transform: translateY(-0.1rem);
 			}
 
 			&-icon {
