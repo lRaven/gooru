@@ -106,6 +106,7 @@
 			justify-content: center;
 			width: 2.4rem;
 			height: 2.4rem;
+			min-height: 2.4rem;
 			border-radius: 50%;
 			box-shadow: $shadow;
 			margin-bottom: 1rem;

@@ -71,7 +71,7 @@
 			</div>
 
 			<transition mode="out-in">
-				<r-loader v-if="!isParsourcesLoaded"></r-loader>
+				<r-loader v-if="!isParsourcesLoaded" />
 			</transition>
 
 			<transition mode="out-in">

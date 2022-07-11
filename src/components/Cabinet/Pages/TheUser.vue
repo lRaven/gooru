@@ -216,7 +216,7 @@
 					</div>
 
 					<transition mode="out-in">
-						<r-loader v-if="!isParsourcesLoaded"></r-loader>
+						<r-loader v-if="!isParsourcesLoaded" />
 					</transition>
 
 					<transition mode="out-in">
@@ -252,7 +252,7 @@
 					v-if="tab === 2"
 				>
 					<transition mode="out-in">
-						<r-loader v-if="!isAppealsLoaded"></r-loader>
+						<r-loader v-if="!isAppealsLoaded" />
 					</transition>
 
 					<transition mode="out-in">

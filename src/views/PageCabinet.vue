@@ -11,7 +11,7 @@
 			</router-view>
 
 			<transition mode="out-in">
-				<r-loader v-if="$route.name === 'cabinet'"></r-loader>
+				<r-loader v-if="$route.name === 'cabinet'" />
 			</transition>
 		</main>
 	</div>
@@ -19,7 +19,6 @@
 
 <script>
 	import { mapState } from "vuex";
-	import AppLoader from "@/components/UI/r-loader.vue";
 	import TheHeader from "@/components/TheHeader";
 
 	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
@@ -28,7 +27,6 @@
 		name: "PageCabinet",
 		components: {
 			TheHeader,
-			AppLoader,
 			NavigationPanel,
 		},
 		watch: {

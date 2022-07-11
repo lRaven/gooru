@@ -97,7 +97,7 @@
 			</div>
 
 			<transition mode="out-in">
-				<r-loader v-if="!isUsersLoaded"></r-loader>
+				<r-loader v-if="!isUsersLoaded" />
 			</transition>
 
 			<transition mode="out-in">

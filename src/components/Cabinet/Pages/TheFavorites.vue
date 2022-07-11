@@ -77,7 +77,7 @@
 			</div>
 
 			<transition mode="out-in">
-				<r-loader v-if="!isFavoritesLoaded"></r-loader>
+				<r-loader v-if="!isFavoritesLoaded" />
 			</transition>
 
 			<transition mode="out-in">

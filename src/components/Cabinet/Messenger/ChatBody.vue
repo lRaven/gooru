@@ -1,7 +1,7 @@
 <template>
 	<div class="chat-body">
 		<transition mode="out-in">
-			<r-loader v-if="!isMessagesLoaded"></r-loader>
+			<r-loader v-if="!isMessagesLoaded" />
 		</transition>
 
 		<transition mode="out-in">

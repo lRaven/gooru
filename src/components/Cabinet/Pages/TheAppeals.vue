@@ -16,7 +16,7 @@
 			</div>
 
 			<transition mode="out-in">
-				<r-loader v-if="!isAppealsLoaded"></r-loader>
+				<r-loader v-if="!isAppealsLoaded" />
 			</transition>
 
 			<transition mode="out-in">

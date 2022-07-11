@@ -41,7 +41,7 @@
 					</div>
 
 					<transition mode="out-in">
-						<r-loader v-if="!isParsersLoaded"></r-loader>
+						<r-loader v-if="!isParsersLoaded" />
 					</transition>
 
 					<transition mode="out-in" v-if="isParsersLoaded">
@@ -178,7 +178,7 @@
 						class="the-parsource__right-panel-submit"
 						text="Применить"
 						type="submit"
-						@click.stop=""
+						@click.stop
 					></r-button>
 				</form>
 

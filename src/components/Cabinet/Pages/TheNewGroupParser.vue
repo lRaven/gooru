@@ -100,7 +100,6 @@
 			</p>
 			<r-textarea
 				placeholder="Введите требования"
-				:height="14.5"
 				v-model="new_parsource.description"
 				:value="new_parsource.description"
 			></r-textarea>

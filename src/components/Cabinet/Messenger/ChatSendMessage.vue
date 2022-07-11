@@ -2,7 +2,6 @@
 	<form class="chat-send-message" @submit.prevent="send_message">
 		<div class="chat-send-message__content">
 			<r-textarea
-				:height="10"
 				placeholder="Написать сообщение..."
 				v-model="message"
 				:value="message"
