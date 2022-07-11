@@ -312,7 +312,7 @@
 			flex-direction: column;
 			background-color: $white;
 			border-radius: 0.6rem;
-			overflow: hidden;
+			overflow-y: auto;
 			box-shadow: $shadow;
 		}
 		&__empty {

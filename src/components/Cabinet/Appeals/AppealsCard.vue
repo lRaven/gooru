@@ -24,13 +24,21 @@
 			</span>
 		</div>
 
-		<div class="appeals-card__col appeals-card__topic">{{ topic }}</div>
+		<div class="appeals-card__col appeals-card__topic" :title="topic">
+			{{ topic }}
+		</div>
 
-		<p class="appeals-card__col appeals-card__message">
+		<p
+			class="appeals-card__col appeals-card__message"
+			:title="last_message.text || appeal.message"
+		>
 			{{ last_message.text || appeal.message }}
 		</p>
 
-		<p class="appeals-card__col appeals-card__date">
+		<p
+			class="appeals-card__col appeals-card__date"
+			:title="appeal.date || '1.1.1970'"
+		>
 			{{ appeal.date || "1.1.1970" }}
 		</p>
 	</div>

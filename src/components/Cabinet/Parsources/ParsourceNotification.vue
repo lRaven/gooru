@@ -14,7 +14,14 @@
 </template>
 
 <script>
-	export default { name: "yoo_test" };
+	import rButton from "@/components/UI/r-button.vue";
+
+	export default {
+		name: "yoo_test",
+		components: {
+			rButton,
+		},
+	};
 </script>
 
 <style lang="scss" scoped>

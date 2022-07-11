@@ -136,6 +136,13 @@
 			overflow-y: auto;
 			overflow-x: hidden;
 			height: 100%;
+
+			//*chrome/safari
+			&::-webkit-scrollbar {
+				width: 0; /* ширина scrollbar */
+			}
+			//*firefox
+			scrollbar-width: 0; /* "auto" или "thin"  */
 		}
 	}
 </style>
