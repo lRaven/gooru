@@ -134,21 +134,12 @@
 </template>
 
 <script>
-	import rSpoiler from "@/components/r-spoiler";
-	import rCheckbox from "@/components/r-checkbox";
-	import rButton from "@/components/r-button";
-
 	import { mapState, mapActions } from "vuex";
 
 	import { multiaction_delete } from "@/api/multiaction_delete";
 	import { downloadFile } from "@/api/parser";
 
 	export default {
-		components: {
-			rSpoiler,
-			rCheckbox,
-			rButton,
-		},
 		props: {
 			totalSelected: {
 				type: [Number, String],

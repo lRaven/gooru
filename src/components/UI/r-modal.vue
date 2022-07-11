@@ -51,7 +51,7 @@
 		}
 
 		&__content {
-			width: fit-content;
+			width: min-content;
 			max-width: 50vw;
 			max-height: 80vh;
 			border-radius: 1rem;

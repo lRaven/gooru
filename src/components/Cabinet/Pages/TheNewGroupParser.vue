@@ -117,10 +117,6 @@
 
 <script>
 	import { mapActions, mapMutations, mapState } from "vuex";
-	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
-	import rInput from "@/components/Auth/r-input.vue";
-	import rTextarea from "@/components/Cabinet/r-textarea.vue";
-	import rButton from "@/components/r-button.vue";
 	import { send_new_parsource } from "@/api/parser";
 	import { useToast } from "vue-toastification";
 
@@ -128,12 +124,6 @@
 
 	export default {
 		name: "TheNewGroupParser",
-		components: {
-			rInput,
-			rTextarea,
-			rButton,
-			rDropdown,
-		},
 		watch: {
 			new_parsource: {
 				handler() {
@@ -327,6 +317,9 @@
 			.r-textarea {
 				grid-column: 2/3;
 				font-size: 1.6rem;
+			}
+			.r-textarea {
+				height: 14.5rem;
 			}
 
 			&.manager {

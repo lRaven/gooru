@@ -42,8 +42,6 @@
 </template>
 
 <script>
-	import rCheckbox from "@/components/r-checkbox";
-	import rButton from "@/components/r-button";
 	import { mapMutations } from "vuex";
 
 	export default {
@@ -57,7 +55,6 @@
 			parsources: Array,
 			parsers: Array,
 		},
-		components: { rCheckbox, rButton },
 		watch: {
 			isSelected() {
 				if (this.isSelected === true) {

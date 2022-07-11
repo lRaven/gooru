@@ -119,12 +119,8 @@
 </template>
 
 <script>
-	import rCheckbox from "@/components/r-checkbox";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
-	import rButton from "@/components/r-button";
-	import rPagination from "@/components/r-pagination";
-	import rLoader from "@/components/r-loader.vue";
 
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
@@ -133,12 +129,8 @@
 	export default {
 		name: "TheParsources",
 		components: {
-			rCheckbox,
-			rButton,
 			SortButton,
 			ParsourceCard,
-			rPagination,
-			rLoader,
 		},
 		watch: {
 			page() {

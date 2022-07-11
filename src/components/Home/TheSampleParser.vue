@@ -294,18 +294,14 @@
 </template>
 
 <script>
-	import rPlusBox from "@/components/r-plus-box";
-	import rButton from "@/components/r-button";
-	import rLink from "@/components/r-link";
-	import rAnimatedSvg from "@/components/r-animated-svg";
+	import rPlusBox from "@/components/Home/r-plus-box";
+	import rAnimatedSvg from "@/components/Home/r-animated-svg";
 	import { mapState } from "vuex";
 
 	export default {
 		name: "TheSampleParser",
 		components: {
 			rPlusBox,
-			rButton,
-			rLink,
 			rAnimatedSvg,
 		},
 		watch: {

@@ -47,12 +47,7 @@
 </template>
 
 <script>
-	import rLink from "@/components/r-link";
-
-	export default {
-		name: "TheAboutCompany",
-		components: { rLink },
-	};
+	export default { name: "TheAboutCompany" };
 </script>
 
 <style lang="scss" scoped>

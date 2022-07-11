@@ -19,11 +19,10 @@
 
 <script>
 	import { mapState } from "vuex";
-	import AppLoader from "@/components/r-loader.vue";
+	import AppLoader from "@/components/UI/r-loader.vue";
 	import TheHeader from "@/components/TheHeader";
 
 	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
-	import rLoader from "@/components/r-loader.vue";
 
 	export default {
 		name: "PageCabinet",
@@ -31,7 +30,6 @@
 			TheHeader,
 			AppLoader,
 			NavigationPanel,
-			rLoader,
 		},
 		watch: {
 			user_auth() {

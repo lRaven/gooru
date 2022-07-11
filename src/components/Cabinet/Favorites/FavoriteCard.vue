@@ -69,8 +69,6 @@
 </template>
 
 <script>
-	import rCheckbox from "@/components/r-checkbox";
-	import rButton from "@/components/r-button";
 	import FavoriteContentItem from "@/components/Cabinet/Favorites/FavoriteContentItem";
 
 	import { prettyDate } from "@/js/processStrings";
@@ -79,11 +77,7 @@
 
 	export default {
 		name: "FavoriteCard",
-		components: {
-			rCheckbox,
-			rButton,
-			FavoriteContentItem,
-		},
+		components: { FavoriteContentItem },
 		props: { parsource: Object },
 		emits: ["update-selected-parsers"],
 		data() {

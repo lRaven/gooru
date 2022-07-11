@@ -32,7 +32,6 @@
 <script>
 	import { mapState } from "vuex";
 	import rMessage from "@/components/Cabinet/Messenger/r-message.vue";
-	import rLoader from "@/components/r-loader.vue";
 
 	export default {
 		name: "ChatBody",
@@ -41,7 +40,7 @@
 			chat_messages: Array,
 			send_message: Boolean,
 		},
-		components: { rMessage, rLoader },
+		components: { rMessage },
 		watch: {
 			send_message() {
 				if (this.send_message) {

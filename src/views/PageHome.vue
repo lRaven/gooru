@@ -17,13 +17,13 @@
 <script>
 	import TheHeader from "@/components/TheHeader";
 
-	import TheBanner from "@/components/TheBanner";
-	import TheBenefits from "@/components/TheBenefits";
-	import TheRequests from "@/components/TheRequests";
-	import TheRates from "@/components/TheRates";
-	import TheHowItWorks from "@/components/TheHowItWorks";
-	import TheSampleParser from "@/components/TheSampleParser";
-	import TheAboutCompany from "@/components/TheAboutCompany";
+	import TheBanner from "@/components/Home/TheBanner";
+	import TheBenefits from "@/components/Home/TheBenefits";
+	import TheRequests from "@/components/Home/TheRequests";
+	import TheRates from "@/components/Home/TheRates";
+	import TheHowItWorks from "@/components/Home/TheHowItWorks";
+	import TheSampleParser from "@/components/Home/TheSampleParser";
+	import TheAboutCompany from "@/components/Home/TheAboutCompany";
 
 	import TheFooter from "@/components/TheFooter";
 

@@ -58,7 +58,7 @@
 	import "swiper/css";
 	import "swiper/css/navigation";
 
-	import RequestCard from "@/components/Requests/RequestCard";
+	import RequestCard from "@/components/Home/Requests/RequestCard";
 	import { mapState } from "vuex";
 
 	export default {

@@ -358,8 +358,6 @@
 </template>
 
 <script>
-	import rButton from "@/components/r-button";
-	import rCheckbox from "@/components/r-checkbox";
 	import { useToast } from "vue-toastification";
 
 	import { directive } from "vue3-click-away";
@@ -375,7 +373,6 @@
 	export default {
 		name: "ParserContent",
 		props: { parserProp: Object },
-		components: { rButton, rCheckbox },
 		watch: {
 			isMessagesOpen() {
 				if (this.isMessagesOpen === true) {

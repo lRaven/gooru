@@ -123,26 +123,14 @@
 	import { add_ticket } from "@/api/tickets";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
-	import rDropdown from "@/components/Cabinet/r-dropdown.vue";
-	import rTextarea from "@/components/Cabinet/r-textarea.vue";
-	import rButton from "@/components/r-button.vue";
-	import rInput from "@/components/Auth/r-input.vue";
-	import rPagination from "@/components/r-pagination.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
-	import rLoader from "@/components/r-loader.vue";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheAppeals",
 		components: {
 			RightPanel,
-			rDropdown,
-			rTextarea,
-			rButton,
-			rInput,
-			rPagination,
 			AppealsCard,
-			rLoader,
 		},
 		watch: {
 			page() {

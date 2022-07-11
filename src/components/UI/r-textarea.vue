@@ -4,7 +4,6 @@
 		id=""
 		class="r-textarea"
 		:class="{ bordered: bordered }"
-		:style="`height: ${height}rem`"
 		:placeholder="placeholder"
 		:value="value"
 		@input="this.$emit('update:modelValue', $event.target.value)"
@@ -16,10 +15,6 @@
 		name: "rTextarea",
 		props: {
 			value: String,
-			height: {
-				value: Number,
-				default: 10,
-			},
 			placeholder: {
 				value: String,
 				default: "Placeholder",
@@ -38,6 +33,7 @@
 	.r-textarea {
 		resize: none;
 		width: 100%;
+		height: 10rem;
 		padding: 1rem;
 		font-size: 1.3rem;
 		font-weight: 500;

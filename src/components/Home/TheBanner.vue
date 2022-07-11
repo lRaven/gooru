@@ -352,11 +352,9 @@
 </template>
 
 <script>
-	import rGradient from "@/components/Banner/r-gradient";
-	import rPlusBox from "@/components/r-plus-box";
-	import rAnimatedSvg from "@/components/r-animated-svg";
-	import rButton from "@/components/r-button";
-	import rLink from "@/components/r-link";
+	import rGradient from "@/components/Home/Banner/r-gradient";
+	import rPlusBox from "@/components/Home/r-plus-box";
+	import rAnimatedSvg from "@/components/Home/r-animated-svg";
 
 	export default {
 		name: "TheBanner",
@@ -364,8 +362,6 @@
 			rGradient,
 			rPlusBox,
 			rAnimatedSvg,
-			rButton,
-			rLink,
 		},
 	};
 </script>

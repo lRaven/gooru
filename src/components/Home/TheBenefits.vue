@@ -11,13 +11,11 @@
 </template>
 
 <script>
-	import rBenefit from "@/components/Benefits/r-benefit";
+	import rBenefit from "@/components/Home/Benefits/r-benefit";
 
 	export default {
 		name: "TheBenefits",
-		components: {
-			rBenefit,
-		},
+		components: { rBenefit },
 		data: () => ({
 			benefits: [
 				{

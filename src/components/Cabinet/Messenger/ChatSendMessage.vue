@@ -16,13 +16,9 @@
 </template>
 
 <script>
-	import rTextarea from "@/components/Cabinet/r-textarea.vue";
-	import rButton from "@/components/r-button.vue";
-
 	export default {
 		name: "ChatSendMessage",
 		data: () => ({ message: "" }),
-		components: { rTextarea, rButton },
 		methods: {
 			//* отправить сообщение
 			send_message() {

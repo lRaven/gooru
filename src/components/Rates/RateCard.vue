@@ -34,8 +34,6 @@
 </template>
 
 <script>
-	import rButton from "@/components/r-button";
-
 	export default {
 		name: "RateCard",
 		props: {
@@ -53,7 +51,6 @@
 			},
 			rate: Object,
 		},
-		components: { rButton },
 	};
 </script>
 

@@ -185,7 +185,6 @@
 </template>
 
 <script>
-	import rButton from "@/components/r-button";
 	import { scroll } from "@/js/scrollToLink";
 	import { mapState, mapMutations } from "vuex";
 	import { logout } from "@/api/userApi";
@@ -204,7 +203,6 @@
 				default: false,
 			},
 		},
-		components: { rButton },
 		watch: {
 			scrollTop() {
 				if (this.isCabinetVersion === false) {
