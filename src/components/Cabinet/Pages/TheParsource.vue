@@ -301,6 +301,20 @@
 			},
 			parsers() {
 				this.isParsersLoaded = true;
+
+				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+				this.parsers_notifications.forEach((notification) => {
+					const id = +notification.url.slice(7);
+
+					const bool = this.parsers.find(
+						(parser) => parser.id === id
+					);
+
+					if (bool) {
+						console.log("Parsers notifications read");
+						this.clear_notifications(notification.id);
+					}
+				});
 			},
 
 			userRole() {
@@ -326,13 +340,6 @@
 					this.toast.error("Ошибка смены менеджера");
 					throw new Error(err);
 				}
-			},
-
-			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
-			parsers_notifications() {
-				this.parsers_notifications.forEach((notification) => {
-					this.clear_notifications(notification.id);
-				});
 			},
 		},
 		computed: {
@@ -489,19 +496,20 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
+
 			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 			this.parsers_notifications.forEach((notification) => {
 				const id = +notification.url.slice(7);
 
-				let bool = this.parsers.find((parser) => parser.id === id);
+				const bool = this.parsers.find((parser) => parser.id === id);
 
 				if (bool) {
+					console.log("Parsers notifications read");
 					this.clear_notifications(notification.id);
 				}
 			});
 
 			this.getParsource(this.parsource_id);
-
 			this.getAllParsources();
 		},
 		setup() {
