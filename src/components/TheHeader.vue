@@ -186,7 +186,7 @@
 
 <script>
 	import { scroll } from "@/js/scrollToLink";
-	import { mapState, mapMutations } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 	import { logout } from "@/api/userApi";
 
 	import { directive } from "vue3-click-away";
@@ -246,12 +246,16 @@
 			},
 
 			...mapMutations(["SET_USER_AUTH"]),
+			...mapActions(["clearCabinetData"]),
 
 			async logging_out() {
 				try {
 					const response = await logout();
 					if (response.status === 204) {
 						this.SET_USER_AUTH(false);
+						localStorage.clear();
+						this.clearCabinetData();
+
 						console.log("Logout successfully");
 					}
 				} catch (err) {

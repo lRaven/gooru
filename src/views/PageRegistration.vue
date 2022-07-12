@@ -26,8 +26,8 @@
 					</p>
 					<r-input
 						id="username"
-						v-model="username"
-						:value="username"
+						v-model="user_data.username"
+						:value="user_data.username"
 						input_type="text"
 					></r-input>
 
@@ -36,8 +36,8 @@
 					</p>
 					<r-input
 						id="email"
-						v-model="email"
-						:value="email"
+						v-model="user_data.email"
+						:value="user_data.email"
 						input_type="email"
 					></r-input>
 
@@ -46,8 +46,8 @@
 					</p>
 					<r-input
 						id="password"
-						v-model="password"
-						:value="password"
+						v-model="user_data.password"
+						:value="user_data.password"
 						input_type="password"
 					></r-input>
 
@@ -85,37 +85,36 @@
 		name: "PageRegistration",
 		components: { TheHeader },
 		watch: {
-			username() {
-				this.validateForm();
-			},
-			email() {
-				this.validateForm();
-			},
-			password() {
-				this.validateForm();
+			user_data: {
+				handler() {
+					this.validateForm();
+				},
+				deep: true,
 			},
 		},
 		computed: { ...mapState(["baseURL"]) },
 		data: () => ({
 			isDisabledBtn: true,
 
-			username: "",
-			email: "",
-			password: "",
+			user_data: {
+				username: "",
+				email: "",
+				password: "",
+			},
 		}),
 		methods: {
 			async create_account() {
 				try {
 					const response = await registration({
-						username: this.username,
-						email: this.email,
-						password: this.password,
+						username: this.user_data.username,
+						email: this.user_data.email,
+						password: this.user_data.password,
 					});
 
 					if (response.status === 201) {
 						this.toast.success("Аккаунт успешно создан");
 						this.toast.info(
-							`Электронное письмо с подтверждением было отправлено на: ${this.email}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+							`Электронное письмо с подтверждением было отправлено на: ${this.user_data.email}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
 						);
 						console.log("Account created");
 
@@ -130,9 +129,9 @@
 			},
 
 			validateForm() {
-				this.username.length > 0 &&
-				this.password.length >= 8 &&
-				this.email.length > 0
+				this.user_data.username.length > 0 &&
+				this.user_data.password.length >= 8 &&
+				this.user_data.email.length > 0
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},

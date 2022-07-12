@@ -11,7 +11,15 @@ const getters = {}
 
 const mutations = {
 	SET_CHAT_MESSAGES: (state, payload) => state.chat_messages = payload,
+	CLEAR_CHAT_MESSAGES: (state) => state.chat_messages = [],
+
 	SET_ALL_MESSAGES: (state, payload) => state.all_messages = payload,
+	CLEAR_ALL_MESSAGES: (state) => state.all_messages = [],
+
+	CLEAR_MESSENGER_STATE: (state) => {
+		state.chat_messages = [];
+		state.all_messages = [];
+	}
 }
 
 const actions = {

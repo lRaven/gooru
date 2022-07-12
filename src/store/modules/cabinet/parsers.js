@@ -20,8 +20,13 @@ const getters = {}
 const mutations = {
 	SET_PARSOURCES: (state, payload) => state.parsources = payload,
 	SET_PARSOURCES_PAGINATION: (state, payload) => state.parsources_pagination = payload,
+	CLEAR_PARSOURCES: (state) => { state.parsources = []; state.parsources_pagination = {} },
+
 	SET_ALL_PARSOURCES: (state, payload) => state.all_parsources = payload,
+	CLEAR_ALL_PARSOURCES: (state) => state.all_parsources = [],
+
 	SET_PARSOURCE: (state, payload) => state.parsource = payload,
+	CLEAR_PARSOURCE: (state) => state.parsource = {},
 
 
 	SELECT_ALL_PARSOURCES: state => {
@@ -45,7 +50,20 @@ const mutations = {
 
 	SET_PARSERS: (state, payload) => state.parsers = payload,
 	SET_PARSERS_PAGINATION: (state, payload) => state.parsers_pagination = payload,
+	CLEAR_PARSERS: (state) => { state.parsers = []; state.parsers_pagination = {} },
+
 	SET_ALL_PARSERS: (state, payload) => state.all_parsers = payload,
+	CLEAR_ALL_PARSERS: (state) => state.all_parsers = [],
+
+	CLEAR_PARSERS_STATE: (state) => {
+		state.parsources = [];
+		state.parsources_pagination = {};
+		state.all_parsources = [];
+		state.parsource = {};
+		state.parsers = [];
+		state.parsers_pagination = {};
+		state.all_parsers = [];
+	}
 }
 
 const actions = {

@@ -21,16 +21,16 @@
 					<p class="page-login__form-input-description">Логин</p>
 					<r-input
 						id="username"
-						v-model="username"
-						:value="username"
+						v-model="user_data.username"
+						:value="user_data.username"
 						input_type="text"
 					></r-input>
 
 					<p class="page-login__form-input-description">Пароль</p>
 					<r-input
 						id="password"
-						v-model="password"
-						:value="password"
+						v-model="user_data.password"
+						:value="user_data.password"
 						input_type="password"
 					></r-input>
 
@@ -62,17 +62,20 @@
 			}),
 		},
 		watch: {
-			username() {
-				this.validateForm();
-			},
-			password() {
-				this.validateForm();
+			user_data: {
+				handler() {
+					this.validateForm();
+				},
+				deep: true,
 			},
 		},
 		data: () => ({
 			isDisabledBtn: true,
-			username: "",
-			password: "",
+
+			user_data: {
+				username: "",
+				password: "",
+			},
 		}),
 		methods: {
 			...mapActions(["getUserData", "getUserRate"]),
@@ -80,8 +83,8 @@
 			async auth() {
 				try {
 					const response = await login({
-						username: this.username,
-						password: this.password,
+						username: this.user_data.username,
+						password: this.user_data.password,
 					});
 					if (response.status === 200) {
 						this.toast.success("Вход выполнен успешно");
@@ -90,8 +93,10 @@
 							response.data.auth_token
 						);
 						localStorage.setItem("userAuth", "yes");
+
 						this.getUserData();
 						this.getUserRate();
+
 						this.$router.push({ name: "cabinet" });
 					}
 				} catch (err) {
@@ -101,7 +106,8 @@
 			},
 
 			validateForm() {
-				this.username.length > 0 && this.password.length >= 8
+				this.user_data.username.length > 0 &&
+				this.user_data.password.length >= 8
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);
 			},
