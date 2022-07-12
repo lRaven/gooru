@@ -39,17 +39,8 @@ const actions = {
 				context.commit("SET_USER_AUTH", true);
 				console.log("User data saved");
 
-				if (response.data.role === 'DefaultUser') {
-					localStorage.setItem('e', '1__2')
-				}
-				else if (response.data.role === 'AdminCRM') {
-					localStorage.setItem('e', '2__2')
-				}
-				else if (response.data.role === 'Manager') {
-					localStorage.setItem('e', '3__2')
-				}
 
-
+				localStorage.setItem('role', response.data.role);
 			}
 		} catch {
 			console.log("User isn't authorized");

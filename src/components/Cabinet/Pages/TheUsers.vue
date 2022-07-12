@@ -219,6 +219,7 @@
 		computed: {
 			...mapState({
 				user_me: (state) => state.cabinet.user,
+
 				users: (state) => state.users.users,
 				users_pagination: (state) => state.users.users_pagination,
 				all_users: (state) => state.users.all_users,

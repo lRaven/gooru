@@ -152,6 +152,7 @@ const routes = [
 				meta: {
 					title: 'Пользователи',
 					requiresAuth: true,
+					isNotForDefaultUser: true,
 				},
 			},
 			//* страница юзера
@@ -162,6 +163,7 @@ const routes = [
 				meta: {
 					title: 'Пользователь',
 					requiresAuth: true,
+					isNotForDefaultUser: true,
 				},
 			},
 		],
@@ -217,7 +219,11 @@ router.beforeEach((to) => {
 	if (to.meta.requiresAuth === true) {
 		if (localStorage.getItem('userAuth') !== 'yes') {
 			return { name: 'login' }
-		} else return true
+		} else if (to.meta.isNotForDefaultUser && localStorage.getItem('role') === 'DefaultUser') {
+			//* если user.role === DefaultUser, а страница не доступна для DefaultUser, то редирект на дефолтную страницу 
+			return { name: 'cabinet' }
+		}
+		else return true
 	}
 })
 
