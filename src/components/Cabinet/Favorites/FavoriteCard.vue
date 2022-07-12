@@ -6,7 +6,10 @@
 					v-model="isAllSelected"
 					@update:modelValue="handleChangeAllParsers"
 				></r-checkbox>
-				<h4 class="favorite-card__source">
+				<h4
+					class="favorite-card__source"
+					:title="parsource.data_source"
+				>
 					{{ parsource.data_source }}
 				</h4>
 				<p class="favorite-card__favorite">
@@ -170,10 +173,11 @@
 				}
 			}
 		}
-
-		&__list {
-			// max-height: 10rem;
-			// overflow-y: auto;
+		&__source {
+			max-width: 40rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 	}
 </style>

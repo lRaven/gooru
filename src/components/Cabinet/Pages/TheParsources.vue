@@ -84,6 +84,9 @@
 						:key="parsource.id"
 						:parsource="parsource"
 						:isParsourceManagerView="userRole !== 'DefaultUser'"
+						:parsourcesHasParsersNotifications="
+							parsourcesHasParsersNotifications
+						"
 					></parsource-card>
 				</div>
 			</transition>
@@ -211,8 +214,13 @@
 					state.parsers.parsources_pagination,
 				userRole: (state) => state.cabinet.user.role,
 				userId: (state) => state.cabinet.user.id,
+
+				all_parsers: (state) => state.parsers.all_parsers,
 			}),
-			...mapGetters(["parsources_notifications"]),
+			...mapGetters([
+				"parsources_notifications",
+				"parsers_notifications",
+			]),
 
 			page() {
 				return +this.$route.query.page;
@@ -223,6 +231,47 @@
 
 			number_of_pages() {
 				return Math.ceil(this.count / this.parsources_in_page);
+			},
+
+			parsourcesHasParsersNotifications() {
+				//* получить id парсеров из уведомлений
+				let parsers_id = [];
+				this.parsers_notifications.forEach((notification) => {
+					const id = +notification.url.slice(7);
+					parsers_id.push(id);
+				});
+
+				//* получить список парсеров по списку id парсеров
+				let parsers = [];
+				this.all_parsers.forEach((parser) => {
+					parsers_id.forEach((id) => {
+						if (id === parser.id) {
+							parsers.push(parser);
+						}
+					});
+				});
+
+				//* получить список parsources
+				let parsources = [];
+				this.parsources.forEach((parsource) => {
+					parsers.forEach((parser) => {
+						if (parser.parsource === parsource.id) {
+							parsources.push(parsource);
+						}
+					});
+				});
+
+				//* оставить только уникальные parsources
+				const result = [
+					...parsources
+						.reduce(
+							(acc, current) => acc.set(current.id, current),
+							new Map()
+						)
+						.values(),
+				];
+
+				return result;
 			},
 		},
 		data() {
@@ -249,6 +298,7 @@
 				"getParsources",
 				"deleteSelectedParsources",
 				"getNotifications",
+				"getAllParsers",
 			]),
 			async sort_list(array, key) {
 				const response = await sortArrayByObjectKey(array, key);
@@ -279,6 +329,7 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
+			this.getAllParsers();
 
 			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 			this.parsources_notifications.forEach((notification) => {
@@ -351,18 +402,13 @@
 		}
 		&__sort {
 			display: grid;
-			grid-template-columns: minmax(20rem, 1fr) 20rem 14rem 20rem repeat(
-					4,
-					14rem
-				);
+			grid-template-columns: repeat(7, minmax(15rem, 1fr)) 18rem;
 			grid-gap: 2rem;
 			justify-content: space-between;
 			align-items: center;
 			padding: 0 3rem 0 5.6rem;
 			&.manager {
-				grid-template-columns:
-					18rem 14rem
-					repeat(2, 20rem) repeat(3, 14rem);
+				grid-template-columns: repeat(7, minmax(15rem, 1fr));
 			}
 			.sort-button {
 				width: max-content;

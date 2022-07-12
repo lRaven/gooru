@@ -99,11 +99,6 @@
 					Список избранного пуст
 				</p>
 			</transition>
-
-			<!-- <div class="the-favorites__bottom">
-				<r-button color="bordered" text="Показать ещё"></r-button>
-				<r-pagination></r-pagination>
-			</div> -->
 		</div>
 
 		<right-panel
@@ -146,8 +141,8 @@
 			...mapState({ favorites: (state) => state.favorites.favorites }),
 			selectedParsers() {
 				return this.selectedParsources.reduce(
-					(prev, selectedParource) => {
-						return [...prev, ...selectedParource.selectedParsers];
+					(prev, selectedParsource) => {
+						return [...prev, ...selectedParsource.selectedParsers];
 					},
 					[]
 				);
@@ -169,8 +164,8 @@
 				const { parsourceId, selectedParsers } = favoriteCardObj;
 
 				const matchedIndex = this.selectedParsources.findIndex(
-					(selectedParource) => {
-						return selectedParource.parsourceId === parsourceId;
+					(selectedParsource) => {
+						return selectedParsource.parsourceId === parsourceId;
 					}
 				);
 
@@ -195,9 +190,9 @@
 
 			updateTotalSelectedParsers() {
 				this.totalSelected = this.selectedParsources.reduce(
-					(prev, selectedParourcesItem) => {
+					(prev, selectedParsourcesItem) => {
 						return (
-							prev + selectedParourcesItem.selectedParsers.length
+							prev + selectedParsourcesItem.selectedParsers.length
 						);
 					},
 					0

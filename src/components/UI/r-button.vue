@@ -1,5 +1,5 @@
 <template>
-	<button class="r-button" :class="color">
+	<button class="r-button" :class="[color, direction]">
 		<slot name="icon"></slot>
 		{{ text }}
 	</button>
@@ -10,11 +10,15 @@
 		name: "rButton",
 		props: {
 			color: {
-				type: String,
+				value: String,
 				default: "purple",
 			},
+			direction: {
+				value: String,
+				default: "",
+			},
 			text: {
-				type: String,
+				value: String,
 				default: "button",
 			},
 		},
@@ -38,6 +42,10 @@
 		height: max-content;
 		opacity: 1;
 		transition: all 0.2s ease;
+
+		&.revert {
+			flex-direction: row-reverse;
+		}
 		&:hover {
 			transform: translateY(-0.3rem);
 			transition: all 0.3s ease;
