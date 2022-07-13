@@ -32,7 +32,10 @@
 				<button
 					@click="changePage(pagination_item)"
 					class="r-pagination__item-btn"
-					:class="{ current: current_page === pagination_item }"
+					:class="{
+						current: current_page === pagination_item,
+						wide: pagination_item > 99,
+					}"
 				>
 					{{ pagination_item }}
 				</button>
@@ -51,7 +54,10 @@
 				<button
 					@click="changePage(pagination_item)"
 					class="r-pagination__item-btn"
-					:class="{ current: current_page === pagination_item }"
+					:class="{
+						current: current_page === pagination_item,
+						wide: pagination_item > 99,
+					}"
 				>
 					{{ pagination_item }}
 				</button>
@@ -63,7 +69,10 @@
 				<button
 					@click="changePage(totalPages)"
 					class="r-pagination__item-btn"
-					:class="{ current: current_page === totalPages }"
+					:class="{
+						current: current_page === totalPages,
+						wide: pagination_item > 99,
+					}"
 				>
 					{{ totalPages }}
 				</button>
@@ -79,7 +88,10 @@
 				<button
 					@click="changePage(pagination_item)"
 					class="r-pagination__item-btn"
-					:class="{ current: current_page === pagination_item }"
+					:class="{
+						current: current_page === pagination_item,
+						wide: pagination_item > 99,
+					}"
 				>
 					{{ pagination_item }}
 				</button>
@@ -216,8 +228,6 @@
 			display: flex;
 			align-items: center;
 			gap: 0.9rem;
-			max-width: 50rem;
-			overflow-x: auto;
 		}
 		&__item {
 			list-style: none;
@@ -238,6 +248,11 @@
 					font-weight: 700;
 					color: rgba($black, $alpha: 0.7);
 					background-color: rgba($primary, $alpha: 0.2);
+				}
+				&.wide {
+					width: max-content;
+					border-radius: 2.4rem;
+					padding: 0 1rem;
 				}
 			}
 		}
