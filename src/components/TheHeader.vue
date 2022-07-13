@@ -93,14 +93,101 @@
 					v-if="isCabinetVersion === true"
 				>
 					<r-button
-						text="+ Новый парсер"
+						text="Новый парсер"
 						@click="this.$router.push({ name: 'new_parser' })"
-					></r-button>
+					>
+						<template v-slot:icon>
+							<svg
+								width="16"
+								height="17"
+								viewBox="0 0 16 17"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								class="r-button__icon"
+							>
+								<path
+									d="M8.3194 3.5V8.3731C8.3194 8.6196 8.1196 8.8194 7.8731 8.8194H3"
+									stroke="white"
+									stroke-width="1.5"
+									stroke-miterlimit="10"
+									stroke-linecap="round"
+								/>
+								<path
+									d="M8.32129 14.1387V9.26564C8.32129 9.01914 8.52109 8.81934 8.76759 8.81934H13.6407"
+									stroke="white"
+									stroke-width="1.5"
+									stroke-miterlimit="10"
+									stroke-linecap="round"
+								/>
+							</svg>
+						</template>
+					</r-button>
 
 					<r-button
-						text="+ Новая группа парсеров"
+						text="Новая группа парсеров"
 						@click="this.$router.push({ name: 'new_group_parser' })"
-					></r-button>
+					>
+						<template v-slot:icon>
+							<svg
+								width="16"
+								height="17"
+								viewBox="0 0 16 17"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								class="r-button__icon"
+							>
+								<path
+									d="M10.8148 4.25V8.1732C10.8148 8.3716 10.6577 8.5325 10.4638 8.5325H6.63086"
+									stroke="white"
+									stroke-width="1.5"
+									stroke-miterlimit="10"
+									stroke-linecap="round"
+								/>
+								<path
+									d="M10.8164 12.8147V8.89153C10.8164 8.69313 10.9735 8.53223 11.1674 8.53223H15.0003"
+									stroke="white"
+									stroke-width="1.5"
+									stroke-miterlimit="10"
+									stroke-linecap="round"
+								/>
+								<path
+									d="M1 8.53223H3.6181"
+									stroke="white"
+									stroke-width="1.5"
+									stroke-miterlimit="10"
+									stroke-linecap="round"
+								/>
+								<path
+									d="M1 12.6089H3.6181"
+									stroke="white"
+									stroke-width="1.5"
+									stroke-miterlimit="10"
+									stroke-linecap="round"
+								/>
+								<path
+									d="M1 4.25H3.6181"
+									stroke="white"
+									stroke-width="1.5"
+									stroke-miterlimit="10"
+									stroke-linecap="round"
+								/>
+								<path
+									d="M6.63086 12.8149H8.03356"
+									stroke="white"
+									stroke-width="1.5"
+									stroke-miterlimit="10"
+									stroke-linecap="round"
+								/>
+								<path
+									d="M6.63086 4.25H8.03356"
+									stroke="white"
+									stroke-width="1.5"
+									stroke-miterlimit="10"
+									stroke-linecap="round"
+								/>
+							</svg>
+						</template>
+					</r-button>
 				</div>
 
 				<nav class="the-header__nav" v-if="isCabinetVersion === false">
@@ -352,6 +439,16 @@
 		padding: 4rem;
 		z-index: 3;
 		transition: all 0.2s ease;
+
+		@media (max-width: 1023px) {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+		}
+
+		@media (max-width: 767px) {
+			padding: 1.5rem;
+		}
+
 		&.bg {
 			background-color: #fff;
 			box-shadow: $shadow;
@@ -361,27 +458,35 @@
 			@media (max-width: 767px) {
 				padding: 1.5rem;
 			}
-
-			&.bg__cabinet {
-				padding: 1rem 4rem;
-				.the-header {
-					&__container {
-						display: grid;
-						grid-template-columns: 23.5rem 1fr;
-						grid-gap: 4rem;
-					}
-					&__col {
-						justify-content: space-between;
-					}
-				}
-			}
 		}
 
 		&.bg__cabinet {
+			padding: 1rem 4rem;
+			.the-header {
+				&__container {
+					display: grid;
+					grid-template-columns: 22rem 1fr;
+					grid-gap: 4rem;
+
+					@media (max-width: 1023px) {
+						grid-template-columns: min-content 1fr;
+					}
+					@media (max-width: 767px) {
+						grid-template-columns: min-content max-content;
+					}
+				}
+				&__col {
+					justify-content: space-between;
+				}
+			}
+
+			@media (max-width: 1023px) {
+			}
 			@media (max-width: 767px) {
+				padding: 1.5rem;
+
 				.the-header {
 					&__burger {
-						// position: relative;
 						background-color: transparent;
 						display: flex;
 						flex-direction: column;
@@ -403,17 +508,9 @@
 				}
 			}
 		}
+
 		&__burger {
 			display: none;
-		}
-
-		@media (max-width: 1023px) {
-			padding-top: 3rem;
-			padding-bottom: 3rem;
-		}
-
-		@media (max-width: 767px) {
-			padding: 1.5rem;
 		}
 
 		&__container {
@@ -436,6 +533,29 @@
 		&__create {
 			display: flex;
 			gap: 2rem;
+
+			@media (max-width: 767px) {
+				display: none;
+			}
+			.r-button {
+				min-width: inherit;
+				&:hover {
+					.r-button__icon {
+						path {
+							stroke: $primary;
+							transition: all 0.3s ease;
+						}
+					}
+				}
+				&__icon {
+					width: 1.6rem;
+					min-width: 1.6rem;
+					height: 1.6rem;
+					path {
+						transition: all 0.2s ease;
+					}
+				}
+			}
 		}
 
 		&__logo {
@@ -497,6 +617,8 @@
 			gap: 1rem;
 			.r-button {
 				padding: 1.2rem 3rem;
+				&__icon {
+				}
 			}
 		}
 

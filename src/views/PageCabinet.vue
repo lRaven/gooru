@@ -126,12 +126,21 @@
 		grid-template-columns: max-content 1fr;
 		height: 100vh;
 		overflow: hidden;
+
+		@media (max-width: 767px) {
+			grid-template-columns: 1fr;
+		}
+
 		&__main {
 			position: relative;
 			display: block;
 			margin-top: 8rem;
 			background-color: $light-blue;
 			overflow-y: auto;
+
+			@media (max-width: 767px) {
+				margin-top: 7.4rem;
+			}
 		}
 	}
 </style>

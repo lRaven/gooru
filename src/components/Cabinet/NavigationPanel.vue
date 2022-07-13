@@ -71,9 +71,118 @@
 					</svg>
 				</button>
 
-				<p class="navigation-panel__logo">
+				<router-link
+					:to="{ name: 'home' }"
+					class="navigation-panel__logo"
+				>
 					<strong>COMPASS</strong> PARSING
-				</p>
+				</router-link>
+			</div>
+
+			<div class="navigation-panel__create">
+				<r-button
+					color="bordered"
+					text="Новый парсер"
+					@click="
+						this.$emit('close_menu');
+						this.$router.push({ name: 'new_parser' });
+					"
+				>
+					<template v-slot:icon>
+						<svg
+							width="16"
+							height="17"
+							viewBox="0 0 16 17"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							class="r-button__icon"
+						>
+							<path
+								d="M8.3194 3.5V8.3731C8.3194 8.6196 8.1196 8.8194 7.8731 8.8194H3"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M8.32129 14.1387V9.26564C8.32129 9.01914 8.52109 8.81934 8.76759 8.81934H13.6407"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+						</svg>
+					</template>
+				</r-button>
+				<r-button
+					color="bordered"
+					text="Новая группа парсеров"
+					@click="
+						this.$emit('close_menu');
+						this.$router.push({ name: 'new_group_parser' });
+					"
+				>
+					<template v-slot:icon>
+						<svg
+							width="16"
+							height="17"
+							viewBox="0 0 16 17"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							class="r-button__icon"
+						>
+							<path
+								d="M10.8148 4.25V8.1732C10.8148 8.3716 10.6577 8.5325 10.4638 8.5325H6.63086"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M10.8164 12.8147V8.89153C10.8164 8.69313 10.9735 8.53223 11.1674 8.53223H15.0003"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M1 8.53223H3.6181"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M1 12.6089H3.6181"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M1 4.25H3.6181"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M6.63086 12.8149H8.03356"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M6.63086 4.25H8.03356"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+						</svg>
+					</template>
+				</r-button>
 			</div>
 
 			<ul class="navigation-panel__list">
@@ -361,6 +470,8 @@
 			...mapState({
 				tab: (state) => state.navigation_panel.tab,
 				user: (state) => state.cabinet.user,
+
+				document_width: (state) => state.document_width,
 			}),
 			...mapGetters([
 				"appeals_notifications",
@@ -382,6 +493,10 @@
 			...mapMutations(["SET_TAB"]),
 
 			set_tab(tab, pagination) {
+				if (this.document_width < 768) {
+					this.$emit("close_menu");
+				}
+
 				this.SET_TAB(tab);
 				switch (pagination) {
 					case true: {
@@ -437,7 +552,12 @@
 		padding-top: 8rem;
 		transition: all 0.2s ease;
 
+		@media (max-width: 1023px) {
+			padding-top: 10rem;
+		}
+
 		@media (max-width: 767px) {
+			padding-top: 0;
 			position: fixed;
 			left: 0;
 			top: 0;
@@ -498,6 +618,7 @@
 
 			@media (max-width: 767px) {
 				background: none;
+				padding: 1.5rem;
 			}
 		}
 
@@ -505,6 +626,9 @@
 			display: flex;
 			flex-direction: column;
 			gap: 1.6rem;
+
+			@media (max-width: 767px) {
+			}
 		}
 
 		.navigation-item {
@@ -565,6 +689,23 @@
 		&__logo {
 			display: inline;
 			color: $white;
+			font-size: 1.6rem;
+		}
+
+		&__create {
+			display: none;
+			@media (max-width: 767px) {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 2rem;
+				margin-bottom: 2.6rem;
+				.r-button {
+					width: max-content;
+					outline-color: $white !important;
+					color: $white !important;
+					font-weight: 600 !important;
+				}
+			}
 		}
 	}
 </style>
