@@ -109,7 +109,10 @@
 							:quote="shareContent.quote"
 							:hashtags="shareContent.hashtags"
 						>
-							<img src="img/icon/cabinet/fb.svg" alt="facebook" />
+							<img
+								src="/img/icon/cabinet/fb.svg"
+								alt="facebook"
+							/>
 						</ShareNetwork>
 					</li>
 					<li class="favorite-content-item__social-list-item">
@@ -120,7 +123,7 @@
 							:description="shareContent.description"
 							:media="shareContent.image"
 						>
-							<img src="img/icon/cabinet/ok.svg" alt="ok" />
+							<img src="/img/icon/cabinet/ok.svg" alt="ok" />
 						</ShareNetwork>
 					</li>
 					<li class="favorite-content-item__social-list-item">
@@ -131,7 +134,7 @@
 							:description="shareContent.description"
 							:media="shareContent.image"
 						>
-							<img src="img/icon/cabinet/vk.svg" alt="vk" />
+							<img src="/img/icon/cabinet/vk.svg" alt="vk" />
 						</ShareNetwork>
 					</li>
 					<li class="favorite-content-item__social-list-item">
@@ -144,7 +147,7 @@
 							:hashtags="shareContent.hashtags"
 						>
 							<img
-								src="img/icon/cabinet/twtr.svg"
+								src="/img/icon/cabinet/twtr.svg"
 								alt="twitter"
 							/>
 						</ShareNetwork>
@@ -157,7 +160,7 @@
 							:description="shareContent.description"
 							:media="shareContent.image"
 						>
-							<img src="img/icon/cabinet/tg.svg" alt="tg" />
+							<img src="/img/icon/cabinet/tg.svg" alt="tg" />
 						</ShareNetwork>
 					</li>
 				</ul>

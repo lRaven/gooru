@@ -1,12 +1,12 @@
 <template>
-	<nav class="navigation-panel" :class="{ minimized: isMinimized }">
+	<nav class="navigation-panel" :class="{ minimized: isMenuMinimized }">
 		<button
 			type="button"
 			class="navigation-panel__minimize"
 			@click="
-				isMinimized === true
-					? (isMinimized = false)
-					: (isMinimized = true)
+				isMenuMinimized === true
+					? this.$emit('open_menu')
+					: this.$emit('close_menu')
 			"
 		>
 			<svg
@@ -26,9 +26,59 @@
 		</button>
 
 		<div class="navigation-panel__inner">
+			<div class="navigation-panel__top">
+				<button
+					class="navigation-panel__close"
+					@click="this.$emit('close_menu')"
+				>
+					<svg
+						width="27"
+						height="2"
+						viewBox="0 0 27 2"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="navigation-panel__close-line"
+					>
+						<line
+							x1="1"
+							y1="-1"
+							x2="26"
+							y2="-1"
+							transform="matrix(-1 0 0 1 27 2)"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+						/>
+					</svg>
+					<svg
+						width="27"
+						height="2"
+						viewBox="0 0 27 2"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="navigation-panel__close-line"
+					>
+						<line
+							x1="1"
+							y1="-1"
+							x2="26"
+							y2="-1"
+							transform="matrix(-1 0 0 1 27 2)"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+						/>
+					</svg>
+				</button>
+
+				<p class="navigation-panel__logo">
+					<strong>COMPASS</strong> PARSING
+				</p>
+			</div>
+
 			<ul class="navigation-panel__list">
 				<navigation-item
-					:description="isMinimized ? '' : 'Подписка'"
+					:description="isMenuMinimized ? '' : 'Подписка'"
 					:pagination="false"
 					value="rates"
 					@set_tab="set_tab"
@@ -66,7 +116,7 @@
 				</navigation-item>
 
 				<navigation-item
-					:description="isMinimized ? '' : 'Пользователи'"
+					:description="isMenuMinimized ? '' : 'Пользователи'"
 					:pagination="true"
 					value="users"
 					@set_tab="set_tab"
@@ -99,7 +149,7 @@
 				</navigation-item>
 
 				<navigation-item
-					:description="isMinimized ? '' : 'Обращения'"
+					:description="isMenuMinimized ? '' : 'Обращения'"
 					:pagination="true"
 					value="appeals"
 					@set_tab="set_tab"
@@ -143,7 +193,7 @@
 
 				<navigation-item
 					:description="
-						isMinimized
+						isMenuMinimized
 							? ''
 							: user.role === 'DefaultUser'
 							? 'Мои парсеры'
@@ -199,7 +249,7 @@
 				</navigation-item>
 
 				<navigation-item
-					:description="isMinimized ? '' : 'Избранное'"
+					:description="isMenuMinimized ? '' : 'Избранное'"
 					:pagination="false"
 					value="favorites"
 					@set_tab="set_tab"
@@ -232,7 +282,7 @@
 				</navigation-item>
 
 				<navigation-item
-					:description="isMinimized ? '' : 'Мой профиль'"
+					:description="isMenuMinimized ? '' : 'Мой профиль'"
 					value="profile"
 					:pagination="false"
 					@set_tab="set_tab"
@@ -285,9 +335,26 @@
 		name: "NavigationPanel",
 		components: { NavigationItem },
 		props: {
+			isMenuMinimized: {
+				value: Boolean,
+				default: false,
+			},
 			notifications: {
 				value: Array,
 				required: true,
+			},
+		},
+		watch: {
+			tab() {
+				this.paint_tab();
+			},
+
+			isMenuMinimized() {
+				if (this.isMenuMinimized === true) {
+					this.minimizePanel();
+				} else if (this.isMenuMinimized === false) {
+					this.resetMinimizePanel();
+				}
 			},
 		},
 		computed: {
@@ -302,7 +369,6 @@
 			]),
 		},
 		data: () => ({
-			isMinimized: false,
 			tabs: [
 				{ id: 1, selected: false, tab: "appeals", icon_fill: "" },
 				{ id: 2, selected: false, tab: "parsers", icon_fill: "" },
@@ -312,20 +378,6 @@
 				{ id: 6, selected: false, tab: "rates", icon_fill: "" },
 			],
 		}),
-		watch: {
-			tab() {
-				this.paint_tab();
-			},
-
-			isMinimized() {
-				if (this.isMinimized === true) {
-					this.minimizePanel();
-				} else if (this.isMinimized === false) {
-					this.resetMinimizePanel();
-				}
-			},
-		},
-
 		methods: {
 			...mapMutations(["SET_TAB"]),
 
@@ -380,12 +432,25 @@
 			#542f7d -40.69%,
 			#338dd0 109.26%
 		);
-		height: calc(100vh - 8rem);
-		margin-top: auto;
+		height: 100vh;
 		width: 26rem;
+		padding-top: 8rem;
 		transition: all 0.2s ease;
+
+		@media (max-width: 767px) {
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100vw;
+			z-index: 3;
+		}
+
 		&.minimized {
 			width: 8rem;
+
+			@media (max-width: 767px) {
+				transform: translateX(-8rem);
+			}
 			.navigation-panel {
 				&__inner {
 					padding-left: 1rem;
@@ -410,6 +475,11 @@
 			margin-top: 2rem;
 			z-index: 1;
 			transition: all 0.3s ease;
+
+			@media (max-width: 767px) {
+				display: none;
+			}
+
 			&-icon {
 				transition: all 0.2s ease;
 				transform: rotate(90deg);
@@ -424,6 +494,11 @@
 			height: 100%;
 			background: url("/public/img/icon/cabinet/goo.svg") bottom left /
 				90% no-repeat;
+			overflow: hidden;
+
+			@media (max-width: 767px) {
+				background: none;
+			}
 		}
 
 		&__list {
@@ -437,7 +512,7 @@
 				&-fake {
 					&:hover {
 						.navigation-item__icon path {
-							fill: white;
+							fill: $white;
 							fill-opacity: 1;
 							transition: all 0.2s ease;
 						}
@@ -455,6 +530,41 @@
 					transition: all 0.2s ease;
 				}
 			}
+		}
+
+		&__top {
+			display: none;
+
+			@media (max-width: 767px) {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 4rem;
+			}
+		}
+
+		&__close {
+			color: $white;
+			background-color: transparent;
+			display: grid;
+			align-items: center;
+			justify-content: center;
+			width: 3rem;
+			height: 3rem;
+			&-line {
+				grid-area: 1/1;
+				&:first-child {
+					transform: rotate(45deg);
+				}
+				&:last-child {
+					transform: rotate(-45deg);
+				}
+			}
+		}
+
+		&__logo {
+			display: inline;
+			color: $white;
 		}
 	}
 </style>

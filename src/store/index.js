@@ -42,7 +42,7 @@ export default createStore({
 			await window.addEventListener("resize", () => {
 				setTimeout(() => {
 					context.commit('SET_DOCUMENT_WIDTH', document.documentElement.clientWidth);
-				}, 500);
+				}, 100);
 			});
 		},
 	},

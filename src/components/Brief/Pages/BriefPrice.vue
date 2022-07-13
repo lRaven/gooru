@@ -42,7 +42,7 @@
 					<div class="brief-price__contact">
 						<div class="brief-price__contact-hint">
 							<img
-								src="img/icon/brief/profile.svg"
+								src="/img/icon/brief/profile.svg"
 								alt="icon"
 								class="brief-price__contact-icon"
 							/>
@@ -61,7 +61,7 @@
 					<div class="brief-price__contact">
 						<div class="brief-price__contact-hint">
 							<img
-								src="img/icon/at.svg"
+								src="/img/icon/at.svg"
 								alt="icon"
 								class="brief-price__contact-icon"
 							/>
@@ -85,7 +85,7 @@
 						>
 							<div class="brief-price__contact-hint">
 								<img
-									src="img/icon/key.svg"
+									src="/img/icon/key.svg"
 									alt="icon"
 									class="brief-price__contact-icon"
 								/>

@@ -59,7 +59,7 @@
 		</div>
 
 		<right-panel
-			icon="img/icon/cabinet/appeals-add.svg"
+			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			class="the-appeals__right-panel"
 			v-if="user.role === 'DefaultUser'"

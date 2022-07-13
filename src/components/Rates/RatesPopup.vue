@@ -26,7 +26,7 @@
 						:key="item.id"
 					>
 						<img
-							src="img/icon/tick.svg"
+							src="/img/icon/tick.svg"
 							alt="tick"
 							class="rate-info__tick"
 						/>
@@ -129,7 +129,7 @@
 					обработку персональных данных, соглашаюсь с тарифами и
 					правилами
 					<a
-						href="docs/Оферта ГУРУ.pdf"
+						href="/docs/Оферта ГУРУ.pdf"
 						target="_blank"
 						class="user-credentials__privacy-policy user-credentials__privacy-policy_accent"
 					>

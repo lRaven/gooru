@@ -11,7 +11,7 @@
 				:checked="selectAll"
 			></r-checkbox>
 			<button class="the-parsources__postpone" type="button">
-				<img src="img/icon/cabinet/postpone.svg" alt="postpone" />
+				<img src="/img/icon/cabinet/postpone.svg" alt="postpone" />
 				<p class="the-parsources__postpone-description">
 					Отложить выбранные
 				</p>
@@ -21,7 +21,7 @@
 				type="button"
 				@click="deleteSelected = true"
 			>
-				<img src="img/icon/cabinet/remove.svg" alt="remove" />
+				<img src="/img/icon/cabinet/remove.svg" alt="remove" />
 				<p class="the-parsources__remove-description">
 					Удалить выбранные
 				</p>

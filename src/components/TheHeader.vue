@@ -1,10 +1,7 @@
 <template>
 	<header
 		class="the-header"
-		:class="{
-			bg: isCabinetVersion,
-			bg__cabinet: isCabinetVersion,
-		}"
+		:class="{ 'bg bg__cabinet': isCabinetVersion }"
 		id="header"
 		ref="header"
 	>
@@ -13,6 +10,73 @@
 			:class="{ center__wide: !isCabinetVersion }"
 		>
 			<div class="the-header__col">
+				<button
+					type="button"
+					class="the-header__burger"
+					@click="
+						isMenuMinimized === true
+							? this.$emit('open_menu')
+							: this.$emit('close_menu')
+					"
+				>
+					<svg
+						width="27"
+						height="2"
+						viewBox="0 0 27 2"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="the-header__burger-line"
+					>
+						<line
+							x1="1"
+							y1="-1"
+							x2="26"
+							y2="-1"
+							transform="matrix(-1 0 0 1 27 2)"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+						/>
+					</svg>
+					<svg
+						width="27"
+						height="2"
+						viewBox="0 0 27 2"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="the-header__burger-line"
+					>
+						<line
+							x1="1"
+							y1="-1"
+							x2="26"
+							y2="-1"
+							transform="matrix(-1 0 0 1 27 2)"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+						/>
+					</svg>
+					<svg
+						width="27"
+						height="2"
+						viewBox="0 0 27 2"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="the-header__burger-line"
+					>
+						<line
+							x1="1"
+							y1="-1"
+							x2="26"
+							y2="-1"
+							transform="matrix(-1 0 0 1 27 2)"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+						/>
+					</svg>
+				</button>
 				<router-link
 					:to="{ name: 'home' }"
 					class="the-header__logo"
@@ -58,7 +122,7 @@
 
 				<div class="the-header__buttons" v-if="user_auth === false">
 					<r-button
-						color="transparent"
+						:color="document_width > 540 ? 'transparent' : 'purple'"
 						text="Войти"
 						ref="button"
 						@click="this.$router.push({ name: 'login' })"
@@ -66,6 +130,7 @@
 					<r-button
 						text="Регистрация"
 						@click="this.$router.push({ name: 'registration' })"
+						v-if="document_width > 540"
 					></r-button>
 				</div>
 
@@ -84,7 +149,7 @@
 					>
 						<img
 							:src="
-								user.avatar || 'img/icon/cabinet/no-avatar.svg'
+								user.avatar || '/img/icon/cabinet/no-avatar.svg'
 							"
 							class="the-header__avatar"
 							alt="avatar"
@@ -94,7 +159,7 @@
 						</p>
 						<div class="the-header__account-button">
 							<img
-								src="img/icon/cabinet/arrow.svg"
+								src="/img/icon/cabinet/arrow.svg"
 								alt=""
 								class="the-header__account-arrow"
 								ref="arrow"
@@ -202,6 +267,7 @@
 				value: Boolean,
 				default: false,
 			},
+			isMenuMinimized: Boolean,
 		},
 		watch: {
 			scrollTop() {
@@ -291,6 +357,11 @@
 			box-shadow: $shadow;
 			padding: 2rem 4rem;
 			transition: all 0.5s ease;
+
+			@media (max-width: 767px) {
+				padding: 1.5rem;
+			}
+
 			&.bg__cabinet {
 				padding: 1rem 4rem;
 				.the-header {
@@ -306,6 +377,45 @@
 			}
 		}
 
+		&.bg__cabinet {
+			@media (max-width: 767px) {
+				.the-header {
+					&__burger {
+						// position: relative;
+						background-color: transparent;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between;
+						gap: 0.6rem;
+						height: 2rem;
+						width: 2.7rem;
+						color: $gray;
+						z-index: 4;
+						&-line {
+							&:nth-child(3) {
+								width: 1.8rem;
+							}
+						}
+					}
+					&__logo {
+						display: none;
+					}
+				}
+			}
+		}
+		&__burger {
+			display: none;
+		}
+
+		@media (max-width: 1023px) {
+			padding-top: 3rem;
+			padding-bottom: 3rem;
+		}
+
+		@media (max-width: 767px) {
+			padding: 1.5rem;
+		}
+
 		&__container {
 			display: flex;
 			align-items: center;
@@ -317,6 +427,9 @@
 				display: flex;
 				align-items: center;
 				gap: 13rem;
+				@media (max-width: 1420px) {
+					gap: 2rem;
+				}
 			}
 		}
 
@@ -331,6 +444,12 @@
 			font-size: 2.4rem;
 			text-transform: uppercase;
 
+			@media (max-width: 540px) {
+				display: flex;
+				flex-direction: column;
+				font-size: 1.6rem;
+			}
+
 			&-secondary {
 				color: $secondary;
 				font-weight: 300;
@@ -340,6 +459,9 @@
 		&__links {
 			display: flex;
 			align-items: center;
+			@media (max-width: 1023px) {
+				display: none;
+			}
 		}
 		&__link {
 			position: relative;
@@ -362,6 +484,10 @@
 					width: calc(100% - 6rem);
 					transition: all 0.3s ease;
 				}
+			}
+
+			@media (max-width: 1420px) {
+				padding: 1.2rem 1.2rem;
 			}
 		}
 
@@ -445,62 +571,6 @@
 			font-size: 1.4rem;
 			font-weight: 700;
 			color: rgba($black, $alpha: 0.7);
-		}
-	}
-
-	@media (max-width: 1420px) {
-		.the-header {
-			&__col {
-				&:last-child {
-					gap: 2rem;
-				}
-			}
-			&__link {
-				padding: 1.2rem 1.2rem;
-			}
-		}
-	}
-
-	@media (max-width: 1023px) {
-		.the-header {
-			padding-top: 3rem;
-			padding-bottom: 3rem;
-
-			&__links {
-				display: none;
-			}
-		}
-	}
-
-	@media (max-width: 767px) {
-		.the-header {
-			padding: 1.5rem;
-			&.bg {
-				padding: 1.5rem;
-			}
-		}
-	}
-
-	@media (max-width: 540px) {
-		.the-header {
-			&__logo {
-				display: flex;
-				flex-direction: column;
-				font-size: 1.6rem;
-			}
-			.r-button {
-				&.transparent {
-					background-color: $primary;
-					color: $white;
-					&:hover {
-						background-color: $white;
-						color: $primary;
-					}
-				}
-				&.purple {
-					display: none;
-				}
-			}
 		}
 	}
 </style>

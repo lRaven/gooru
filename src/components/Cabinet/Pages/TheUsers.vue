@@ -11,7 +11,7 @@
 
 			<button class="the-users__control-btn" type="button">
 				<img
-					src="img/icon/cabinet/lock.svg"
+					src="/img/icon/cabinet/lock.svg"
 					class="the-users__control-btn-icon"
 					alt="icon"
 				/>
@@ -20,7 +20,7 @@
 
 			<button class="the-users__control-btn" type="button">
 				<img
-					src="img/icon/cabinet/unlock.svg"
+					src="/img/icon/cabinet/unlock.svg"
 					class="the-users__control-btn-icon"
 					alt="icon"
 				/>
@@ -33,7 +33,7 @@
 				@click="deleteSelected = true"
 			>
 				<img
-					src="img/icon/cabinet/remove.svg"
+					src="/img/icon/cabinet/remove.svg"
 					class="the-users__control-btn-icon"
 					alt="icon"
 				/>

@@ -122,7 +122,6 @@
 				{{ parsource.lost_time || "0ч" }}
 			</p>
 
-			<!-- <div class="parsource-card__col"> -->
 			<r-button
 				text="Подробнее"
 				color="bordered"
@@ -136,14 +135,13 @@
 			>
 				<template v-slot:icon>
 					<img
-						src="img/icon/alert.svg"
+						src="/img/icon/alert.svg"
 						alt="notification"
 						class="parsource-card__notification"
 						v-if="isHasNotifications"
 					/>
 				</template>
 			</r-button>
-			<!-- </div> -->
 		</div>
 	</div>
 </template>

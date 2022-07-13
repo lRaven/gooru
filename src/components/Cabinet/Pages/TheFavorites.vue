@@ -14,7 +14,7 @@
 						"
 					>
 						<img
-							src="img/icon/cabinet/sort.svg"
+							src="/img/icon/cabinet/sort.svg"
 							alt=""
 							class="the-favorites__sort-panel-btn-icon"
 						/>
@@ -32,7 +32,7 @@
 							Свернуть параметры
 						</p>
 						<img
-							src="img/icon/cabinet/arrow-double.svg"
+							src="/img/icon/cabinet/arrow-double.svg"
 							alt=""
 							class="the-favorites__sort-panel-btn-icon"
 						/>
@@ -102,7 +102,7 @@
 		</div>
 
 		<right-panel
-			icon="img/icon/cabinet/tick-bordered.svg"
+			icon="/img/icon/cabinet/tick-bordered.svg"
 			title="Выбрано"
 			class="the-favorites__right-panel"
 		>

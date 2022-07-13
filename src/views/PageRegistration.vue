@@ -61,7 +61,7 @@
 						обработку персональных данных, соглашаюсь с тарифами и
 						правилами
 						<a
-							href="docs/Оферта ГУРУ.pdf"
+							href="/docs/Оферта ГУРУ.pdf"
 							target="_blank"
 							class="page-registration__form-disclaimer-link"
 						>

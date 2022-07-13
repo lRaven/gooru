@@ -13,7 +13,10 @@
 		inputClassName="r-date-range-picker__input"
 	>
 		<template #input-icon>
-			<img class="input-slot-image" src="img/icon/cabinet/calendar.svg" />
+			<img
+				class="input-slot-image"
+				src="/img/icon/cabinet/calendar.svg"
+			/>
 		</template>
 	</Datepicker>
 </template>

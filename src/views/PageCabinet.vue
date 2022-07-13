@@ -1,8 +1,18 @@
 <template>
 	<div class="page-cabinet theme-container">
-		<the-header :isCabinetVersion="true"></the-header>
+		<the-header
+			:isCabinetVersion="true"
+			:isMenuMinimized="isMenuMinimized"
+			@open_menu="open_menu"
+			@close_menu="close_menu"
+		></the-header>
 
-		<navigation-panel :notifications="notifications"></navigation-panel>
+		<navigation-panel
+			:notifications="notifications"
+			:isMenuMinimized="isMenuMinimized"
+			@open_menu="open_menu"
+			@close_menu="close_menu"
+		></navigation-panel>
 
 		<main class="page-cabinet__main main">
 			<router-view v-slot="{ Component }">
@@ -57,8 +67,11 @@
 				user_auth: (state) => state.cabinet.user_auth,
 				userRole: (state) => state.cabinet.user.role,
 				notifications: (state) => state.notifications.notifications,
+
+				document_width: (state) => state.document_width,
 			}),
 		},
+		data: () => ({ isMenuMinimized: false }),
 		methods: {
 			...mapActions(["getNotifications"]),
 
@@ -85,10 +98,22 @@
 					}
 				}
 			},
+
+			close_menu() {
+				this.isMenuMinimized = true;
+			},
+			open_menu() {
+				this.isMenuMinimized = false;
+			},
 		},
 		created() {
 			this.getNotifications();
 			this.redirectUserByRole(this.userRole);
+		},
+		mounted() {
+			this.document_width > 767
+				? (this.isMenuMinimized = false)
+				: (this.isMenuMinimized = true);
 		},
 	};
 </script>

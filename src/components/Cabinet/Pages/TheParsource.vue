@@ -76,7 +76,7 @@
 		</div>
 
 		<right-panel
-			icon="img/icon/cabinet/filter.svg"
+			icon="/img/icon/cabinet/filter.svg"
 			title="Фильтр"
 			class="the-parsource__right-panel"
 		>
@@ -186,7 +186,7 @@
 					<h5 class="the-parsource__data-title">Текущий источник</h5>
 					<img
 						:src="
-							parsource.screenshot || 'img/icon/empty-image.svg'
+							parsource.screenshot || '/img/icon/empty-image.svg'
 						"
 						alt=""
 						class="the-parsource__image"
