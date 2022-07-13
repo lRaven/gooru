@@ -195,7 +195,7 @@
 		computed: {
 			isHasNotifications() {
 				return this.parsourcesHasParsersNotifications.find(
-					(el) => el.id === this.parsource.id
+					(el) => el === this.parsource.id
 				);
 			},
 		},

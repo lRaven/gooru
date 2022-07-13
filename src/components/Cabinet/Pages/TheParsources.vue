@@ -235,43 +235,27 @@
 
 			parsourcesHasParsersNotifications() {
 				//* получить id парсеров из уведомлений
-				let parsers_id = [];
-				this.parsers_notifications.forEach((notification) => {
-					const id = +notification.url.slice(7);
-					parsers_id.push(id);
-				});
+				const parsers_id = this.parsers_notifications.reduce(
+					(arr, current) => {
+						arr.push(+current.url.slice(7));
+						return arr;
+					},
+					[]
+				);
 
-				//* получить список парсеров по списку id парсеров
-				let parsers = [];
-				this.all_parsers.forEach((parser) => {
-					parsers_id.forEach((id) => {
-						if (id === parser.id) {
-							parsers.push(parser);
+				//* получить список id парсоурсов (уникальные) по id парсеров
+				return this.all_parsers.reduce((arr, current) => {
+					parsers_id.find((id) => {
+						if (
+							id === current.id &&
+							!arr.includes(current.parsource)
+						) {
+							arr.push(current.parsource);
 						}
 					});
-				});
 
-				//* получить список parsources
-				let parsources = [];
-				this.parsources.forEach((parsource) => {
-					parsers.forEach((parser) => {
-						if (parser.parsource === parsource.id) {
-							parsources.push(parsource);
-						}
-					});
-				});
-
-				//* оставить только уникальные parsources
-				const result = [
-					...parsources
-						.reduce(
-							(acc, current) => acc.set(current.id, current),
-							new Map()
-						)
-						.values(),
-				];
-
-				return result;
+					return arr;
+				}, []);
 			},
 		},
 		data() {
