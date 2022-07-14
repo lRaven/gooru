@@ -166,7 +166,7 @@
 					if (response.status === 201) {
 						this.toast.success("Аккаунт создан");
 						this.toast.info(
-							`Электронное письмо с подтверждением было отправлено на: ${this.user_data.email.value}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+							`Вы успешно зарегистрировали свой аккаунт, для входа в личный кабинет перейдите по ссылке, на указанной при регистрации почте!`
 						);
 						console.log("User created from brief");
 						this.SET_USER_CONTACTS(this.user_data.email.value);
