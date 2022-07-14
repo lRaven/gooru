@@ -49,7 +49,6 @@
 						</div>
 
 						<r-input
-							id="username"
 							input_type="text"
 							class="brief-price__contact-input"
 							placeholder="Имя"
@@ -68,7 +67,6 @@
 						</div>
 
 						<r-input
-							id="email"
 							input_type="email"
 							class="brief-price__contact-input"
 							placeholder="E-mail"
@@ -92,7 +90,6 @@
 							</div>
 
 							<r-input
-								id="password"
 								input_type="password"
 								class="brief-price__contact-input"
 								placeholder="Введите пароль"

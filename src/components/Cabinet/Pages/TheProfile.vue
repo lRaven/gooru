@@ -61,7 +61,6 @@
 					<input
 						type="file"
 						name=""
-						id=""
 						class="the-profile__image-pick-input"
 						accept="image/*"
 						@change="change_avatar($event.target)"

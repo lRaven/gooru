@@ -392,7 +392,7 @@
 			align-items: center;
 			padding: 0 3rem 0 5.6rem;
 			&.manager {
-				grid-template-columns: repeat(7, minmax(15rem, 1fr));
+				grid-template-columns: repeat(6, 1fr) 18rem;
 			}
 			.sort-button {
 				width: max-content;

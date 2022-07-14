@@ -1,14 +1,16 @@
 <template>
 	<label class="r-input">
 		<input
-			:id="id"
 			class="r-input__input"
 			:class="{ transparent: isTransparent }"
 			:type="input_type_changed"
 			:value="value"
 			:placeholder="placeholder"
 			:disabled="isDisabled"
-			@input="this.$emit('update:modelValue', $event.target.value)"
+			@input="
+				this.$emit('update:modelValue', $event.target.value);
+				this.$emit('update:Valid', $event.target.checkValidity());
+			"
 		/>
 		<transition mode="out-in">
 			<img
@@ -46,11 +48,6 @@
 	export default {
 		name: "r-input",
 		props: {
-			id: {
-				value: String,
-				Number,
-				default: 1,
-			},
 			placeholder: String,
 			input_type: {
 				value: String,

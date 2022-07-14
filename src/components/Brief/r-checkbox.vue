@@ -16,7 +16,6 @@
 			<input
 				type="text"
 				name=""
-				:id="text_input_id"
 				class="r-checkbox__text"
 				:placeholder="description"
 				@input="
@@ -37,11 +36,6 @@
 	export default {
 		name: "rCheckbox",
 		props: {
-			text_input_id: {
-				value: String,
-				Number,
-				default: 1,
-			},
 			hasInputField: {
 				value: Boolean,
 				default: false,

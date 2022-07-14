@@ -4,7 +4,6 @@
 			<input
 				type="radio"
 				name="navigation-panel-item"
-				id=""
 				class="navigation-item__radio-real"
 				:checked="isDefaultChecked"
 				@change="this.$emit('set_tab', value, pagination)"

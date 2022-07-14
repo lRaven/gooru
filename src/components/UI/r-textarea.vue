@@ -1,7 +1,6 @@
 <template>
 	<textarea
 		name=""
-		id=""
 		class="r-textarea"
 		:class="{ bordered: bordered }"
 		:placeholder="placeholder"

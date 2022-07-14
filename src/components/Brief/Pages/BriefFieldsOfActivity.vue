@@ -36,7 +36,6 @@
 			<r-checkbox
 				v-for="item in fields_of_activity"
 				:key="item.id"
-				:text_input_id="item.id"
 				:description="item.description"
 				:value="item.id"
 				:hasInputField="item.id === 5 ? true : false"

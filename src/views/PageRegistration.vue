@@ -21,21 +21,19 @@
 						Регистрация
 					</router-link>
 
-					<p class="page-registration__form-input-description">
+					<!-- <p class="page-registration__form-input-description">
 						Логин
 					</p>
 					<r-input
-						id="username"
 						v-model="user_data.username"
 						:value="user_data.username"
 						input_type="text"
-					></r-input>
+					></r-input> -->
 
 					<p class="page-registration__form-input-description">
 						E-mail
 					</p>
 					<r-input
-						id="email"
 						v-model="user_data.email"
 						:value="user_data.email"
 						input_type="email"
@@ -45,7 +43,6 @@
 						Пароль
 					</p>
 					<r-input
-						id="password"
 						v-model="user_data.password"
 						:value="user_data.password"
 						input_type="password"
@@ -97,7 +94,7 @@
 			isDisabledBtn: true,
 
 			user_data: {
-				username: "",
+				// username: "",
 				email: "",
 				password: "",
 			},
@@ -106,7 +103,7 @@
 			async create_account() {
 				try {
 					const response = await registration({
-						username: this.user_data.username,
+						// username: this.user_data.username,
 						email: this.user_data.email,
 						password: this.user_data.password,
 					});
@@ -129,7 +126,7 @@
 			},
 
 			validateForm() {
-				this.user_data.username.length > 0 &&
+				// this.user_data.username.length > 0 &&
 				this.user_data.password.length >= 8 &&
 				this.user_data.email.length > 0
 					? (this.isDisabledBtn = false)

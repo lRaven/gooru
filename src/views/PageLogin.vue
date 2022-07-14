@@ -18,17 +18,16 @@
 						Регистрация
 					</router-link>
 
-					<p class="page-login__form-input-description">Логин</p>
+					<p class="page-login__form-input-description">E-mail</p>
 					<r-input
-						id="username"
-						v-model="user_data.username"
-						:value="user_data.username"
-						input_type="text"
+						v-model="user_data.email.value"
+						v-model:Valid="user_data.email.valid"
+						:value="user_data.email.value"
+						input_type="email"
 					></r-input>
 
 					<p class="page-login__form-input-description">Пароль</p>
 					<r-input
-						id="password"
 						v-model="user_data.password"
 						:value="user_data.password"
 						input_type="password"
@@ -73,7 +72,10 @@
 			isDisabledBtn: true,
 
 			user_data: {
-				username: "",
+				email: {
+					value: "",
+					valid: false,
+				},
 				password: "",
 			},
 		}),
@@ -83,7 +85,7 @@
 			async auth() {
 				try {
 					const response = await login({
-						username: this.user_data.username,
+						username: this.user_data.email.value,
 						password: this.user_data.password,
 					});
 					if (response.status === 200) {
@@ -100,13 +102,16 @@
 						this.$router.push({ name: "cabinet" });
 					}
 				} catch (err) {
-					this.toast.error("Неверный логин или пароль");
+					this.toast.error(
+						"Не удаётся войти. Пожалуйста проверьте правильность написания email и пароля"
+					);
 					throw new Error(err);
 				}
 			},
 
 			validateForm() {
-				this.user_data.username.length > 0 &&
+				this.user_data.email.value.length > 0 &&
+				this.user_data.email.valid === true &&
 				this.user_data.password.length >= 8
 					? (this.isDisabledBtn = false)
 					: (this.isDisabledBtn = true);

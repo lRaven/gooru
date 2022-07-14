@@ -246,7 +246,7 @@
 		&.manager {
 			.parsource-card {
 				&__content {
-					grid-template-columns: repeat(7, minmax(15rem, 1fr));
+					grid-template-columns: repeat(6, 1fr) 18rem;
 				}
 			}
 		}
@@ -254,7 +254,7 @@
 		&__content {
 			position: relative;
 			display: grid;
-			grid-template-columns: repeat(7, minmax(15rem, 1fr)) 18rem;
+			grid-template-columns: repeat(7, 1fr) 18rem;
 			grid-gap: 2rem;
 			justify-content: space-between;
 			align-items: center;

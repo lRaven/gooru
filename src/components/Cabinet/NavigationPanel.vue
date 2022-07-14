@@ -563,6 +563,7 @@
 			top: 0;
 			width: 100vw;
 			z-index: 3;
+			transition: all 0.2s ease, padding 0.2s ease 0.2s;
 		}
 
 		&.minimized {

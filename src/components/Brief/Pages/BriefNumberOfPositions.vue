@@ -24,7 +24,6 @@
 						<input
 							type="number"
 							name=""
-							id=""
 							class="brief-number-of-positions__input"
 							ref="input_min"
 							v-model="range[0]"
@@ -46,7 +45,6 @@
 						<input
 							type="number"
 							name=""
-							id=""
 							class="brief-number-of-positions__input"
 							v-model="range[1]"
 							ref="input_max"
@@ -85,7 +83,6 @@
 					<input
 						type="number"
 						name=""
-						id=""
 						class="brief-number-of-positions__input"
 						ref="input_min"
 						v-model="range[0]"
@@ -109,7 +106,6 @@
 					<input
 						type="number"
 						name=""
-						id=""
 						class="brief-number-of-positions__input"
 						v-model="range[1]"
 						ref="input_max"

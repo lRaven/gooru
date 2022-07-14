@@ -18,7 +18,6 @@
 				<r-radio-select
 					v-for="status in client_statuses"
 					:key="status.id"
-					:text_input_id="`status_'${status.id}`"
 					radio_name="status"
 					:description="status.description"
 					:value="status.id"
