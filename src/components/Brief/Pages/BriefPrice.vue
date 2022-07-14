@@ -42,24 +42,6 @@
 					<div class="brief-price__contact">
 						<div class="brief-price__contact-hint">
 							<img
-								src="/img/icon/brief/profile.svg"
-								alt="icon"
-								class="brief-price__contact-icon"
-							/>
-						</div>
-
-						<r-input
-							input_type="text"
-							class="brief-price__contact-input"
-							placeholder="Имя"
-							v-model="user_data.username"
-							:value="user_data.username"
-						></r-input>
-					</div>
-
-					<div class="brief-price__contact">
-						<div class="brief-price__contact-hint">
-							<img
 								src="/img/icon/at.svg"
 								alt="icon"
 								class="brief-price__contact-icon"
@@ -70,9 +52,9 @@
 							input_type="email"
 							class="brief-price__contact-input"
 							placeholder="E-mail"
-							v-model="user_data.email"
-							:value="user_data.email"
-							@click="isPasswordInputVisible = true"
+							v-model="user_data.email.value"
+							v-model:Valid="user_data.email.valid"
+							:value="user_data.email.value"
 						></r-input>
 					</div>
 
@@ -102,7 +84,7 @@
 
 				<r-button
 					type="submit"
-					:disabled="isDisabledBtn"
+					:disabled="!isValidForm"
 					description="Да не вопрос! Держите!"
 				></r-button>
 			</form>
@@ -127,17 +109,7 @@
 		watch: {
 			user_data: {
 				handler: function () {
-					if (
-						this.user_data.username.length > 0 &&
-						this.user_data.email.length > 0 &&
-						this.user_data.password.length >= 8
-					) {
-						this.isDisabledBtn = false;
-					} else {
-						this.isDisabledBtn = true;
-					}
-
-					if (this.user_data.email.length > 0) {
+					if (this.user_data.email.value.length > 0) {
 						this.isPasswordInputVisible = true;
 					}
 				},
@@ -157,26 +129,27 @@
 				source: (store) => store.brief.source,
 				user_contacts: (store) => store.brief.user_contacts,
 			}),
+
 			rate() {
 				return this.rates[this.source - 1] || {};
 			},
-			send_user_data() {
-				let result = {};
 
-				result.username = this.user_data.username;
-				result.email = this.user_data.email;
-				result.password = this.user_data.password;
-
-				return result;
+			isValidForm() {
+				return (
+					this.user_data.email.value.length > 0 &&
+					this.user_data.email.valid &&
+					this.user_data.password.length >= 8
+				);
 			},
 		},
 		data: () => ({
-			isDisabledBtn: true,
 			isPasswordInputVisible: false,
 
 			user_data: {
-				username: "",
-				email: "",
+				email: {
+					value: "",
+					valid: false,
+				},
 				password: "",
 			},
 		}),
@@ -186,18 +159,17 @@
 			async create_user() {
 				try {
 					const response = await registration({
-						username: this.user_data.username,
-						email: this.user_data.email,
+						email: this.user_data.email.value,
 						password: this.user_data.password,
 					});
 
 					if (response.status === 201) {
 						this.toast.success("Аккаунт создан");
 						this.toast.info(
-							`Электронное письмо с подтверждением было отправлено на: ${this.user_data.email}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+							`Электронное письмо с подтверждением было отправлено на: ${this.user_data.email.value}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
 						);
 						console.log("User created from brief");
-						this.SET_USER_CONTACTS(this.send_user_data);
+						this.SET_USER_CONTACTS(this.user_data.email.value);
 						this.$emit("moveToNextPage");
 					}
 				} catch (err) {

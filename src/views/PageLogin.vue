@@ -37,7 +37,7 @@
 						Забыли пароль
 					</button>
 
-					<r-button :disabled="isDisabledBtn" text="Войти"></r-button>
+					<r-button :disabled="!isValidForm" text="Войти"></r-button>
 				</form>
 			</section>
 		</main>
@@ -59,18 +59,16 @@
 				baseURL: (state) => state.baseURL,
 				auth_token: (state) => state.cabinet.auth_token,
 			}),
-		},
-		watch: {
-			user_data: {
-				handler() {
-					this.validateForm();
-				},
-				deep: true,
+
+			isValidForm() {
+				return (
+					this.user_data.email.value.length > 0 &&
+					this.user_data.email.valid === true &&
+					this.user_data.password.length >= 8
+				);
 			},
 		},
 		data: () => ({
-			isDisabledBtn: true,
-
 			user_data: {
 				email: {
 					value: "",
@@ -107,14 +105,6 @@
 					);
 					throw new Error(err);
 				}
-			},
-
-			validateForm() {
-				this.user_data.email.value.length > 0 &&
-				this.user_data.email.valid === true &&
-				this.user_data.password.length >= 8
-					? (this.isDisabledBtn = false)
-					: (this.isDisabledBtn = true);
 			},
 		},
 		setup() {

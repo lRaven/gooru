@@ -21,21 +21,13 @@
 						Регистрация
 					</router-link>
 
-					<!-- <p class="page-registration__form-input-description">
-						Логин
-					</p>
-					<r-input
-						v-model="user_data.username"
-						:value="user_data.username"
-						input_type="text"
-					></r-input> -->
-
 					<p class="page-registration__form-input-description">
 						E-mail
 					</p>
 					<r-input
-						v-model="user_data.email"
-						:value="user_data.email"
+						v-model="user_data.email.value"
+						v-model:Valid="user_data.email.valid"
+						:value="user_data.email.value"
 						input_type="email"
 					></r-input>
 
@@ -49,7 +41,7 @@
 					></r-input>
 
 					<r-button
-						:disabled="isDisabledBtn"
+						:disabled="!isValidForm"
 						text="Зарегистрироваться"
 					></r-button>
 
@@ -81,21 +73,23 @@
 	export default {
 		name: "PageRegistration",
 		components: { TheHeader },
-		watch: {
-			user_data: {
-				handler() {
-					this.validateForm();
-				},
-				deep: true,
+		computed: {
+			...mapState(["baseURL"]),
+
+			isValidForm() {
+				return (
+					this.user_data.email.value.length > 0 &&
+					this.user_data.email.valid &&
+					this.user_data.password.length >= 8
+				);
 			},
 		},
-		computed: { ...mapState(["baseURL"]) },
 		data: () => ({
-			isDisabledBtn: true,
-
 			user_data: {
-				// username: "",
-				email: "",
+				email: {
+					value: "",
+					valid: false,
+				},
 				password: "",
 			},
 		}),
@@ -103,15 +97,14 @@
 			async create_account() {
 				try {
 					const response = await registration({
-						// username: this.user_data.username,
-						email: this.user_data.email,
+						email: this.user_data.email.value,
 						password: this.user_data.password,
 					});
 
 					if (response.status === 201) {
 						this.toast.success("Аккаунт успешно создан");
 						this.toast.info(
-							`Электронное письмо с подтверждением было отправлено на: ${this.user_data.email}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+							`Электронное письмо с подтверждением было отправлено на: ${this.user_data.email.value}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
 						);
 						console.log("Account created");
 
@@ -123,14 +116,6 @@
 					this.toast.error("Ошибка создания аккаунта");
 					throw new Error(err);
 				}
-			},
-
-			validateForm() {
-				// this.user_data.username.length > 0 &&
-				this.user_data.password.length >= 8 &&
-				this.user_data.email.length > 0
-					? (this.isDisabledBtn = false)
-					: (this.isDisabledBtn = true);
 			},
 		},
 		setup() {
