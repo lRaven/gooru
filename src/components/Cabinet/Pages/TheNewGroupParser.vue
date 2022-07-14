@@ -87,12 +87,14 @@
 				</template>
 			</r-button>
 
-			<p class="the-new-group-parser__input-description">Список полей*</p>
+			<p class="the-new-group-parser__input-description">
+				Категория сбора информации*
+			</p>
 			<r-input
 				input_type="text"
 				v-model="new_parsource.parse_fields"
 				:value="new_parsource.parse_fields"
-				placeholder="Введите список полей"
+				placeholder="Укажите категорию сбора информации"
 			></r-input>
 
 			<p class="the-new-group-parser__input-description">
