@@ -164,12 +164,17 @@
 					});
 
 					if (response.status === 201) {
-						this.toast.success("Аккаунт создан");
+						this.toast.success(
+							"Вы успешно зарегистрировали свой аккаунт"
+						);
 						this.toast.info(
-							`Вы успешно зарегистрировали свой аккаунт, для входа в личный кабинет перейдите по ссылке, на указанной при регистрации почте!`
+							`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
 						);
 						console.log("User created from brief");
-						this.SET_USER_CONTACTS(this.user_data.email.value);
+
+						this.SET_USER_CONTACTS({
+							email: this.user_data.email.value,
+						});
 						this.$emit("moveToNextPage");
 					}
 				} catch (err) {
