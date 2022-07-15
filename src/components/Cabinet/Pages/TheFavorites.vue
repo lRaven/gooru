@@ -95,7 +95,10 @@
 			</transition>
 
 			<transition mode="out-in">
-				<p class="the-favorites__empty" v-if="favorites.length === 0">
+				<p
+					class="the-favorites__empty"
+					v-if="favorites.length === 0 && isFavoritesLoaded"
+				>
 					Список избранного пуст
 				</p>
 			</transition>

@@ -95,7 +95,9 @@
 				<div class="the-parsources__empty">
 					<p
 						class="the-parsources__empty-text"
-						v-if="parsources_list.length === 0"
+						v-if="
+							parsources_list.length === 0 && isParsourcesLoaded
+						"
 					>
 						Парсеров нет
 					</p>

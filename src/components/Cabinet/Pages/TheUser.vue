@@ -239,7 +239,10 @@
 						<div class="the-user__tabs-tab-empty">
 							<p
 								class="the-user__tabs-tab-text"
-								v-if="user_parsources.length === 0"
+								v-if="
+									user_parsources.length === 0 &&
+									isParsourcesLoaded
+								"
 							>
 								Парсеров нет
 							</p>
@@ -272,7 +275,9 @@
 						<div class="the-user__tabs-tab-empty">
 							<p
 								class="the-user__tabs-tab-text"
-								v-if="user_appeals.length === 0"
+								v-if="
+									user_appeals.length === 0 && isAppealsLoaded
+								"
 							>
 								Список обращений пуст
 							</p>

@@ -117,9 +117,9 @@
 
 			<p
 				class="parsource-card__col parsource-card__time"
-				:title="parsource.lost_time || '0ч'"
+				:title="lost_time"
 			>
-				{{ parsource.lost_time || "0ч" }}
+				{{ lost_time }}
 			</p>
 
 			<r-button
@@ -195,6 +195,14 @@
 				return this.parsourcesHasParsersNotifications.find(
 					(el) => el === this.parsource.id
 				);
+			},
+
+			lost_time() {
+				const time = this.parsource.lost_time;
+				const hours = Number(time.slice(0, 2));
+				const minutes = Number(time.slice(3, 5));
+
+				return `${hours > 0 ? hours + "ч" : ""} ${minutes}мин`;
 			},
 		},
 		data() {
