@@ -99,15 +99,25 @@
 						input_type="password"
 					/>
 
-					<r-button
-						class="rates-popup__user-credentials-form__submit-button rates-popup__user-credentials-form_area_submit-button"
-						:text="
-							formType === 'registration'
-								? 'Зарегистироваться'
-								: 'Войти'
-						"
-						:disabled="!isValidForm"
-					/>
+					<div class="rates-popup__buttons">
+						<r-button
+							class="rates-popup__user-credentials-form__submit-button rates-popup__user-credentials-form_area_submit-button"
+							:text="
+								formType === 'registration'
+									? 'Зарегистироваться'
+									: 'Войти'
+							"
+							:disabled="!isValidForm"
+						/>
+
+						<transition name="fade" mode="out-in">
+							<r-link
+								v-if="formType === 'registration'"
+								text="Нужна помощь?"
+								way="https://telegram.im/@compas_gooru"
+							></r-link>
+						</transition>
+					</div>
 				</form>
 
 				<transition mode="out-in">
@@ -383,13 +393,12 @@
 					color: rgba($black, $alpha: 0.7);
 				}
 				&__submit-button {
-					max-width: 27rem;
-					max-height: 4.5rem;
-					padding: 1.2rem 5.6rem;
+					padding: 1.2rem 3rem !important;
 					font-size: 1.4rem;
 					font-weight: 700;
-					grid-column: 1/3;
-					margin-top: 2rem;
+				}
+				.r-link {
+					padding: 1.2rem 2rem;
 				}
 			}
 
@@ -402,6 +411,14 @@
 					color: $primary;
 				}
 			}
+		}
+
+		&__buttons {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 2rem;
+			grid-column: 1/3;
 		}
 	}
 </style>

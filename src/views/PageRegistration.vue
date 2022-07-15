@@ -40,15 +40,22 @@
 						input_type="password"
 					></r-input>
 
-					<r-button
-						:disabled="!isValidForm"
-						text="Зарегистрироваться"
-					></r-button>
+					<div class="page-registration__buttons">
+						<r-button
+							:disabled="!isValidForm"
+							text="Зарегистрироваться"
+						></r-button>
+
+						<r-link
+							text="Нужна помощь?"
+							way="https://telegram.im/@compas_gooru"
+						></r-link>
+					</div>
 
 					<p class="page-registration__form-disclaimer">
-						Нажимая кнопку «Зарегистрироваться», я даю согласие на
-						обработку персональных данных, соглашаюсь с тарифами и
-						правилами
+						Нажимая кнопку «Зарегистрироваться», я даю согласие
+						на&nbsp;обработку персональных данных, соглашаюсь
+						с&nbsp;тарифами и правилами
 						<a
 							href="/docs/Оферта ГУРУ.pdf"
 							target="_blank"
@@ -147,7 +154,7 @@
 
 		&__form {
 			display: grid;
-			grid-template-columns: 11rem 30rem;
+			grid-template-columns: 11rem max-content;
 			align-items: center;
 			grid-gap: 2rem 0;
 
@@ -186,24 +193,46 @@
 				}
 			}
 
-			&-disclaimer,
-			.r-button {
+			&-disclaimer {
 				grid-column: 2/3;
 				width: max-content;
 			}
 
-			.r-button {
+			.r-button,
+			.r-link {
 				padding: 1.2rem 2rem;
 				font-size: 1.4rem;
-				margin-top: 2rem;
+				width: max-content;
 			}
+
 			&-disclaimer {
-				max-width: 30rem;
+				max-width: 33rem;
 				font-size: 1.1rem;
 				line-height: 1.3;
 				color: rgba($black, $alpha: 0.7);
 				&-link {
 					color: $primary;
+				}
+			}
+		}
+
+		&__buttons {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 2rem;
+			gap: 2rem;
+			grid-column: 2/3;
+		}
+	}
+</style>
+
+<style lang="scss">
+	.page-registration {
+		&__form {
+			.r-link {
+				&__description {
+					font-size: 1.4rem;
 				}
 			}
 		}
