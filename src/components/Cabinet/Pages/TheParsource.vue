@@ -453,7 +453,11 @@
 						this.selected_parsource.id,
 					]);
 
-					if (response.status === 204) {
+					// if (response.status === 204) {
+					// 	this.toast.success("Источник удалён");
+					// }
+
+					if (response.status === 200) {
 						this.toast.success("Источник удалён");
 					}
 
@@ -711,14 +715,14 @@
 		&__info {
 			.r-dropdown {
 				&__header {
-					min-height: initial;
+					min-height: initial !important;
 				}
 				&__selected {
-					font-size: 1.2rem;
+					font-size: 1.2rem !important;
 				}
 				&__list {
 					&-item {
-						font-size: 1.2rem;
+						font-size: 1.2rem !important;
 					}
 				}
 			}

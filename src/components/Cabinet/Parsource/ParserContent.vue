@@ -573,7 +573,7 @@
 	.parser-content {
 		list-style: none;
 		border-top: 0.1rem solid #999;
-		padding: 1rem 3rem 1rem 1rem;
+		padding: 1rem 3rem;
 		background-color: $white;
 
 		&__row {
@@ -619,7 +619,7 @@
 			object-fit: contain;
 		}
 		&__text {
-			font-size: 1.2rem;
+			font-size: 1.6rem;
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
 			word-break: break-word;
@@ -634,7 +634,7 @@
 		&__link {
 			text-decoration: underline;
 			color: $primary;
-			font-size: 1rem;
+			font-size: 1.4rem;
 		}
 
 		&__icon {

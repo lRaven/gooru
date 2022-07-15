@@ -13,7 +13,7 @@
 					:checked="checked"
 				></r-checkbox>
 
-				<p class="favorite-content-item__title">{{ parser.title }}</p>
+				<h5 class="favorite-content-item__title">{{ parser.title }}</h5>
 				<p class="favorite-content-item__text">{{ parser.article }}</p>
 			</div>
 
@@ -413,13 +413,12 @@
 		}
 
 		&__title {
-			font-size: 1.4rem;
 			text-overflow: ellipsis;
 			overflow: hidden;
 			white-space: nowrap;
 		}
 		&__text {
-			font-size: 1.2rem;
+			font-size: 1.6rem;
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
 			&.cropped {
