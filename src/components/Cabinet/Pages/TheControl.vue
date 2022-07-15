@@ -49,8 +49,7 @@
 
 <script>
 	import RateCard from "@/components/Rates/RateCard.vue";
-	import rModal from "@/components/r-modal.vue";
-	import rInput from "@/components/Auth/r-input.vue";
+	
 
 	import { mapState, mapActions } from "vuex";
 
@@ -59,8 +58,6 @@
 	export default {
 		components: {
 			RateCard,
-			rModal,
-			rInput,
 		},
 		data() {
 			return {
