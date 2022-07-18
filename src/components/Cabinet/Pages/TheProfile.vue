@@ -3,6 +3,28 @@
 		<h2 class="the-profile__title">Мой профиль</h2>
 
 		<div class="the-profile__main">
+		<form class="the-profile__change-avatar">
+				<img
+					:src="personal_data.avatar || '/img/icon/cabinet/no-avatar.svg'"
+					class="the-profile__form-avatar"
+					alt=""
+				/>
+
+				<label class="the-profile__image-pick">
+					<input
+						type="file"
+						name=""
+						class="the-profile__image-pick-input"
+						accept="image/*"
+						@change="change_avatar($event.target)"
+					/>
+					<div type="button" class="the-profile__image-pick-btn">
+						<img src="/img/icon/cabinet/edit.svg" alt="" />
+						Изменить
+					</div>
+				</label>
+			</form>
+
 			<form class="the-profile__form the-profile__change-personal-data">
 				<h4 class="the-profile__form-title">Личные данные</h4>
 				<transition mode="out-in">
@@ -48,31 +70,6 @@
 						v-model="personal_data.email"
 					></r-input>
 				</fieldset>
-			</form>
-
-			<form class="the-profile__change-avatar">
-				<img
-					:src="
-						personal_data.avatar ||
-						'/img/icon/cabinet/no-avatar.svg'
-					"
-					class="the-profile__form-avatar"
-					alt=""
-				/>
-
-				<label class="the-profile__image-pick">
-					<input
-						type="file"
-						name=""
-						class="the-profile__image-pick-input"
-						accept="image/*"
-						@change="change_avatar($event.target)"
-					/>
-					<div type="button" class="the-profile__image-pick-btn">
-						<img src="/img/icon/cabinet/edit.svg" alt="" />
-						Изменить
-					</div>
-				</label>
 			</form>
 
 			<form class="the-profile__form the-profile__change-password">
@@ -354,7 +351,7 @@
 
 		&__main {
 			display: grid;
-			grid-template-columns: 52rem 30rem;
+			grid-template-columns: 52rem;
 			grid-gap: 8rem;
 			column-gap: 25rem;
 		}
@@ -397,8 +394,8 @@
 
 			&-avatar {
 				user-select: none;
-				width: 30rem;
-				height: 30rem;
+				width: 15rem;
+				height: 15rem;
 				border-radius: 50%;
 				object-fit: cover;
 			}
@@ -406,9 +403,8 @@
 
 		&__change-avatar {
 			display: flex;
-			flex-direction: column;
+			justify-content: space-between;
 			align-items: center;
-			gap: 3.6rem;
 		}
 
 		&__image-pick {

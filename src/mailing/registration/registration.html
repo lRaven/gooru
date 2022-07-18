@@ -1,0 +1,440 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+
+</head>
+
+<body>
+  <style>
+    body {
+      margin: 0;
+    }
+    @media screen and (max-width: 580px) {
+      .header {
+        height: 130px !important;
+      }
+
+      .main {
+        padding: 30px 20px 8px 20px !important;
+      }
+    }
+
+    @media screen and (max-width: 525px) {
+
+      .header__tilte {
+        margin: 0 0 0 35px !important;
+      }
+
+      .header__subtitle {
+        margin: 0 0 0 35px !important;
+      }
+
+    }
+
+    @media screen and (max-width: 500px) {
+      .header {
+        height: 120px !important;
+      }
+
+      .header__tilte {
+        margin: 0 0 0 30px !important;
+      }
+
+      .header__subtitle {
+        margin: 0 0 0 30px !important;
+      }
+
+      .footer__logo {
+        width: 30px !important;
+        height: 30px !important;
+        max-width: 30px !important;
+        max-height: 30px !important;
+      }
+
+      .footer__slogan {
+        font-size: 8px !important;
+        line-height: 12px !important;
+        width: 60px !important;
+      }
+
+      .footer__slogan-caption {
+        font-size: 8px !important;
+        line-height: 8px !important;
+        width: 135px !important;
+      }
+
+      .footer__text-logo {
+        font-size: 11px !important;
+        line-height: 14px !important;
+        width: 120px !important;
+        max-width: 120px !important;
+      }
+
+      .footer__text-logo_accent_light {
+        margin: 0 0 0 4px !important;
+      }
+    }
+
+    @media screen and (max-width: 475px) {
+      .header {
+        height: 110px !important;
+      }
+
+      .header__tilte {
+        font-size: 14px !important;
+        line-height: 18px !important;
+        margin: 0 0 0 35px !important;
+      }
+
+      .header__subtitle {
+        font-size: 12px !important;
+        line-height: 15px !important;
+        margin: 0 0 0 35px !important;
+      }
+
+      .main {
+        padding: 25px 20px 8px 20px !important;
+      }
+
+      .main__title {
+        margin: 0 0 25px 0 !important;
+      }
+
+      .main__item_last {
+        margin: 0 0 50px 0 !important;
+      }
+    }
+
+    @media screen and (max-width: 435px) {
+      .header {
+        height: 100px !important;
+      }
+
+      .header__tilte {
+        font-size: 14px !important;
+        line-height: 18px !important;
+        margin: 0 0 0 30px !important;
+      }
+
+      .header__subtitle {
+        font-size: 12px !important;
+        line-height: 15px !important;
+        margin: 0 0 0 30px !important;
+      }
+
+      .main {
+        padding: 25px 20px 8px 20px !important;
+      }
+
+      .main__title {
+        font-size: 12px !important;
+        line-height: 13px !important;
+        margin: 0 0 15px 0 !important;
+      }
+
+      .main__item {
+        font-size: 11px !important;
+        line-height: 12px !important;
+        margin: 0 0 8px 0 !important;
+      }
+
+      .main__item-link {
+        font-size: 11px !important;
+        line-height: 13px !important;
+      }
+
+      .main__item_last {
+        margin: 0 0 35px 0 !important;
+      }
+
+      .footer {
+        padding: 0 20px 15px 20px !important;
+      }
+
+      .footer__logo {
+        width: 27px !important;
+        height: 27px !important;
+        max-width: 27px !important;
+        max-height: 27px !important;
+        padding: 0 6px 0 0 !important;
+      }
+
+      .footer__slogan {
+        font-size: 7px !important;
+        line-height: 8px !important;
+        width: 55px !important;
+      }
+
+      .footer__slogan-caption {
+        font-size: 7px !important;
+        line-height: 7px !important;
+        width: 125px !important;
+      }
+
+      .footer__text-logo {
+        font-size: 10px !important;
+        line-height: 12px !important;
+        width: 115px !important;
+        max-width: 115px !important;
+      }
+
+      .footer__text-logo_accent_light {
+        margin: 0 0 0 3px !important;
+      }
+    }
+
+    @media screen and (max-width: 410px) {
+      .main {
+        padding: 20px 15px 8px 15px !important;
+      }
+
+      .main__title {
+        font-size: 12px !important;
+        line-height: 13px !important;
+        margin: 0 0 15px 0 !important;
+      }
+
+      .main__item {
+        font-size: 10px !important;
+        line-height: 11px !important;
+        margin: 0 0 6px 0 !important;
+      }
+
+      .main__item-link {
+        font-size: 10px !important;
+        line-height: 12px !important;
+      }
+
+      .main__item_last {
+        margin: 0 0 25px 0 !important;
+      }
+
+      .footer {
+        padding: 0 15px 10px 15px !important;
+      }
+
+      .footer__logo {
+        padding: 0 5px 0 0 !important;
+      }
+
+      .footer__text-logo {
+        font-size: 9px !important;
+        line-height: 10px !important;
+        width: 105px !important;
+        max-width: 105px !important;
+      }
+    }
+
+    @media screen and (max-width: 400px) {
+      .header {
+        height: 90px !important;
+      }
+
+      .header__tilte {
+        font-size: 12px !important;
+        line-height: 16px !important;
+        margin: 0 0 0 25px !important;
+      }
+
+      .header__subtitle {
+        font-size: 11px !important;
+        line-height: 14px !important;
+        margin: 0 0 0 25px !important;
+      }
+    }
+
+    @media screen and (max-width: 385px) {
+      .header {
+        height: 85px !important;
+      }
+
+      .header__tilte {
+        font-size: 10px !important;
+        line-height: 14px !important;
+        margin: 0 0 0 27px !important;
+      }
+
+      .header__subtitle {
+        font-size: 10px !important;
+        line-height: 12px !important;
+        margin: 0 0 0 27px !important;
+      }
+
+      .main__title {
+        font-size: 11px !important;
+        line-height: 12px !important;
+        margin: 0 0 12px 0 !important;
+      }
+
+      .main__item {
+        font-size: 9px !important;
+        line-height: 10px !important;
+        margin: 0 0 5px 0 !important;
+      }
+
+      .main__item-link {
+        font-size: 9px !important;
+        line-height: 10px !important;
+      }
+
+      .main__item_last {
+        margin: 0 0 20px 0 !important;
+      }
+
+      .footer__text-logo {
+        width: 95px !important;
+      }
+    }
+
+    @media screen and (max-width: 346px) {
+      .content {
+        padding: 0 15px !important;
+      }
+
+      .header {
+        height: 80px !important;
+      }
+
+      .header__tilte {
+        margin: 0 0 0 34px !important; 
+      }
+
+      .header__subtitle {
+        font-size: 9px !important;
+        line-height: 11px !important;
+        margin: 0 0 0 34px !important;
+        width: 180px !important;
+      }
+
+      .main__title {
+        font-size: 10px !important;
+        line-height: 11px !important;
+        margin: 0 0 12px 0 !important;
+      }
+
+      .footer__slogan {
+        line-height: 7px !important;
+      }
+
+      .footer__logo {
+        width: 23px !important;
+        height: 23px !important;
+        max-width: 23px !important;
+        max-height: 23px !important;
+      }
+    }
+  </style>
+  <table border="0" cellpadding="0" cellspacing="0" style="margin: 0; padding: 0; width: 100%;">
+    <tr style="width: 100%;">
+      <td align="center" valign="top" style="width: inherit;">
+        <table class="content" border="0" cellpadding="0" cellspacing="0"
+          style="margin: 0; padding: 0 30px; width: 100%; max-width: 600px; background-color: #378DD2;">
+          <tr>
+            <td class="header" 
+            style="max-width: 100%; 
+            width: 100%; 
+            height: 153px; 
+            font-family: Arial, sans-serif; 
+            background-position: center; 
+            background-repeat: no-repeat;
+            background-size: contain;" 
+            valign="center" 
+            background="./registrationGreeting.png">
+              <h2 class="header__tilte" 
+              style="margin: 0 0 0 46px;
+              font-weight: 600;
+              font-size: 17px;
+              line-height: 21px;
+              color: #FFFFFF;
+              width: 93px;
+              max-width: 93px;">
+                Мой друг!</h2>
+              <p class="header__subtitle" 
+              style="margin: 0 0 0 46px;
+              font-weight: 300;
+              font-size: 15px;
+              line-height: 18px;
+              color: #FFFFFF;
+              width: 260px;
+              max-width: 260px;">
+                Благодарю тебя за регистрацию!</p>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" class="main" 
+            style="background-color: #FFFFFF;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            padding: 46px 20px 8px 20px;">
+              <h3 class="main__title" style="margin: 0 0 33px 0; font-weight: 700; font-size: 13px; line-height: 15px;">
+                Теперь
+                выбирай Тариф и отправляйся в Путь.
+              </h3>
+              <p class="main__item" style="margin: 0 0 10px 0; font-weight: 400; font-size: 12px; line-height: 14px;">
+                Если ты
+                учёный муж - выбирай <a class="main__item-link" href="#" target="_blank"
+                  style="font-weight: 700; font-size: 12px; line-height: 14px; font-family: Arial, sans-serif; -webkit-text-size-adjust:none; color: #5960C7;">"Интеллектуал"</a>
+              </p>
+              <p class="main__item" style="margin: 0 0 10px 0; font-weight: 400; font-size: 12px; line-height: 14px;">
+                Если ты коммерсант - твой выбор это <a class="main__item-link" href="#" target="_blank"
+                  style=" font-weight: 700; font-size: 12px; line-height: 14px; font-family: Arial, sans-serif; -webkit-text-size-adjust:none; color: #5960C7;">"Бизнес"</a>
+
+              </p>
+              <p class="main__item" style="margin: 0 0 10px 0; font-weight: 400; font-size: 12px; line-height: 14px;">
+                Если тебя
+                знают тысячи людей - жми на <a class="main__item-link" href="#" target="_blank"
+                  style=" font-weight: 700; font-size: 12px; line-height: 14px; font-family: Arial, sans-serif; -webkit-text-size-adjust:none; color: #5960C7;">"Блогер"</a>
+              </p>
+              <p class="main__item main__item_last"
+                style="margin: 0 0 73px 0; font-weight: 400; font-size: 12px; line-height: 14px;">
+                Если ничего ни по душе, то ты достоин <a class="main__item-link" href="#" target="_blank"
+                  style=" font-weight: 700; font-size: 12px; line-height: 14px; font-family: Arial, sans-serif; -webkit-text-size-adjust:none; color: #5960C7;">"Персонального"</a>
+              </p>
+              <hr size="1px" style="margin: 0; background-color: #D9D9D9;" />
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" class="footer"
+            style="background-color: #FFFFFF;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            padding: 0 20px 20px 20px;">
+              <table valign="center" border="0" cellpadding="0" cellspacing="0" class="footer__table"
+                style="background-color: #FFFFFF; max-width: 500px; width: 100%; font-family: Arial, sans-serif;">
+                <tr>
+                  <td class="footer__logo" width="36" valign="top">
+                    <img src="../img/compasLogo.png" alt="Логотип"
+                      style="margin: 0 8px 0 0; width: inherit; height: inherit; max-width: inherit; max-height: inherit; display: block;" />
+                  </td>
+                  <td valign="center">
+                    <h3 class="footer__slogan"
+                      style="font-size: 9px; line-height: 13px; font-weight: 700; margin: 0 0 3px 0; width: 65px;">
+                      КОМПАС ПРО</h3>
+                    <p class="footer__slogan-caption"
+                      style="font-size: 9px; line-height: 9px; font-weight: 400; margin: 0; color: #434343; width: 150px;">
+                      с нами в
+                      правильном направлении</p>
+                  </td>
+                  <td width="90" valign="center" align="right">
+                    <p class="footer__text-logo"
+                      style="width: 131px; max-width: 131px; font-size: 12px; font-weight: 700; line-height: 15px; margin: 0; color: #5960C7;">
+                      COMPASS<span class="footer__text-logo footer__text-logo_accent_light footer__logo_color_blue"
+                        style="font-weight: 300; margin: 0 0 0 5px; color: #197ECA; letter-spacing: 1px;">PARSING</span>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+    </tr>
+  </table>
+  </td>
+  </tr>
+  </table>
+</body>
+
+</html>

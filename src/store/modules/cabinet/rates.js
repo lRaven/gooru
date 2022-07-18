@@ -1,3 +1,5 @@
+import { updateRate } from "@/api/userApi";
+
 const state = () => ({
 	rates: [
 		{
@@ -56,9 +58,27 @@ const state = () => ({
 
 const getters = {}
 
-const mutations = {}
+const mutations = {
+	SET_RATES: (state, payload) => state.rates = payload,
+}
 
-const actions = {}
+const actions = {
+	async updateRate(context, payload) {
+		try {
+			const updatedRate = await updateRate(payload);
+			const updatedRates = context.state.rates.map( rate => {
+				if (rate.id === updateRate.id) {
+					return updatedRate;
+				} else {
+					return rate;
+				}
+			});
+			context.commit('SET_RATES', updatedRates);
+		} catch (error) {
+			throw new Error(error);
+		}
+	}
+}
 
 export default {
 	state,

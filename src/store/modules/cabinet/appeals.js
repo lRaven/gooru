@@ -63,7 +63,7 @@ const actions = {
 	//*get parsources with pagination
 	getAppeals: async (context, args) => {
 		try {
-			const response = await axios.get(`${store.state.baseURL}/users/support/?page=${args.page_number}&page_size=${args.page_size}`,
+			const response = await axios.get(`${store.state.baseURL}/users/support/?${args.search ? `search=${args.search}&`: ''}page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
 			if (response.status === 200) {

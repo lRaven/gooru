@@ -79,12 +79,12 @@
 			redirectUserByRole(role) {
 				switch (role) {
 					case "DefaultUser": {
-						this.$router.push({ name: "rates" });
+						this.$router.push({ name: "parsources", query: { page: 1 } });
 						break;
 					}
 					case "Manager": {
 						this.$router.push({
-							name: "appeals",
+							name: "parsources",
 							query: { page: 1 },
 						});
 						break;

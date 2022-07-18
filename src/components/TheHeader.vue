@@ -295,7 +295,7 @@
 								<p
 									class="the-header__account-menu-item-description"
 								>
-									Мой профиль
+									{{ setButtonText }}
 								</p>
 							</li>
 
@@ -372,6 +372,18 @@
 		computed: {
 			headerHeight() {
 				return this.$refs.header.clientHeight;
+			},
+			setButtonText() {
+				switch(this.user.role) {
+					case 'DefaultUser':
+						return 'Мои парсы';
+					case 'Manager':
+						return 'Все парсеры';
+					case 'AdminCRM':
+						return 'Пользователи';
+					default:
+					return 'Мой кабинет';
+				}
 			},
 			...mapState(["document_width"]),
 			...mapState({

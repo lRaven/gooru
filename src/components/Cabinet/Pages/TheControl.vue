@@ -1,0 +1,147 @@
+<template>
+	<section class="the-control">
+		<h2 class="the-control__title">Управление</h2>
+		<div class="the-control__body">
+			<div class="rate-cards">
+				<rate-card
+					v-for="rate in rates"
+					:key="rate.id"
+					isHasButton="true"
+					ButtonText="Изменить"
+					color="white"
+					:rate="rate"
+					@select-rate="selectRate"
+				/>
+			</div>
+			<r-modal
+				v-if="selectedRate"
+				@close-modal="closeModal"
+				@submit.stop="submitUpdatedRate"
+			>
+				<template v-slot>
+					<form class="the-control__form">
+						<h3 class="the-control__form-title">
+							Изменение параметров
+						</h3>
+						<r-input
+							:value="selectedRate.name"
+							v-model="selectedRate.name"
+						/>
+						<r-input
+							:value="selectedRate.price.toString()"
+							v-model="selectedRate.price"
+						/>
+						<r-input
+							v-for="checkItem in selectedRate.checklist"
+							:key="checkItem.id"
+							:value="checkItem.text"
+							v-model="checkItem.text"
+						/>
+						<button type="submit" class="the-control__form-submit">
+							Применить
+						</button>
+					</form>
+				</template></r-modal
+			>
+		</div>
+	</section>
+</template>
+
+<script>
+	import RateCard from "@/components/Rates/RateCard.vue";
+	
+
+	import { mapState, mapActions } from "vuex";
+
+	import { useToast } from "vue-toastification";
+
+	export default {
+		components: {
+			RateCard,
+		},
+		data() {
+			return {
+				selectedRate: null,
+			};
+		},
+		computed: {
+			...mapState({
+				rates: (state) => state.rates.rates,
+			}),
+		},
+		methods: {
+			...mapActions(["updateRate"]),
+			selectRate(id) {
+				const selectedRate = this.rates.find((rate) => rate.id === id);
+				this.selectedRate = JSON.parse(JSON.stringify(selectedRate));
+			},
+			closeModal() {
+				this.selectedRate = null;
+			},
+			async submitUpdatedRate() {
+				try {
+					// на бэке сейчас можно изменить только цену и название
+					await this.updateRate(this.selectedRate);
+					this.closeModal();
+				} catch (error) {
+					console.log(error);
+					this.toast.error("Не удалось изменить тариф!");
+				}
+			},
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
+		},
+	};
+</script>
+
+<style scoped lang="scss">
+	@import "@/assets/scss/variables";
+	.the-control {
+		padding: 4rem;
+		height: 100%;
+		overflow: auto;
+		&__title {
+			margin-bottom: 4rem;
+			font-weight: 400;
+		}
+
+		&__form-title {
+			margin: 0 0 1.5rem 0;
+		}
+		&__form {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			padding: 2rem 2rem;
+			gap: 1rem;
+		}
+		&__form-submit {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+			font-size: 1.6rem;
+			font-weight: 700;
+			padding: 2rem 3rem;
+			border-radius: 0.5rem;
+      background-color: $primary;
+      color: $white;
+			min-width: -webkit-max-content;
+			min-width: -moz-max-content;
+			min-width: max-content;
+			height: -webkit-max-content;
+			height: -moz-max-content;
+			height: max-content;
+			opacity: 1;
+			transition: all 0.2s ease;
+		}
+	}
+
+	.rate-cards {
+		display: flex;
+		justify-content: space-between;
+	}
+</style>

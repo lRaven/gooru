@@ -158,6 +158,22 @@ const upload_avatar = async ({ user_id, avatar }) => {
 	catch (err) { throw new Error(err) }
 }
 
+// admin requests
+
+const updateRate = async (rateObjToUpdate) => {
+	console.log(rateObjToUpdate)
+	try {
+		const { data } = await axios.put(`${store.state.baseURL}/tariff/${rateObjToUpdate.id}/`, rateObjToUpdate, {
+			headers: {
+				Authorization: `token ${cookie.get('auth_token')}`,
+			}
+		});
+		return data;
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
 const change_manager = async ({ user, manager, user_manager }) => {
 	try {
 		const response = await axios.patch(`${baseURL}/usermanager/${user_manager}/`, {
@@ -191,6 +207,7 @@ export {
 	change_password,
 	change_user_data,
 	upload_avatar,
+	updateRate,
 	change_manager,
 	delete_user,
 };

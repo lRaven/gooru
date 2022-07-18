@@ -9,9 +9,11 @@
 				<r-input
 					class="the-appeals__search-input"
 					:value="searchValue"
+					v-model="searchValue"
 					input_type="search"
 					placeholder="Поиск по почте"
 					v-if="user.role !== 'DefaultUser'"
+					@keyup.enter="searchAppeals"
 				/>
 			</div>
 
@@ -142,6 +144,14 @@
 					});
 				}
 			},
+			searchValue() {
+				if (this.searchValue === "") {
+					this.getAppeals({
+						page_number: this.page,
+						page_size: this.appeals_in_page,
+					});
+				}
+			},
 			appeals() {
 				this.isAppealsLoaded = true;
 			},
@@ -233,6 +243,18 @@
 				} catch (err) {
 					this.toast.error("Ошибка создания обращения");
 					throw new Error(err);
+				}
+			},
+
+			async searchAppeals() {
+				if (this.searchValue !== '') {
+					await this.getAppeals({
+						search: this.searchValue,
+						page_number: this.page,
+						page_size: this.appeals_in_page,
+					});
+				} else {
+					window.alert('Ты лох');
 				}
 			},
 

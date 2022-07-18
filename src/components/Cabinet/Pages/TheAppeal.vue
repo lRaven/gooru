@@ -266,6 +266,7 @@
 			text-overflow: ellipsis;
 			overflow: hidden;
 			white-space: nowrap;
+			padding: 0 0 1.5rem 0;
 		}
 		&__header {
 			display: flex;

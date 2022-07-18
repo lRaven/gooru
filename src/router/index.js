@@ -24,6 +24,7 @@ import TheNewGroupParser from '@/components/Cabinet/Pages/TheNewGroupParser'
 //* admin pages
 import TheUsers from '@/components/Cabinet/Pages/TheUsers'
 import TheUser from '@/components/Cabinet/Pages/TheUser'
+import TheControl from '@/components/Cabinet/Pages/TheControl';
 //*
 
 import PageBrief from '@/views/PageBrief'
@@ -145,6 +146,15 @@ const routes = [
 
 			//* admin 
 			//* юзеры
+			{
+				path: 'control',
+				name: 'control',
+				component: TheControl,
+				meta: {
+					title: 'Управление',
+					requiresAuth: true,
+				},
+			},
 			{
 				path: 'users',
 				name: 'users',
