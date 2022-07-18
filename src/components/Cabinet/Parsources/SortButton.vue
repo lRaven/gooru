@@ -1,12 +1,13 @@
 <template>
-	<button class="sort-button">
-		<p class="sort-button__description">{{ description }}</p>
+	<button class="sort-button" @click="sortBy">
+		<p class="sort-button__description">{{ sortItem.description }}</p>
 
 		<slot name="icon">
 			<img
 				src="/img/icon/cabinet/arrow.svg"
 				alt="arrow"
 				class="sort-button__icon"
+				:class="sortItem.direction"
 			/>
 		</slot>
 	</button>
@@ -16,9 +17,40 @@
 	export default {
 		name: "SortButton",
 		props: {
-			description: {
-				value: String,
-				default: "SortBy",
+			sortItem: {
+				value: Object,
+				required: true,
+			},
+			selected_sort: {
+				value: Number,
+				required: true,
+			},
+		},
+		methods: {
+			sortBy() {
+				this.$emit("update:modelValue", this.sortItem.id);
+
+				if (this.selected_sort === this.sortItem.id) {
+					if (this.sortItem.direction === "descending") {
+						this.$emit("change_direction", {
+							id: this.sortItem.id,
+							key: this.sortItem.key,
+							direction: "ascending",
+						});
+					} else {
+						this.$emit("change_direction", {
+							id: this.sortItem.id,
+							key: this.sortItem.key,
+							direction: "descending",
+						});
+					}
+				} else {
+					this.$emit("new_sort", {
+						id: this.sortItem.id,
+						key: this.sortItem.key,
+						direction: "ascending",
+					});
+				}
 			},
 		},
 	};
@@ -41,6 +73,10 @@
 
 		&__icon {
 			width: 0.8rem;
+			transition: all 0.3s ease;
+			&.ascending {
+				transform: rotate(180deg);
+			}
 		}
 	}
 </style>

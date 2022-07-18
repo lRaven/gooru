@@ -496,9 +496,9 @@
 						this.parser.comment.text = comment;
 						this.isEditComment = false;
 					}
-				} catch (error) {
-					console.log(error);
+				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
+					throw new Error(err);
 				}
 			},
 			async handleDeleteComment() {
@@ -506,9 +506,9 @@
 					await deleteComment({ id: this.parser.comment.id });
 					this.parser.comment = { text: "", id: null };
 					this.comment = "";
-				} catch (error) {
-					console.log(error);
+				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
+					throw new Error(err);
 				}
 			},
 			async handleClickDownload() {
@@ -552,9 +552,9 @@
 							linkForDownload.remove();
 						}
 					});
-				} catch (error) {
-					console.log(error);
+				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
+					throw new Error(err);
 				}
 			},
 		},
