@@ -11,7 +11,7 @@
 				:checked="selectAll"
 			></r-checkbox>
 			<button class="the-parsources__postpone" type="button">
-				<img src="img/icon/cabinet/postpone.svg" alt="postpone" />
+				<img src="/img/icon/cabinet/postpone.svg" alt="postpone" />
 				<p class="the-parsources__postpone-description">
 					Отложить выбранные
 				</p>
@@ -21,7 +21,7 @@
 				type="button"
 				@click="deleteSelected = true"
 			>
-				<img src="img/icon/cabinet/remove.svg" alt="remove" />
+				<img src="/img/icon/cabinet/remove.svg" alt="remove" />
 				<p class="the-parsources__remove-description">
 					Удалить выбранные
 				</p>
@@ -84,6 +84,9 @@
 						:key="parsource.id"
 						:parsource="parsource"
 						:isParsourceManagerView="userRole !== 'DefaultUser'"
+						:parsourcesHasParsersNotifications="
+							parsourcesHasParsersNotifications
+						"
 					></parsource-card>
 				</div>
 			</transition>
@@ -92,7 +95,9 @@
 				<div class="the-parsources__empty">
 					<p
 						class="the-parsources__empty-text"
-						v-if="parsources_list.length === 0"
+						v-if="
+							parsources_list.length === 0 && isParsourcesLoaded
+						"
 					>
 						Парсеров нет
 					</p>
@@ -122,7 +127,8 @@
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+	import { read_notification } from "@/api/notifications";
 	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
 	import { useToast } from "vue-toastification";
 
@@ -195,6 +201,13 @@
 				},
 				deep: true,
 			},
+
+			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+			parsources_notifications() {
+				this.parsources_notifications.forEach((notification) => {
+					this.clear_notifications(notification.id);
+				});
+			},
 		},
 		computed: {
 			...mapState({
@@ -202,7 +215,15 @@
 				parsources_pagination: (state) =>
 					state.parsers.parsources_pagination,
 				userRole: (state) => state.cabinet.user.role,
+				userId: (state) => state.cabinet.user.id,
+
+				all_parsers: (state) => state.parsers.all_parsers,
 			}),
+			...mapGetters([
+				"parsources_notifications",
+				"parsers_notifications",
+			]),
+
 			page() {
 				return +this.$route.query.page;
 			},
@@ -212,6 +233,31 @@
 
 			number_of_pages() {
 				return Math.ceil(this.count / this.parsources_in_page);
+			},
+
+			parsourcesHasParsersNotifications() {
+				//* получить id парсеров из уведомлений
+				const parsers_id = this.parsers_notifications.reduce(
+					(arr, current) => {
+						arr.push(+current.url.slice(7));
+						return arr;
+					},
+					[]
+				);
+
+				//* получить список id парсоурсов (уникальные) по id парсеров
+				return this.all_parsers.reduce((arr, current) => {
+					parsers_id.find((id) => {
+						if (
+							id === current.id &&
+							!arr.includes(current.parsource)
+						) {
+							arr.push(current.parsource);
+						}
+					});
+
+					return arr;
+				}, []);
 			},
 		},
 		data() {
@@ -234,7 +280,12 @@
 				"SELECT_ALL_PARSOURCES",
 				"UNSELECT_ALL_PARSOURCES",
 			]),
-			...mapActions(["getParsources", "deleteSelectedParsources"]),
+			...mapActions([
+				"getParsources",
+				"deleteSelectedParsources",
+				"getNotifications",
+				"getAllParsers",
+			]),
 			async sort_list(array, key) {
 				const response = await sortArrayByObjectKey(array, key);
 				this.parsources_list = response;
@@ -246,9 +297,30 @@
 					query: { page: page_number },
 				});
 			},
+
+			async clear_notifications(notification_id) {
+				try {
+					const response = await read_notification({
+						notification_id: notification_id,
+						read: true,
+						user_id: this.userId,
+					});
+					if (response.status === 200) {
+						this.getNotifications();
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
 		},
 		created() {
 			this.SET_TAB("parsers");
+			this.getAllParsers();
+
+			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+			this.parsources_notifications.forEach((notification) => {
+				this.clear_notifications(notification.id);
+			});
 			this.getParsources({
 				page_number: this.page,
 				page_size: this.parsources_in_page,
@@ -316,18 +388,13 @@
 		}
 		&__sort {
 			display: grid;
-			grid-template-columns: minmax(20rem, 1fr) 20rem 14rem 20rem repeat(
-					4,
-					14rem
-				);
+			grid-template-columns: repeat(7, minmax(15rem, 1fr)) 18rem;
 			grid-gap: 2rem;
 			justify-content: space-between;
 			align-items: center;
 			padding: 0 3rem 0 5.6rem;
 			&.manager {
-				grid-template-columns:
-					18rem 14rem
-					repeat(2, 20rem) repeat(3, 14rem);
+				grid-template-columns: repeat(6, 1fr) 18rem;
 			}
 			.sort-button {
 				width: max-content;

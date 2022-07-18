@@ -1,18 +1,20 @@
 <template>
 	<label class="r-input">
 		<input
-			:id="id"
 			class="r-input__input"
 			:class="{ transparent: isTransparent }"
 			:type="input_type_changed"
 			:value="value"
 			:placeholder="placeholder"
 			:disabled="isDisabled"
-			@input="this.$emit('update:modelValue', $event.target.value)"
+			@input="
+				this.$emit('update:modelValue', $event.target.value);
+				this.$emit('update:Valid', $event.target.checkValidity());
+			"
 		/>
 		<transition mode="out-in">
 			<img
-				src="img/icon/cabinet/eye-closed.svg"
+				src="/img/icon/cabinet/eye-closed.svg"
 				alt="open-password"
 				v-if="input_type === 'password' && isPasswordHide === true"
 				class="r-input__icon"
@@ -22,7 +24,7 @@
 
 		<transition mode="out-in">
 			<img
-				src="img/icon/cabinet/eye-open.svg"
+				src="/img/icon/cabinet/eye-open.svg"
 				alt="hide-password"
 				v-if="input_type === 'password' && isPasswordHide === false"
 				class="r-input__icon"
@@ -32,7 +34,7 @@
 
 		<transition mode="out-in">
 			<img
-				src="img/icon/cabinet/search.svg"
+				src="/img/icon/cabinet/search.svg"
 				alt="search-tool"
 				v-if="input_type === 'search'"
 				class="r-input__icon"
@@ -46,11 +48,6 @@
 	export default {
 		name: "r-input",
 		props: {
-			id: {
-				value: String,
-				Number,
-				default: 1,
-			},
 			placeholder: String,
 			input_type: {
 				value: String,

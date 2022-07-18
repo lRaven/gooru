@@ -1,46 +1,8 @@
 <template>
-	<template v-if="!selectedRate">
-		<div class="rates-slider">
-			<div class="rates-slider__top">
-				<h2 class="rates-slider__title">{{ title }}</h2>
-				<div class="rates-slider__nav" v-show="document_width > 540">
-					<button
-						class="rates-slider-button-prev swiper-button-prev"
-					></button>
-					<button
-						class="rates-slider-button-next swiper-button-next"
-					></button>
-				</div>
-			</div>
-			<swiper
-				class="rates-slider__inner"
-				:space-between="30"
-				:navigation="{
-					nextEl: '.rates-slider-button-next',
-					prevEl: '.rates-slider-button-prev',
-				}"
-				:breakpoints="{
-					'0': {
-						slidesPerView: 'auto',
-						spaceBetween: 20,
-					},
-					'1340': {
-						slidesPerView: 4,
-						spaceBetween: 30,
-					},
-				}"
-				:modules="modules"
-				:speed="600"
-			>
-				<swiper-slide v-for="slide in slides" :key="slide.id">
-					<rate-card
-						:rate="slide"
-						ButtonText="Выбрать"
-						@select-rate="selectRate"
-					></rate-card>
-				</swiper-slide>
-			</swiper>
-			<div class="rates-slider__bottom" v-show="document_width <= 540">
+	<div class="rates-slider">
+		<div class="rates-slider__top">
+			<h2 class="rates-slider__title">{{ title }}</h2>
+			<div class="rates-slider__nav" v-show="document_width > 540">
 				<button
 					class="rates-slider-button-prev swiper-button-prev"
 				></button>
@@ -49,14 +11,51 @@
 				></button>
 			</div>
 		</div>
-	</template>
-	<transition name="fade" mode="out-in">
-		<rate-popup
-			v-if="selectedRate"
-			:selectedRate="selectedRate"
-			@closePopup="selectedRate = null"
-		/>
-	</transition>
+		<swiper
+			class="rates-slider__inner"
+			:space-between="30"
+			:navigation="{
+				nextEl: '.rates-slider-button-next',
+				prevEl: '.rates-slider-button-prev',
+			}"
+			:breakpoints="{
+				'0': {
+					slidesPerView: 'auto',
+					spaceBetween: 20,
+				},
+				'1340': {
+					slidesPerView: 4,
+					spaceBetween: 30,
+				},
+			}"
+			:modules="modules"
+			:speed="600"
+		>
+			<swiper-slide v-for="slide in slides" :key="slide.id">
+				<rate-card
+					:rate="slide"
+					ButtonText="Выбрать"
+					@select-rate="selectRate"
+				></rate-card>
+			</swiper-slide>
+		</swiper>
+		<div class="rates-slider__bottom" v-show="document_width <= 540">
+			<button
+				class="rates-slider-button-prev swiper-button-prev"
+			></button>
+			<button
+				class="rates-slider-button-next swiper-button-next"
+			></button>
+		</div>
+
+		<transition name="fade" mode="out-in">
+			<rate-popup
+				v-if="selectedRate"
+				:selectedRate="selectedRate"
+				@closePopup="selectedRate = null"
+			/>
+		</transition>
+	</div>
 </template>
 
 <script>
@@ -84,6 +83,15 @@
 				default: "'slider title'",
 			},
 			slides: Array,
+		},
+		watch: {
+			selectedRate() {
+				const body = document.querySelector("body");
+
+				this.selectedRate === null
+					? body.classList.remove("locked")
+					: body.classList.add("locked");
+			},
 		},
 		data: () => ({ selectedRate: null }),
 		methods: {

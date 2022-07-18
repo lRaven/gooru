@@ -61,7 +61,7 @@
 		</div>
 
 		<right-panel
-			icon="img/icon/cabinet/appeals-add.svg"
+			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			class="the-appeals__right-panel"
 			v-if="user.role === 'DefaultUser'"
@@ -121,8 +121,9 @@
 </template>
 
 <script>
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 	import { add_ticket } from "@/api/tickets";
+	import { read_notification } from "@/api/notifications";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
@@ -160,6 +161,13 @@
 				},
 				deep: true,
 			},
+
+			appeals_notification() {
+				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+				this.appeals_notifications.forEach((notification) => {
+					this.clear_notifications(notification.id);
+				});
+			},
 		},
 		computed: {
 			...mapState({
@@ -171,7 +179,7 @@
 
 				all_messages: (state) => state.messenger.all_messages,
 			}),
-
+			...mapGetters(["appeals_notifications"]),
 			page() {
 				return +this.$route.query.page;
 			},
@@ -203,7 +211,12 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getAllParsers", "getAppeals", "getAllMessages"]),
+			...mapActions([
+				"getAllParsers",
+				"getAppeals",
+				"getAllMessages",
+				"getNotifications",
+			]),
 
 			async create_ticket() {
 				try {
@@ -224,6 +237,8 @@
 
 						console.log("Ticket created");
 						this.toast.success("Обращение создано");
+
+						this.getNotifications();
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания обращения");
@@ -264,9 +279,30 @@
 					}
 				}
 			},
+
+			async clear_notifications(notification_id) {
+				try {
+					const response = await read_notification({
+						notification_id: notification_id,
+						read: true,
+						user_id: this.userId,
+					});
+					if (response.status === 200) {
+						this.getNotifications();
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
 		},
 		created() {
 			this.SET_TAB("appeals");
+
+			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+			this.appeals_notifications.forEach((notification) => {
+				this.clear_notifications(notification.id);
+			});
+
 			this.getAppeals({
 				page_number: this.page,
 				page_size: this.appeals_in_page,

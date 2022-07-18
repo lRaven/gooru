@@ -4,7 +4,6 @@
 			<input
 				type="radio"
 				name="navigation-panel-item"
-				id=""
 				class="navigation-item__radio-real"
 				:checked="isDefaultChecked"
 				@change="this.$emit('set_tab', value, pagination)"
@@ -17,10 +16,7 @@
 						{{ description }}
 					</p>
 				</div>
-				<span
-					class="navigation-item__col navigation-item__counter"
-					v-if="counter > 0"
-				>
+				<span class="navigation-item__counter" v-if="counter > 0">
 					{{ counter }}
 				</span>
 			</div>
@@ -77,10 +73,18 @@
 			}
 
 			&-fake {
+				cursor: pointer;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				gap: 0.5rem;
+				&:hover {
+					.navigation-item {
+						&__col {
+							background-color: rgba(255, 255, 255, 0.3);
+						}
+					}
+				}
 			}
 		}
 
@@ -88,13 +92,9 @@
 			display: flex;
 			align-items: center;
 			transition: all 0.2s ease;
-			&:hover {
-				background-color: rgba(255, 255, 255, 0.3);
-			}
 			&:first-child {
 				border-radius: 5rem;
 				padding: 0.4rem 0.7rem 0.4rem 2rem;
-				cursor: pointer;
 				gap: 1.7rem;
 				width: 100%;
 			}

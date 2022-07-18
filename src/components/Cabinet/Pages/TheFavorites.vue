@@ -14,7 +14,7 @@
 						"
 					>
 						<img
-							src="img/icon/cabinet/sort.svg"
+							src="/img/icon/cabinet/sort.svg"
 							alt=""
 							class="the-favorites__sort-panel-btn-icon"
 						/>
@@ -32,7 +32,7 @@
 							Свернуть параметры
 						</p>
 						<img
-							src="img/icon/cabinet/arrow-double.svg"
+							src="/img/icon/cabinet/arrow-double.svg"
 							alt=""
 							class="the-favorites__sort-panel-btn-icon"
 						/>
@@ -95,19 +95,17 @@
 			</transition>
 
 			<transition mode="out-in">
-				<p class="the-favorites__empty" v-if="favorites.length === 0">
+				<p
+					class="the-favorites__empty"
+					v-if="favorites.length === 0 && isFavoritesLoaded"
+				>
 					Список избранного пуст
 				</p>
 			</transition>
-
-			<!-- <div class="the-favorites__bottom">
-				<r-button color="bordered" text="Показать ещё"></r-button>
-				<r-pagination></r-pagination>
-			</div> -->
 		</div>
 
 		<right-panel
-			icon="img/icon/cabinet/tick-bordered.svg"
+			icon="/img/icon/cabinet/tick-bordered.svg"
 			title="Выбрано"
 			class="the-favorites__right-panel"
 		>
@@ -146,8 +144,8 @@
 			...mapState({ favorites: (state) => state.favorites.favorites }),
 			selectedParsers() {
 				return this.selectedParsources.reduce(
-					(prev, selectedParource) => {
-						return [...prev, ...selectedParource.selectedParsers];
+					(prev, selectedParsource) => {
+						return [...prev, ...selectedParsource.selectedParsers];
 					},
 					[]
 				);
@@ -169,8 +167,8 @@
 				const { parsourceId, selectedParsers } = favoriteCardObj;
 
 				const matchedIndex = this.selectedParsources.findIndex(
-					(selectedParource) => {
-						return selectedParource.parsourceId === parsourceId;
+					(selectedParsource) => {
+						return selectedParsource.parsourceId === parsourceId;
 					}
 				);
 
@@ -195,9 +193,9 @@
 
 			updateTotalSelectedParsers() {
 				this.totalSelected = this.selectedParsources.reduce(
-					(prev, selectedParourcesItem) => {
+					(prev, selectedParsourcesItem) => {
 						return (
-							prev + selectedParourcesItem.selectedParsers.length
+							prev + selectedParsourcesItem.selectedParsers.length
 						);
 					},
 					0

@@ -11,7 +11,7 @@
 
 			<button class="the-users__control-btn" type="button">
 				<img
-					src="img/icon/cabinet/lock.svg"
+					src="/img/icon/cabinet/lock.svg"
 					class="the-users__control-btn-icon"
 					alt="icon"
 				/>
@@ -20,7 +20,7 @@
 
 			<button class="the-users__control-btn" type="button">
 				<img
-					src="img/icon/cabinet/unlock.svg"
+					src="/img/icon/cabinet/unlock.svg"
 					class="the-users__control-btn-icon"
 					alt="icon"
 				/>
@@ -33,7 +33,7 @@
 				@click="deleteSelected = true"
 			>
 				<img
-					src="img/icon/cabinet/remove.svg"
+					src="/img/icon/cabinet/remove.svg"
 					class="the-users__control-btn-icon"
 					alt="icon"
 				/>
@@ -42,7 +42,10 @@
 		</div>
 
 		<div class="the-users__content">
-			<div class="the-users__sort">
+			<div
+				class="the-users__sort"
+				:class="{ admin: userRole === 'AdminCRM' }"
+			>
 				<sort-button
 					description="Пользователь"
 					@click="sort_list(users, 'first_name')"
@@ -92,6 +95,7 @@
 				<sort-button
 					description="Менеджер"
 					@click="sort_list(users, '')"
+					v-if="userRole === 'AdminCRM'"
 				>
 				</sort-button>
 			</div>
@@ -219,6 +223,8 @@
 		computed: {
 			...mapState({
 				user_me: (state) => state.cabinet.user,
+				userRole: (state) => state.cabinet.user.role,
+
 				users: (state) => state.users.users,
 				users_pagination: (state) => state.users.users_pagination,
 				all_users: (state) => state.users.all_users,
@@ -349,9 +355,14 @@
 
 		&__sort {
 			display: grid;
-			grid-template-columns: 5rem 20rem repeat(3, 15rem);
+			grid-template-columns: 5rem 20rem repeat(2, 15rem);
 			grid-gap: 3rem;
 			padding: 0 3rem 0 5.6rem;
+
+			&.admin {
+				grid-template-columns: 5rem 20rem repeat(3, 15rem);
+			}
+
 			.sort-button {
 				&:first-child {
 					grid-column: 1/3;

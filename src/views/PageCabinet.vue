@@ -1,7 +1,18 @@
 <template>
 	<div class="page-cabinet theme-container">
-		<the-header :isCabinetVersion="true" />
-		<navigation-panel />
+		<the-header
+			:isCabinetVersion="true"
+			:isMenuMinimized="isMenuMinimized"
+			@open_menu="open_menu"
+			@close_menu="close_menu"
+		></the-header>
+
+		<navigation-panel
+			:notifications="notifications"
+			:isMenuMinimized="isMenuMinimized"
+			@open_menu="open_menu"
+			@close_menu="close_menu"
+		></navigation-panel>
 
 		<main class="page-cabinet__main main">
 			<router-view v-slot="{ Component }">
@@ -18,9 +29,8 @@
 </template>
 
 <script>
-	import { mapState } from "vuex";
+	import { mapState, mapActions } from "vuex";
 	import TheHeader from "@/components/TheHeader";
-
 	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
 
 	export default {
@@ -35,10 +45,10 @@
 					this.$router.push({ name: "login" });
 			},
 			//* при получении юзера, редиректить на дефолтную страницу юзера в случае если находимся на главной странице кабинета
-			user: {
+			userRole: {
 				handler() {
 					if (this.$route.name === "cabinet") {
-						this.redirectUserByRole(this.user.role);
+						this.redirectUserByRole(this.userRole);
 					}
 				},
 				deep: true,
@@ -47,19 +57,24 @@
 			//* при изменении url смотреть, если находимся на главной странице кабинета, то редирект на дефолтную страницу юзера
 			"$route.path"() {
 				if (this.$route.name === "cabinet") {
-					this.redirectUserByRole(this.user.role);
+					this.redirectUserByRole(this.userRole);
 				}
 			},
 		},
 		computed: {
 			...mapState({
-				user: (state) => state.cabinet.user,
-				user_auth: (state) => state.cabinet.user_auth,
 				tab: (state) => state.navigation_panel.tab,
+				user_auth: (state) => state.cabinet.user_auth,
 				userRole: (state) => state.cabinet.user.role,
+				notifications: (state) => state.notifications.notifications,
+
+				document_width: (state) => state.document_width,
 			}),
 		},
+		data: () => ({ isMenuMinimized: false }),
 		methods: {
+			...mapActions(["getNotifications"]),
+
 			//* редирект на дефолтную страницу кабинета в зависимости от роли юзера
 			redirectUserByRole(role) {
 				switch (role) {
@@ -83,9 +98,22 @@
 					}
 				}
 			},
+
+			close_menu() {
+				this.isMenuMinimized = true;
+			},
+			open_menu() {
+				this.isMenuMinimized = false;
+			},
 		},
 		created() {
-			this.redirectUserByRole(this.user.role);
+			this.getNotifications();
+			this.redirectUserByRole(this.userRole);
+		},
+		mounted() {
+			this.document_width > 767
+				? (this.isMenuMinimized = false)
+				: (this.isMenuMinimized = true);
 		},
 	};
 </script>
@@ -98,12 +126,21 @@
 		grid-template-columns: max-content 1fr;
 		height: 100vh;
 		overflow: hidden;
+
+		@media (max-width: 767px) {
+			grid-template-columns: 1fr;
+		}
+
 		&__main {
 			position: relative;
 			display: block;
 			margin-top: 8rem;
 			background-color: $light-blue;
 			overflow-y: auto;
+
+			@media (max-width: 767px) {
+				margin-top: 7.4rem;
+			}
 		}
 	}
 </style>

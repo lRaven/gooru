@@ -18,19 +18,18 @@
 						Регистрация
 					</router-link>
 
-					<p class="page-login__form-input-description">Логин</p>
+					<p class="page-login__form-input-description">E-mail</p>
 					<r-input
-						id="username"
-						v-model="username"
-						:value="username"
-						input_type="text"
+						v-model="user_data.email.value"
+						v-model:Valid="user_data.email.valid"
+						:value="user_data.email.value"
+						input_type="email"
 					></r-input>
 
 					<p class="page-login__form-input-description">Пароль</p>
 					<r-input
-						id="password"
-						v-model="password"
-						:value="password"
+						v-model="user_data.password"
+						:value="user_data.password"
 						input_type="password"
 					></r-input>
 
@@ -38,7 +37,7 @@
 						Забыли пароль
 					</button>
 
-					<r-button :disabled="isDisabledBtn" text="Войти"></r-button>
+					<r-button :disabled="!isValidForm" text="Войти"></r-button>
 				</form>
 			</section>
 		</main>
@@ -60,19 +59,23 @@
 				baseURL: (state) => state.baseURL,
 				auth_token: (state) => state.cabinet.auth_token,
 			}),
-		},
-		watch: {
-			username() {
-				this.validateForm();
-			},
-			password() {
-				this.validateForm();
+
+			isValidForm() {
+				return (
+					this.user_data.email.value.length > 0 &&
+					this.user_data.email.valid === true &&
+					this.user_data.password.length >= 8
+				);
 			},
 		},
 		data: () => ({
-			isDisabledBtn: true,
-			username: "",
-			password: "",
+			user_data: {
+				email: {
+					value: "",
+					valid: false,
+				},
+				password: "",
+			},
 		}),
 		methods: {
 			...mapActions(["getUserData", "getUserRate"]),
@@ -80,8 +83,8 @@
 			async auth() {
 				try {
 					const response = await login({
-						username: this.username,
-						password: this.password,
+						username: this.user_data.email.value,
+						password: this.user_data.password,
 					});
 					if (response.status === 200) {
 						this.toast.success("Вход выполнен успешно");
@@ -90,20 +93,18 @@
 							response.data.auth_token
 						);
 						localStorage.setItem("userAuth", "yes");
+
 						this.getUserData();
 						this.getUserRate();
+
 						this.$router.push({ name: "cabinet" });
 					}
 				} catch (err) {
-					this.toast.error("Неверный логин или пароль");
+					this.toast.error(
+						"Не удаётся войти. Пожалуйста проверьте правильность написания email и пароля"
+					);
 					throw new Error(err);
 				}
-			},
-
-			validateForm() {
-				this.username.length > 0 && this.password.length >= 8
-					? (this.isDisabledBtn = false)
-					: (this.isDisabledBtn = true);
 			},
 		},
 		setup() {

@@ -88,6 +88,7 @@
 			flex-direction: column;
 			gap: 6rem;
 			overflow-y: auto;
+			overflow-x: hidden;
 			padding: 1rem;
 			width: 100%;
 			scroll-behavior: initial;

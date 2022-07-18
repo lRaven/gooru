@@ -148,6 +148,7 @@
 			font-size: 1.6rem;
 			position: relative;
 			white-space: pre-wrap;
+			word-break: break-all;
 		}
 
 		&__user {

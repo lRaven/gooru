@@ -18,7 +18,7 @@
 				:key="item.id"
 			>
 				<img
-					src="img/icon/tick.svg"
+					src="/img/icon/tick.svg"
 					alt="tick"
 					class="rate-card__tick"
 				/>

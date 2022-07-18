@@ -22,7 +22,7 @@
 					@open="callbackOpenSharedIcon"
 					@close="callbackCloseSharedIcon"
 				>
-					<img src="img/icon/cabinet/fb.svg" alt="facebook" />
+					<img src="/img/icon/cabinet/fb.svg" alt="facebook" />
 				</ShareNetwork>
 
 				<ShareNetwork
@@ -35,7 +35,7 @@
 					@close="callbackCloseSharedIcon"
 				>
 					<img
-						src="img/icon/cabinet/ok.svg"
+						src="/img/icon/cabinet/ok.svg"
 						alt="ok"
 						ref="odnoklassniki"
 					/>
@@ -50,7 +50,7 @@
 					@open="callbackOpenSharedIcon"
 					@close="callbackCloseSharedIcon"
 				>
-					<img src="img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
+					<img src="/img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
 				</ShareNetwork>
 
 				<ShareNetwork
@@ -64,7 +64,7 @@
 					@close="callbackCloseSharedIcon"
 				>
 					<img
-						src="img/icon/cabinet/twtr.svg"
+						src="/img/icon/cabinet/twtr.svg"
 						alt="twitter"
 						ref="twitter"
 					/>
@@ -80,7 +80,7 @@
 					@close="callbackCloseSharedIcon"
 				>
 					<img
-						src="img/icon/cabinet/tg.svg"
+						src="/img/icon/cabinet/tg.svg"
 						alt="tg"
 						ref="telegram"
 					/>

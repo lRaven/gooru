@@ -6,7 +6,12 @@ const state = () => ({ favorites: [], })
 
 const getters = {}
 
-const mutations = { SET_FAVORITES: (state, payload) => state.favorites = payload, }
+const mutations = {
+	SET_FAVORITES: (state, payload) => state.favorites = payload,
+	CLEAR_FAVORITES: (state) => state.favorites = [],
+
+	CLEAR_FAVORITES_STATE: (state) => state.favorites = [],
+}
 
 const actions = {
 	getFavoriteParsers: async context => {

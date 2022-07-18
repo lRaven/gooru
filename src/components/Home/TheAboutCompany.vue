@@ -38,7 +38,7 @@
 		</div>
 		<div class="the-about-company__col">
 			<img
-				src="img/about/about-img.png"
+				src="/img/about/about-img.png"
 				alt=""
 				class="the-about-company__image"
 			/>

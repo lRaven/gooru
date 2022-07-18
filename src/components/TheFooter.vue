@@ -4,7 +4,7 @@
 			<div class="the-footer__col">
 				<div class="the-footer__company">
 					<img
-						src="img/icon/logo.png"
+						src="/img/icon/logo.png"
 						alt="logo"
 						class="the-footer__company-logo"
 					/>
@@ -16,11 +16,11 @@
 
 				<div class="the-footer__partners">
 					<img
-						src="img/icon/huawei-business.png"
+						src="/img/icon/huawei-business.png"
 						alt="HUAWEI buseness-partner"
 					/>
 					<img
-						src="img/icon/ibm-business.png"
+						src="/img/icon/ibm-business.png"
 						alt="IBM buseness-partner"
 					/>
 				</div>

@@ -1,12 +1,12 @@
 <template>
-	<nav class="navigation-panel" :class="{ minimized: isMinimized }">
+	<nav class="navigation-panel" :class="{ minimized: isMenuMinimized }">
 		<button
 			type="button"
 			class="navigation-panel__minimize"
 			@click="
-				isMinimized === true
-					? (isMinimized = false)
-					: (isMinimized = true)
+				isMenuMinimized === true
+					? this.$emit('open_menu')
+					: this.$emit('close_menu')
 			"
 		>
 			<svg
@@ -24,10 +24,170 @@
 				/>
 			</svg>
 		</button>
+
 		<div class="navigation-panel__inner">
+			<div class="navigation-panel__top">
+				<button
+					class="navigation-panel__close"
+					@click="this.$emit('close_menu')"
+				>
+					<svg
+						width="27"
+						height="2"
+						viewBox="0 0 27 2"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="navigation-panel__close-line"
+					>
+						<line
+							x1="1"
+							y1="-1"
+							x2="26"
+							y2="-1"
+							transform="matrix(-1 0 0 1 27 2)"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+						/>
+					</svg>
+					<svg
+						width="27"
+						height="2"
+						viewBox="0 0 27 2"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="navigation-panel__close-line"
+					>
+						<line
+							x1="1"
+							y1="-1"
+							x2="26"
+							y2="-1"
+							transform="matrix(-1 0 0 1 27 2)"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+						/>
+					</svg>
+				</button>
+
+				<router-link
+					:to="{ name: 'home' }"
+					class="navigation-panel__logo"
+				>
+					<strong>COMPASS</strong> PARSING
+				</router-link>
+			</div>
+
+			<div class="navigation-panel__create">
+				<r-button
+					color="bordered"
+					text="Новый парсер"
+					@click="
+						this.$emit('close_menu');
+						this.$router.push({ name: 'new_parser' });
+					"
+				>
+					<template v-slot:icon>
+						<svg
+							width="16"
+							height="17"
+							viewBox="0 0 16 17"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							class="r-button__icon"
+						>
+							<path
+								d="M8.3194 3.5V8.3731C8.3194 8.6196 8.1196 8.8194 7.8731 8.8194H3"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M8.32129 14.1387V9.26564C8.32129 9.01914 8.52109 8.81934 8.76759 8.81934H13.6407"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+						</svg>
+					</template>
+				</r-button>
+				<r-button
+					color="bordered"
+					text="Новая группа парсеров"
+					@click="
+						this.$emit('close_menu');
+						this.$router.push({ name: 'new_group_parser' });
+					"
+				>
+					<template v-slot:icon>
+						<svg
+							width="16"
+							height="17"
+							viewBox="0 0 16 17"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							class="r-button__icon"
+						>
+							<path
+								d="M10.8148 4.25V8.1732C10.8148 8.3716 10.6577 8.5325 10.4638 8.5325H6.63086"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M10.8164 12.8147V8.89153C10.8164 8.69313 10.9735 8.53223 11.1674 8.53223H15.0003"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M1 8.53223H3.6181"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M1 12.6089H3.6181"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M1 4.25H3.6181"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M6.63086 12.8149H8.03356"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M6.63086 4.25H8.03356"
+								stroke="white"
+								stroke-width="1.5"
+								stroke-miterlimit="10"
+								stroke-linecap="round"
+							/>
+						</svg>
+					</template>
+				</r-button>
+			</div>
+
 			<ul class="navigation-panel__list">
 				<navigation-item
-					:description="isMinimized ? '' : 'Подписка'"
+					:description="isMenuMinimized ? '' : 'Подписка'"
 					:pagination="false"
 					value="rates"
 					@set_tab="set_tab"
@@ -65,7 +225,7 @@
 				</navigation-item>
 
 				<navigation-item
-					:description="isMinimized ? '' : 'Пользователи'"
+					:description="isMenuMinimized ? '' : 'Пользователи'"
 					:pagination="true"
 					value="users"
 					@set_tab="set_tab"
@@ -166,12 +326,12 @@
 				</navigation-item>
 
 				<navigation-item
-					:description="isMinimized ? '' : 'Обращения'"
+					:description="isMenuMinimized ? '' : 'Обращения'"
 					:pagination="true"
 					value="appeals"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[0].selected"
-					:counter="0"
+					:counter="appeals_notifications.length"
 				>
 					<template v-slot:icon>
 						<svg
@@ -210,7 +370,7 @@
 
 				<navigation-item
 					:description="
-						isMinimized
+						isMenuMinimized
 							? ''
 							: user.role === 'DefaultUser'
 							? 'Мои парсеры'
@@ -220,6 +380,10 @@
 					value="parsources"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[1].selected"
+					:counter="
+						parsources_notifications.length +
+						parsers_notifications.length
+					"
 				>
 					<template v-slot:icon>
 						<svg
@@ -262,7 +426,7 @@
 				</navigation-item>
 
 				<navigation-item
-					:description="isMinimized ? '' : 'Избранное'"
+					:description="isMenuMinimized ? '' : 'Избранное'"
 					:pagination="false"
 					value="favorites"
 					@set_tab="set_tab"
@@ -295,7 +459,7 @@
 				</navigation-item>
 
 				<navigation-item
-					:description="isMinimized ? '' : 'Мой профиль'"
+					:description="isMenuMinimized ? '' : 'Мой профиль'"
 					value="profile"
 					:pagination="false"
 					@set_tab="set_tab"
@@ -342,32 +506,30 @@
 
 <script>
 	import NavigationItem from "@/components/Cabinet/NavigationItem";
-	import { mapState, mapMutations } from "vuex";
+	import { mapState, mapGetters, mapMutations } from "vuex";
 
 	export default {
 		name: "NavigationPanel",
 		components: { NavigationItem },
-		data: () => ({
-			isMinimized: false,
-			tabs: [
-				{ id: 1, selected: false, tab: "appeals", icon_fill: "" },
-				{ id: 2, selected: false, tab: "parsers", icon_fill: "" },
-				{ id: 3, selected: false, tab: "favorites", icon_fill: "" },
-				{ id: 4, selected: false, tab: "profile", icon_fill: "" },
-				{ id: 5, selected: false, tab: "users", icon_fill: "" },
-				{ id: 6, selected: false, tab: "rates", icon_fill: "" },
-				{ id: 7, selected: false, tab: "control", icon_fill: "" }
-			],
-		}),
+		props: {
+			isMenuMinimized: {
+				value: Boolean,
+				default: false,
+			},
+			notifications: {
+				value: Array,
+				required: true,
+			},
+		},
 		watch: {
 			tab() {
 				this.paint_tab();
 			},
 
-			isMinimized() {
-				if (this.isMinimized === true) {
+			isMenuMinimized() {
+				if (this.isMenuMinimized === true) {
 					this.minimizePanel();
-				} else if (this.isMinimized === false) {
+				} else if (this.isMenuMinimized === false) {
 					this.resetMinimizePanel();
 				}
 			},
@@ -376,13 +538,33 @@
 			...mapState({
 				tab: (state) => state.navigation_panel.tab,
 				user: (state) => state.cabinet.user,
+
+				document_width: (state) => state.document_width,
 			}),
+			...mapGetters([
+				"appeals_notifications",
+				"parsources_notifications",
+				"parsers_notifications",
+			]),
 		},
+		data: () => ({
+			tabs: [
+				{ id: 1, selected: false, tab: "appeals", icon_fill: "" },
+				{ id: 2, selected: false, tab: "parsers", icon_fill: "" },
+				{ id: 3, selected: false, tab: "favorites", icon_fill: "" },
+				{ id: 4, selected: false, tab: "profile", icon_fill: "" },
+				{ id: 5, selected: false, tab: "users", icon_fill: "" },
+				{ id: 6, selected: false, tab: "rates", icon_fill: "" },
+			],
+		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
 
 			set_tab(tab, pagination) {
-				console.log(tab);
+				if (this.document_width < 768) {
+					this.$emit("close_menu");
+				}
+
 				this.SET_TAB(tab);
 				switch (pagination) {
 					case true: {
@@ -433,12 +615,31 @@
 			#542f7d -40.69%,
 			#338dd0 109.26%
 		);
-		height: calc(100vh - 8rem);
-		margin-top: auto;
+		height: 100vh;
 		width: 26rem;
+		padding-top: 8rem;
 		transition: all 0.2s ease;
+
+		@media (max-width: 1023px) {
+			padding-top: 10rem;
+		}
+
+		@media (max-width: 767px) {
+			padding-top: 0;
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100vw;
+			z-index: 3;
+			transition: all 0.2s ease, padding 0.2s ease 0.2s;
+		}
+
 		&.minimized {
 			width: 8rem;
+
+			@media (max-width: 767px) {
+				transform: translateX(-8rem);
+			}
 			.navigation-panel {
 				&__inner {
 					padding-left: 1rem;
@@ -463,6 +664,11 @@
 			margin-top: 2rem;
 			z-index: 1;
 			transition: all 0.3s ease;
+
+			@media (max-width: 767px) {
+				display: none;
+			}
+
 			&-icon {
 				transition: all 0.2s ease;
 				transform: rotate(90deg);
@@ -477,12 +683,21 @@
 			height: 100%;
 			background: url("/public/img/icon/cabinet/goo.svg") bottom left /
 				90% no-repeat;
+			overflow: hidden;
+
+			@media (max-width: 767px) {
+				background: none;
+				padding: 1.5rem;
+			}
 		}
 
 		&__list {
 			display: flex;
 			flex-direction: column;
 			gap: 1.6rem;
+
+			@media (max-width: 767px) {
+			}
 		}
 
 		.navigation-item {
@@ -490,7 +705,7 @@
 				&-fake {
 					&:hover {
 						.navigation-item__icon path {
-							fill: white;
+							fill: $white;
 							fill-opacity: 1;
 							transition: all 0.2s ease;
 						}
@@ -506,6 +721,58 @@
 				}
 				path {
 					transition: all 0.2s ease;
+				}
+			}
+		}
+
+		&__top {
+			display: none;
+
+			@media (max-width: 767px) {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 4rem;
+			}
+		}
+
+		&__close {
+			color: $white;
+			background-color: transparent;
+			display: grid;
+			align-items: center;
+			justify-content: center;
+			width: 3rem;
+			height: 3rem;
+			&-line {
+				grid-area: 1/1;
+				&:first-child {
+					transform: rotate(45deg);
+				}
+				&:last-child {
+					transform: rotate(-45deg);
+				}
+			}
+		}
+
+		&__logo {
+			display: inline;
+			color: $white;
+			font-size: 1.6rem;
+		}
+
+		&__create {
+			display: none;
+			@media (max-width: 767px) {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 2rem;
+				margin-bottom: 2.6rem;
+				.r-button {
+					width: max-content;
+					outline-color: $white !important;
+					color: $white !important;
+					font-weight: 600 !important;
 				}
 			}
 		}

@@ -2,11 +2,11 @@
 	<section class="page-not-found">
 		<div class="img">
 			<img
-				src="img/404/backToTheHomepage.png"
+				src="/img/404/backToTheHomepage.png"
 				alt="Back to the Homepage"
 			/>
 			<img
-				src="img/404/Delorean.webp"
+				src="/img/404/Delorean.webp"
 				alt="El Delorean, El Doc y Marti McFly"
 			/>
 		</div>

@@ -1,141 +1,142 @@
 <template>
-	<div class="popup" @click.self="this.$emit('closePopup')">
-		<div class="popup__container">
+	<div class="rates-popup" @click.self="this.$emit('closePopup')">
+		<div class="rates-popup__container">
 			<button
-				class="popup__button-close"
+				class="rates-popup__close"
 				type="click"
 				@click="this.$emit('closePopup')"
 			></button>
-			<div class="rate-info">
-				<p class="rate-info__subtitle">Вами выбран тариф</p>
-				<h3 class="rate-info__name">{{ selectedRate.name }}</h3>
-				<p v-if="selectedRate.price" class="rate-info__amount">
+
+			<div class="rates-popup__rate">
+				<h4 class="rates-popup__subtitle">Вами выбран тариф</h4>
+				<h2 class="rates-popup__rate-name">
+					{{ `«${selectedRate.name}»` }}
+				</h2>
+
+				<h5 v-if="selectedRate.price" class="rates-popup__price">
 					К оплате:
-					<strong
-						class="rate-info__amount_accent rate-info__amount_bias"
-					>
+					<span class="rates-popup__sum">
 						{{ selectedRate.price }}₽
-					</strong>
-					/мес
-				</p>
-				<p class="rate-info__contain">Что входит:</p>
-				<ul class="rate-info__checklist">
+					</span>
+					<span class="rates-popup__month"> /мес </span>
+				</h5>
+
+				<h5 class="rates-popup__contain">Что входит:</h5>
+				<ul class="rates-popup__checklist">
 					<li
-						class="rate-info__checklist-item"
+						class="rates-popup__checklist-item"
 						v-for="item in selectedRate.checklist"
 						:key="item.id"
 					>
 						<img
-							src="img/icon/tick.svg"
+							src="/img/icon/tick.svg"
 							alt="tick"
-							class="rate-info__tick"
+							class="rates-popup__tick"
 						/>
-						<p class="rate-info__checklist-item-text">
+						<p class="rates-popup__checklist-item-text">
 							{{ item.text }}
 						</p>
 					</li>
 				</ul>
 			</div>
-			<div class="user-credentials">
-				<h3 class="user-credentials__caption">
-					Для оформления подписки войдите или зарегистрируйтесь
-				</h3>
-				<div
-					@switch="switchFormState"
-					class="user-credentials__controls"
-				>
-					<p
-						@click.stop="switchFormState($event, 'registration')"
-						:class="`user-credentials__control ${
-							formType === 'registration'
-								? 'user-credentials__control_active'
-								: ''
-						}`"
+
+			<div class="rates-popup__user-credentials">
+				<h4 class="rates-popup__user-credentials-caption">
+					Для оформления подписки<br />
+					войдите или зарегистрируйтесь
+				</h4>
+
+				<div class="rates-popup__user-credentials-controls">
+					<button
+						@click="formType = 'registration'"
+						class="rates-popup__user-credentials-control"
+						:class="{
+							'rates-popup__user-credentials-control_active':
+								formType === 'registration',
+						}"
 					>
 						Регистрация
-					</p>
-					<p
-						@click.stop="switchFormState($event, 'login')"
-						:class="`user-credentials__control ${
-							formType === 'login'
-								? 'user-credentials__control_active'
-								: ''
-						}`"
+					</button>
+
+					<button
+						@click="formType = 'login'"
+						class="rates-popup__user-credentials-control"
+						:class="{
+							'rates-popup__user-credentials-control_active':
+								formType === 'login',
+						}"
 					>
-						Логин
-					</p>
+						Вход
+					</button>
 				</div>
+
 				<form
-					class="user-credentials-form"
+					class="rates-popup__user-credentials-form"
 					@submit.prevent="submitForm"
 				>
-					<span
-						class="user-credentials-form__caption user-credentials-form_area_name"
+					<p
+						class="rates-popup__user-credentials-form-caption rates-popup__user-credentials-form_area_name"
 					>
-						Ваше имя*
-					</span>
+						E-mail*
+					</p>
 					<r-input
-						class="user-credentials-form__input user-credentials-form_area_name-input"
-						v-model="formState.username"
-						:value="formState.username"
+						class="rates-popup__user-credentials-form__input rates-popup__user-credentials-form_area_name-input"
+						v-model="user_data.email.value"
+						v-model:Valid="user_data.email.valid"
+						:value="user_data.email.value"
+						input_type="email"
 					/>
-					<span
-						class="user-credentials-form__caption user-credentials-form_area_password"
+
+					<p
+						class="rates-popup__user-credentials-form-caption rates-popup__user-credentials-form_area_password"
 					>
 						Пароль*
-					</span>
+					</p>
 					<r-input
-						class="user-credentials-form__input user-credentials-form_area_password-input"
-						v-model="formState.password"
-						:value="formState.password"
+						class="rates-popup__user-credentials-form__input rates-popup__user-credentials-form_area_password-input"
+						v-model="user_data.password"
+						:value="user_data.password"
 						input_type="password"
 					/>
-					<template v-if="formType === 'registration'">
-						<span
-							class="user-credentials-form__caption user-credentials-form_area_email"
-							>E-mail*</span
-						>
-						<r-input
-							class="user-credentials-form__input user-credentials-form_area_email-input"
-							v-model="formState.email"
-							:value="formState.email"
+
+					<div class="rates-popup__buttons">
+						<r-button
+							class="rates-popup__user-credentials-form__submit-button rates-popup__user-credentials-form_area_submit-button"
+							:text="
+								formType === 'registration'
+									? 'Зарегистироваться'
+									: 'Войти'
+							"
+							:disabled="!isValidForm"
 						/>
-						<span
-							class="user-credentials-form__caption user-credentials-form_area_phone-number"
-							>Телефон*</span
-						>
-						<r-input
-							class="user-credentials-form__input user-credentials-form_area_phone-number-input"
-							v-model="formState.phoneNumber"
-							:value="formState.phoneNumber"
-							input_type="tel"
-						/>
-					</template>
-					<r-button
-						class="user-credentials-form__submit-button user-credentials-form_area_submit-button"
-						:text="
-							formType === 'registration'
-								? 'Зарегестироваться'
-								: 'Войти'
-						"
-						:disabled="isInvalidForm"
-					/>
+
+						<transition name="fade" mode="out-in">
+							<r-link
+								v-if="formType === 'registration'"
+								text="Нужна помощь?"
+								way="https://telegram.im/@compas_gooru"
+							></r-link>
+						</transition>
+					</div>
 				</form>
-				<p
-					v-if="formType === 'registration'"
-					class="user-credentials__privacy-policy"
-				>
-					Нажимая кнопку «Зарегистрироваться», я даю согласие на
-					обработку персональных данных, соглашаюсь с тарифами и
-					правилами
-					<a
-						href="docs/Оферта ГУРУ.pdf"
-						target="_blank"
-						class="user-credentials__privacy-policy user-credentials__privacy-policy_accent"
+
+				<transition mode="out-in">
+					<p
+						v-if="formType === 'registration'"
+						class="rates-popup__user-credentials__privacy-policy"
 					>
-						публичной оферты
-					</a>
-				</p>
+						Нажимая кнопку «Зарегистрироваться», я даю согласие на
+						обработку персональных данных, соглашаюсь с тарифами и
+						правилами
+						<a
+							href="/docs/Оферта ГУРУ.pdf"
+							target="_blank"
+							class="rates-popup__user-credentials__privacy-policy rates-popup__user-credentials__privacy-policy_accent"
+						>
+							публичной оферты
+						</a>
+					</p>
+				</transition>
 			</div>
 		</div>
 	</div>
@@ -144,92 +145,110 @@
 <script>
 	import { mapActions, mapState } from "vuex";
 	import { registration, login } from "@/api/userApi";
+	import { useToast } from "vue-toastification";
+
 	export default {
 		props: {
 			selectedRate: {
-				type: Object,
+				value: Object,
+				required: true,
 			},
 		},
-		data() {
-			return {
-				formType: "registration",
-				formState: {
-					username: "",
-					password: "",
-					email: "",
-					phoneNumber: "",
+		data: () => ({
+			formType: "registration",
+
+			user_data: {
+				email: {
+					value: "",
+					valid: false,
 				},
-			};
-		},
+				password: "",
+			},
+		}),
 		computed: {
-			...mapState({
-				baseURL: (state) => state.baseURL,
-			}),
-			isInvalidForm() {
-				// Валидация очень примерная, не всегда учитывает поведение пользователя,
-				// но просто хотя бы делает кнопку неактивной и проходит валидацию на сервере
-				const formValidationState = {
-					isInvalidUserName: this.formState.username.length < 1,
-					isInvalidPassword: !/^[\w.@+-]+$/.test(
-						this.formState.password
-					),
-					isInvalidEmail: this.formState.email.length < 1,
-					isInvalidPhoneNumber:
-						this.formState.phoneNumber.length !== 11,
-				};
-				if (this.formType === "login") {
-					formValidationState.isInvalidEmail =
-						formValidationState.isInvalidPhoneNumber = false;
-				}
-				return Object.values(formValidationState).reduce(
-					(prev, fieldValidationResult) => {
-						return fieldValidationResult || prev;
-					},
-					false
+			...mapState({ baseURL: (state) => state.baseURL }),
+
+			isValidForm() {
+				return (
+					this.user_data.email.value.length > 0 &&
+					this.user_data.email.valid &&
+					this.user_data.password.length >= 8
 				);
 			},
 		},
 		methods: {
 			...mapActions(["getUserData", "getUserRate"]),
-			switchFormState(evt, updatedFormState) {
-				this.formType = updatedFormState;
-			},
+
 			async submitForm() {
 				if (this.formType === "registration") {
 					try {
-						await registration(this.formState);
-						for (let formField in this.formState) {
-							formField = ""; // eslint-disable-line no-unused-vars
+						const response = await registration({
+							email: this.user_data.email.value,
+							password: this.user_data.password,
+						});
+
+						if (response.status === 201) {
+							this.toast.success(
+								"Вы успешно зарегистрировали свой аккаунт"
+							);
+							this.toast.info(
+								`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+							);
+							console.log("Account created");
+
+							this.resetForm();
 							this.formType = "login";
 						}
-					} catch (error) {
-						console.log(error);
+					} catch (err) {
+						throw new Error(err);
 					}
 				} else {
 					try {
-						const { data } = await login(this.formState);
-						this.$cookies.set("auth_token", data.auth_token);
-						this.getUserData();
-						this.getUserRate();
-						localStorage.setItem("userAuth", "yes");
-						window
-							.open(
-								`${this.baseURL}/api/pay/${this.selectedRate.id}`,
-								"_blank"
-							)
-							.focus();
-					} catch (error) {
-						console.log(error);
+						const response = await login({
+							username: this.user_data.email.value,
+							password: this.user_data.password,
+						});
+
+						if (response.status === 200) {
+							this.toast.success("Вход выполнен успешно");
+							this.$cookies.set(
+								"auth_token",
+								response.data.auth_token
+							);
+							localStorage.setItem("userAuth", "yes");
+
+							this.getUserData();
+							this.getUserRate();
+
+							window
+								.open(
+									`${this.baseURL}/api/pay/${this.selectedRate.id}`,
+									"_blank"
+								)
+								.focus();
+						}
+					} catch (err) {
+						throw new Error(err);
 					}
 				}
 			},
+
+			resetForm() {
+				this.user_data.email = { value: "", valid: false };
+				this.user_data.password = "";
+			},
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>
 
 <style scoped lang="scss">
 	@import "@/assets/scss/variables";
-	.popup {
+
+	.rates-popup {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -239,208 +258,167 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
-		max-width: 100%;
 		background-color: rgba(0, 0, 0, 0.5);
-		scroll-behavior: n;
+
 		&__container {
 			display: flex;
-			flex-direction: row;
 			position: relative;
+			border-radius: 2rem;
+			overflow: hidden;
 		}
-		&__button-close {
+
+		&__close {
 			position: absolute;
 			width: 2.5rem;
 			height: 2.5rem;
-			max-width: 2.5rem;
-			max-height: 2.5rem;
-			background-image: url("@/../public/img/icon/popupCross.svg");
-			background-color: $white;
+			background: $white url("/public/img/icon/popupCross.svg") center /
+				contain no-repeat;
 			top: 2.2rem;
 			right: 2.2rem;
-			cursor: pointer;
-			padding: 0;
-			border: 0;
 		}
-	}
-	.rate-info {
-		display: flex;
-		flex-direction: column;
-		background-color: $light-blue;
-		border-radius: 2rem 0 0 2rem;
-		padding: 5rem 0 1rem 4rem;
-		&__name {
-			position: relative;
-			font-size: 3.2rem;
-			font-weight: 700;
-			line-height: 4.5rem;
-			text-align: center;
-			color: $primary;
-			background-color: rgba($primary, $alpha: 0.1);
-			margin: 1.5rem 0 4.3rem -4rem;
-			padding: 1.6rem 4rem;
-		}
-		&__subtitle {
-			font-size: 2.4rem;
-			font-weight: 400;
-			line-height: 3.4rem;
-			margin: 0 0 1rem 0;
-		}
-		&__amount {
+
+		&__rate {
 			display: flex;
-			align-items: center;
-			font-size: 2rem;
-			font-weight: 400;
-			line-height: 2.8rem;
-			margin: 0 0 1.5rem 0;
-			&_accent {
+			flex-direction: column;
+			background-color: $light-blue;
+			padding: 5rem 0;
+			&-name {
 				font-size: 3.2rem;
-				font-weight: 600;
-				line-height: 6.6rem;
-			}
-			&_bias {
-				margin: 0 0 0 1.5rem;
+				font-weight: 700;
+				text-align: center;
+				color: $primary;
+				background-color: rgba($primary, $alpha: 0.1);
+				margin-bottom: 4rem;
+				padding: 2rem 4rem;
 			}
 		}
+
+		&__subtitle {
+			margin: 0 0 1rem 0;
+			text-align: center;
+		}
+
+		&__price {
+			display: flex;
+			align-items: baseline;
+			margin-bottom: 4rem;
+		}
+		&__sum {
+			font-size: 3.2rem;
+			font-weight: 600;
+			margin-left: 1.5rem;
+		}
+		&__month {
+			font-size: 1.6rem;
+			margin-left: 1rem;
+			font-weight: 300;
+		}
+
 		&__contain {
-			font-size: 2rem;
-			line-height: 2.8rem;
-			margin: 0 0 2rem 0;
+			margin-bottom: 3rem;
 		}
+
 		&__checklist {
 			padding: 1rem;
-		}
-		&__checklist-item {
 			display: flex;
-			align-items: center;
-			margin: 0 0 1rem 0;
-			&:last-child {
-				margin: 0;
+			flex-direction: column;
+			gap: 1.5rem;
+			&-item {
+				display: flex;
+				align-items: center;
+				gap: 2rem;
+				&-text {
+					max-width: 30rem;
+					font-size: 2rem;
+				}
 			}
 		}
+
 		&__tick {
-			margin: 0 2rem 0 0;
 			width: 2.7rem;
 			height: 2.3rem;
 		}
-		&__checklist-item-text {
-			max-width: 30rem;
-			font-size: 2rem;
-			font-weight: 400;
-			line-height: 3.2rem;
-			letter-spacing: 0.005rem;
-		}
-	}
-	.user-credentials {
-		display: flex;
-		flex-direction: column;
-		background-color: $white;
-		padding: 5rem 4rem 2.6rem 4rem;
-		border-radius: 0 2rem 2rem 0;
 
-		&__caption {
-			max-width: 42.8rem;
-			font-size: 2.4rem;
-			font-weight: 700;
-			line-height: 3.4rem;
-			margin: 0 0 4.3rem 0;
+		&__subtitle,
+		&__price,
+		&__contain,
+		&__checklist {
+			padding: 0 4rem;
 		}
-		&__controls {
-			display: flex;
-			margin: 0 0 3rem 0;
-		}
-		&__control {
-			font-size: 2rem;
-			font-weight: 400;
-			line-height: 2.8rem;
-			border-right: 0.1rem solid $gray;
-			color: $primary;
-			padding: 0.5rem 3rem 0 0;
-			&:hover {
-				cursor: pointer;
-			}
 
-			&:last-child {
-				border: none;
-				padding: 0.5rem 0 0 3rem;
-			}
+		&__user-credentials {
+			background-color: $white;
+			padding: 5rem 4rem;
 
-			&_active {
-				color: $black;
-			}
-		}
-		.user-credentials-form {
-			display: grid;
-			grid-template-columns: max-content 1fr;
-			grid-template-rows: repeat(5, fit-content);
-			grid-auto-rows: fit-content;
-			grid-template-areas:
-				"name nameInput"
-				"password passwordInput"
-				"email emailInput"
-				"phoneNumber phoneNumberInput"
-				"submitButton submitButton";
-
-			align-items: center;
-			&_area {
-				&_name {
-					grid-area: name;
-				}
-				&_name-input {
-					grid-area: nameInput;
-				}
-				&_password {
-					grid-area: password;
-				}
-				&_password-input {
-					grid-area: passwordInput;
-				}
-				&_email {
-					grid-area: email;
-				}
-				&_email-input {
-					grid-area: emailInput;
-				}
-				&_phone-number {
-					grid-area: phoneNumber;
-				}
-				&_phone-number-input {
-					grid-area: phoneNumberInput;
-				}
-				&_submit-button {
-					grid-area: submitButton;
-				}
-			}
-			&__input {
-				line-height: 2.6rem;
-				margin: 0 0 1.5rem 0;
-			}
-			&__caption {
-				font-size: 1.5rem;
-				font-weight: 400;
-				line-height: 2.1rem;
-				margin: 0 1.5rem 2rem 0;
-				color: rgba($black, $alpha: 0.7);
-			}
-			&__submit-button {
-				max-width: 27rem;
-				max-height: 4.5rem;
-				padding: 1.2rem 5.6rem;
-				box-sizing: border-box;
-				font-size: 1.4rem;
+			&-caption {
 				font-weight: 700;
-				line-height: 2.1rem;
-				margin: 4rem 0 0 0;
+				line-height: 3.4rem;
+				margin-bottom: 4rem;
+			}
+			&-controls {
+				display: flex;
+				margin-bottom: 3rem;
+			}
+			&-control {
+				font-size: 2rem;
+				color: $primary;
+				background-color: transparent;
+
+				&:first-child {
+					border-right: 0.1rem solid $gray;
+					padding: 1rem 3rem 1rem 0;
+				}
+
+				&:last-child {
+					padding: 1rem 0 1rem 3rem;
+				}
+
+				&_active {
+					color: $black;
+				}
+			}
+
+			&-form {
+				display: grid;
+				grid-template-columns: max-content 1fr;
+				align-items: center;
+				grid-gap: 2rem;
+				margin-bottom: 2rem;
+
+				&__input {
+					grid-column: 2/3;
+				}
+				&-caption {
+					font-size: 1.5rem;
+					color: rgba($black, $alpha: 0.7);
+				}
+				&__submit-button {
+					padding: 1.2rem 3rem !important;
+					font-size: 1.4rem;
+					font-weight: 700;
+				}
+				.r-link {
+					padding: 1.2rem 2rem;
+				}
+			}
+
+			&__privacy-policy {
+				max-width: 42rem;
+				font-size: 1.1rem;
+				line-height: 1.5rem;
+				color: rgba($black, $alpha: 0.7);
+				&_accent {
+					color: $primary;
+				}
 			}
 		}
-		&__privacy-policy {
-			max-width: 45rem;
-			font-size: 1.1rem;
-			line-height: 1.5rem;
-			margin: 2rem 0 0 0;
-			color: rgba($black, $alpha: 0.7);
-			&_accent {
-				color: $primary;
-			}
+
+		&__buttons {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 2rem;
+			grid-column: 1/3;
 		}
 	}
 </style>

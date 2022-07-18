@@ -44,7 +44,7 @@
 		props: {
 			icon: {
 				value: String,
-				default: "img/icon/cabinet/arrow-double.svg",
+				default: "/img/icon/cabinet/arrow-double.svg",
 			},
 			title: {
 				value: String,

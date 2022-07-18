@@ -33,12 +33,14 @@
 				placeholder="https://"
 			></r-input>
 
-			<p class="the-new-parser__input-description">Список полей*</p>
+			<p class="the-new-parser__input-description">
+				Категория сбора информации*
+			</p>
 			<r-input
 				input_type="text"
 				v-model="new_parsource.parse_fields"
 				:value="new_parsource.parse_fields"
-				placeholder="Введите список полей"
+				placeholder="Укажите категорию сбора информации "
 			></r-input>
 
 			<p class="the-new-parser__input-description">
@@ -60,7 +62,7 @@
 </template>
 
 <script>
-	import { mapActions, mapMutations, mapState } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 	import { send_new_parsource } from "@/api/parser";
 	import { useToast } from "vue-toastification";
 
@@ -127,7 +129,7 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getAllUsers"]),
+			...mapActions(["getAllUsers", "getNotifications"]),
 
 			checkFieldsInputs(options) {
 				switch (options) {
@@ -181,6 +183,7 @@
 							icon: false,
 							closeOnClick: false,
 						});
+						this.getNotifications();
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания парсера");

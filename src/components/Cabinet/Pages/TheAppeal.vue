@@ -18,7 +18,7 @@
 					"
 				>
 					<img
-						src="img/icon/cabinet/arrow-long.svg"
+						src="/img/icon/cabinet/arrow-long.svg"
 						alt="back"
 						class="the-appeal__back-icon"
 					/>
@@ -40,7 +40,7 @@
 		</div>
 
 		<right-panel
-			icon="img/icon/cabinet/appeals-add.svg"
+			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			class="the-appeal__right-panel"
 			v-if="user.role === 'DefaultUser'"

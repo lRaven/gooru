@@ -3,20 +3,23 @@
 		<h2 class="the-profile__title">Мой профиль</h2>
 
 		<div class="the-profile__main">
-			<form class="the-profile__change-avatar">
-				<img :src="avatar" class="the-profile__form-avatar" alt="" />
+		<form class="the-profile__change-avatar">
+				<img
+					:src="avatar || '/img/icon/cabinet/no-avatar.svg'"
+					class="the-profile__form-avatar"
+					alt=""
+				/>
 
 				<label class="the-profile__image-pick">
 					<input
 						type="file"
 						name=""
-						id=""
 						class="the-profile__image-pick-input"
 						accept="image/*"
 						@change="change_avatar($event.target)"
 					/>
 					<div type="button" class="the-profile__image-pick-btn">
-						<img src="img/icon/cabinet/edit.svg" alt="" />
+						<img src="/img/icon/cabinet/edit.svg" alt="" />
 						Изменить
 					</div>
 				</label>
@@ -31,7 +34,7 @@
 						@click="isPersonalDataFormDisabled = false"
 						v-if="isPersonalDataFormDisabled === true"
 					>
-						<img src="img/icon/cabinet/edit.svg" alt="" />
+						<img src="/img/icon/cabinet/edit.svg" alt="" />
 						Редактировать
 					</button>
 				</transition>
@@ -78,7 +81,7 @@
 						@click="isPasswordsFormDisabled = false"
 						v-if="isPasswordsFormDisabled === true"
 					>
-						<img src="img/icon/cabinet/edit.svg" alt="" />
+						<img src="/img/icon/cabinet/edit.svg" alt="" />
 						Редактировать
 					</button>
 				</transition>
@@ -186,7 +189,7 @@
 
 			isDisabledBtn: true,
 
-			avatar: "img/icon/cabinet/no-avatar.svg",
+			avatar: null,
 			changed_avatar: "",
 
 			personal_data: {

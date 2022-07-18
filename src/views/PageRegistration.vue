@@ -22,22 +22,12 @@
 					</router-link>
 
 					<p class="page-registration__form-input-description">
-						Логин
-					</p>
-					<r-input
-						id="username"
-						v-model="username"
-						:value="username"
-						input_type="text"
-					></r-input>
-
-					<p class="page-registration__form-input-description">
 						E-mail
 					</p>
 					<r-input
-						id="email"
-						v-model="email"
-						:value="email"
+						v-model="user_data.email.value"
+						v-model:Valid="user_data.email.valid"
+						:value="user_data.email.value"
 						input_type="email"
 					></r-input>
 
@@ -45,23 +35,29 @@
 						Пароль
 					</p>
 					<r-input
-						id="password"
-						v-model="password"
-						:value="password"
+						v-model="user_data.password"
+						:value="user_data.password"
 						input_type="password"
 					></r-input>
 
-					<r-button
-						:disabled="isDisabledBtn"
-						text="Зарегистрироваться"
-					></r-button>
+					<div class="page-registration__buttons">
+						<r-button
+							:disabled="!isValidForm"
+							text="Зарегистрироваться"
+						></r-button>
+
+						<r-link
+							text="Нужна помощь?"
+							way="https://telegram.im/@compas_gooru"
+						></r-link>
+					</div>
 
 					<p class="page-registration__form-disclaimer">
-						Нажимая кнопку «Зарегистрироваться», я даю согласие на
-						обработку персональных данных, соглашаюсь с тарифами и
-						правилами
+						Нажимая кнопку «Зарегистрироваться», я даю согласие
+						на&nbsp;обработку персональных данных, соглашаюсь
+						с&nbsp;тарифами и правилами
 						<a
-							href="docs/Оферта ГУРУ.pdf"
+							href="/docs/Оферта ГУРУ.pdf"
 							target="_blank"
 							class="page-registration__form-disclaimer-link"
 						>
@@ -84,57 +80,51 @@
 	export default {
 		name: "PageRegistration",
 		components: { TheHeader },
-		watch: {
-			username() {
-				this.validateForm();
-			},
-			email() {
-				this.validateForm();
-			},
-			password() {
-				this.validateForm();
+		computed: {
+			...mapState(["baseURL"]),
+
+			isValidForm() {
+				return (
+					this.user_data.email.value.length > 0 &&
+					this.user_data.email.valid &&
+					this.user_data.password.length >= 8
+				);
 			},
 		},
-		computed: { ...mapState(["baseURL"]) },
 		data: () => ({
-			isDisabledBtn: true,
-
-			username: "",
-			email: "",
-			password: "",
+			user_data: {
+				email: {
+					value: "",
+					valid: false,
+				},
+				password: "",
+			},
 		}),
 		methods: {
 			async create_account() {
 				try {
 					const response = await registration({
-						username: this.username,
-						email: this.email,
-						password: this.password,
+						email: this.user_data.email.value,
+						password: this.user_data.password,
 					});
 
 					if (response.status === 201) {
-						this.toast.success("Аккаунт успешно создан");
-						this.toast.info(
-							`Электронное письмо с подтверждением было отправлено на: ${this.email}. Откройте это электронное письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+						this.toast.success(
+							"Вы успешно зарегистрировали свой аккаунт"
 						);
+						this.toast.info(
+							`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+						);
+
 						console.log("Account created");
 
 						console.log("Redirect to login page");
-						this.toast.success("Переход на страницу авторизации");
 						this.$router.push({ name: "login" });
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания аккаунта");
 					throw new Error(err);
 				}
-			},
-
-			validateForm() {
-				this.username.length > 0 &&
-				this.password.length >= 8 &&
-				this.email.length > 0
-					? (this.isDisabledBtn = false)
-					: (this.isDisabledBtn = true);
 			},
 		},
 		setup() {
@@ -164,7 +154,7 @@
 
 		&__form {
 			display: grid;
-			grid-template-columns: 11rem 30rem;
+			grid-template-columns: 11rem max-content;
 			align-items: center;
 			grid-gap: 2rem 0;
 
@@ -203,24 +193,46 @@
 				}
 			}
 
-			&-disclaimer,
-			.r-button {
+			&-disclaimer {
 				grid-column: 2/3;
 				width: max-content;
 			}
 
-			.r-button {
+			.r-button,
+			.r-link {
 				padding: 1.2rem 2rem;
 				font-size: 1.4rem;
-				margin-top: 2rem;
+				width: max-content;
 			}
+
 			&-disclaimer {
-				max-width: 30rem;
+				max-width: 33rem;
 				font-size: 1.1rem;
 				line-height: 1.3;
 				color: rgba($black, $alpha: 0.7);
 				&-link {
 					color: $primary;
+				}
+			}
+		}
+
+		&__buttons {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-top: 2rem;
+			gap: 2rem;
+			grid-column: 2/3;
+		}
+	}
+</style>
+
+<style lang="scss">
+	.page-registration {
+		&__form {
+			.r-link {
+				&__description {
+					font-size: 1.4rem;
 				}
 			}
 		}

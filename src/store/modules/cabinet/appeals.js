@@ -43,10 +43,20 @@ const getters = {}
 const mutations = {
 	SET_APPEALS: (state, payload) => state.appeals = payload,
 	SET_APPEALS_PAGINATION: (state, payload) => state.appeals_pagination = payload,
+	CLEAR_APPEALS: (state) => { state.appeals = []; state.appeals_pagination = {} },
 
 	SET_ALL_APPEALS: (state, payload) => state.all_appeals = payload,
+	CLEAR_ALL_APPEALS: (state) => state.all_appeals = [],
 
 	SET_APPEAL: (state, payload) => state.appeal = payload,
+	CLEAR_APPEAL: (state) => state.appeal = {},
+
+	CLEAR_APPEALS_STATE: (state) => {
+		state.appeals = [];
+		state.appeals_pagination = {};
+		state.all_appeals = [];
+		state.appeal = {};
+	},
 }
 
 const actions = {

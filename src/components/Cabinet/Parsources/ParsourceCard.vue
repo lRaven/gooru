@@ -8,7 +8,7 @@
 
 		<div class="parsource-card__content" ref="content">
 			<p
-				class="parsource-card__col parsource-card__id"
+				class="parsource-card__id"
 				:title="parsource.user"
 				v-if="isParsourceManagerView"
 			>
@@ -95,9 +95,10 @@
 				{{ parsource.date ? prettyDate(parsource.date) : "1.1.1970" }}
 			</p>
 
-			<div class="parsource-card__col">
-				<r-status :status="1 || parsource.condition"></r-status>
-			</div>
+			<r-status
+				class="parsource-card__status"
+				:status="1 || parsource.condition"
+			></r-status>
 
 			<p
 				class="parsource-card__col parsource-card__found"
@@ -116,23 +117,31 @@
 
 			<p
 				class="parsource-card__col parsource-card__time"
-				:title="parsource.lost_time || '0ч'"
+				:title="lost_time"
 			>
-				{{ parsource.lost_time || "0ч" }}
+				{{ lost_time }}
 			</p>
 
-			<div class="parsource-card__col">
-				<r-button
-					text="Подробнее"
-					color="bordered"
-					@click="
-						this.$router.push({
-							path: `/cabinet/parsource/${parsource.id}`,
-							query: { page: 1 },
-						})
-					"
-				></r-button>
-			</div>
+			<r-button
+				text="Подробнее"
+				color="bordered"
+				direction="revert"
+				@click="
+					this.$router.push({
+						path: `/cabinet/parsource/${parsource.id}`,
+						query: { page: 1 },
+					})
+				"
+			>
+				<template v-slot:icon>
+					<img
+						src="/img/icon/alert.svg"
+						alt="notification"
+						class="parsource-card__notification"
+						v-if="isHasNotifications"
+					/>
+				</template>
+			</r-button>
 		</div>
 	</div>
 </template>
@@ -150,6 +159,12 @@
 		name: "ParsourceCard",
 		props: {
 			parsource: Object,
+
+			parsourcesHasParsersNotifications: {
+				value: Array,
+				default: [],
+			},
+
 			isCanSelect: {
 				value: Boolean,
 				default: true,
@@ -173,6 +188,21 @@
 			},
 			"parsource.selected"() {
 				this.isSelected = this.parsource.selected;
+			},
+		},
+		computed: {
+			isHasNotifications() {
+				return this.parsourcesHasParsersNotifications.find(
+					(el) => el === this.parsource.id
+				);
+			},
+
+			lost_time() {
+				const time = this.parsource.lost_time;
+				const hours = Number(time.slice(0, 2));
+				const minutes = Number(time.slice(3, 5));
+
+				return `${hours > 0 ? hours + "ч" : ""} ${minutes}мин`;
 			},
 		},
 		data() {
@@ -224,19 +254,15 @@
 		&.manager {
 			.parsource-card {
 				&__content {
-					grid-template-columns:
-						18rem 14rem
-						repeat(2, 20rem) repeat(3, 14rem);
+					grid-template-columns: repeat(6, 1fr) 18rem;
 				}
 			}
 		}
 
 		&__content {
+			position: relative;
 			display: grid;
-			grid-template-columns: minmax(20rem, 1fr) 20rem 14rem 20rem repeat(
-					4,
-					14rem
-				);
+			grid-template-columns: repeat(7, 1fr) 18rem;
 			grid-gap: 2rem;
 			justify-content: space-between;
 			align-items: center;
@@ -259,18 +285,30 @@
 				width: 100%;
 				font-size: 1.4rem;
 				padding: 1rem 2.8rem;
+				min-height: 4.2rem;
 			}
+		}
+
+		&__notification {
+			width: 2.4rem;
+			height: 2.4rem;
 		}
 
 		&__col {
 			&:nth-child(n + 2) {
-				justify-self: center;
+				margin: 0 auto;
+				max-width: 100%;
 			}
 		}
 		&__name {
 			display: flex;
 			align-items: center;
 			gap: 1rem;
+			&-text {
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
 		}
 		&__edit-button {
 			cursor: pointer;
@@ -311,6 +349,9 @@
 		&__favorite {
 			font-weight: 600;
 			font-size: 1.5rem;
+		}
+		&__status {
+			justify-self: center;
 		}
 
 		&__id {

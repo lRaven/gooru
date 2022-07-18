@@ -239,7 +239,10 @@
 						<div class="the-user__tabs-tab-empty">
 							<p
 								class="the-user__tabs-tab-text"
-								v-if="user_parsources.length === 0"
+								v-if="
+									user_parsources.length === 0 &&
+									isParsourcesLoaded
+								"
 							>
 								Парсеров нет
 							</p>
@@ -272,7 +275,9 @@
 						<div class="the-user__tabs-tab-empty">
 							<p
 								class="the-user__tabs-tab-text"
-								v-if="user_appeals.length === 0"
+								v-if="
+									user_appeals.length === 0 && isAppealsLoaded
+								"
 							>
 								Список обращений пуст
 							</p>
@@ -624,10 +629,7 @@
 		&__parsers {
 			&-sort {
 				display: grid;
-				grid-template-columns: minmax(20rem, 1fr) 20rem 14rem 20rem repeat(
-						4,
-						14rem
-					);
+				grid-template-columns: repeat(7, minmax(15rem, 1fr)) 18rem;
 				grid-gap: 2rem;
 				justify-content: space-between;
 				align-items: center;

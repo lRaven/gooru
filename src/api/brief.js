@@ -20,8 +20,7 @@ const send_brief = async (brief) => {
 
 			source_amount: brief.source,
 
-			name: brief.user_contacts.username,
-			phone_number: brief.user_contacts.tel,
+			name: brief.user_contacts.email,
 		});
 		return response;
 	}

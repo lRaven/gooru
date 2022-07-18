@@ -4,7 +4,7 @@
 
 		<slot name="icon">
 			<img
-				src="img/icon/cabinet/arrow.svg"
+				src="/img/icon/cabinet/arrow.svg"
 				alt="arrow"
 				class="sort-button__icon"
 			/>

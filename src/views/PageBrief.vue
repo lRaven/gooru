@@ -2,7 +2,7 @@
 	<div class="page-brief theme-container" style="background">
 		<div class="page-brief__container center__wide">
 			<img
-				src="img/brief/brief-bg.png"
+				src="/img/brief/brief-bg.png"
 				ref="bg"
 				alt=""
 				class="page-brief__bg"
@@ -18,7 +18,7 @@
 							@click="moveToPrevPage"
 						>
 							<img
-								src="img/icon/brief/arrow-long.svg"
+								src="/img/icon/brief/arrow-long.svg"
 								alt="arrow-back"
 							/>
 						</button>
@@ -109,7 +109,7 @@
 							@click="moveToPrevPage"
 						>
 							<img
-								src="img/icon/brief/arrow-long.svg"
+								src="/img/icon/brief/arrow-long.svg"
 								alt="arrow-back"
 							/>
 						</button>
@@ -121,7 +121,7 @@
 							class="page-brief__exit"
 							@click="this.$router.push({ name: 'home' })"
 						>
-							<img src="img/icon/brief/close.svg" alt="close" />
+							<img src="/img/icon/brief/close.svg" alt="close" />
 						</button>
 					</transition>
 				</div>

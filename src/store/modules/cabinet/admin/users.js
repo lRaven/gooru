@@ -19,8 +19,10 @@ const getters = {}
 const mutations = {
 	SET_USERS: (state, payload) => state.users = payload,
 	SET_USERS_PAGINATION: (state, payload) => state.users_pagination = payload,
+	CLEAR_USERS: (state) => { state.users = []; state.users_pagination = {} },
 
 	SET_ALL_USERS: (state, payload) => state.all_users = payload,
+	CLEAR_ALL_USERS: (state) => state.all_users = [],
 
 	SELECT_ALL_USERS: state => {
 		state.users.forEach(user => user.selected = true);
@@ -42,8 +44,18 @@ const mutations = {
 	},
 
 	SET_USERS_MANAGERS: (state, payload) => state.users_managers = payload,
+	CLEAR_USERS_MANAGERS: (state) => state.users_managers = [],
 
 	SET_SELECTED_USER: (state, payload) => state.selected_user = payload,
+	CLEAR_SELECTED_USER: (state) => state.selected_user = {},
+
+	CLEAR_USERS_STATE: (state) => {
+		state.users = [];
+		state.users_pagination = {};
+		state.all_users = [];
+		state.users_managers = [];
+		state.selected_user = {};
+	},
 }
 
 const actions = {

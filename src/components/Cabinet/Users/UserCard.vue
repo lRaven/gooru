@@ -2,7 +2,10 @@
 	<div class="user-card">
 		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
 		<div class="user-card__content" ref="content">
-			<div class="user-card__content-col">
+			<div
+				class="user-card__content-col"
+				:class="{ admin: user_me.role === 'AdminCRM' }"
+			>
 				<p class="user-card__col user-card__id">id{{ user.id }}</p>
 
 				<p class="user-card__col user-card__name">
@@ -22,7 +25,10 @@
 					{{ user_parsers.length }}
 				</p>
 
-				<p class="user-card__col user-card__manager">
+				<p
+					class="user-card__col user-card__manager"
+					v-if="user_me.role === 'AdminCRM'"
+				>
 					{{ user_manager !== null ? user_manager.username : "-" }}
 				</p>
 			</div>
@@ -157,6 +163,10 @@
 				display: grid;
 				grid-template-columns: 5rem 20rem repeat(3, 15rem);
 				grid-gap: 3rem;
+				grid-template-columns: 5rem 20rem repeat(2, 15rem);
+				&.admin {
+					grid-template-columns: 5rem 20rem repeat(3, 15rem);
+				}
 			}
 		}
 

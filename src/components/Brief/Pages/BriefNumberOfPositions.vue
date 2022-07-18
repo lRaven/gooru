@@ -24,7 +24,6 @@
 						<input
 							type="number"
 							name=""
-							id=""
 							class="brief-number-of-positions__input"
 							ref="input_min"
 							v-model="range[0]"
@@ -46,7 +45,6 @@
 						<input
 							type="number"
 							name=""
-							id=""
 							class="brief-number-of-positions__input"
 							v-model="range[1]"
 							ref="input_max"
@@ -85,7 +83,6 @@
 					<input
 						type="number"
 						name=""
-						id=""
 						class="brief-number-of-positions__input"
 						ref="input_min"
 						v-model="range[0]"
@@ -109,7 +106,6 @@
 					<input
 						type="number"
 						name=""
-						id=""
 						class="brief-number-of-positions__input"
 						v-model="range[1]"
 						ref="input_max"
@@ -239,6 +235,11 @@
 			gap: 10rem;
 			&:nth-child(3) {
 				align-items: flex-start;
+				max-width: 82rem;
+				gap: 8rem;
+				.brief-number-of-positions__horizontal-rule {
+					transform: translateY(2rem);
+				}
 			}
 		}
 
@@ -279,6 +280,7 @@
 			&-bold {
 				font-weight: 700;
 				font-size: 4.8rem;
+				line-height: 1.2;
 			}
 		}
 
