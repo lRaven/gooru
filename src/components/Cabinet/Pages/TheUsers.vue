@@ -322,12 +322,12 @@
 
 		&__sort {
 			display: grid;
-			grid-template-columns: 5rem 20rem repeat(2, 15rem);
+			// grid-template-columns: 5rem 20rem repeat(2, 15rem);
 			grid-gap: 3rem;
 			padding: 0 3rem 0 5.6rem;
 
 			&.admin {
-				grid-template-columns: 5rem 20rem repeat(3, 15rem);
+				grid-template-columns: 5rem repeat(4, 1fr) 18rem;
 			}
 
 			.sort-button {

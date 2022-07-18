@@ -6,9 +6,19 @@
 				class="user-card__content-col"
 				:class="{ admin: user_me.role === 'AdminCRM' }"
 			>
-				<p class="user-card__col user-card__id">id{{ user.id }}</p>
+				<p class="user-card__col user-card__id" :title="'id' + user.id">
+					id{{ user.id }}
+				</p>
 
-				<p class="user-card__col user-card__name">
+				<p
+					class="user-card__col user-card__name"
+					:title="
+						user.first_name.length === 0 &&
+						user.last_name.length === 0
+							? user.username
+							: `${user.first_name} ${user.last_name}`
+					"
+				>
 					{{
 						user.first_name.length === 0 &&
 						user.last_name.length === 0
@@ -17,16 +27,23 @@
 					}}
 				</p>
 
-				<p class="user-card__col user-card__status">
+				<p
+					class="user-card__col user-card__status"
+					:title="user.is_active ? 'Разблокирован' : 'Заблокирован'"
+				>
 					{{ user.is_active ? "Разблокирован" : "Заблокирован" }}
 				</p>
 
-				<p class="user-card__col user-card__parsers">
+				<p
+					class="user-card__col user-card__parsers"
+					:title="user_parsers.length"
+				>
 					{{ user_parsers.length }}
 				</p>
 
 				<p
 					class="user-card__col user-card__manager"
+					:title="user_manager !== null ? user_manager.username : '-'"
 					v-if="user_me.role === 'AdminCRM'"
 				>
 					{{ user_manager !== null ? user_manager.username : "-" }}
@@ -34,21 +51,48 @@
 			</div>
 
 			<r-button
-				text="Подробнее"
+				:text="document_width > 1023 ? 'Подробнее' : ''"
 				color="bordered"
+				title="Подробнее"
 				@click="
 					this.$router.push({
 						path: `/cabinet/user/${user.id}`,
 						query: { page: 1 },
 					})
 				"
-			></r-button>
+			>
+				<template v-slot:icon>
+					<svg
+						width="20"
+						height="21"
+						viewBox="0 0 20 21"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						class="r-button__icon"
+						v-if="document_width < 1023"
+					>
+						<circle cx="3" cy="12.0303" r="2" fill="currentColor" />
+						<circle
+							cx="10"
+							cy="12.0303"
+							r="2"
+							fill="currentColor"
+						/>
+						<circle
+							cx="17"
+							cy="12.0303"
+							r="2"
+							fill="currentColor"
+						/>
+					</svg>
+				</template>
+			</r-button>
 		</div>
 	</div>
 </template>
 
 <script>
-	import { mapMutations } from "vuex";
+	import { mapState, mapMutations } from "vuex";
 
 	export default {
 		name: "UserCard",
@@ -76,6 +120,8 @@
 			},
 		},
 		computed: {
+			...mapState(["document_width"]),
+
 			user_parsources() {
 				return this.parsources.filter(
 					(parsource) => parsource.user === this.user.id
@@ -138,6 +184,7 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			gap: 3rem;
 			width: 100%;
 			padding: 2rem 3rem;
 			background-color: $white;
@@ -154,27 +201,29 @@
 				box-shadow: 0 0.4rem 1.2rem rgba(89, 96, 199, 0.2);
 			}
 			.r-button {
-				width: max-content;
+				width: 18rem;
 				font-size: 1.4rem;
 				padding: 1rem 2.8rem;
 			}
 
 			&-col {
 				display: grid;
-				grid-template-columns: 5rem 20rem repeat(3, 15rem);
 				grid-gap: 3rem;
-				grid-template-columns: 5rem 20rem repeat(2, 15rem);
+				width: 100%;
 				&.admin {
-					grid-template-columns: 5rem 20rem repeat(3, 15rem);
+					grid-template-columns: 5rem repeat(4, 1fr);
 				}
 			}
 		}
 
 		&__col {
-			&:nth-child(n + 3) {
-				justify-self: center;
-			}
 			font-size: 1.5rem;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			&:nth-child(n + 3) {
+				margin: 0 auto;
+				max-width: 100%;
+			}
 		}
 		&__id,
 		&__manager {

@@ -560,7 +560,7 @@
 			...mapMutations(["SET_TAB"]),
 
 			set_tab(tab, pagination) {
-				if (this.document_width < 768) {
+				if (this.document_width < 1023) {
 					this.$emit("close_menu");
 				}
 
@@ -620,10 +620,6 @@
 		transition: all 0.2s ease;
 
 		@media (max-width: 1023px) {
-			padding-top: 10rem;
-		}
-
-		@media (max-width: 767px) {
 			padding-top: 0;
 			position: fixed;
 			left: 0;
@@ -636,7 +632,7 @@
 		&.minimized {
 			width: 8rem;
 
-			@media (max-width: 767px) {
+			@media (max-width: 1023px) {
 				transform: translateX(-8rem);
 			}
 			.navigation-panel {
@@ -664,7 +660,7 @@
 			z-index: 1;
 			transition: all 0.3s ease;
 
-			@media (max-width: 767px) {
+			@media (max-width: 1023px) {
 				display: none;
 			}
 
@@ -684,7 +680,7 @@
 				90% no-repeat;
 			overflow: hidden;
 
-			@media (max-width: 767px) {
+			@media (max-width: 1023px) {
 				background: none;
 				padding: 1.5rem;
 			}
@@ -694,9 +690,6 @@
 			display: flex;
 			flex-direction: column;
 			gap: 1.6rem;
-
-			@media (max-width: 767px) {
-			}
 		}
 
 		.navigation-item {
@@ -727,7 +720,7 @@
 		&__top {
 			display: none;
 
-			@media (max-width: 767px) {
+			@media (max-width: 1023px) {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
@@ -762,7 +755,7 @@
 
 		&__create {
 			display: none;
-			@media (max-width: 767px) {
+			@media (max-width: 1023px) {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 2rem;
