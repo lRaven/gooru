@@ -17,9 +17,9 @@
 
 			<p
 				class="parsource-card__col parsource-card__source"
-				:title="parsource.data_source"
+				:title="source"
 			>
-				{{ parsource.data_source }}
+				{{ source }}
 			</p>
 
 			<div
@@ -196,7 +196,9 @@
 					(el) => el === this.parsource.id
 				);
 			},
-
+			source() {
+				return this.parsource.data_source.split('/')[2] ? this.parsource.data_source.split('/')[2] : this.parsource.data_source;
+			},
 			lost_time() {
 				const time = this.parsource.lost_time;
 				const hours = Number(time.slice(0, 2));

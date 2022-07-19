@@ -1,5 +1,5 @@
 <template>
-	<section class="the-favorites">
+	<section class="the-favorites" ref="favoritesSection">
 		<div class="the-favorites__main">
 			<h2 class="the-favorites__title">Избранное</h2>
 
@@ -108,6 +108,9 @@
 			icon="/img/icon/cabinet/tick-bordered.svg"
 			title="Выбрано"
 			class="the-favorites__right-panel"
+			:isMinimized="isMinimizedRightPanel"
+			@open-right-panel="isMinimizedRightPanel = false"
+			@close-right-panel="isMinimizedRightPanel = true"
 		>
 			<the-favorite-right-panel
 				:totalSelected="totalSelected"
@@ -152,6 +155,7 @@
 			},
 		},
 		data: () => ({
+			isMinimizedRightPanel: false,
 			isFavoritesLoaded: false,
 			isSortPanelVisible: false,
 			show_by_source: "",
@@ -162,7 +166,9 @@
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getFavoriteParsers"]),
-
+			minimizeRightPanel() {
+				console.log('yes');
+			},
 			updateSelectedParsers(favoriteCardObj) {
 				const { parsourceId, selectedParsers } = favoriteCardObj;
 
@@ -206,6 +212,14 @@
 			this.SET_TAB("favorites");
 			this.getFavoriteParsers();
 		},
+		mounted() {
+			
+			this.$refs.favoritesSection.addEventListener('onresize', this.minimizeRightPanel);
+			
+		},
+		beforeUnmount() {
+			this.$refs.favoritesSection.removeEventListener('onresize', this.minimizeRightPanel);
+		}
 	};
 </script>
 

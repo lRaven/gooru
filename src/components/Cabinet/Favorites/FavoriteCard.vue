@@ -8,9 +8,9 @@
 				></r-checkbox>
 				<h4
 					class="favorite-card__source"
-					:title="parsource.data_source"
+					:title="source"
 				>
-					{{ parsource.data_source }}
+					{{ source }}
 				</h4>
 				<p class="favorite-card__favorite">
 					{{ parsource.parsers.length || 0 }}/{{ parsource.find }} в
@@ -90,6 +90,11 @@
 				selectedParsers: [],
 			};
 		},
+		computed: {
+			source() {
+				return this.parsource.data_source.split('/')[2] ? this.parsource.data_source.split('/')[2] : this.parsource.data_source;
+			},
+		},
 		methods: {
 			openContent() {
 				this.isContentVisible = true;
@@ -148,6 +153,12 @@
 					padding: 1rem 2.8rem;
 					font-weight: 500;
 					font-size: 1.4rem;
+					@media (max-width: 150rem) {
+					padding: 0.8rem 2.4rem;
+				}
+				}
+				@media (max-width: 150rem) {
+					gap: 2rem;
 				}
 			}
 		}
@@ -178,6 +189,7 @@
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+			
 		}
 	}
 </style>

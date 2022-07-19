@@ -555,6 +555,7 @@
 				{ id: 4, selected: false, tab: "profile", icon_fill: "" },
 				{ id: 5, selected: false, tab: "users", icon_fill: "" },
 				{ id: 6, selected: false, tab: "rates", icon_fill: "" },
+				{ id: 7, selected: false, tab: "control", icon_fill: "" },
 			],
 		}),
 		methods: {
