@@ -68,7 +68,15 @@
 				this.$nextTick(() => {
 					this.$refs.message_list.scrollTop =
 						this.$refs.message_list.scrollHeight;
+
+					this.addSmoothScroll();
 				});
+			},
+
+			addSmoothScroll() {
+				if (!this.$refs.message_list.classList.contains("smooth")) {
+					this.$refs.message_list.classList.add("smooth");
+				}
 			},
 		},
 	};
@@ -92,6 +100,9 @@
 			padding: 1rem;
 			width: 100%;
 			scroll-behavior: initial;
+			&.smooth {
+				scroll-behavior: smooth;
+			}
 		}
 
 		&__empty {
