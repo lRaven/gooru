@@ -40,8 +40,9 @@
 							v-model="checkItem.text"
 							placeholder="Пункт описания тарифа"
 						/>
-						<button type="submit" class="the-control__form-submit">
-							Применить
+						<button type="submit" class="the-control__form-submit" :class="{ white: isLoading }">
+							<r-loader v-if="isLoading" />
+							<template v-else>Применить</template>
 						</button>
 					</form>
 				</template></r-modal
@@ -51,6 +52,7 @@
 </template>
 
 <script>
+import rLoader from "@/components/UI/r-loader.vue";
 	import RateCard from "@/components/Rates/RateCard.vue";
 	
 
@@ -60,11 +62,13 @@
 
 	export default {
 		components: {
+			rLoader,
 			RateCard,
 		},
 		data() {
 			return {
 				selectedRate: null,
+				isLoading: false,
 			};
 		},
 		computed: {
@@ -82,11 +86,13 @@
 				this.selectedRate = null;
 			},
 			async submitUpdatedRate() {
+				this.isLoading = true;
 				try {
 					await this.updateRate(this.selectedRate);
 					this.toast.success("Тариф успешно изменен!");
 					setTimeout(this.closeModal, 1000);
 				} catch (error) {
+					this.isLoading = false;
 					console.log(error);
 					this.toast.error("Не удалось изменить тариф!");
 				}
@@ -121,10 +127,12 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
-			padding: 2rem 2rem;
+			padding: 0 2rem 2rem 2rem;
 			gap: 1rem;
 		}
 		&__form-submit {
+			margin: 3rem 0 0 0;
+			position: relative;
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -144,6 +152,9 @@
 			height: max-content;
 			opacity: 1;
 			transition: all 0.2s ease;
+			&.white {
+				background-color: $white;
+			}
 		}
 	}
 
