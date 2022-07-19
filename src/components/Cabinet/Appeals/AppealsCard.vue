@@ -64,7 +64,7 @@
 				let result = "";
 
 				const find = this.parsers.find(
-					(el) => el.id === this.appeal.id
+					(el) => el.id === this.appeal.parser
 				);
 				if (find !== undefined) {
 					result = find.title;
