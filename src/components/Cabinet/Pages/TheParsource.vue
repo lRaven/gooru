@@ -515,6 +515,11 @@
 
 			this.getParsource(this.parsource_id);
 			this.getAllParsources();
+
+			if (this.userRole !== "DefaultUser") {
+				this.getAllUsers();
+				this.getUsersManagers();
+			}
 		},
 		setup() {
 			const toast = useToast();
