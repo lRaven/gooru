@@ -1,6 +1,6 @@
-import axios from 'axios';
-import store from '@/store';
-import cookie from 'vue-cookies';
+import axios from "axios";
+import store from "@/store";
+import cookie from "vue-cookies";
 
 const baseURL = store.state.baseURL;
 
@@ -13,17 +13,19 @@ const registration = async ({ email, password }) => {
 			password,
 		});
 		return response;
-
-	} catch (error) { throw new Error(error); }
-}
+	} catch (error) {
+		throw new Error(error);
+	}
+};
 
 const registration_by_tel = async () => {
 	try {
 		const response = await axios.post(`${baseURL}/user/auth/tel/`, {});
 		return response;
+	} catch (err) {
+		throw new Error();
 	}
-	catch (err) { throw new Error }
-}
+};
 
 const login = async ({ username, password }) => {
 	try {
@@ -32,18 +34,23 @@ const login = async ({ username, password }) => {
 			password,
 		});
 		return response;
-	} catch (error) { throw new Error(error) }
-}
+	} catch (error) {
+		throw new Error(error);
+	}
+};
 
 const logout = async () => {
 	try {
-		const response = await axios.post(`${baseURL}/auth/token/logout/`, {}, {
-			headers: { Authorization: `token ${cookie.get("auth_token")}`, },
-		});
+		const response = await axios.post(
+			`${baseURL}/auth/token/logout/`,
+			{},
+			{
+				headers: { Authorization: `token ${cookie.get("auth_token")}` },
+			}
+		);
 
 		return response;
-	}
-	catch (err) {
+	} catch (err) {
 		throw new Error(err);
 
 		// 		console.log(`
@@ -89,14 +96,27 @@ const logout = async () => {
 		// ⠀⠀⠀⢸⠀⠀⠀⢠⣸⠀⠀⠉⠉⠉⠉⠛⠛⠛⠛⡗⢲⠖⠒⠒⠒⠒⠒⠒⠚⠋⢹⡟⠀⠀⢸⡆⠀⠀⠀⠀
 		// 		`);
 	}
-}
+};
 
-//* операции по тарифам для конкретного пользователя
+// операции по тарифам для конкретного пользователя
 
 const getRates = async () => {
 	try {
+		const { data:rates } = await axios.get(`${baseURL}/tariff`, {
+			headers: {
+				Authorization: `token ${cookie.get("auth_token")}`,
+			},
+		});
+		return rates.results;
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
+const getUserRates = async () => {
+	try {
 		const { data } = await axios.get(`${baseURL}/usertariff`, {
-			headers: { Authorization: `token ${cookie.get('auth_token')}` }
+			headers: { Authorization: `token ${cookie.get("auth_token")}` },
 		});
 		return data.results;
 	} catch (error) {
@@ -107,7 +127,7 @@ const getRates = async () => {
 const getUserRate = async ({ id }) => {
 	try {
 		const { data } = await axios.get(`${baseURL}/usertariff/${id}`, {
-			headers: { Authorization: `token ${cookie.get('auth_token')}` }
+			headers: { Authorization: `token ${cookie.get("auth_token")}` },
 		});
 		return data;
 	} catch (error) {
@@ -118,56 +138,72 @@ const getUserRate = async ({ id }) => {
 //* user data edit
 const change_password = async ({ new_password, current_password }) => {
 	try {
-		const response = await axios.post(`${baseURL}/auth/users/set_password/`, {
-			new_password,
-			current_password,
-		}, {
-			headers: { Authorization: `token ${cookie.get('auth_token')}` }
-		});
+		const response = await axios.post(
+			`${baseURL}/auth/users/set_password/`,
+			{
+				new_password,
+				current_password,
+			},
+			{
+				headers: { Authorization: `token ${cookie.get("auth_token")}` },
+			}
+		);
 		return response;
+	} catch (err) {
+		throw new Error(err);
 	}
-	catch (err) { throw new Error(err) }
-}
+};
 
 const change_user_data = async (user_id, args) => {
 	try {
-		const response = await axios.patch(`${baseURL}/user/${user_id}/`, {
-			first_name: args.first_name,
-			last_name: args.last_name,
-			phone_number: args.phone_number,
-			email: args.email,
-		}, { headers: { Authorization: `token ${cookie.get('auth_token')}` } });
+		const response = await axios.patch(
+			`${baseURL}/user/${user_id}/`,
+			{
+				first_name: args.first_name,
+				last_name: args.last_name,
+				phone_number: args.phone_number,
+				email: args.email,
+			},
+			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
+		);
 
 		return response;
+	} catch (err) {
+		throw new Error(err);
 	}
-	catch (err) { throw new Error(err) }
-}
+};
 
 const upload_avatar = async ({ user_id, avatar }) => {
 	try {
-		const response = await axios.patch(`${baseURL}/user/upload/${user_id}/`,
+		const response = await axios.patch(
+			`${baseURL}/user/upload/${user_id}/`,
 			{ avatar },
 			{
 				headers: {
-					Authorization: `token ${cookie.get('auth_token')}`,
-					'Content-Type': 'multipart/form-data'
-				}
-			});
+					Authorization: `token ${cookie.get("auth_token")}`,
+					"Content-Type": "multipart/form-data",
+				},
+			}
+		);
 		return response;
+	} catch (err) {
+		throw new Error(err);
 	}
-	catch (err) { throw new Error(err) }
-}
+};
 
 // admin requests
 
 const updateRate = async (rateObjToUpdate) => {
-	console.log(rateObjToUpdate)
 	try {
-		const { data } = await axios.put(`${store.state.baseURL}/tariff/${rateObjToUpdate.id}/`, rateObjToUpdate, {
-			headers: {
-				Authorization: `token ${cookie.get('auth_token')}`,
+		const { data } = await axios.put(
+			`${store.state.baseURL}/tariff/${rateObjToUpdate.id}/`,
+			rateObjToUpdate,
+			{
+				headers: {
+					Authorization: `token ${cookie.get("auth_token")}`,
+				},
 			}
-		});
+		);
 		return data;
 	} catch (error) {
 		throw new Error(error);
@@ -176,26 +212,31 @@ const updateRate = async (rateObjToUpdate) => {
 
 const change_manager = async ({ user, manager, user_manager }) => {
 	try {
-		const response = await axios.patch(`${baseURL}/usermanager/${user_manager}/`, {
-			user,
-			manager
-		}, { headers: { Authorization: `token ${cookie.get('auth_token')}` } });
+		const response = await axios.patch(
+			`${baseURL}/usermanager/${user_manager}/`,
+			{
+				user,
+				manager,
+			},
+			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
+		);
 
 		return response;
+	} catch (err) {
+		throw new Error(err);
 	}
-	catch (err) { throw new Error(err) }
-}
+};
 
 const delete_user = async (user_id) => {
 	try {
 		const response = await axios.delete(`${baseURL}/user/${user_id}/`, {
-			headers: { Authorization: `token ${cookie.get('auth_token')}` }
+			headers: { Authorization: `token ${cookie.get("auth_token")}` },
 		});
 		return response;
+	} catch (err) {
+		throw new Error(err);
 	}
-	catch (err) { throw new Error(err) }
-}
-
+};
 
 export {
 	registration,
@@ -203,6 +244,7 @@ export {
 	login,
 	logout,
 	getRates,
+	getUserRates,
 	getUserRate,
 	change_password,
 	change_user_data,

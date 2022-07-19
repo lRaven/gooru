@@ -14,7 +14,7 @@
 		<ul class="rate-card__checklist">
 			<li
 				class="rate-card__checklist-item"
-				v-for="item in rate.checklist"
+				v-for="item in rate.checkList"
 				:key="item.id"
 			>
 				<img

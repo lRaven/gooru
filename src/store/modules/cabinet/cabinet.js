@@ -2,7 +2,7 @@ import cookie from "vue-cookies";
 import axios from "axios";
 import store from "@/store";
 
-import { getRates } from "@/api/userApi";
+import { getUserRates } from "@/api/userApi";
 
 const state = () => ({
 	user_auth: null,
@@ -53,7 +53,7 @@ const actions = {
 
 	getUserRate: async (context) => {
 		try {
-			const userRateList = await getRates();
+			const userRateList = await getUserRates();
 			const userRate = userRateList.find(
 				(rateItem) => rateItem.user === context.state.user.id
 			);

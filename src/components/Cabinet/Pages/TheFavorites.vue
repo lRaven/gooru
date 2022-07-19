@@ -1,5 +1,5 @@
 <template>
-	<section class="the-favorites" ref="favoritesSection">
+	<section class="the-favorites">
 		<div class="the-favorites__main">
 			<h2 class="the-favorites__title">Избранное</h2>
 
@@ -212,14 +212,6 @@
 			this.SET_TAB("favorites");
 			this.getFavoriteParsers();
 		},
-		mounted() {
-			
-			this.$refs.favoritesSection.addEventListener('onresize', this.minimizeRightPanel);
-			
-		},
-		beforeUnmount() {
-			this.$refs.favoritesSection.removeEventListener('onresize', this.minimizeRightPanel);
-		}
 	};
 </script>
 
