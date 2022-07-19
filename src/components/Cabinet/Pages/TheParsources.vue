@@ -33,41 +33,29 @@
 				class="the-parsources__sort"
 				:class="{ manager: userRole !== 'DefaultUser' }"
 			>
-				<sort-button
-					description="Пользователь"
-					@click="sort_list(parsources_list, 'user')"
-					v-if="userRole !== 'DefaultUser'"
-				></sort-button>
-				<sort-button
-					description="Источник"
-					@click="sort_list(parsources_list, 'data_source')"
-				></sort-button>
-				<sort-button
-					description="Название"
-					@click="sort_list(parsources_list, 'name')"
-					v-if="userRole === 'DefaultUser'"
-				></sort-button>
-				<sort-button
-					description="Дата"
-					@click="sort_list(parsources_list, 'date')"
-				></sort-button>
-				<sort-button
-					description="Статус"
-					@click="sort_list(parsources_list, 'condition')"
-				></sort-button>
-				<sort-button
-					description="Найдено"
-					@click="sort_list(parsources_list, 'found')"
-				></sort-button>
-				<sort-button
-					description="В избранном"
-					@click="sort_list(parsources_list, '')"
-					v-if="userRole === 'DefaultUser'"
-				></sort-button>
-				<sort-button
-					description="Время парсинга"
-					@click="sort_list(parsources_list, 'lost_time')"
-				></sort-button>
+				<template v-if="userRole !== 'DefaultUser'">
+					<sort-button
+						v-for="sort in sortManager"
+						:key="sort.id"
+						:sortItem="sort"
+						:selected_sort="sortBy"
+						v-model="sortBy"
+						@change_direction="change_direction"
+						@new_sort="new_sort"
+					></sort-button>
+				</template>
+
+				<template v-if="userRole === 'DefaultUser'">
+					<sort-button
+						v-for="sort in sortUser"
+						:key="sort.id"
+						:sortItem="sort"
+						:selected_sort="sortBy"
+						@click="sortBy = sort.id"
+						@change_direction="change_direction"
+						@new_sort="new_sort"
+					></sort-button>
+				</template>
 			</div>
 
 			<transition mode="out-in">
@@ -128,12 +116,13 @@
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 
 	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+	import { sortParsources } from "@/mixins/sortingMixins";
 	import { read_notification } from "@/api/notifications";
-	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheParsources",
+		mixins: [sortParsources],
 		components: {
 			SortButton,
 			ParsourceCard,
@@ -286,10 +275,6 @@
 				"getNotifications",
 				"getAllParsers",
 			]),
-			async sort_list(array, key) {
-				const response = await sortArrayByObjectKey(array, key);
-				this.parsources_list = response;
-			},
 
 			page_changed(page_number) {
 				this.$router.push({

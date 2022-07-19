@@ -186,32 +186,13 @@
 				>
 					<div class="the-user__parsers-sort">
 						<sort-button
-							description="Источник"
-							@click="sort_list(parsources_list, 'data_source')"
-						></sort-button>
-						<sort-button
-							description="Название"
-							@click="sort_list(parsources_list, 'name')"
-						></sort-button>
-						<sort-button
-							description="Дата"
-							@click="sort_list(parsources_list, 'date')"
-						></sort-button>
-						<sort-button
-							description="Статус"
-							@click="sort_list(parsources_list, 'condition')"
-						></sort-button>
-						<sort-button
-							description="Найдено"
-							@click="sort_list(parsources_list, 'found')"
-						></sort-button>
-						<sort-button
-							description="В избранном"
-							@click="sort_list(parsources_list, 'favorite')"
-						></sort-button>
-						<sort-button
-							description="Время парсинга"
-							@click="sort_list(parsources_list, 'lost_time')"
+							v-for="sort in sortUser"
+							:key="sort.id"
+							:sortItem="sort"
+							:selected_sort="sortBy"
+							v-model="sortBy"
+							@change_direction="change_direction"
+							@new_sort="new_sort"
 						></sort-button>
 					</div>
 
@@ -222,12 +203,10 @@
 					<transition mode="out-in">
 						<div
 							class="the-user__parsers-list"
-							v-if="
-								isParsourcesLoaded && user_parsources.length > 0
-							"
+							v-if="isParsourcesLoaded && parsources.length > 0"
 						>
 							<parsource-card
-								v-for="parsource in user_parsources"
+								v-for="parsource in parsources_list"
 								:key="parsource.id"
 								:parsource="parsource"
 								:isCanSelect="false"
@@ -240,7 +219,7 @@
 							<p
 								class="the-user__tabs-tab-text"
 								v-if="
-									user_parsources.length === 0 &&
+									parsources.length === 0 &&
 									isParsourcesLoaded
 								"
 							>
@@ -293,7 +272,7 @@
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
-	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
+	import { sortParsourcesUser } from "@/mixins/sortingMixins";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard";
 	import {
 		change_user_data,
@@ -304,6 +283,7 @@
 
 	export default {
 		name: "TheUser",
+		mixins: [sortParsourcesUser],
 		components: {
 			ParsourceCard,
 			SortButton,
@@ -318,7 +298,7 @@
 				deep: true,
 			},
 
-			all_parsources: {
+			parsources: {
 				handler: function () {
 					this.parsources_list = this.parsources;
 					this.isParsourcesLoaded = true;
@@ -383,7 +363,7 @@
 				return manager || { username: "-" };
 			},
 
-			user_parsources() {
+			parsources() {
 				return this.all_parsources.filter((parsource) => {
 					return parsource.user === this.user.id;
 				});
@@ -434,11 +414,6 @@
 				"getAllMessages",
 			]),
 			change_user_data,
-
-			async sort_list(array, key) {
-				const response = await sortArrayByObjectKey(array, key);
-				this.parsources_list = response;
-			},
 
 			async send_form() {
 				if (this.isFormDisabled === true) {

@@ -46,58 +46,30 @@
 				class="the-users__sort"
 				:class="{ admin: userRole === 'AdminCRM' }"
 			>
-				<sort-button
-					description="Пользователь"
-					@click="sort_list(users, 'first_name')"
-				>
-					<template v-slot:icon>
-						<svg
-							width="21"
-							height="20"
-							viewBox="0 0 21 20"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-							class="sort-button__icon"
-						>
-							<ellipse
-								cx="10.2243"
-								cy="9.42352"
-								rx="8.98859"
-								ry="8.3288"
-								stroke="#6F6F6F"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-							<path
-								d="M16.476 15.6484L20 18.9053"
-								stroke="#6F6F6F"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-						</svg>
-					</template>
-				</sort-button>
-
-				<sort-button
-					description="Статус"
-					@click="sort_list(users, 'is_active')"
-				>
-				</sort-button>
-
-				<sort-button
-					description="Кол-во парсеров"
-					@click="sort_list(users, '')"
-				>
-				</sort-button>
-
-				<sort-button
-					description="Менеджер"
-					@click="sort_list(users, '')"
-					v-if="userRole === 'AdminCRM'"
-				>
-				</sort-button>
+				<template v-if="userRole === 'Manager'">
+					<sort-button
+						v-for="sort in sortManager"
+						:key="sort.id"
+						:sortItem="sort"
+						:selected_sort="sortBy"
+						v-model="sortBy"
+						@change_direction="change_direction"
+						@new_sort="new_sort"
+					>
+					</sort-button>
+				</template>
+				<template v-if="userRole === 'AdminCRM'">
+					<sort-button
+						v-for="sort in sortAdmin"
+						:key="sort.id"
+						:sortItem="sort"
+						:selected_sort="sortBy"
+						@click="sortBy = sort.id"
+						@change_direction="change_direction"
+						@new_sort="new_sort"
+					>
+					</sort-button>
+				</template>
 			</div>
 
 			<transition mode="out-in">
@@ -142,12 +114,13 @@
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import UserCard from "@/components/Cabinet/Users/UserCard.vue";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
+	import { sortUsers } from "@/mixins/sortingMixins";
 
-	import { sortArrayByObjectKey } from "@/js/sortArrayByObjectKey";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "TheUsers",
+		mixins: [sortUsers],
 		components: {
 			UserCard,
 			SortButton,
@@ -253,7 +226,6 @@
 
 				postponeSelected: false,
 				deleteSelected: false,
-				sortBy: "none",
 
 				users_list: [],
 				users_in_page: 10,
@@ -279,11 +251,6 @@
 					name: "users",
 					query: { page: page_number },
 				});
-			},
-
-			async sort_list(array, key) {
-				const response = await sortArrayByObjectKey(array, key);
-				this.users_list = response;
 			},
 		},
 		created() {
@@ -355,12 +322,12 @@
 
 		&__sort {
 			display: grid;
-			grid-template-columns: 5rem 20rem repeat(2, 15rem);
+			// grid-template-columns: 5rem 20rem repeat(2, 15rem);
 			grid-gap: 3rem;
 			padding: 0 3rem 0 5.6rem;
 
 			&.admin {
-				grid-template-columns: 5rem 20rem repeat(3, 15rem);
+				grid-template-columns: 5rem repeat(4, 1fr) 18rem;
 			}
 
 			.sort-button {

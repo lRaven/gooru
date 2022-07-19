@@ -241,7 +241,7 @@
 							class="the-header__avatar"
 							alt="avatar"
 						/>
-						<p class="the-header__username">
+						<p class="the-header__username" :title="user.username">
 							{{ user.username }}
 						</p>
 						<div class="the-header__account-button">
@@ -374,15 +374,15 @@
 				return this.$refs.header.clientHeight;
 			},
 			setButtonText() {
-				switch(this.user.role) {
-					case 'DefaultUser':
-						return 'Мои парсы';
-					case 'Manager':
-						return 'Все парсеры';
-					case 'AdminCRM':
-						return 'Пользователи';
+				switch (this.user.role) {
+					case "DefaultUser":
+						return "Мои парсы";
+					case "Manager":
+						return "Все парсеры";
+					case "AdminCRM":
+						return "Пользователи";
 					default:
-					return 'Мой кабинет';
+						return "Мой кабинет";
 				}
 			},
 			...mapState(["document_width"]),
@@ -481,9 +481,6 @@
 					grid-gap: 4rem;
 
 					@media (max-width: 1023px) {
-						grid-template-columns: min-content 1fr;
-					}
-					@media (max-width: 767px) {
 						grid-template-columns: min-content max-content;
 					}
 				}
@@ -491,38 +488,37 @@
 					justify-content: space-between;
 				}
 			}
-
 			@media (max-width: 1023px) {
-			}
-			@media (max-width: 767px) {
-				padding: 1.5rem;
-
 				.the-header {
-					&__burger {
-						background-color: transparent;
-						display: flex;
-						flex-direction: column;
-						justify-content: space-between;
-						gap: 0.6rem;
-						height: 2rem;
-						width: 2.7rem;
-						color: $gray;
-						z-index: 4;
-						&-line {
-							&:nth-child(3) {
-								width: 1.8rem;
-							}
-						}
-					}
 					&__logo {
 						display: none;
 					}
 				}
 			}
+			@media (max-width: 767px) {
+				padding: 1.5rem;
+			}
 		}
 
 		&__burger {
 			display: none;
+
+			@media (max-width: 1023px) {
+				background-color: transparent;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				gap: 0.6rem;
+				height: 2rem;
+				width: 2.7rem;
+				color: $gray;
+				z-index: 4;
+			}
+			&-line {
+				&:nth-child(3) {
+					width: 1.8rem;
+				}
+			}
 		}
 
 		&__container {
@@ -546,11 +542,14 @@
 			display: flex;
 			gap: 2rem;
 
-			@media (max-width: 767px) {
+			@media (max-width: 1023px) {
 				display: none;
 			}
 			.r-button {
 				min-width: inherit;
+				@media (max-width: 1140px) {
+					padding: 1rem 2rem;
+				}
 				&:hover {
 					.r-button__icon {
 						path {
@@ -705,6 +704,12 @@
 			font-size: 1.4rem;
 			font-weight: 700;
 			color: rgba($black, $alpha: 0.7);
+			@media (max-width: 1140px) {
+				max-width: 14rem;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
 		}
 	}
 </style>

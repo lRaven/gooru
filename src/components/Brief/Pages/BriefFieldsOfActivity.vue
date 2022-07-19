@@ -18,15 +18,7 @@
 				<r-button
 					:disabled="isDisabledBtn"
 					description="Интересненько!"
-					@click="
-						SET_FIELDS_OF_ACTIVITY(selected_fields_of_activity);
-						if (isHasSelfOption === true)
-							SET_FIELDS_OF_ACTIVITY_SELF_OPTION(
-								fields_of_activity_self_option
-							);
-						else SET_FIELDS_OF_ACTIVITY_SELF_OPTION('');
-						this.$emit('moveToNextPage');
-					"
+					@click="saveFieldsOfActivity"
 					v-if="document_width > 1023"
 				></r-button>
 			</transition>
@@ -48,15 +40,7 @@
 			<r-button
 				:disabled="isDisabledBtn"
 				description="Интересненько!"
-				@click="
-					SET_FIELDS_OF_ACTIVITY(selected_fields_of_activity);
-					if (isHasSelfOption === true)
-						SET_FIELDS_OF_ACTIVITY_SELF_OPTION(
-							fields_of_activity_self_option
-						);
-					else SET_FIELDS_OF_ACTIVITY_SELF_OPTION('');
-					this.$emit('moveToNextPage');
-				"
+				@click="saveFieldsOfActivity"
 				v-if="document_width <= 1023"
 			></r-button>
 		</transition>
@@ -77,20 +61,18 @@
 		},
 		watch: {
 			selected_fields_of_activity() {
-				this.selected_fields_of_activity.length > 0
-					? (this.isDisabledBtn = false)
-					: (this.isDisabledBtn = true);
+				this.validateForm();
+			},
+			fields_of_activity_self_option() {
+				this.validateForm();
 			},
 		},
 		computed: {
 			selected_fields_of_activity() {
-				let result = [];
-
-				this.fields_of_activity.forEach((el) => {
-					if (el.checked === true) result.push(el.id);
-				});
-
-				return result;
+				return this.fields_of_activity.reduce((acc, current) => {
+					if (current.checked) acc.push(current.id);
+					return acc;
+				}, []);
 			},
 
 			isHasSelfOption() {
@@ -101,6 +83,10 @@
 				find === undefined ? (result = false) : (result = true);
 
 				return result;
+			},
+
+			isSelfOptionFilled() {
+				return this.fields_of_activity_self_option.length > 0;
 			},
 		},
 		data: () => ({
@@ -123,6 +109,28 @@
 				"SET_FIELDS_OF_ACTIVITY",
 				"SET_FIELDS_OF_ACTIVITY_SELF_OPTION",
 			]),
+
+			saveFieldsOfActivity() {
+				this.SET_FIELDS_OF_ACTIVITY(this.selected_fields_of_activity);
+
+				if (this.isHasSelfOption === true)
+					this.SET_FIELDS_OF_ACTIVITY_SELF_OPTION(
+						this.fields_of_activity_self_option
+					);
+				else this.SET_FIELDS_OF_ACTIVITY_SELF_OPTION("");
+				this.$emit("moveToNextPage");
+			},
+
+			validateForm() {
+				//* если среди выбранного есть вариант с пользовательским вариантом, то проследить обязательное его заполнение
+				this.isHasSelfOption
+					? this.isSelfOptionFilled
+						? (this.isDisabledBtn = false)
+						: (this.isDisabledBtn = true)
+					: this.selected_fields_of_activity.length > 0
+					? (this.isDisabledBtn = false)
+					: (this.isDisabledBtn = true);
+			},
 		},
 	};
 </script>

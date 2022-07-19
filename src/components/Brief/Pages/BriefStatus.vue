@@ -21,10 +21,10 @@
 					radio_name="status"
 					:description="status.description"
 					:value="status.id"
-					:selected_value="selected_status"
-					v-model="selected_status"
+					:selected_value="selected_status.value"
+					v-model="selected_status.value"
 					:hasInputField="status.id === 5 ? true : false"
-					v-model:text="client_status_self_option"
+					v-model:text="selected_status.self_option"
 				></r-radio-select>
 			</div>
 		</div>
@@ -32,13 +32,7 @@
 		<r-button
 			description="Идём дальше!"
 			:disabled="isDisabledBtn"
-			@click="
-				SET_CLIENT_STATUS(selected_status);
-				selected_status === 5
-					? SET_CLIENT_STATUS_SELF_OPTION(client_status_self_option)
-					: SET_CLIENT_STATUS_SELF_OPTION('');
-				this.$emit('moveToNextPage');
-			"
+			@click="saveStatus"
 		></r-button>
 	</section>
 </template>
@@ -55,10 +49,23 @@
 			rRadioSelect,
 		},
 		watch: {
-			selected_status() {
-				if (this.selected_status !== null) {
-					this.isDisabledBtn = false;
-				}
+			selected_status: {
+				handler() {
+					if (
+						this.selected_status.value !== null &&
+						this.selected_status.value !== 5
+					) {
+						this.isDisabledBtn = false;
+					} else if (
+						this.selected_status.value === 5 &&
+						this.selected_status.self_option.length > 0
+					) {
+						this.isDisabledBtn = false;
+					} else {
+						this.isDisabledBtn = true;
+					}
+				},
+				deep: true,
 			},
 		},
 		data: () => ({
@@ -74,14 +81,31 @@
 				},
 				{ id: 5, description: "Впишите свой вариант" },
 			],
-			selected_status: null,
-			client_status_self_option: "",
+
+			selected_status: {
+				value: null,
+				self_option: "",
+			},
 		}),
 		methods: {
 			...mapMutations([
 				"SET_CLIENT_STATUS",
 				"SET_CLIENT_STATUS_SELF_OPTION",
 			]),
+
+			saveStatus() {
+				this.SET_CLIENT_STATUS(this.selected_status.value);
+
+				if (this.selected_status.value === 5) {
+					this.SET_CLIENT_STATUS_SELF_OPTION(
+						this.selected_status.self_option
+					);
+				} else {
+					this.SET_CLIENT_STATUS_SELF_OPTION("");
+				}
+
+				this.$emit("moveToNextPage");
+			},
 		},
 	};
 </script>

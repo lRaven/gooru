@@ -5,7 +5,7 @@
 		<div class="the-profile__main">
 		<form class="the-profile__change-avatar">
 				<img
-					:src="avatar || '/img/icon/cabinet/no-avatar.svg'"
+					:src="personal_data.avatar || '/img/icon/cabinet/no-avatar.svg'"
 					class="the-profile__form-avatar"
 					alt=""
 				/>
@@ -153,23 +153,27 @@
 			...mapState({ user_data: (state) => state.cabinet.user }),
 
 			isUserDataChanged() {
-				let result = false;
-
-				if (this.user_data.first_name !== this.personal_data.first_name)
-					result = true;
-				if (this.user_data.last_name !== this.personal_data.last_name)
-					result = true;
+				if (
+					this.user_data.first_name !== this.personal_data.first_name
+				) {
+					return true;
+				}
+				if (this.user_data.last_name !== this.personal_data.last_name) {
+					return true;
+				}
 
 				if (
 					this.user_data.phone_number !==
 					this.personal_data.phone_number
-				)
-					result = true;
+				) {
+					return true;
+				}
 
-				if (this.user_data.email !== this.personal_data.email)
-					result = true;
+				if (this.user_data.email !== this.personal_data.email) {
+					return true;
+				}
 
-				return result;
+				return false;
 			},
 
 			isPasswordsChanged() {
@@ -180,7 +184,9 @@
 			},
 
 			isAvatarChanged() {
-				return this.user_data.avatar !== this.avatar ? true : false;
+				return this.user_data.avatar !== this.personal_data.avatar
+					? true
+					: false;
 			},
 		},
 		data: () => ({
@@ -189,15 +195,14 @@
 
 			isDisabledBtn: true,
 
-			avatar: null,
-			changed_avatar: "",
-
 			personal_data: {
+				avatar: "",
 				first_name: "",
 				last_name: "",
 				phone_number: "",
 				email: "",
 			},
+			new_avatar: "",
 
 			passwords: {
 				password: "",
@@ -209,22 +214,17 @@
 			...mapActions(["getUserData"]),
 
 			set_user_data() {
-				this.avatar = this.user_data.avatar;
-
-				this.personal_data.first_name = this.user_data.first_name;
-				this.personal_data.last_name = this.user_data.last_name;
-				this.personal_data.phone_number = this.user_data.phone_number;
-				this.personal_data.email = this.user_data.email;
+				this.personal_data = { ...this.user_data };
 			},
 
 			change_avatar(target) {
 				//* запись в переменную для отправки на сервер
-				this.changed_avatar = target.files[0];
+				this.new_avatar = target.files[0];
 
 				//* функционал предпросмотра загруженной аватарки
 				const fileReader = new FileReader();
 				fileReader.addEventListener("load", () => {
-					this.avatar = fileReader.result;
+					this.personal_data.avatar = fileReader.result;
 				});
 
 				fileReader.readAsDataURL(target.files[0]);
@@ -279,7 +279,7 @@
 				try {
 					const response = await upload_avatar({
 						user_id: this.user_data.id,
-						avatar: this.changed_avatar,
+						avatar: this.new_avatar,
 					});
 
 					if (response.status === 200) {
@@ -304,6 +304,8 @@
 					if (response.status === 204) {
 						this.toast.success("Пароль изменён");
 						console.log("Password changed");
+
+						this.resetForm();
 						this.isPasswordsFormDisabled = true;
 					}
 				} catch (err) {
@@ -311,6 +313,11 @@
 					this.toast.error("Ошибка изменения пароля");
 					throw new Error(err);
 				}
+			},
+
+			resetForm() {
+				this.passwords.old_password = "";
+				this.passwords.password = "";
 			},
 		},
 		created() {

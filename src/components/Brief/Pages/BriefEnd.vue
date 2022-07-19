@@ -14,16 +14,10 @@
 		computed: {
 			...mapState({
 				client_status: (store) => store.brief.client_status,
-				client_status_self_option: (store) =>
-					store.brief.client_status_self_option,
 
 				fields_of_activity: (store) => store.brief.fields_of_activity,
-				fields_of_activity_self_option: (store) =>
-					store.brief.fields_of_activity_self_option,
 
 				site_types: (store) => store.brief.site_types,
-				site_types_self_option: (store) =>
-					store.brief.site_types_self_option,
 
 				additional_parameters: (store) =>
 					store.brief.additional_parameters,
@@ -34,15 +28,15 @@
 
 			brief() {
 				return {
-					client_status: this.client_status,
-					client_status_self_option: this.client_status_self_option,
+					client_status: this.client_status.value,
+					client_status_self_option: this.client_status.self_option,
 
-					fields_of_activity: this.fields_of_activity,
+					fields_of_activity: this.fields_of_activity.value,
 					fields_of_activity_self_option:
-						this.fields_of_activity_self_option,
+						this.fields_of_activity.self_option,
 
-					site_types: this.site_types,
-					site_types_self_option: this.site_types_self_option,
+					site_types: this.site_types.value,
+					site_types_self_option: this.site_types.self_option,
 
 					additional_parameters: this.additional_parameters,
 					number_of_positions: this.number_of_positions,

@@ -4,18 +4,7 @@
 		:class="{ has_right_panel: user.role === 'DefaultUser' }"
 	>
 		<div class="the-appeals__main">
-			<div class="the-appeals__header">
-				<h2 class="the-appeals__title">Обращения</h2>
-				<r-input
-					class="the-appeals__search-input"
-					:value="searchValue"
-					v-model="searchValue"
-					input_type="search"
-					placeholder="Поиск по почте"
-					v-if="user.role !== 'DefaultUser'"
-					@keyup.enter="searchAppeals"
-				/>
-			</div>
+			<h2 class="the-appeals__title">Обращения</h2>
 
 			<transition mode="out-in">
 				<r-loader v-if="!isAppealsLoaded" />
@@ -147,14 +136,6 @@
 					});
 				}
 			},
-			searchValue() {
-				if (this.searchValue === "") {
-					this.getAppeals({
-						page_number: this.page,
-						page_size: this.appeals_in_page,
-					});
-				}
-			},
 			appeals() {
 				this.isAppealsLoaded = true;
 			},
@@ -166,7 +147,7 @@
 			},
 
 			appeals_notification() {
-				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+				//* TODO: пока нет функционала прочитать несколько уведомлений за раз, то это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 				this.appeals_notifications.forEach((notification) => {
 					this.clear_notifications(notification.id);
 				});
@@ -209,8 +190,6 @@
 				},
 				isNewAppealValid: false,
 
-				searchValue: "",
-
 				appeals_in_page: 10,
 			};
 		},
@@ -248,18 +227,6 @@
 				} catch (err) {
 					this.toast.error("Ошибка создания обращения");
 					throw new Error(err);
-				}
-			},
-
-			async searchAppeals() {
-				if (this.searchValue !== '') {
-					await this.getAppeals({
-						search: this.searchValue,
-						page_number: this.page,
-						page_size: this.appeals_in_page,
-					});
-				} else {
-					window.alert('Ты лох');
 				}
 			},
 
@@ -361,13 +328,6 @@
 			overflow-y: auto;
 			height: calc(100vh - 8rem);
 			position: relative;
-		}
-
-		&__header {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 4rem;
 		}
 
 		&__list {

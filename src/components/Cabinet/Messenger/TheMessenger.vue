@@ -43,7 +43,7 @@
 						this.$cookies.get("auth_token")
 					);
 					this.getChatMessages(this.$route.query.appeal_id);
-					this.get_messsage();
+					this.get_message();
 				}
 			},
 		},
@@ -75,7 +75,6 @@
 					})
 				);
 				this.message = "";
-				this.isSendMessage = true;
 			},
 
 			createWebSocket(base_url, chat_id, token) {
@@ -84,15 +83,22 @@
 				);
 			},
 
-			get_messsage() {
+			get_message() {
 				this.chatSocket.addEventListener("message", (m) => {
+					const message = JSON.parse(m.data);
+
+					if (message.sender.id === this.user.id) {
+						this.isSendMessage = true;
+					}
+
 					this.messages.push(JSON.parse(m.data));
 				});
 			},
+
 			remove_get_message() {
 				this.chatSocket.removeEventListener(
 					"message",
-					this.get_messsage
+					this.get_message
 				);
 			},
 		},
@@ -104,7 +110,7 @@
 			);
 			this.getChatMessages(this.$route.query.appeal_id);
 
-			this.get_messsage();
+			this.get_message();
 		},
 		beforeUnmount() {
 			this.remove_get_message();

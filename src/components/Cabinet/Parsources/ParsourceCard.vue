@@ -217,6 +217,7 @@
 		methods: {
 			...mapMutations(["SELECT_PARSOURCE", "UNSELECT_PARSOURCE"]),
 			...mapActions(["updateParsourceName"]),
+
 			handleEditParsourceName() {
 				this.isEditParsourceName = !this.isEditParsourceName;
 				this.editedParsourceName = this.parsource.name;

@@ -79,7 +79,10 @@
 			redirectUserByRole(role) {
 				switch (role) {
 					case "DefaultUser": {
-						this.$router.push({ name: "parsources", query: { page: 1 } });
+						this.$router.push({
+							name: "parsources",
+							query: { page: 1 },
+						});
 						break;
 					}
 					case "Manager": {
@@ -111,7 +114,7 @@
 			this.redirectUserByRole(this.userRole);
 		},
 		mounted() {
-			this.document_width > 767
+			this.document_width > 1023
 				? (this.isMenuMinimized = false)
 				: (this.isMenuMinimized = true);
 		},
@@ -127,7 +130,7 @@
 		height: 100vh;
 		overflow: hidden;
 
-		@media (max-width: 767px) {
+		@media (max-width: 1023px) {
 			grid-template-columns: 1fr;
 		}
 
@@ -138,8 +141,8 @@
 			background-color: $light-blue;
 			overflow-y: auto;
 
-			@media (max-width: 767px) {
-				margin-top: 7.4rem;
+			@media (max-width: 1023px) {
+				margin-top: 6.4rem;
 			}
 		}
 	}

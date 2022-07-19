@@ -1,16 +1,48 @@
-function sortArrayByObjectKey(array, key) {
-	let unsorted_array = array.slice();
+function sortArrayByObjectKey({ array, key, direction }) {
+	let copy_array = [...array];
 
-	for (let index = 0; index < unsorted_array.length - 1; index++) {
-		for (let jndex = 0; jndex < unsorted_array.length - 1; jndex++) {
-			if (unsorted_array[jndex][key] > unsorted_array[jndex + 1][key]) {
-				const first_el = unsorted_array[jndex];
-				unsorted_array[jndex] = unsorted_array[jndex + 1];
-				unsorted_array[jndex + 1] = first_el;
-			}
+	switch (direction) {
+		case 'ascending': {
+			return copy_array.sort(function (a, b) {
+				return ('' + a[key]).localeCompare(b[key]);
+			})
+		}
+		case 'descending': {
+			return copy_array.sort(function (a, b) {
+				return ('' + b[key]).localeCompare(a[key]);
+			})
 		}
 	}
-	return unsorted_array;
 }
 
-export { sortArrayByObjectKey }
+function sortArrayByNumberKey({ array, key, direction }) {
+	let copy_array = [...array];
+
+	switch (direction) {
+		case 'ascending': {
+			return copy_array.sort((a, b) => a[key] - b[key])
+		}
+		case 'descending': {
+			return copy_array.sort((a, b) => b[key] - a[key])
+		}
+	}
+}
+
+function sortArrayByDate({ array, key, direction }) {
+	let copy_array = [...array];
+
+	switch (direction) {
+		case 'ascending': {
+			return copy_array.sort(function (a, b) {
+				return new Date(a[key]) - new Date(b[key])
+			})
+		}
+		case 'descending': {
+			return copy_array.sort(function (a, b) {
+				return new Date(b[key]) - new Date(a[key])
+			})
+		}
+	}
+}
+
+export { sortArrayByObjectKey, sortArrayByNumberKey, sortArrayByDate }

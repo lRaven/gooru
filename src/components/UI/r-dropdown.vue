@@ -12,7 +12,11 @@
 					: openDropdown()
 			"
 		>
-			<p class="r-dropdown__selected" ref="selected">
+			<p
+				class="r-dropdown__selected"
+				ref="selected"
+				:title="selected_item"
+			>
 				{{ selected_item }}
 			</p>
 
@@ -39,6 +43,7 @@
 					v-for="item in list"
 					:key="item.id"
 					@click="selectValue(item.id, item[showedValue])"
+					:title="item[showedValue]"
 				>
 					{{ item[showedValue] }}
 				</li>
@@ -153,10 +158,13 @@
 			overflow-y: auto;
 			overflow-x: hidden;
 			&-item {
-				padding: 1rem;
 				cursor: pointer;
+				padding: 1rem;
 				font-size: 1.6rem;
 				font-weight: 500;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
 				transition: all 0.2s ease;
 				&:hover {
 					background-color: rgba($primary, $alpha: 0.15);

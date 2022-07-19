@@ -29,13 +29,7 @@
 		<r-button
 			:disabled="isDisabledBtn"
 			description="Выбор сделан!"
-			@click="
-				SET_SITE_TYPES(selected_site_types);
-				isHasSelfOption === true
-					? SET_SITE_TYPES_SELF_OPTION(site_types_self_option)
-					: SET_SITE_TYPES_SELF_OPTION('');
-				this.$emit('moveToNextPage');
-			"
+			@click="saveSiteTypes"
 		></r-button>
 	</section>
 </template>
@@ -53,9 +47,10 @@
 		},
 		watch: {
 			selected_site_types() {
-				this.selected_site_types.length > 0
-					? (this.isDisabledBtn = false)
-					: (this.isDisabledBtn = true);
+				this.validateForm();
+			},
+			site_types_self_option() {
+				this.validateForm();
 			},
 		},
 		computed: {
@@ -76,6 +71,10 @@
 
 				return result;
 			},
+
+			isSelfOptionFilled() {
+				return this.site_types_self_option.length > 0;
+			},
 		},
 		data: () => ({
 			isDisabledBtn: true,
@@ -95,6 +94,30 @@
 		}),
 		methods: {
 			...mapMutations(["SET_SITE_TYPES", "SET_SITE_TYPES_SELF_OPTION"]),
+
+			saveSiteTypes() {
+				this.SET_SITE_TYPES(this.selected_site_types);
+
+				if (this.isHasSelfOption) {
+					this.SET_SITE_TYPES_SELF_OPTION(
+						this.site_types_self_option
+					);
+				} else {
+					this.SET_SITE_TYPES_SELF_OPTION("");
+				}
+				this.$emit("moveToNextPage");
+			},
+
+			validateForm() {
+				//* если среди выбранного есть вариант с пользовательским вариантом, то проследить обязательное его заполнение
+				this.isHasSelfOption
+					? this.isSelfOptionFilled
+						? (this.isDisabledBtn = false)
+						: (this.isDisabledBtn = true)
+					: this.selected_site_types.length > 0
+					? (this.isDisabledBtn = false)
+					: (this.isDisabledBtn = true);
+			},
 		},
 	};
 </script>
