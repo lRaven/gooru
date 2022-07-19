@@ -210,6 +210,7 @@
 				display: grid;
 				grid-gap: 3rem;
 				width: 100%;
+				grid-template-columns: 5rem repeat(3, 1fr);
 				&.admin {
 					grid-template-columns: 5rem repeat(4, 1fr);
 				}
