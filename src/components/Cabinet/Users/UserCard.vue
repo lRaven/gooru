@@ -1,7 +1,16 @@
 <template>
 	<div class="user-card">
-		<r-checkbox v-model="isSelected" :checked="isSelected"></r-checkbox>
-		<div class="user-card__content" ref="content">
+		<r-checkbox
+			v-model="isSelected"
+			:checked="isSelected"
+			v-if="document_width > 767"
+		></r-checkbox>
+
+		<div
+			class="user-card__content"
+			ref="content"
+			v-if="document_width > 767"
+		>
 			<div
 				class="user-card__content-col"
 				:class="{ admin: user_me.role === 'AdminCRM' }"
@@ -19,12 +28,14 @@
 							: `${user.first_name} ${user.last_name}`
 					"
 				>
-					{{
+					<!-- {{
 						user.first_name.length === 0 &&
 						user.last_name.length === 0
-							? user.username
-							: `${user.first_name} ${user.last_name}`
-					}}
+							? user.last_name.length > 0
+							? `${user.last_name[0]}.` 
+							: ""
+					}} -->
+					{{ `${user.first_name} ${user.last_name}` }}
 				</p>
 
 				<p
@@ -51,7 +62,8 @@
 			</div>
 
 			<r-button
-				:text="document_width > 1023 ? 'Подробнее' : ''"
+				:text="document_width > 1150 ? 'Подробнее' : ''"
+				:class="{ minimized: document_width <= 1150 }"
 				color="bordered"
 				title="Подробнее"
 				@click="
@@ -69,7 +81,7 @@
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
 						class="r-button__icon"
-						v-if="document_width < 1023"
+						v-if="document_width <= 1150"
 					>
 						<circle cx="3" cy="12.0303" r="2" fill="currentColor" />
 						<circle
@@ -87,6 +99,65 @@
 					</svg>
 				</template>
 			</r-button>
+		</div>
+
+		<div class="user-card__content" v-else>
+			<div class="user-card__content-row">
+				<r-checkbox
+					v-model="isSelected"
+					:checked="isSelected"
+				></r-checkbox>
+
+				<p class="user-card__col user-card__id" :title="'id' + user.id">
+					id{{ user.id }}
+				</p>
+			</div>
+
+			<div class="user-card__content-row">
+				<r-button
+					:text="document_width > 1150 ? 'Подробнее' : ''"
+					:class="{ minimized: document_width <= 1150 }"
+					color="bordered"
+					title="Подробнее"
+					@click="
+						this.$router.push({
+							path: `/cabinet/user/${user.id}`,
+							query: { page: 1 },
+						})
+					"
+				>
+					<template v-slot:icon>
+						<svg
+							width="20"
+							height="21"
+							viewBox="0 0 20 21"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							class="r-button__icon"
+							v-if="document_width <= 1150"
+						>
+							<circle
+								cx="3"
+								cy="12.0303"
+								r="2"
+								fill="currentColor"
+							/>
+							<circle
+								cx="10"
+								cy="12.0303"
+								r="2"
+								fill="currentColor"
+							/>
+							<circle
+								cx="17"
+								cy="12.0303"
+								r="2"
+								fill="currentColor"
+							/>
+						</svg>
+					</template>
+				</r-button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -192,6 +263,11 @@
 			box-shadow: $shadow;
 			outline: 0.1rem solid transparent;
 			transition: all 0.2s ease;
+
+			@media (max-width: 1023px) {
+				padding: 1rem;
+			}
+
 			&:hover {
 				box-shadow: 0 0.4rem 1.2rem rgba(89, 96, 199, 0.2);
 				outline-color: rgba(0, 0, 0, 0.22);
@@ -204,14 +280,25 @@
 				width: 18rem;
 				font-size: 1.4rem;
 				padding: 1rem 2.8rem;
+				&.minimized {
+					width: 4rem;
+					min-width: 4rem;
+					height: 4rem;
+					padding: 0;
+				}
 			}
 
 			&-col {
 				display: grid;
 				grid-gap: 3rem;
 				width: 100%;
+				grid-template-columns: 5rem repeat(3, 1fr);
 				&.admin {
 					grid-template-columns: 5rem repeat(4, 1fr);
+
+					@media (max-width: 767px) {
+						grid-template-columns: repeat(3, 1fr);
+					}
 				}
 			}
 		}

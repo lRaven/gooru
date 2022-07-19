@@ -560,7 +560,7 @@
 			...mapMutations(["SET_TAB"]),
 
 			set_tab(tab, pagination) {
-				if (this.document_width < 1023) {
+				if (this.document_width <= 1023) {
 					this.$emit("close_menu");
 				}
 

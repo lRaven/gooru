@@ -2,11 +2,11 @@
 	<section class="the-users">
 		<h2 class="the-users__title">Пользователи</h2>
 
-		<div class="the-users__control">
+		<div class="the-users__control" v-if="document_width > 767">
 			<r-checkbox
 				description="Выбрать всё"
-				v-model="selectAll"
-				:checked="selectAll"
+				v-model="actions.selectAll"
+				:checked="actions.selectAll"
 			></r-checkbox>
 
 			<button class="the-users__control-btn" type="button">
@@ -30,7 +30,7 @@
 			<button
 				class="the-users__control-btn the-users__control-btn-delete"
 				type="button"
-				@click="deleteSelected = true"
+				@click="actions.deleteSelected = true"
 			>
 				<img
 					src="/img/icon/cabinet/remove.svg"
@@ -41,10 +41,119 @@
 			</button>
 		</div>
 
+		<div class="the-users__head" v-else>
+			<button
+				type="button"
+				class="the-users__head-btn"
+				@click="
+					headTab === 'sort' ? (headTab = '') : (headTab = 'sort')
+				"
+			>
+				<img
+					src="/img/icon/cabinet/sort.svg"
+					class="the-users__head-btn-icon"
+					alt="sort"
+				/>
+				<p class="the-users__head-btn-description">Сортировать</p>
+			</button>
+			<button
+				class="the-users__head-btn"
+				@click="
+					headTab === 'actions'
+						? (headTab = '')
+						: (headTab = 'actions')
+				"
+			>
+				<img
+					src="/img/icon/cabinet/tick-bordered.svg"
+					class="the-users__head-btn-icon"
+					alt="select"
+				/>
+				<p class="the-users__head-btn-description">Выбрано</p>
+			</button>
+
+			<transition mode="out-in">
+				<form
+					class="the-users__head-tab"
+					@submit.prevent=""
+					v-show="headTab === 'sort'"
+				>
+					<p class="the-users__head-tab-description">
+						Сортировать по
+					</p>
+					<r-dropdown
+						v-if="userRole === 'AdminCRM'"
+						selected_item="-"
+						sendValue=""
+						:list="sortAdminDropdown"
+						v-model="sortByDropdown"
+					></r-dropdown>
+					<r-dropdown
+						v-if="userRole === 'Manager'"
+						selected_item="-"
+						sendValue=""
+						:list="sortManagerDropdown"
+						v-model="sortByDropdown"
+					></r-dropdown>
+				</form>
+			</transition>
+
+			<transition mode="out-in">
+				<div
+					class="the-users__head-tab the-users__head-tab-actions"
+					v-show="headTab === 'actions'"
+				>
+					<r-checkbox
+						description="Выбрать всё"
+						v-model="actions.selectAll"
+						:checked="actions.selectAll"
+					></r-checkbox>
+
+					<button class="the-users__control-btn" type="button">
+						<img
+							src="/img/icon/cabinet/lock.svg"
+							class="the-users__control-btn-icon"
+							alt="icon"
+						/>
+						<p class="the-users__control-btn-description">
+							Заблокировать
+						</p>
+					</button>
+
+					<button class="the-users__control-btn" type="button">
+						<img
+							src="/img/icon/cabinet/unlock.svg"
+							class="the-users__control-btn-icon"
+							alt="icon"
+						/>
+						<p class="the-users__control-btn-description">
+							Разблокировать
+						</p>
+					</button>
+
+					<button
+						class="the-users__control-btn the-users__control-btn-delete"
+						type="button"
+						@click="actions.deleteSelected = true"
+					>
+						<img
+							src="/img/icon/cabinet/remove.svg"
+							class="the-users__control-btn-icon"
+							alt="icon"
+						/>
+						<p class="the-users__control-btn-description">
+							Удалить
+						</p>
+					</button>
+				</div>
+			</transition>
+		</div>
+
 		<div class="the-users__content">
 			<div
 				class="the-users__sort"
 				:class="{ admin: userRole === 'AdminCRM' }"
+				v-if="document_width > 767"
 			>
 				<template v-if="userRole === 'Manager'">
 					<sort-button
@@ -114,6 +223,7 @@
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import UserCard from "@/components/Cabinet/Users/UserCard.vue";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
+
 	import { sortUsers } from "@/mixins/sortingMixins";
 
 	import { useToast } from "vue-toastification";
@@ -135,17 +245,17 @@
 				}
 			},
 
-			selectAll: {
+			"actions.selectAll": {
 				handler() {
-					this.selectAll === true
+					this.actions.selectAll === true
 						? this.SELECT_ALL_USERS()
 						: this.UNSELECT_ALL_USERS();
 				},
 				deep: true,
 			},
 
-			async deleteSelected() {
-				if (this.deleteSelected === true) {
+			async "actions.deleteSelected"() {
+				if (this.actions.deleteSelected === true) {
 					try {
 						const response = await this.deleteSelectedUsers();
 
@@ -167,13 +277,13 @@
 							});
 
 							setTimeout(() => {
-								this.deleteSelected = false;
+								this.actions.deleteSelected = false;
 							}, 1000);
 						}
 					} catch (err) {
 						this.toast.error("Ошибка удаления пользователей");
 						setTimeout(() => {
-							this.deleteSelected = false;
+							this.actions.deleteSelected = false;
 						}, 1000);
 						throw new Error(err);
 					}
@@ -182,7 +292,7 @@
 			parsources: {
 				handler: function () {
 					if (this.parsources.length === 0) {
-						this.selectAll = false;
+						this.actions.selectAll = false;
 					}
 				},
 				deep: true,
@@ -205,6 +315,8 @@
 
 				all_parsources: (state) => state.parsers.all_parsources,
 				all_parsers: (state) => state.parsers.all_parsers,
+
+				document_width: (state) => state.document_width,
 			}),
 			page() {
 				return +this.$route.query.page;
@@ -220,15 +332,18 @@
 		data() {
 			return {
 				isUsersLoaded: false,
+
 				path: this.$route.path,
-
-				selectAll: false,
-
-				postponeSelected: false,
-				deleteSelected: false,
-
 				users_list: [],
 				users_in_page: 10,
+
+				actions: {
+					selectAll: false,
+					postponeSelected: false,
+					deleteSelected: false,
+				},
+
+				headTab: null,
 			};
 		},
 		methods: {
@@ -283,6 +398,11 @@
 		padding: 4rem;
 		height: 100%;
 		overflow-y: auto;
+
+		@media (max-width: 767px) {
+			padding: 4rem 1.5rem;
+		}
+
 		&__title {
 			font-weight: 400;
 			margin-bottom: 4rem;
@@ -322,12 +442,24 @@
 
 		&__sort {
 			display: grid;
-			// grid-template-columns: 5rem 20rem repeat(2, 15rem);
+			grid-template-columns: 5rem repeat(3, 1fr) 15rem;
 			grid-gap: 3rem;
 			padding: 0 3rem 0 5.6rem;
 
+			@media (max-width: 1150px) {
+				grid-template-columns: 5rem repeat(3, 1fr) 4rem;
+			}
+
+			@media (max-width: 1023px) {
+				padding: 0 1rem 0 3.6rem;
+			}
+
 			&.admin {
-				grid-template-columns: 5rem repeat(4, 1fr) 18rem;
+				grid-template-columns: 5rem repeat(4, 1fr) 15rem;
+
+				@media (max-width: 1150px) {
+					grid-template-columns: 5rem repeat(4, 1fr) 4rem;
+				}
 			}
 
 			.sort-button {
@@ -344,6 +476,56 @@
 			}
 		}
 
+		&__head {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			grid-gap: 2rem;
+			margin-bottom: 2rem;
+
+			&-btn {
+				background-color: transparent;
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				&:nth-child(2) {
+					margin-left: auto;
+				}
+				&-description {
+					color: $primary;
+					font-size: 1.2rem;
+					font-weight: 600;
+				}
+				&-icon {
+				}
+			}
+			&-tab {
+				grid-area: 2/1/2/3;
+
+				&-actions {
+					display: flex;
+					align-items: center;
+					flex-wrap: wrap;
+					gap: 2rem;
+				}
+
+				&-description {
+					font-size: 1.2rem;
+					font-weight: 500;
+					color: rgba($black, $alpha: 0.5);
+					margin-bottom: 1rem;
+				}
+
+				.r-dropdown {
+					margin-bottom: 2rem;
+				}
+
+				.r-button {
+					width: 100%;
+					padding: 1.2rem 2rem;
+				}
+			}
+		}
+
 		&__list {
 			display: flex;
 			flex-direction: column;
@@ -355,13 +537,38 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			flex-wrap: wrap-reverse;
 			gap: 5rem;
 			padding-left: 2.6rem;
 			margin-top: auto;
+
+			@media (max-width: 767px) {
+				flex-direction: column;
+				gap: 2rem;
+				padding-left: 0;
+			}
+
 			.r-button {
 				font-size: 1.4rem;
 				padding: 1.2rem 2.8rem;
 				font-weight: 500;
+			}
+		}
+	}
+</style>
+
+<style lang="scss">
+	.the-users {
+		&__head {
+			&-tab {
+				.r-dropdown {
+					&__selected {
+						font-size: 1.4rem !important;
+					}
+					&__list-item {
+						font-size: 1.4rem !important;
+					}
+				}
 			}
 		}
 	}
