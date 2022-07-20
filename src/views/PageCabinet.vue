@@ -48,6 +48,7 @@
 			userRole: {
 				handler() {
 					if (this.$route.name === "cabinet") {
+						console.log('redir')
 						this.redirectUserByRole(this.userRole);
 					}
 				},
@@ -57,6 +58,7 @@
 			//* при изменении url смотреть, если находимся на главной странице кабинета, то редирект на дефолтную страницу юзера
 			"$route.path"() {
 				if (this.$route.name === "cabinet") {
+					console.log('redir from route path')
 					this.redirectUserByRole(this.userRole);
 				}
 			},

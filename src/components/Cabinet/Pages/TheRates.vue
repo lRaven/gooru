@@ -101,7 +101,7 @@
 				<template v-slot>
 					<form
 						class="the-rates__create-appeal"
-						@submit="create_ticket"
+						@submit.prevent="create_ticket"
 					>
 						<h2 class="the-rates__create-appeal-title">
 							Новое обращение
@@ -111,23 +111,24 @@
 								Выберите тему обращения
 							</p>
 							<r-dropdown
-								selected_item="Тема обращения"
+								:selected_item="initialTopic"
 								showedValue="description"
 								:list="topics"
 								v-model="new_appeal.topic"
 							></r-dropdown>
+							<template v-if="hasParsers">
+								<p class="the-rates__create-appeal-description">
+									Выберите парсер
+								</p>
+								<r-dropdown
+									selected_item="Парсер"
+									showedValue="title"
+									:list="all_parsers"
+									v-model="new_appeal.parser"
+								></r-dropdown>
+							</template>
 
-							<p class="the-rates__create-appeal-description">
-								Выберите парсер
-							</p>
-							<r-dropdown
-								selected_item="Парсер"
-								showedValue="title"
-								:list="all_parsers"
-								v-model="new_appeal.parser"
-							></r-dropdown>
-
-							<p class="the-rates__create-appeal-description">
+							<p class="the-rates__create-appeal-description" :class="{ alignselfstart: !hasParsers }">
 								Напишите текст обращения
 							</p>
 							<r-textarea
@@ -183,6 +184,9 @@
 				all_parsers: (state) => state.parsers.all_parsers,
 				user: (state) => state.cabinet.user,
 			}),
+			hasParsers() {
+				return this.all_parsers.length;
+			},
 			pendingForCapture() {
 				return this.userRate.status === "payment.waiting_for_capture"
 					? true
@@ -201,6 +205,7 @@
 		data: () => ({
 			isRatesLoaded: false,
 			isModalVisible: false,
+			initialTopic: "Тема обращения",
 
 			new_appeal: {
 				topic: "",
@@ -215,7 +220,6 @@
 			...mapActions(["updateRateData", "getAllParsers"]),
 			select_rate(rate_id) {
 				console.log("Rate selected: ", rate_id);
-				console.log("Opening the payment page...");
 
 				switch (rate_id) {
 					case 1: {
@@ -238,14 +242,19 @@
 					}
 					case 3: {
 						window
-							.open(`${this.baseURL}/api/pay/${1}`, "_blank")
+							.open(
+								`${this.baseURL}/api/pay/${rate_id}`,
+								"_blank"
+							)
 							.focus();
 						break;
 					}
 					case 4: {
-						window
-							.open(`${this.baseURL}/api/pay/${2}`, "_blank")
-							.focus();
+						this.initialTopic = "Вопрос по новому заказу";
+						this.new_appeal.topic = this.topics.find(
+							(topic) => topic.description === this.initialTopic
+						).id;
+						this.isModalVisible = true;
 						break;
 					}
 				}
@@ -253,6 +262,8 @@
 
 			close_modal() {
 				this.isModalVisible = false;
+				this.initialTopic = "Тема обращения";
+				this.new_appeal.topic = "";
 			},
 
 			async create_ticket() {
@@ -448,6 +459,10 @@
 			}
 
 			&-description {
+				&.alignselfstart {
+					align-self: flex-start;
+					margin: 1rem 0 0 0;
+				}
 				&:nth-child(5) {
 					align-self: flex-start;
 					padding-top: 1rem;
