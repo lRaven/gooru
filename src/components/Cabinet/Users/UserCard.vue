@@ -341,6 +341,10 @@
 				width: 100%;
 				grid-template-columns: 5rem repeat(3, 1fr);
 
+				&.admin {
+					grid-template-columns: 5rem repeat(4, 1fr);
+				}
+
 				@media (max-width: 767px) {
 					display: flex;
 					flex-direction: column;
