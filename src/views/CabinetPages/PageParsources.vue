@@ -1,36 +1,36 @@
 <template>
-	<section class="the-parsources">
-		<h2 class="the-parsources__title">
+	<section class="page-parsources">
+		<h2 class="page-parsources__title">
 			{{ userRole === "DefaultUser" ? "Мои парсеры" : "Все парсеры" }}
 		</h2>
 
-		<div class="the-parsources__control">
+		<div class="page-parsources__control">
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="selectAll"
 				:checked="selectAll"
 			></r-checkbox>
-			<button class="the-parsources__postpone" type="button">
+			<button class="page-parsources__postpone" type="button">
 				<img src="/img/icon/cabinet/postpone.svg" alt="postpone" />
-				<p class="the-parsources__postpone-description">
+				<p class="page-parsources__postpone-description">
 					Отложить выбранные
 				</p>
 			</button>
 			<button
-				class="the-parsources__remove"
+				class="page-parsources__remove"
 				type="button"
 				@click="deleteSelected = true"
 			>
 				<img src="/img/icon/cabinet/remove.svg" alt="remove" />
-				<p class="the-parsources__remove-description">
+				<p class="page-parsources__remove-description">
 					Удалить выбранные
 				</p>
 			</button>
 		</div>
 
-		<div class="the-parsources__content">
+		<div class="page-parsources__content">
 			<div
-				class="the-parsources__sort"
+				class="page-parsources__sort"
 				:class="{ manager: userRole !== 'DefaultUser' }"
 			>
 				<template v-if="userRole !== 'DefaultUser'">
@@ -64,7 +64,7 @@
 
 			<transition mode="out-in">
 				<div
-					class="the-parsources__list"
+					class="page-parsources__list"
 					v-if="isParsourcesLoaded && parsources_list.length > 0"
 				>
 					<parsource-card
@@ -80,9 +80,9 @@
 			</transition>
 
 			<transition mode="out-in">
-				<div class="the-parsources__empty">
+				<div class="page-parsources__empty">
 					<p
-						class="the-parsources__empty-text"
+						class="page-parsources__empty-text"
 						v-if="
 							parsources_list.length === 0 && isParsourcesLoaded
 						"
@@ -92,7 +92,7 @@
 				</div>
 			</transition>
 
-			<div class="the-parsources__bottom" v-if="number_of_pages > 1">
+			<div class="page-parsources__bottom" v-if="number_of_pages > 1">
 				<r-button
 					:disabled="page >= number_of_pages"
 					color="bordered"
@@ -121,7 +121,7 @@
 	import { useToast } from "vue-toastification";
 
 	export default {
-		name: "TheParsources",
+		name: "PageParsources",
 		mixins: [sortParsources],
 		components: {
 			SortButton,
@@ -212,7 +212,7 @@
 				"parsources_notifications",
 				"parsers_notifications",
 			]),
-			
+
 			page() {
 				return +this.$route.query.page;
 			},
@@ -321,7 +321,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-parsources {
+	.page-parsources {
 		position: relative;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;

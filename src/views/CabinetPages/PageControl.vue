@@ -1,7 +1,7 @@
 <template>
-	<section class="the-control">
-		<h2 class="the-control__title">Управление</h2>
-		<div class="the-control__body">
+	<section class="page-control">
+		<h2 class="page-control__title">Управление</h2>
+		<div class="page-control__body">
 			<div class="rate-cards">
 				<rate-card
 					v-for="rate in rates"
@@ -13,13 +13,13 @@
 					@select-rate="selectRate"
 				/>
 			</div>
-			<r-modal
-				v-if="selectedRate"
-				@close-modal="closeModal"
-			>
+			<r-modal v-if="selectedRate" @close-modal="closeModal">
 				<template v-slot>
-					<form class="the-control__form" @submit.prevent="submitUpdatedRate">
-						<h3 class="the-control__form-title">
+					<form
+						class="page-control__form"
+						@submit.prevent="submitUpdatedRate"
+					>
+						<h3 class="page-control__form-title">
 							Изменение параметров
 						</h3>
 						<r-input
@@ -40,7 +40,11 @@
 							v-model="checkItem.text"
 							placeholder="Пункт описания тарифа"
 						/>
-						<button type="submit" class="the-control__form-submit" :class="{ white: isLoading }">
+						<button
+							type="submit"
+							class="page-control__form-submit"
+							:class="{ white: isLoading }"
+						>
 							<r-loader v-if="isLoading" />
 							<template v-else>Применить</template>
 						</button>
@@ -52,32 +56,30 @@
 </template>
 
 <script>
-import rLoader from "@/components/UI/r-loader.vue";
+	import rLoader from "@/components/UI/r-loader.vue";
 	import RateCard from "@/components/Rates/RateCard.vue";
-	
 
-	import { mapState, mapActions } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 
 	import { useToast } from "vue-toastification";
 
 	export default {
+		name: "PageControl",
 		components: {
 			rLoader,
 			RateCard,
 		},
-		data() {
-			return {
-				selectedRate: null,
-				isLoading: false,
-			};
-		},
+		data: () => ({
+			selectedRate: null,
+			isLoading: false,
+		}),
 		computed: {
-			...mapState({
-				rates: (state) => state.rates.rates,
-			}),
+			...mapState({ rates: (state) => state.rates.rates }),
 		},
 		methods: {
+			...mapMutations(["SET_TAB"]),
 			...mapActions(["updateRate", "getRates"]),
+
 			selectRate(id) {
 				const selectedRate = this.rates.find((rate) => rate.id === id);
 				this.selectedRate = JSON.parse(JSON.stringify(selectedRate));
@@ -99,6 +101,7 @@ import rLoader from "@/components/UI/r-loader.vue";
 			},
 		},
 		created() {
+			this.SET_TAB("control");
 			this.getRates();
 		},
 		setup() {
@@ -110,7 +113,8 @@ import rLoader from "@/components/UI/r-loader.vue";
 
 <style scoped lang="scss">
 	@import "@/assets/scss/variables";
-	.the-control {
+
+	.page-control {
 		padding: 4rem;
 		height: 100%;
 		overflow: auto;
@@ -142,8 +146,8 @@ import rLoader from "@/components/UI/r-loader.vue";
 			font-weight: 700;
 			padding: 2rem 3rem;
 			border-radius: 0.5rem;
-      background-color: $primary;
-      color: $white;
+			background-color: $primary;
+			color: $white;
 			min-width: -webkit-max-content;
 			min-width: -moz-max-content;
 			min-width: max-content;

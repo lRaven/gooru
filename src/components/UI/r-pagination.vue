@@ -231,6 +231,9 @@
 			display: flex;
 			align-items: center;
 			gap: 0.9rem;
+			@media (max-width: 425px) {
+				flex-wrap: wrap;
+			}
 		}
 		&__item {
 			list-style: none;

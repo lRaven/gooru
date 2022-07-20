@@ -1,13 +1,13 @@
 <template>
-	<section class="the-rates">
+	<section class="page-rates">
 		<transition mode="out-in">
 			<r-loader v-if="isLoading" />
 		</transition>
 
 		<transition-group mode="out-in">
 			<template v-if="!userRate?.id && !isLoading">
-				<h2 class="the-rates__title">Выберите тариф</h2>
-				<div class="the-rates__body">
+				<h2 class="page-rates__title">Выберите тариф</h2>
+				<div class="page-rates__body">
 					<rate-card
 						v-for="rate in rates"
 						:key="rate.id"
@@ -17,18 +17,18 @@
 						@select-rate="select_rate"
 					></rate-card>
 
-					<div class="the-rates__brief">
-						<div class="the-rates__brief-col">
-							<p class="the-rates__brief-text">
-								<span class="the-rates__brief-text-big">
+					<div class="page-rates__brief">
+						<div class="page-rates__brief-col">
+							<p class="page-rates__brief-text">
+								<span class="page-rates__brief-text-big">
 									не знаете,
 								</span>
 								что вам подходит?
 							</p>
-							<p class="the-rates__brief-text-big">
+							<p class="page-rates__brief-text-big">
 								Мы вам поможем!
 							</p>
-							<p class="the-rates__brief-text">
+							<p class="page-rates__brief-text">
 								Для этого ответьте на 8 простых вопросов
 							</p>
 						</div>
@@ -39,12 +39,12 @@
 						></r-button>
 					</div>
 
-					<div class="the-rates__help">
-						<div class="the-rates__help-row">
-							<h4 class="the-rates__help-text-bold">
+					<div class="page-rates__help">
+						<div class="page-rates__help-row">
+							<h4 class="page-rates__help-text-bold">
 								Получить<br />помощь
 							</h4>
-							<h4 class="the-rates__help-text">от менеджера</h4>
+							<h4 class="page-rates__help-text">от менеджера</h4>
 						</div>
 
 						<r-button
@@ -57,19 +57,19 @@
 			</template>
 
 			<template v-else-if="userRate?.id && !isLoading">
-				<div class="the-rates__stats">
-					<div class="the-rates__stats-item">
-						<h2 class="the-rates__title">Статистика за сегодня</h2>
+				<div class="page-rates__stats">
+					<div class="page-rates__stats-item">
+						<h2 class="page-rates__title">Статистика за сегодня</h2>
 						<stats-card :stats_items="stats[0]" />
 					</div>
 
-					<div class="the-rates__stats-item">
-						<h2 class="the-rates__title">Общая статистика</h2>
+					<div class="page-rates__stats-item">
+						<h2 class="page-rates__title">Общая статистика</h2>
 						<stats-card :stats_items="stats[1]" />
 					</div>
 
-					<div class="the-rates__stats-item">
-						<h2 class="the-rates__title">Текущий тариф</h2>
+					<div class="page-rates__stats-item">
+						<h2 class="page-rates__title">Текущий тариф</h2>
 						<stats-card
 							:stats_items="stats[2]"
 							:isRate="true"
@@ -77,9 +77,9 @@
 						/>
 					</div>
 
-					<div class="the-rates__stats-buttons">
+					<div class="page-rates__stats-buttons">
 						<p
-							class="the-rates__stats-status"
+							class="page-rates__stats-status"
 							v-if="pendingForCapture"
 						>
 							Ожидание подтверждения
@@ -100,14 +100,14 @@
 			<r-modal v-if="isModalVisible" @close-modal="close_modal">
 				<template v-slot>
 					<form
-						class="the-rates__create-appeal"
+						class="page-rates__create-appeal"
 						@submit="create_ticket"
 					>
-						<h2 class="the-rates__create-appeal-title">
+						<h2 class="page-rates__create-appeal-title">
 							Новое обращение
 						</h2>
-						<fieldset class="the-rates__create-appeal-inputs">
-							<p class="the-rates__create-appeal-description">
+						<fieldset class="page-rates__create-appeal-inputs">
+							<p class="page-rates__create-appeal-description">
 								Выберите тему обращения
 							</p>
 							<r-dropdown
@@ -117,7 +117,7 @@
 								v-model="new_appeal.topic"
 							></r-dropdown>
 
-							<p class="the-rates__create-appeal-description">
+							<p class="page-rates__create-appeal-description">
 								Выберите парсер
 							</p>
 							<r-dropdown
@@ -127,7 +127,7 @@
 								v-model="new_appeal.parser"
 							></r-dropdown>
 
-							<p class="the-rates__create-appeal-description">
+							<p class="page-rates__create-appeal-description">
 								Напишите текст обращения
 							</p>
 							<r-textarea
@@ -158,7 +158,7 @@
 	import { useToast } from "vue-toastification";
 
 	export default {
-		name: "TheRates",
+		name: "PageRates",
 		components: {
 			RateCard,
 			StatsCard,
@@ -311,7 +311,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-rates {
+	.page-rates {
 		padding: 4rem;
 		height: 100%;
 		overflow: auto;
@@ -424,7 +424,7 @@
 				}
 			}
 
-			.the-rates {
+			.page-rates {
 				&__title {
 					margin-bottom: 3rem;
 				}
@@ -473,7 +473,7 @@
 </style>
 
 <style lang="scss">
-	.the-rates {
+	.page-rates {
 		&__create-appeal {
 			.r-dropdown {
 				&__selected,

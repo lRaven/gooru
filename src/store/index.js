@@ -24,13 +24,7 @@ export default createStore({
 		baseURL: 'http://0.0.0.0:8003',
 	}),
 
-	getters: {
-		BASEURL_WITHOUT_PROTOCOL(state) {
-			if (state.baseURL.startsWith('https://')) { return state.baseURL.slice(8) }
-
-			if (state.baseURL.startsWith('http://')) { return state.baseURL.slice(7) }
-		}
-	},
+	getters: { BASEURL_WITHOUT_PROTOCOL(state) { return state.baseURL.split("/")[2] } },
 
 	mutations: {
 		SET_DOCUMENT_WIDTH: (state, payload) => state.document_width = payload,

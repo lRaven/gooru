@@ -125,7 +125,8 @@
 
 		&__header {
 			cursor: pointer;
-			display: flex;
+			display: grid;
+			grid-template-columns: 1fr max-content;
 			align-items: center;
 			justify-content: space-between;
 			background-color: $white;

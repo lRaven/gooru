@@ -1,40 +1,46 @@
 <template>
-	<section class="the-parsource">
-		<div class="the-parsource__main">
-			<h2 class="the-parsource__title">
+	<section class="page-parsource">
+		<div class="page-parsource__main">
+			<h2 class="page-parsource__title">
 				Парсинг сайта {{ parsource.data_source }}
 			</h2>
 
-			<div class="the-parsource__content">
-				<div class="the-parsource__content-main">
-					<div class="the-parsource__content-header">
-						<div class="the-parsource__content-header-row">
-							<h4 class="the-parsource__content-found">
+			<div class="page-parsource__content">
+				<div class="page-parsource__content-main">
+					<div class="page-parsource__content-header">
+						<div class="page-parsource__content-header-row">
+							<h4 class="page-parsource__content-found">
 								Найдено
 								<span
-									class="the-parsource__content-found-number"
+									class="page-parsource__content-found-number"
 								>
 									{{ count }}
 								</span>
 							</h4>
-							<p class="the-parsource__total-processed">
+							<p class="page-parsource__total-processed">
 								всего обработано
 								{{ count }}
 							</p>
 						</div>
 
-						<div class="the-parsource__content-header-row">
+						<div class="page-parsource__content-header-row">
 							<button
 								type="button"
-								class="the-parsource__sortby selected"
+								class="page-parsource__sortby selected"
 							>
 								по свежести материала
 							</button>
-							<button type="button" class="the-parsource__sortby">
+							<button
+								type="button"
+								class="page-parsource__sortby"
+							>
 								отмеченные
 							</button>
 
-							<button type="button" class="the-parsource__sortby">
+							<button
+								type="button"
+								class="page-parsource__sortby"
+							>
 								с комментариями
 							</button>
 						</div>
@@ -45,7 +51,7 @@
 					</transition>
 
 					<transition mode="out-in" v-if="isParsersLoaded">
-						<ol class="the-parsource__content-list">
+						<ol class="page-parsource__content-list">
 							<parser-content
 								v-for="parser in parsers"
 								:key="parser.id"
@@ -56,7 +62,7 @@
 				</div>
 
 				<div
-					class="the-parsource__content-bottom"
+					class="page-parsource__content-bottom"
 					v-if="number_of_pages > 1"
 				>
 					<r-button
@@ -78,7 +84,7 @@
 		<right-panel
 			icon="/img/icon/cabinet/filter.svg"
 			title="Фильтр"
-			class="the-parsource__right-panel"
+			class="page-parsource__right-panel"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
 			@close-right-panel="isMinimizedRightPanel = true"
@@ -86,12 +92,12 @@
 			<template v-slot>
 				<form
 					@submit.prevent="filterParsers"
-					class="the-parsource__right-panel-form"
+					class="page-parsource__right-panel-form"
 				>
 					<r-spoiler title="Источник" arrowType="gray">
 						<template v-slot>
 							<div
-								class="the-parsource__right-panel-parsource"
+								class="page-parsource__right-panel-parsource"
 								v-for="parsource in all_parsources"
 								:key="parsource.id"
 							>
@@ -100,7 +106,7 @@
 										path: `/cabinet/parsource/${parsource.id}`,
 										query: { page: 1 },
 									}"
-									class="the-parsource__right-panel-source"
+									class="page-parsource__right-panel-source"
 									:title="parsource.name"
 								>
 									{{ parsource.name }}
@@ -146,7 +152,9 @@
 
 					<r-spoiler title="Объект поиска" arrowType="gray">
 						<template v-slot>
-							<div class="the-parsource__right-panel__checkboxes">
+							<div
+								class="page-parsource__right-panel__checkboxes"
+							>
 								<text-checkbox
 									text="Текст"
 									v-model="filters.texts"
@@ -171,69 +179,69 @@
 						<template v-slot>
 							<textarea
 								placeholder="Текстовое описание требований для поиска"
-								class="the-parsource__right-panel__textarea"
+								class="page-parsource__right-panel__textarea"
 								v-model="filters.description"
 							></textarea>
 						</template>
 					</r-spoiler>
 
 					<r-button
-						class="the-parsource__right-panel-submit"
+						class="page-parsource__right-panel-submit"
 						text="Применить"
 						type="submit"
 						@click.stop
 					></r-button>
 				</form>
 
-				<div class="the-parsource__data">
-					<h5 class="the-parsource__data-title">Текущий источник</h5>
+				<div class="page-parsource__data">
+					<h5 class="page-parsource__data-title">Текущий источник</h5>
 					<img
 						:src="
 							parsource.screenshot || '/img/icon/empty-image.svg'
 						"
 						alt=""
-						class="the-parsource__image"
+						class="page-parsource__image"
 					/>
-					<div class="the-parsource__info">
+					<div class="page-parsource__info">
 						<template v-if="userRole !== 'DefaultUser'">
-							<p class="the-parsource__info-key">Пользователь</p>
+							<p class="page-parsource__info-key">Пользователь</p>
 							<router-link
 								:to="{
 									path: `/cabinet/user/${parsource.user}`,
 								}"
-								class="the-parsource__info-value the-parsource__info-source"
+								class="page-parsource__info-value page-parsource__info-source"
 							>
 								#id{{ parsource.user }}
 							</router-link>
 						</template>
 
 						<template v-if="userRole === 'AdminCRM'">
-							<p class="the-parsource__info-key">Менеджер</p>
+							<p class="page-parsource__info-key">Менеджер</p>
 							<r-dropdown
 								:selected_item="user_manager.username"
 								:showedValue="'username'"
 								:list="managers"
 								v-model="selected_manager"
-								class="the-parsource__info-manager"
+								class="page-parsource__info-manager"
 							></r-dropdown>
 						</template>
 
-						<p class="the-parsource__info-key">Источник</p>
+						<p class="page-parsource__info-key">Источник</p>
 						<a
 							:href="parsource.data_source"
 							target="_blank"
-							class="the-parsource__info-value the-parsource__info-source"
+							class="page-parsource__info-value page-parsource__info-source"
 							:title="parsource.data_source"
 						>
 							{{ parsource.data_source }}
 						</a>
 
-						<p class="the-parsource__info-key">Дата</p>
-						<p class="the-parsource__info-value">
+						<p class="page-parsource__info-key">Дата</p>
+						<p class="page-parsource__info-value">
 							{{ parsource.date || "1.1.1970" }}
 						</p>
 
-						<p class="the-parsource__info-key">Статус</p>
+						<p class="page-parsource__info-key">Статус</p>
 						<r-status :status="1 || parsource.condition"></r-status>
 					</div>
 				</div>
@@ -266,7 +274,7 @@
 	import { useToast } from "vue-toastification";
 
 	export default {
-		name: "TheParsource",
+		name: "PageParsource",
 		components: {
 			rStatus,
 			ParserContent,
@@ -535,7 +543,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-parsource {
+	.page-parsource {
 		display: grid;
 		grid-template-columns: 1fr max-content;
 		padding: 0;
@@ -720,7 +728,7 @@
 </style>
 
 <style lang="scss">
-	.the-parsource {
+	.page-parsource {
 		&__info {
 			.r-dropdown {
 				&__header {

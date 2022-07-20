@@ -1,63 +1,65 @@
 <template>
-	<section class="the-users">
-		<h2 class="the-users__title">Пользователи</h2>
+	<section class="page-users">
+		<h2 class="page-users__title">Пользователи</h2>
 
-		<div class="the-users__control" v-if="document_width > 767">
+		<div class="page-users__control" v-if="document_width > 767">
 			<r-checkbox
 				description="Выбрать всё"
 				v-model="actions.selectAll"
 				:checked="actions.selectAll"
 			></r-checkbox>
 
-			<button class="the-users__control-btn" type="button">
+			<button class="page-users__control-btn" type="button">
 				<img
 					src="/img/icon/cabinet/lock.svg"
-					class="the-users__control-btn-icon"
+					class="page-users__control-btn-icon"
 					alt="icon"
 				/>
-				<p class="the-users__control-btn-description">Заблокировать</p>
+				<p class="page-users__control-btn-description">Заблокировать</p>
 			</button>
 
-			<button class="the-users__control-btn" type="button">
+			<button class="page-users__control-btn" type="button">
 				<img
 					src="/img/icon/cabinet/unlock.svg"
-					class="the-users__control-btn-icon"
+					class="page-users__control-btn-icon"
 					alt="icon"
 				/>
-				<p class="the-users__control-btn-description">Разблокировать</p>
+				<p class="page-users__control-btn-description">
+					Разблокировать
+				</p>
 			</button>
 
 			<button
-				class="the-users__control-btn the-users__control-btn-delete"
+				class="page-users__control-btn page-users__control-btn-delete"
 				type="button"
 				@click="actions.deleteSelected = true"
 			>
 				<img
 					src="/img/icon/cabinet/remove.svg"
-					class="the-users__control-btn-icon"
+					class="page-users__control-btn-icon"
 					alt="icon"
 				/>
-				<p class="the-users__control-btn-description">Удалить</p>
+				<p class="page-users__control-btn-description">Удалить</p>
 			</button>
 		</div>
 
-		<div class="the-users__head" v-else>
+		<div class="page-users__head" v-else>
 			<button
 				type="button"
-				class="the-users__head-btn"
+				class="page-users__head-btn"
 				@click="
 					headTab === 'sort' ? (headTab = '') : (headTab = 'sort')
 				"
 			>
 				<img
 					src="/img/icon/cabinet/sort.svg"
-					class="the-users__head-btn-icon"
+					class="page-users__head-btn-icon"
 					alt="sort"
 				/>
-				<p class="the-users__head-btn-description">Сортировать</p>
+				<p class="page-users__head-btn-description">Сортировать</p>
 			</button>
 			<button
-				class="the-users__head-btn"
+				class="page-users__head-btn"
 				@click="
 					headTab === 'actions'
 						? (headTab = '')
@@ -66,19 +68,19 @@
 			>
 				<img
 					src="/img/icon/cabinet/tick-bordered.svg"
-					class="the-users__head-btn-icon"
+					class="page-users__head-btn-icon"
 					alt="select"
 				/>
-				<p class="the-users__head-btn-description">Выбрано</p>
+				<p class="page-users__head-btn-description">Выбрано</p>
 			</button>
 
 			<transition mode="out-in">
 				<form
-					class="the-users__head-tab"
+					class="page-users__head-tab"
 					@submit.prevent=""
 					v-show="headTab === 'sort'"
 				>
-					<p class="the-users__head-tab-description">
+					<p class="page-users__head-tab-description">
 						Сортировать по
 					</p>
 					<r-dropdown
@@ -100,7 +102,7 @@
 
 			<transition mode="out-in">
 				<div
-					class="the-users__head-tab the-users__head-tab-actions"
+					class="page-users__head-tab page-users__head-tab-actions"
 					v-show="headTab === 'actions'"
 				>
 					<r-checkbox
@@ -109,39 +111,39 @@
 						:checked="actions.selectAll"
 					></r-checkbox>
 
-					<button class="the-users__control-btn" type="button">
+					<button class="page-users__control-btn" type="button">
 						<img
 							src="/img/icon/cabinet/lock.svg"
-							class="the-users__control-btn-icon"
+							class="page-users__control-btn-icon"
 							alt="icon"
 						/>
-						<p class="the-users__control-btn-description">
+						<p class="page-users__control-btn-description">
 							Заблокировать
 						</p>
 					</button>
 
-					<button class="the-users__control-btn" type="button">
+					<button class="page-users__control-btn" type="button">
 						<img
 							src="/img/icon/cabinet/unlock.svg"
-							class="the-users__control-btn-icon"
+							class="page-users__control-btn-icon"
 							alt="icon"
 						/>
-						<p class="the-users__control-btn-description">
+						<p class="page-users__control-btn-description">
 							Разблокировать
 						</p>
 					</button>
 
 					<button
-						class="the-users__control-btn the-users__control-btn-delete"
+						class="page-users__control-btn page-users__control-btn-delete"
 						type="button"
 						@click="actions.deleteSelected = true"
 					>
 						<img
 							src="/img/icon/cabinet/remove.svg"
-							class="the-users__control-btn-icon"
+							class="page-users__control-btn-icon"
 							alt="icon"
 						/>
-						<p class="the-users__control-btn-description">
+						<p class="page-users__control-btn-description">
 							Удалить
 						</p>
 					</button>
@@ -149,9 +151,9 @@
 			</transition>
 		</div>
 
-		<div class="the-users__content">
+		<div class="page-users__content">
 			<div
-				class="the-users__sort"
+				class="page-users__sort"
 				:class="{ admin: userRole === 'AdminCRM' }"
 				v-if="document_width > 767"
 			>
@@ -186,7 +188,7 @@
 			</transition>
 
 			<transition mode="out-in">
-				<div class="the-users__list" v-if="isUsersLoaded">
+				<div class="page-users__list" v-if="isUsersLoaded">
 					<user-card
 						v-for="user in users_list"
 						:key="user.id"
@@ -200,7 +202,7 @@
 				</div>
 			</transition>
 
-			<div class="the-users__bottom" v-if="number_of_pages > 1">
+			<div class="page-users__bottom" v-if="number_of_pages > 1">
 				<r-button
 					:disabled="page >= number_of_pages"
 					color="bordered"
@@ -229,7 +231,7 @@
 	import { useToast } from "vue-toastification";
 
 	export default {
-		name: "TheUsers",
+		name: "PageUsers",
 		mixins: [sortUsers],
 		components: {
 			UserCard,
@@ -391,7 +393,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-users {
+	.page-users {
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
 		position: relative;
@@ -420,7 +422,7 @@
 				background-color: transparent;
 
 				&-delete {
-					.the-users__control-btn {
+					.page-users__control-btn {
 						&-description {
 							color: $red;
 						}
@@ -558,7 +560,7 @@
 </style>
 
 <style lang="scss">
-	.the-users {
+	.page-users {
 		&__head {
 			&-tab {
 				.r-dropdown {

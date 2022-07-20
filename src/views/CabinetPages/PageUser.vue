@@ -1,6 +1,6 @@
 <template>
-	<section class="the-user">
-		<h2 class="the-user__title">
+	<section class="page-user">
+		<h2 class="page-user__title">
 			{{
 				user.first_name === "" && user.last_name === ""
 					? user.username
@@ -8,12 +8,12 @@
 			}}
 		</h2>
 
-		<div class="the-user__top">
-			<form class="the-user__data">
-				<p class="the-user__data-description">Номер</p>
-				<p class="the-user__data-description">Телефон</p>
-				<p class="the-user__data-description">E-mail</p>
-				<p class="the-user__data-description">Менеджер</p>
+		<div class="page-user__top">
+			<form class="page-user__data">
+				<p class="page-user__data-description">Номер</p>
+				<p class="page-user__data-description">Телефон</p>
+				<p class="page-user__data-description">E-mail</p>
+				<p class="page-user__data-description">Менеджер</p>
 
 				<r-input
 					:isDisabled="true"
@@ -44,7 +44,7 @@
 				></r-dropdown>
 			</form>
 
-			<div class="the-user__actions">
+			<div class="page-user__actions">
 				<r-button
 					color="bordered"
 					text="Редактировать"
@@ -153,11 +153,11 @@
 			</div>
 		</div>
 
-		<div class="the-user__tabs">
-			<div class="the-user__tabs-buttons">
+		<div class="page-user__tabs">
+			<div class="page-user__tabs-buttons">
 				<button
 					type="button"
-					class="the-user__tabs-button"
+					class="page-user__tabs-button"
 					:class="{ current: tab === 1 }"
 					@click="tab = 1"
 				>
@@ -165,26 +165,23 @@
 				</button>
 				<button
 					type="button"
-					class="the-user__tabs-button"
+					class="page-user__tabs-button"
 					:class="{ current: tab === 2 }"
 					@click="tab = 2"
 				>
 					<p>Обращения</p>
-					<span
-						class="the-user__tabs-button-counter"
-						v-if="unreadAppealsCounter > 0"
-					>
-						{{ unreadAppealsCounter }}
-					</span>
 				</button>
 			</div>
 
 			<transition-group mode="out-in">
 				<div
-					class="the-user__tabs-tab the-user__parsers"
+					class="page-user__tabs-tab page-user__parsers"
 					v-if="tab === 1"
 				>
-					<div class="the-user__parsers-sort">
+					<div
+						class="page-user__parsers-sort"
+						v-if="document_width > 1100"
+					>
 						<sort-button
 							v-for="sort in sortUser"
 							:key="sort.id"
@@ -196,13 +193,40 @@
 						></sort-button>
 					</div>
 
+					<div class="page-user__parsers-sort" v-else>
+						<button
+							type="button"
+							class="page-user__parsers-sort-btn"
+							@click="
+								isSortDropdownVisible
+									? (isSortDropdownVisible = false)
+									: (isSortDropdownVisible = true)
+							"
+						>
+							<img src="/img/icon/cabinet/sort.svg" alt="" />
+							<p class="page-user__parsers-sort-description">
+								Сортировать
+							</p>
+						</button>
+
+						<transition mode="out-in">
+							<r-dropdown
+								selected_item="-"
+								sendValue=""
+								:list="sortUserDropdown"
+								v-model="sortByDropdown"
+								v-show="isSortDropdownVisible"
+							></r-dropdown>
+						</transition>
+					</div>
+
 					<transition mode="out-in">
 						<r-loader v-if="!isParsourcesLoaded" />
 					</transition>
 
 					<transition mode="out-in">
 						<div
-							class="the-user__parsers-list"
+							class="page-user__parsers-list"
 							v-if="isParsourcesLoaded && parsources.length > 0"
 						>
 							<parsource-card
@@ -215,9 +239,9 @@
 					</transition>
 
 					<transition mode="out-in">
-						<div class="the-user__tabs-tab-empty">
+						<div class="page-user__tabs-tab-empty">
 							<p
-								class="the-user__tabs-tab-text"
+								class="page-user__tabs-tab-text"
 								v-if="
 									parsources.length === 0 &&
 									isParsourcesLoaded
@@ -230,7 +254,7 @@
 				</div>
 
 				<div
-					class="the-user__tabs-tab the-user__appeals"
+					class="page-user__tabs-tab page-user__appeals"
 					v-if="tab === 2"
 				>
 					<transition mode="out-in">
@@ -238,7 +262,7 @@
 					</transition>
 
 					<transition mode="out-in">
-						<div class="the-user__appeals-list">
+						<div class="page-user__appeals-list">
 							<appeals-card
 								v-for="appeal in user_appeals"
 								:key="appeal.id"
@@ -251,9 +275,9 @@
 					</transition>
 
 					<transition mode="out-in">
-						<div class="the-user__tabs-tab-empty">
+						<div class="page-user__tabs-tab-empty">
 							<p
-								class="the-user__tabs-tab-text"
+								class="page-user__tabs-tab-text"
 								v-if="
 									user_appeals.length === 0 && isAppealsLoaded
 								"
@@ -282,7 +306,7 @@
 	import { useToast } from "vue-toastification";
 
 	export default {
-		name: "TheUser",
+		name: "PageUser",
 		mixins: [sortParsourcesUser],
 		components: {
 			ParsourceCard,
@@ -344,6 +368,8 @@
 				all_appeals: (state) => state.appeals.all_appeals,
 				topics: (state) => state.appeals.topics,
 				all_messages: (state) => state.messenger.all_messages,
+
+				document_width: (state) => state.document_width,
 			}),
 
 			user_manager() {
@@ -395,9 +421,9 @@
 
 				parsources_list: [],
 				isParsourcesLoaded: false,
+				isSortDropdownVisible: false,
 
 				isAppealsLoaded: false,
-				unreadAppealsCounter: 0,
 			};
 		},
 		methods: {
@@ -479,12 +505,17 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-user {
+	.page-user {
 		padding: 4rem;
 		height: 100%;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
-		overflow: auto;
+		overflow-y: auto;
+
+		@media (max-width: 767px) {
+			padding: 4rem 1.5rem;
+		}
+
 		&__title {
 			font-weight: 400;
 			margin-bottom: 2rem;
@@ -493,6 +524,7 @@
 		&__top {
 			display: flex;
 			align-items: center;
+			flex-wrap: wrap-reverse;
 			gap: 2rem;
 			margin-bottom: 3rem;
 		}
@@ -504,11 +536,31 @@
 			padding: 1rem;
 			background-color: rgba($white, $alpha: 0.5);
 			width: fit-content;
+
+			@media (max-width: 1300px) {
+				grid-template-columns: 14rem repeat(2, 1fr) minmax(10rem, 1fr);
+			}
+			@media (max-width: 767px) {
+				width: 100%;
+				grid-template-columns: repeat(2, 1fr);
+				justify-content: space-between;
+				align-items: center;
+			}
+			@media (max-width: 425px) {
+				grid-template-columns: max-content 18rem;
+			}
+
 			&-description {
 				color: rgba($black, $alpha: 0.5);
 				margin-bottom: 1.5rem;
 				font-size: 1.2rem;
 				padding-left: 1rem;
+
+				@media (max-width: 767px) {
+					margin-bottom: 0;
+					padding-left: 0;
+					grid-column: 1/2;
+				}
 			}
 			&-description,
 			&-value {
@@ -517,16 +569,46 @@
 			&-value {
 				font-size: 1.6rem;
 			}
+
+			.r-input {
+				@media (max-width: 767px) {
+					&:nth-child(5) {
+						grid-area: 1/2/1/2;
+					}
+					&:nth-child(6) {
+						grid-area: 2/2/2/2;
+					}
+					&:nth-child(7) {
+						grid-area: 3/2/3/2;
+					}
+				}
+			}
 		}
 
 		&__actions {
 			display: flex;
 			gap: 2rem;
 			align-items: center;
+
+			@media (max-width: 767px) {
+				flex-wrap: wrap;
+			}
+
+			@media (max-width: 540px) {
+				flex-direction: column;
+				align-items: flex-start;
+				width: 100%;
+			}
+
 			.r-button {
 				padding: 1rem 2rem;
 				font-size: 1.4rem;
 				font-weight: 500;
+
+				@media (max-width: 540px) {
+					width: 100%;
+				}
+
 				&__icon {
 					height: 1.6rem;
 				}
@@ -555,6 +637,12 @@
 				background-color: transparent;
 				height: 100%;
 				min-width: 19rem;
+
+				@media (max-width: 540px) {
+					min-width: inherit;
+					width: 50%;
+				}
+
 				&::after {
 					content: "";
 					position: absolute;
@@ -577,18 +665,6 @@
 						width: 100%;
 					}
 				}
-
-				&-counter {
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					background-color: $red;
-					width: 1.8rem;
-					height: 1.8rem;
-					color: $white;
-					border-radius: 50%;
-					font-weight: 600;
-				}
 			}
 			&-tab {
 				grid-area: 2/1/2/1;
@@ -604,18 +680,46 @@
 		&__parsers {
 			&-sort {
 				display: grid;
-				grid-template-columns: repeat(7, minmax(15rem, 1fr)) 18rem;
+				grid-template-columns: repeat(7, 1fr) 18rem;
 				grid-gap: 2rem;
 				justify-content: space-between;
 				align-items: center;
 				padding: 0 3rem 0 3rem;
 
-				.sort-button {
-					width: max-content;
+				@media (max-width: 1240px) {
+					grid-template-columns: repeat(7, 1fr) 4rem;
+				}
 
+				@media (max-width: 1100px) {
+					display: flex;
+					flex-direction: column;
+					justify-content: flex-start;
+					align-items: flex-start;
+					gap: 1rem;
+					padding: 0;
+					margin-bottom: 1rem;
+				}
+
+				&-btn {
+					display: flex;
+					align-items: center;
+					gap: 1rem;
+					background-color: transparent;
+				}
+
+				&-description {
+					font-weight: 500;
+					color: $primary;
+				}
+
+				.sort-button {
 					&:nth-child(n + 2) {
 						justify-self: center;
 					}
+				}
+
+				.r-dropdown {
+					width: 100%;
 				}
 			}
 			&-list {
@@ -631,11 +735,26 @@
 </style>
 
 <style lang="scss">
-	.the-user {
+	.page-user {
 		&__data {
 			.r-input {
 				&__input {
 					padding: 1rem;
+				}
+			}
+		}
+
+		&__parsers {
+			&-sort {
+				.r-dropdown {
+					&__selected,
+					&__list-item {
+						font-size: 1.4rem !important;
+
+						@media (max-width: 540px) {
+							font-size: 1.2rem;
+						}
+					}
 				}
 			}
 		}

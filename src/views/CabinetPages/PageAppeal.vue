@@ -1,15 +1,15 @@
 <template>
 	<section
-		class="the-appeal"
+		class="page-appeal"
 		:class="{ has_right_panel: user.role === 'DefaultUser' }"
 	>
-		<div class="the-appeal__main">
-			<h2 class="the-appeal__title">Обращения</h2>
+		<div class="page-appeal__main">
+			<h2 class="page-appeal__title">Обращения</h2>
 
-			<div class="the-appeal__header">
+			<div class="page-appeal__header">
 				<button
 					type="button"
-					class="the-appeal__back"
+					class="page-appeal__back"
 					@click="
 						this.$router.push({
 							name: 'appeals',
@@ -20,18 +20,18 @@
 					<img
 						src="/img/icon/cabinet/arrow-long.svg"
 						alt="back"
-						class="the-appeal__back-icon"
+						class="page-appeal__back-icon"
 					/>
 				</button>
 
-				<p class="the-appeal__id">#{{ appeal.id }}</p>
-				<p class="the-appeal__source">
+				<p class="page-appeal__id">#{{ appeal.id }}</p>
+				<p class="page-appeal__source">
 					{{ appeal_source }}
 				</p>
-				<p class="the-appeal__topic">
+				<p class="page-appeal__topic">
 					{{ appeal_topic }}
 				</p>
-				<p class="the-appeal__topic-message">
+				<p class="page-appeal__topic-message">
 					{{ appeal.message }}
 				</p>
 			</div>
@@ -42,7 +42,7 @@
 		<right-panel
 			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
-			class="the-appeal__right-panel"
+			class="page-appeal__right-panel"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
 			@close-right-panel="isMinimizedRightPanel = true"
@@ -50,11 +50,11 @@
 		>
 			<template v-slot>
 				<form
-					class="the-appeal__right-panel-form"
+					class="page-appeal__right-panel-form"
 					@submit.prevent="create_ticket"
 				>
-					<div class="the-appeal__right-panel-row">
-						<p class="the-appeal__right-panel-input-description">
+					<div class="page-appeal__right-panel-row">
+						<p class="page-appeal__right-panel-input-description">
 							Выберите тему обращения
 						</p>
 
@@ -66,8 +66,8 @@
 						></r-dropdown>
 					</div>
 
-					<div class="the-appeal__right-panel-row">
-						<p class="the-appeal__right-panel-input-description">
+					<div class="page-appeal__right-panel-row">
+						<p class="page-appeal__right-panel-input-description">
 							Выберите парсер
 						</p>
 
@@ -78,8 +78,8 @@
 						></r-dropdown>
 					</div>
 
-					<div class="the-appeal__right-panel-row">
-						<p class="the-appeal__right-panel-input-description">
+					<div class="page-appeal__right-panel-row">
+						<p class="page-appeal__right-panel-input-description">
 							Напишите текст обращения
 						</p>
 
@@ -110,7 +110,7 @@
 	import { useToast } from "vue-toastification";
 
 	export default {
-		name: "TheAppeal",
+		name: "PageAppeal",
 		components: {
 			RightPanel,
 			TheMessenger,
@@ -169,7 +169,7 @@
 			return {
 				isDisabledBtn: true,
 				isMinimizedRightPanel: false,
-				
+
 				path: this.$route.path,
 
 				new_appeal: {
@@ -247,14 +247,14 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-appeal {
+	.page-appeal {
 		padding: 0;
 
 		&.has_right_panel {
 			display: grid;
 			grid-template-columns: 1fr max-content;
 			grid-gap: 2rem;
-			.the-appeal__main {
+			.page-appeal__main {
 				padding: 4rem 0 0 4rem;
 			}
 		}

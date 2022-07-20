@@ -6,7 +6,11 @@
 			v-if="isCanSelect"
 		></r-checkbox>
 
-		<div class="parsource-card__content" ref="content">
+		<div
+			class="parsource-card__content"
+			:class="{ selected: isSelected }"
+			v-if="document_width > 767"
+		>
 			<p
 				class="parsource-card__id"
 				:title="parsource.user"
@@ -98,6 +102,7 @@
 			<r-status
 				class="parsource-card__status"
 				:status="1 || parsource.condition"
+				:isMinimized="document_width > 1700 ? false : true"
 			></r-status>
 
 			<p
@@ -123,7 +128,7 @@
 			</p>
 
 			<r-button
-				text="Подробнее"
+				:text="document_width > 1240 ? 'Подробнее' : ''"
 				color="bordered"
 				direction="revert"
 				@click="
@@ -140,8 +145,94 @@
 						class="parsource-card__notification"
 						v-if="isHasNotifications"
 					/>
+					<img
+						src="/img/icon/dot_list.svg"
+						alt="notification"
+						class="parsource-card__notification"
+						v-if="document_width <= 1240"
+					/>
 				</template>
 			</r-button>
+		</div>
+
+		<div
+			class="parsource-card__content"
+			:class="{ selected: isSelected }"
+			v-else
+		>
+			<div class="parsource-card__row">
+				<div class="parsource-card__col">
+					<r-checkbox
+						v-model="isSelected"
+						:checked="isSelected"
+						v-if="isCanSelect"
+					></r-checkbox>
+
+					<p class="parsource-card__source" :title="source">
+						{{ source }}
+					</p>
+				</div>
+
+				<r-status
+					class="parsource-card__status"
+					:status="1 || parsource.condition"
+				></r-status>
+			</div>
+
+			<div class="parsource-card__row">
+				<div class="parsource-card__content-col">
+					<p class="parsource-card__col-description">Дата</p>
+
+					<p
+						class="parsource-card__col parsource-card__date"
+						:title="parsource.date || '1.1.1970'"
+					>
+						{{
+							parsource.date
+								? prettyDate(parsource.date)
+								: "1.1.1970"
+						}}
+					</p>
+				</div>
+
+				<div class="parsource-card__content-col">
+					<p class="parsource-card__col-description">Найдено</p>
+
+					<p
+						class="parsource-card__col parsource-card__found"
+						:title="parsource.find || 0"
+					>
+						{{ parsource.find || 0 }}
+					</p>
+				</div>
+
+				<r-button
+					:text="document_width > 1240 ? 'Подробнее' : ''"
+					color="bordered"
+					direction="revert"
+					@click="
+						this.$router.push({
+							path: `/cabinet/parsource/${parsource.id}`,
+							query: { page: 1 },
+						})
+					"
+				>
+					<template v-slot:icon>
+						<img
+							src="/img/icon/alert.svg"
+							alt="notification"
+							class="parsource-card__notification"
+							v-if="isHasNotifications"
+						/>
+						<img
+							src="/img/icon/dot_list.svg"
+							alt="notification"
+							class="parsource-card__notification"
+							v-if="document_width <= 1240"
+						/>
+					</template>
+				</r-button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -149,7 +240,7 @@
 <script>
 	import rStatus from "@/components/Cabinet/r-status";
 
-	import { mapMutations, mapActions } from "vuex";
+	import { mapState, mapMutations, mapActions } from "vuex";
 	import { directive } from "vue3-click-away";
 	import { useToast } from "vue-toastification";
 
@@ -178,26 +269,26 @@
 		components: { rStatus },
 		watch: {
 			isSelected() {
-				if (this.isSelected === true) {
-					this.$refs.content.classList.add("selected");
-					this.SELECT_PARSOURCE(this.parsource.id);
-				} else {
-					this.$refs.content.classList.remove("selected");
-					this.UNSELECT_PARSOURCE(this.parsource.id);
-				}
+				this.isSelected
+					? this.SELECT_PARSOURCE(this.parsource.id)
+					: this.UNSELECT_PARSOURCE(this.parsource.id);
 			},
 			"parsource.selected"() {
 				this.isSelected = this.parsource.selected;
 			},
 		},
 		computed: {
+			...mapState(["document_width"]),
+
 			isHasNotifications() {
 				return this.parsourcesHasParsersNotifications.find(
 					(el) => el === this.parsource.id
 				);
 			},
 			source() {
-				return this.parsource.data_source.split('/')[2] ? this.parsource.data_source.split('/')[2] : this.parsource.data_source;
+				return this.parsource.data_source.split("/")[2]
+					? this.parsource.data_source.split("/")[2]
+					: this.parsource.data_source;
 			},
 			lost_time() {
 				const time = this.parsource.lost_time;
@@ -258,6 +349,10 @@
 			.parsource-card {
 				&__content {
 					grid-template-columns: repeat(6, 1fr) 18rem;
+
+					@media (max-width: 1240px) {
+						grid-template-columns: repeat(6, 1fr) 4rem;
+					}
 				}
 			}
 		}
@@ -276,6 +371,18 @@
 			box-shadow: $shadow;
 			outline: 0.1rem solid transparent;
 			transition: all 0.2s ease;
+
+			@media (max-width: 1240px) {
+				grid-template-columns: repeat(7, 1fr) 4rem;
+			}
+			@media (max-width: 767px) {
+				padding: 1rem;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				justify-content: flex-start;
+			}
+
 			&:hover {
 				box-shadow: 0 0.4rem 1.2rem rgba(89, 96, 199, 0.2);
 				outline-color: rgba(0, 0, 0, 0.22);
@@ -284,11 +391,25 @@
 				outline-color: $primary;
 				box-shadow: 0 0.4rem 1.2rem rgba(89, 96, 199, 0.2);
 			}
+
 			.r-button {
 				width: 100%;
 				font-size: 1.4rem;
 				padding: 1rem 2.8rem;
 				min-height: 4.2rem;
+
+				@media (max-width: 1240px) {
+					min-height: inherit;
+					height: 4rem;
+					width: 4rem;
+					padding: 0;
+				}
+			}
+
+			&-col {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
 			}
 		}
 
@@ -301,8 +422,32 @@
 			&:nth-child(n + 2) {
 				margin: 0 auto;
 				max-width: 100%;
+
+				@media (max-width: 767px) {
+					margin: 0;
+				}
+			}
+
+			&-description {
+				font-size: 1rem;
 			}
 		}
+		&__row {
+			width: 100%;
+			&:first-child {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+			}
+
+			&:last-child {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr) 4rem;
+				grid-gap: 2rem;
+			}
+		}
+
 		&__name {
 			display: flex;
 			align-items: center;
@@ -336,6 +481,7 @@
 				}
 			}
 		}
+
 		&__name-text,
 		&__date,
 		&__status,
