@@ -78,7 +78,7 @@
 			},
 		}),
 		methods: {
-			...mapActions(["getUserData", "getUserRate"]),
+			...mapActions(["getUserData", "getUserRate", "getRates"]),
 
 			async auth() {
 				try {
@@ -96,7 +96,8 @@
 
 						this.getUserData();
 						this.getUserRate();
-
+						this.getRates();
+						
 						this.$router.push({ name: "cabinet" });
 					}
 				} catch (err) {
