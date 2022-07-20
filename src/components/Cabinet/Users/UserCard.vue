@@ -8,7 +8,7 @@
 
 		<div
 			class="user-card__content"
-			ref="content"
+			:class="{ selected: isSelected }"
 			v-if="document_width > 767"
 		>
 			<div
@@ -19,23 +19,8 @@
 					id{{ user.id }}
 				</p>
 
-				<p
-					class="user-card__col user-card__name"
-					:title="
-						user.first_name.length === 0 &&
-						user.last_name.length === 0
-							? user.username
-							: `${user.first_name} ${user.last_name}`
-					"
-				>
-					<!-- {{
-						user.first_name.length === 0 &&
-						user.last_name.length === 0
-							? user.last_name.length > 0
-							? `${user.last_name[0]}.` 
-							: ""
-					}} -->
-					{{ `${user.first_name} ${user.last_name}` }}
+				<p class="user-card__col user-card__name" :title="user_name">
+					{{ user_name }}
 				</p>
 
 				<p
@@ -101,7 +86,11 @@
 			</r-button>
 		</div>
 
-		<div class="user-card__content" v-else>
+		<div
+			class="user-card__content"
+			:class="{ selected: isSelected }"
+			v-else
+		>
 			<div class="user-card__content-row">
 				<r-checkbox
 					v-model="isSelected"
@@ -111,9 +100,52 @@
 				<p class="user-card__col user-card__id" :title="'id' + user.id">
 					id{{ user.id }}
 				</p>
+				<p class="user-card__col user-card__name" :title="user_name">
+					{{ user_name }}
+				</p>
 			</div>
 
 			<div class="user-card__content-row">
+				<div class="user-card__content-col">
+					<p class="user-card__col-description">Статус</p>
+					<p
+						class="user-card__col user-card__status"
+						:title="
+							user.is_active ? 'Разблокирован' : 'Заблокирован'
+						"
+					>
+						{{ user.is_active ? "Разблокирован" : "Заблокирован" }}
+					</p>
+				</div>
+
+				<div class="user-card__content-col">
+					<p class="user-card__col-description">Кол-во парсеров</p>
+					<p
+						class="user-card__col user-card__parsers"
+						:title="user_parsers.length"
+					>
+						{{ user_parsers.length }}
+					</p>
+				</div>
+
+				<div
+					class="user-card__content-col"
+					v-if="userRole === 'AdminCRM'"
+				>
+					<p class="user-card__col-description">Менеджер</p>
+					<p
+						class="user-card__col user-card__manager"
+						:title="
+							user_manager !== null ? user_manager.username : '-'
+						"
+						v-if="user_me.role === 'AdminCRM'"
+					>
+						{{
+							user_manager !== null ? user_manager.username : "-"
+						}}
+					</p>
+				</div>
+
 				<r-button
 					:text="document_width > 1150 ? 'Подробнее' : ''"
 					:class="{ minimized: document_width <= 1150 }"
@@ -178,13 +210,9 @@
 		},
 		watch: {
 			isSelected() {
-				if (this.isSelected === true) {
-					this.$refs.content.classList.add("selected");
-					this.SELECT_USER(this.user.id);
-				} else {
-					this.$refs.content.classList.remove("selected");
-					this.UNSELECT_USER(this.user.id);
-				}
+				this.isSelected
+					? this.SELECT_USER(this.user.id)
+					: this.UNSELECT_USER(this.user.id);
 			},
 			"user.selected"() {
 				this.isSelected = this.user.selected;
@@ -192,6 +220,9 @@
 		},
 		computed: {
 			...mapState(["document_width"]),
+			...mapState({
+				userRole: (state) => state.cabinet.user.role,
+			}),
 
 			user_parsources() {
 				return this.parsources.filter(
@@ -228,6 +259,17 @@
 				}
 
 				return manager || null;
+			},
+
+			user_name() {
+				if (
+					this.user.first_name.length === 0 ||
+					this.user.last_name.length === 0
+				) {
+					return this.user.username;
+				} else {
+					return `${this.user.first_name} ${this.user.last_name[0]}.`;
+				}
 			},
 		},
 
@@ -267,6 +309,10 @@
 			@media (max-width: 1023px) {
 				padding: 1rem;
 			}
+			@media (max-width: 767px) {
+				flex-direction: column;
+				align-items: flex-start;
+			}
 
 			&:hover {
 				box-shadow: 0 0.4rem 1.2rem rgba(89, 96, 199, 0.2);
@@ -293,12 +339,29 @@
 				grid-gap: 3rem;
 				width: 100%;
 				grid-template-columns: 5rem repeat(3, 1fr);
+
+				@media (max-width: 767px) {
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					gap: 0;
+					overflow: hidden;
+				}
+
 				&.admin {
 					grid-template-columns: 5rem repeat(4, 1fr);
-
-					@media (max-width: 767px) {
-						grid-template-columns: repeat(3, 1fr);
-					}
+				}
+			}
+			&-row {
+				width: 100%;
+				display: grid;
+				grid-gap: 1rem;
+				&:first-child {
+					grid-template-columns: repeat(2, max-content) 1fr;
+					align-items: center;
+				}
+				&:last-child {
+					grid-template-columns: repeat(3, 1fr) 4rem;
 				}
 			}
 		}
@@ -310,14 +373,33 @@
 			&:nth-child(n + 3) {
 				margin: 0 auto;
 				max-width: 100%;
+				@media (max-width: 767px) {
+					margin: 0;
+				}
+			}
+
+			@media (max-width: 767px) {
+				&:nth-child(n) {
+					font-size: 1.2rem;
+				}
+			}
+
+			&-description {
+				font-size: 1rem;
+
+				@media (max-width: 375px) {
+					font-size: 0.8rem;
+				}
 			}
 		}
 		&__id,
 		&__manager {
 			color: $primary;
 		}
+		&__id {
+			font-weight: 600;
+		}
 
-		&__id,
 		&__manager,
 		&__name {
 			font-weight: 500;

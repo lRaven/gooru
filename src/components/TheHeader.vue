@@ -529,6 +529,10 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+
+			@media (max-width: 375px) {
+				flex-wrap: wrap;
+			}
 		}
 
 		&__col {
@@ -538,6 +542,9 @@
 				gap: 13rem;
 				@media (max-width: 1420px) {
 					gap: 2rem;
+				}
+				@media (max-width: 375px) {
+					gap: 0;
 				}
 			}
 		}
@@ -706,6 +713,13 @@
 			color: rgba($black, $alpha: 0.7);
 			@media (max-width: 1140px) and (min-width: 1024px) {
 				max-width: 14rem;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			@media (max-width: 540px) {
+				max-width: 12rem;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
