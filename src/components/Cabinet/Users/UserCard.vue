@@ -105,7 +105,10 @@
 				</p>
 			</div>
 
-			<div class="user-card__content-row">
+			<div
+				class="user-card__content-row"
+				:class="{ admin: user_me.role === 'AdminCRM' }"
+			>
 				<div class="user-card__content-col">
 					<p class="user-card__col-description">Статус</p>
 					<p
@@ -130,7 +133,7 @@
 
 				<div
 					class="user-card__content-col"
-					v-if="userRole === 'AdminCRM'"
+					v-if="user_me.role === 'AdminCRM'"
 				>
 					<p class="user-card__col-description">Менеджер</p>
 					<p
@@ -220,9 +223,6 @@
 		},
 		computed: {
 			...mapState(["document_width"]),
-			...mapState({
-				userRole: (state) => state.cabinet.user.role,
-			}),
 
 			user_parsources() {
 				return this.parsources.filter(
@@ -322,6 +322,7 @@
 				outline-color: $primary;
 				box-shadow: 0 0.4rem 1.2rem rgba(89, 96, 199, 0.2);
 			}
+
 			.r-button {
 				width: 18rem;
 				font-size: 1.4rem;
@@ -347,10 +348,6 @@
 					gap: 0;
 					overflow: hidden;
 				}
-
-				&.admin {
-					grid-template-columns: 5rem repeat(4, 1fr);
-				}
 			}
 			&-row {
 				width: 100%;
@@ -361,6 +358,10 @@
 					align-items: center;
 				}
 				&:last-child {
+					grid-template-columns: repeat(2, 1fr) 4rem;
+				}
+
+				&.admin {
 					grid-template-columns: repeat(3, 1fr) 4rem;
 				}
 			}
@@ -370,6 +371,7 @@
 			font-size: 1.5rem;
 			text-overflow: ellipsis;
 			overflow: hidden;
+
 			&:nth-child(n + 3) {
 				margin: 0 auto;
 				max-width: 100%;
@@ -392,10 +394,12 @@
 				}
 			}
 		}
+
 		&__id,
 		&__manager {
 			color: $primary;
 		}
+
 		&__id {
 			font-weight: 600;
 		}
@@ -403,10 +407,6 @@
 		&__manager,
 		&__name {
 			font-weight: 500;
-		}
-
-		&__name,
-		&__manager {
 			font-size: 1.6rem;
 		}
 	}
