@@ -3,11 +3,7 @@
 		<button
 			type="button"
 			class="right-panel__minimize"
-			@click="
-				isMinimized === true
-					? (isMinimized = false)
-					: (isMinimized = true)
-			"
+			@click="handleMinimize"
 		>
 			<svg
 				width="10"
@@ -50,18 +46,12 @@
 				value: String,
 				default: "Title",
 			},
-		},
-		watch: {
-			isMinimized() {
-				if (this.isMinimized === true) {
-					this.minimizePanel();
-				} else if (this.isMinimized === false) {
-					this.resetMinimizePanel();
-				}
+			isMinimized: {
+				type: Boolean,
+				default: false,
 			},
 		},
 		data: () => ({
-			isMinimized: false,
 			texts: false,
 			images: false,
 			videos: false,
@@ -70,6 +60,15 @@
 			file: "",
 		}),
 		methods: {
+			handleMinimize() {
+				if (this.isMinimized) {
+					this.$emit('open-right-panel');
+					this.resetMinimizePanel();
+				} else {
+					this.$emit('close-right-panel');
+					this.minimizePanel();
+				}
+			},
 			minimizePanel() {
 				this.$refs.filters.classList.add("minimized");
 				this.$refs.arrow.classList.add("minimized");

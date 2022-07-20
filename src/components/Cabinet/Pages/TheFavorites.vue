@@ -108,6 +108,9 @@
 			icon="/img/icon/cabinet/tick-bordered.svg"
 			title="Выбрано"
 			class="the-favorites__right-panel"
+			:isMinimized="isMinimizedRightPanel"
+			@open-right-panel="isMinimizedRightPanel = false"
+			@close-right-panel="isMinimizedRightPanel = true"
 		>
 			<the-favorite-right-panel
 				:totalSelected="totalSelected"
@@ -152,6 +155,7 @@
 			},
 		},
 		data: () => ({
+			isMinimizedRightPanel: false,
 			isFavoritesLoaded: false,
 			isSortPanelVisible: false,
 			show_by_source: "",
@@ -162,7 +166,9 @@
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getFavoriteParsers"]),
-
+			minimizeRightPanel() {
+				console.log('yes');
+			},
 			updateSelectedParsers(favoriteCardObj) {
 				const { parsourceId, selectedParsers } = favoriteCardObj;
 

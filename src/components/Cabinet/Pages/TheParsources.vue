@@ -212,7 +212,7 @@
 				"parsources_notifications",
 				"parsers_notifications",
 			]),
-
+			
 			page() {
 				return +this.$route.query.page;
 			},

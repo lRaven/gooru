@@ -53,6 +53,9 @@
 			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			class="the-appeals__right-panel"
+			:isMinimized="isMinimizedRightPanel"
+			@open-right-panel="isMinimizedRightPanel = false"
+			@close-right-panel="isMinimizedRightPanel = true"
 			v-if="user.role === 'DefaultUser'"
 		>
 			<template v-slot>
@@ -175,6 +178,8 @@
 		},
 		data() {
 			return {
+				isMinimizedRightPanel: false,
+
 				isAppealsLoaded: false,
 				path: this.$route.path,
 

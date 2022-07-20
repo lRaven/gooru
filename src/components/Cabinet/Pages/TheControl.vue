@@ -16,29 +16,33 @@
 			<r-modal
 				v-if="selectedRate"
 				@close-modal="closeModal"
-				@submit.stop="submitUpdatedRate"
 			>
 				<template v-slot>
-					<form class="the-control__form">
+					<form class="the-control__form" @submit.prevent="submitUpdatedRate">
 						<h3 class="the-control__form-title">
 							Изменение параметров
 						</h3>
 						<r-input
 							:value="selectedRate.name"
 							v-model="selectedRate.name"
+							placeholder="Название тарифа"
 						/>
 						<r-input
+							v-if="selectedRate.price !== null"
 							:value="selectedRate.price.toString()"
 							v-model="selectedRate.price"
+							placeholder="Стоимость в месяц"
 						/>
 						<r-input
-							v-for="checkItem in selectedRate.checklist"
+							v-for="checkItem in selectedRate.checkList"
 							:key="checkItem.id"
 							:value="checkItem.text"
 							v-model="checkItem.text"
+							placeholder="Пункт описания тарифа"
 						/>
-						<button type="submit" class="the-control__form-submit">
-							Применить
+						<button type="submit" class="the-control__form-submit" :class="{ white: isLoading }">
+							<r-loader v-if="isLoading" />
+							<template v-else>Применить</template>
 						</button>
 					</form>
 				</template></r-modal
@@ -48,6 +52,7 @@
 </template>
 
 <script>
+import rLoader from "@/components/UI/r-loader.vue";
 	import RateCard from "@/components/Rates/RateCard.vue";
 	
 
@@ -57,11 +62,13 @@
 
 	export default {
 		components: {
+			rLoader,
 			RateCard,
 		},
 		data() {
 			return {
 				selectedRate: null,
+				isLoading: false,
 			};
 		},
 		computed: {
@@ -70,7 +77,7 @@
 			}),
 		},
 		methods: {
-			...mapActions(["updateRate"]),
+			...mapActions(["updateRate", "getRates"]),
 			selectRate(id) {
 				const selectedRate = this.rates.find((rate) => rate.id === id);
 				this.selectedRate = JSON.parse(JSON.stringify(selectedRate));
@@ -79,15 +86,20 @@
 				this.selectedRate = null;
 			},
 			async submitUpdatedRate() {
+				this.isLoading = true;
 				try {
-					// на бэке сейчас можно изменить только цену и название
 					await this.updateRate(this.selectedRate);
-					this.closeModal();
+					this.toast.success("Тариф успешно изменен!");
+					setTimeout(this.closeModal, 1000);
 				} catch (error) {
+					this.isLoading = false;
 					console.log(error);
 					this.toast.error("Не удалось изменить тариф!");
 				}
 			},
+		},
+		created() {
+			this.getRates();
 		},
 		setup() {
 			const toast = useToast();
@@ -109,15 +121,18 @@
 
 		&__form-title {
 			margin: 0 0 1.5rem 0;
+			width: 400px;
 		}
 		&__form {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
-			padding: 2rem 2rem;
+			padding: 0 2rem 2rem 2rem;
 			gap: 1rem;
 		}
 		&__form-submit {
+			margin: 3rem 0 0 0;
+			position: relative;
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -137,6 +152,9 @@
 			height: max-content;
 			opacity: 1;
 			transition: all 0.2s ease;
+			&.white {
+				background-color: $white;
+			}
 		}
 	}
 

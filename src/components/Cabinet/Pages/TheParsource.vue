@@ -79,6 +79,9 @@
 			icon="/img/icon/cabinet/filter.svg"
 			title="Фильтр"
 			class="the-parsource__right-panel"
+			:isMinimized="isMinimizedRightPanel"
+			@open-right-panel="isMinimizedRightPanel = false"
+			@close-right-panel="isMinimizedRightPanel = true"
 		>
 			<template v-slot>
 				<form
@@ -397,6 +400,7 @@
 		},
 		data() {
 			return {
+				isMinimizedRightPanel: false,
 				isConfirmPopupVisible: false,
 				isParsersLoaded: false,
 				path: this.$route.path,
