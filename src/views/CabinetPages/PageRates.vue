@@ -69,7 +69,7 @@
 					</div>
 
 					<div class="page-rates__stats-item">
-						<h2 class="page-rates__title">Текущий тариф</h2>
+						<h2 class="page-rates__title">Текущая подписка</h2>
 						<stats-card
 							:stats_items="stats[2]"
 							:isRate="true"
@@ -89,7 +89,10 @@
 								text="Перейти к оплате"
 								:disabled="userRate.is_active"
 							/>
-							<r-button color="bordered" text="Сменить тариф" />
+							<r-button
+								color="bordered"
+								text="Сменить подписку"
+							/>
 						</template>
 					</div>
 				</div>
