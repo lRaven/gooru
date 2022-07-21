@@ -103,7 +103,7 @@
 			<r-modal v-if="isModalVisible" @close-modal="close_modal">
 				<template v-slot>
 					<form
-						class="the-rates__create-appeal"
+						class="page-rates__create-appeal"
 						@submit.prevent="create_ticket"
 					>
 						<h2 class="page-rates__create-appeal-title">
@@ -326,7 +326,7 @@
 	@import "@/assets/scss/variables";
 
 	.page-rates {
-		padding: 4rem;
+		padding: 6.4rem 4rem 4rem 4rem;
 		height: 100%;
 		overflow: auto;
 

@@ -325,7 +325,7 @@
 		position: relative;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
-		padding: 4rem 3rem;
+		padding: 6.4rem 4rem 4rem 4rem;
 		min-height: 100%;
 		overflow: auto;
 

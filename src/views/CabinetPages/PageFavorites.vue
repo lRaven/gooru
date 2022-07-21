@@ -226,7 +226,7 @@
 
 		&__main {
 			position: relative;
-			padding: 4rem 0 4rem 4rem;
+			padding: 6.4rem 0 4rem 4rem;
 			width: 100%;
 			height: calc(100vh - 8rem);
 			overflow-y: auto;

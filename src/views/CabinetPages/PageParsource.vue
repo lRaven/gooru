@@ -551,7 +551,7 @@
 		grid-gap: 2rem;
 
 		&__main {
-			padding: 4rem 1rem 3rem 4rem;
+			padding: 6.4rem 1rem 4rem 4rem;
 			display: grid;
 			grid-template-rows: max-content 1fr;
 			grid-gap: 3rem 2rem;

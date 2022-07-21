@@ -342,7 +342,7 @@
 		display: grid;
 		grid-template-columns: 1fr minmax(0, 29rem);
 		grid-template-rows: repeat(2, max-content);
-		padding: 4rem 0 4rem 4rem;
+		padding: 6.4rem 0 4rem 4rem;
 		gap: 3rem;
 		height: 100%;
 		overflow: auto;
