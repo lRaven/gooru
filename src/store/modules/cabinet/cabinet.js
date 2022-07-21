@@ -11,7 +11,7 @@ const state = () => ({
 
 	user: {},
 
-	rate: null,
+	rate: {},
 });
 
 const getters = {};

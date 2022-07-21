@@ -118,6 +118,28 @@
 				@click="postUpdatedData"
 			></r-button>
 		</div>
+
+		<transition-group mode="out-in">
+			<rate-info :rate="rate" v-if="isHasRate || false"></rate-info>
+
+			<div class="page-profile__rate" v-else>
+				<h3 class="page-profile__rate-title">Активировать подписку</h3>
+
+				<r-button
+					text="Активация"
+					@click="this.$router.push({ name: 'rates' })"
+				></r-button>
+
+				<h4 class="page-profile__rate-help">
+					Не можете определиться с выбором подписки??
+				</h4>
+
+				<r-button
+					text="Пройти бриф"
+					@click="this.$router.push({ name: 'brief' })"
+				></r-button>
+			</div>
+		</transition-group>
 	</section>
 </template>
 
@@ -128,10 +150,12 @@
 		upload_avatar,
 		change_password,
 	} from "@/api/userApi";
+	import RateInfo from "@/components/Rates/RateInfo.vue";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageProfile",
+		components: { RateInfo },
 		watch: {
 			user_data: {
 				handler() {
@@ -153,7 +177,10 @@
 			},
 		},
 		computed: {
-			...mapState({ user_data: (state) => state.cabinet.user }),
+			...mapState({
+				user_data: (state) => state.cabinet.user,
+				rate: (state) => state.cabinet.rate,
+			}),
 
 			isUserDataChanged() {
 				if (
@@ -191,6 +218,10 @@
 					? true
 					: false;
 			},
+
+			isHasRate() {
+				return Object.keys(this.rate).length > 0;
+			},
 		},
 		data: () => ({
 			isPersonalDataFormDisabled: true,
@@ -205,6 +236,7 @@
 				phone_number: "",
 				email: "",
 			},
+
 			new_avatar: "",
 
 			passwords: {
@@ -340,12 +372,19 @@
 
 	.page-profile {
 		display: grid;
-		grid-template-columns: 1fr minmax(0, 29rem);
-		grid-template-rows: repeat(2, max-content);
-		padding: 6.4rem 0 4rem 4rem;
-		gap: 3rem;
+		grid-template-columns: max-content 1fr;
+		padding: 6.4rem 4rem 4rem 4rem;
+		grid-gap: 3rem 20rem;
 		height: 100%;
 		overflow: auto;
+
+		@media (max-width: 1023px) {
+			padding: 4rem;
+		}
+
+		@media (max-width: 767px) {
+			padding: 4rem 1.5rem;
+		}
 
 		&__title,
 		&__main {
@@ -356,7 +395,6 @@
 			display: grid;
 			grid-template-columns: 52rem;
 			grid-gap: 8rem;
-			column-gap: 25rem;
 		}
 
 		&__title {
@@ -430,6 +468,24 @@
 			width: max-content;
 			padding: 1.6rem 4rem;
 			font-size: 1.4rem;
+		}
+
+		&__rate {
+			&-title {
+				font-weight: 500;
+				color: $primary;
+				margin-bottom: 3rem;
+			}
+			&-help {
+				font-weight: 500;
+				color: $primary;
+				margin-bottom: 3rem;
+			}
+			.r-button {
+				&:nth-child(2) {
+					margin-bottom: 2rem;
+				}
+			}
 		}
 	}
 </style>
