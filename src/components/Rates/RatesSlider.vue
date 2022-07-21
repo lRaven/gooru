@@ -97,7 +97,7 @@
 		methods: {
 			selectRate(id) {
 				if (this.isAuth) {
-					this.$router.push({ name: "rates" });
+					this.$router.push({ name: "rates", query: { from: 'ratePopup' } });
 				} else {
 					this.selectedRate = this.slides.find((slideItem) => {
 						return slideItem.id === id;

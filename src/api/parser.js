@@ -145,7 +145,7 @@ const deleteComment = async ({ id }) => {
 const createFavoriteParser = async ({ user, parser }) => {
     try {
         const { data } = await axios.post(
-            `${store.state.baseURL}/usersfavorite`,
+            `${store.state.baseURL}/usersfavorite/`,
             {
                 user,
                 parser,
@@ -162,6 +162,21 @@ const createFavoriteParser = async ({ user, parser }) => {
     }
 };
 
+const deleteFavoriteParser = async ({ id }) => {
+    try {
+        await axios.delete(
+            `${store.state.baseURL}/usersfavorite/${id}`,
+            {
+                headers: {
+                    Authorization: `token ${cookie.get("auth_token")}`,
+                },
+            }
+        );
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 export {
     send_new_parsource,
     delete_parsource,
@@ -170,6 +185,7 @@ export {
     getComments,
     createComment,
     createFavoriteParser,
+    deleteFavoriteParser,
     updateComment,
     deleteComment,
 };

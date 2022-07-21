@@ -2,6 +2,8 @@ import cookie from 'vue-cookies';
 import axios from 'axios';
 import store from '@/store';
 
+import { createFavoriteParser, deleteFavoriteParser } from '@/api/parser';
+
 const state = () => ({ favorites: [], })
 
 const getters = {}
@@ -67,6 +69,76 @@ const actions = {
 		}
 		catch (err) { throw new Error(err) }
 	},
+	updateFavorites: async (context, { parserToUpdate, userId, isFavorite }) => {
+		try {
+			
+			if (isFavorite) {
+				await deleteFavoriteParser({ id: parserToUpdate.id });
+				const updatedFavorites = context.state.favorites.map( favoriteParsource => {
+					if (favoriteParsource.id === parserToUpdate.parsource) {
+						favoriteParsource.parsers = favoriteParsource.parsers.filter( favoriteParser => favoriteParser.id !== parserToUpdate.id);
+					}
+					return favoriteParsource;
+				});
+				context.commit('SET_FAVORITES', updatedFavorites);
+			} else {
+				await createFavoriteParser({ parser: parserToUpdate.id, user: userId });
+				const favoriteParsourcesCopy = context.state.favorites.map( parsource => {
+					return JSON.parse(JSON.stringify(parsource));
+				});
+				
+				const updatedFavoriteParsource = favoriteParsourcesCopy.find( favoriteParsource => favoriteParsource.id === parserToUpdate.parsource);
+				if (updatedFavoriteParsource) {
+					const newFavoriteParser = {};
+					Object.keys(parserToUpdate).forEach( key => {
+						if (key !== 'comment') {
+							newFavoriteParser[key] = parserToUpdate[key];
+						}
+					});
+					updatedFavoriteParsource.parsers.push(newFavoriteParser);
+					context.commit('SET_FAVORITES', favoriteParsourcesCopy);
+				} else {
+					const parsourcesCopy = context.rootState.parsers.all_parsources.map( parsource => {
+						return JSON.parse(JSON.stringify(parsource));
+					});
+					const newFavoriteParsource = parsourcesCopy.find(parsource => parsource.id === parserToUpdate.parsource);
+					newFavoriteParsource.parsers = [parserToUpdate];
+					context.commit('SET_FAVORITES', [...context.state.favorites, newFavoriteParsource]);
+				}
+				
+				/* if (isParsourceInFavotites) {
+					const updatedParsource = {...isParsourceInFavotites};
+					const newFavoriteParser = {};
+						Object.keys(parserToUpdate).forEach( key => {
+							if (key !== 'comment') {
+								newFavoriteParser[key] = parserToUpdate[key];
+							}
+						});
+						updatedParsource.parsers.push(newFavoriteParser);
+						const updatedFavorites = context.state.favorites.map( favoriteParsource => {
+
+						} )
+				} else {
+					
+				}
+				const updatedFavorites = context.state.favorites.map( favoriteParsource => {
+					if (favoriteParsource.id === parserToUpdate.parsource) {
+						const newFavoriteParser = {};
+						Object.keys(parserToUpdate).forEach( key => {
+							if (key !== 'comment') {
+								newFavoriteParser[key] = parserToUpdate[key];
+							}
+						});
+						favoriteParsource.parsers.push(newFavoriteParser)
+					}
+					return favoriteParsource;
+				});
+				context.commit('SET_FAVORITES', updatedFavorites); */
+			}
+		} catch (error) {
+			throw new Error(error);
+		}
+	}
 }
 
 export default {
