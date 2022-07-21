@@ -423,6 +423,7 @@
 					parsource.parsers.forEach((parser) => {
 						if (parser.id === this.parser.id) {
 							find = true;
+						this.parser.favoriteId = parser.favoriteId;
 						}
 					});
 				});

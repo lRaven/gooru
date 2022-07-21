@@ -194,7 +194,7 @@
 </template>
 
 <script>
-import { useToast } from "vue-toastification";
+	import { useToast } from "vue-toastification";
 
 	import { directive } from "vue3-click-away";
 	import { mapState, mapActions } from "vuex";
@@ -230,7 +230,10 @@ import { useToast } from "vue-toastification";
 			},
 		},
 		computed: {
-			...mapState({ favorites: (state) => state.favorites.favorites, user: (state) => state.cabinet.user, }),
+			...mapState({
+				favorites: (state) => state.favorites.favorites,
+				user: (state) => state.cabinet.user,
+			}),
 
 			isFavorited() {
 				let find = false;
@@ -238,6 +241,7 @@ import { useToast } from "vue-toastification";
 					parsource.parsers.forEach((parser) => {
 						if (parser.id === this.parser.id) {
 							find = true;
+							this.favoriteId = parser.favoriteId;
 						}
 					});
 				});
@@ -259,6 +263,7 @@ import { useToast } from "vue-toastification";
 				isDeleteFavoritePopupVisible: false,
 
 				comment: "",
+				favoriteId: 0,
 				downloadFormatFiles: { excel: false, csv: false },
 
 				shareContent: {
@@ -307,11 +312,25 @@ import { useToast } from "vue-toastification";
 			},
 			async deleteFavoriteParser() {
 				try {
-					await this.updateFavorites({ parserToUpdate: this.parser, userId: this.user.id, isFavorite: true });
-					this.toast.success(`Парсер «${this.parser.article}» удален из избранного!`);
-					setTimeout(() => this.isDeleteFavoritePopupVisible = false, 1000);
+					await this.updateFavorites({
+						parserToUpdate: {
+							...this.parser,
+							favoriteId: this.favoriteId,
+						},
+						userId: this.user.id,
+						isFavorite: true,
+					});
+					this.toast.success(
+						`Парсер «${this.parser.article}» удален из избранного!`
+					);
+					setTimeout(
+						() => (this.isDeleteFavoritePopupVisible = false),
+						1000
+					);
 				} catch (error) {
-					this.toast.error(`Не удалось удалить «${this.parser.article}» из избранного !`);
+					this.toast.error(
+						`Не удалось удалить «${this.parser.article}» из избранного !`
+					);
 				}
 			},
 			async handleClickDownload() {
