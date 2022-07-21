@@ -99,7 +99,7 @@
 					Поделиться в социальных сетях:
 				</p>
 				<ul class="favorite-content-item__social-list">
-					<li class="favorite-content-item__social-list-item">
+					<!-- <li class="favorite-content-item__social-list-item">
 						<ShareNetwork
 							network="facebook"
 							:url="shareContent.url"
@@ -114,7 +114,7 @@
 								alt="facebook"
 							/>
 						</ShareNetwork>
-					</li>
+					</li> -->
 					<li class="favorite-content-item__social-list-item">
 						<ShareNetwork
 							network="odnoklassniki"

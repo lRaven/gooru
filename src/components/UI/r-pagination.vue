@@ -20,7 +20,7 @@
 				/>
 			</svg>
 
-			Предыдущая
+			{{ document_width > 767 ? "Предыдущая" : "" }}
 		</button>
 
 		<ol class="r-pagination__items" v-if="totalPages <= 7">
@@ -34,7 +34,6 @@
 					class="r-pagination__item-btn"
 					:class="{
 						current: current_page === pagination_item,
-						wide: pagination_item > 99,
 					}"
 				>
 					{{ pagination_item }}
@@ -71,7 +70,7 @@
 					class="r-pagination__item-btn"
 					:class="{
 						current: current_page === totalPages,
-						wide: pagination_item > 99,
+						wide: totalPages > 99,
 					}"
 				>
 					{{ totalPages }}
@@ -104,7 +103,7 @@
 			:class="{ disabled: current_page >= totalPages }"
 			@click="changePage(current_page + 1)"
 		>
-			Следующая
+			{{ document_width > 767 ? "Следующая" : "" }}
 			<svg
 				width="10"
 				height="6"
@@ -123,6 +122,8 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
+
 	export default {
 		name: "rPagination",
 		props: {
@@ -140,6 +141,8 @@
 			},
 		},
 		computed: {
+			...mapState(["document_width"]),
+
 			totalPages() {
 				return Math.ceil(this.count / this.items_on_page);
 			},
@@ -228,6 +231,9 @@
 			display: flex;
 			align-items: center;
 			gap: 0.9rem;
+			@media (max-width: 425px) {
+				flex-wrap: wrap;
+			}
 		}
 		&__item {
 			list-style: none;

@@ -257,7 +257,7 @@
 					Поделиться в социальных сетях:
 				</p>
 				<ul class="parser-content__social-list">
-					<li class="parser-content__social-list-item">
+					<!-- <li class="parser-content__social-list-item">
 						<ShareNetwork
 							network="facebook"
 							:url="shareContent.url"
@@ -272,7 +272,7 @@
 								alt="facebook"
 							/>
 						</ShareNetwork>
-					</li>
+					</li> -->
 					<li class="parser-content__social-list-item">
 						<ShareNetwork
 							network="odnoklassniki"

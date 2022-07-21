@@ -1,11 +1,33 @@
 <template>
-	<p class="r-status" :class="statusClass">{{ statusMessage }}</p>
+	<p class="r-status" :class="statusClass">
+		<template v-if="isMinimized">
+			<template v-if="statusClass === 'works'">
+				{{ `${status}%` }}
+			</template>
+
+			<img
+				src="/img/icon/cabinet/tick.svg"
+				alt=""
+				v-else-if="statusClass === 'completed'"
+			/>
+
+			<img src="/img/icon/cabinet/postpone.svg" alt="" v-else />
+		</template>
+
+		<template v-else> {{ statusMessage }} </template>
+	</p>
 </template>
 
 <script>
 	export default {
 		name: "rStatus",
-		props: { status: Number },
+		props: {
+			status: Number,
+			isMinimized: {
+				value: Boolean,
+				default: false,
+			},
+		},
 		computed: {
 			//* вывод класса в зависимости от статуса (предварительно цифровой, т.к. с бека статус не приходит разный)
 			statusClass() {
@@ -36,7 +58,8 @@
 
 	.r-status {
 		user-select: none;
-		display: inline-block;
+		display: flex;
+		align-items: center;
 		width: max-content;
 		padding: 0.8rem 2.4rem;
 		border-radius: 5rem;

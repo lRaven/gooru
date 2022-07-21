@@ -1,36 +1,39 @@
 <template>
-	<section class="the-profile">
-		<h2 class="the-profile__title">Мой профиль</h2>
+	<section class="page-profile">
+		<h2 class="page-profile__title">Мой профиль</h2>
 
-		<div class="the-profile__main">
-		<form class="the-profile__change-avatar">
+		<div class="page-profile__main">
+			<form class="page-profile__change-avatar">
 				<img
-					:src="personal_data.avatar || '/img/icon/cabinet/no-avatar.svg'"
-					class="the-profile__form-avatar"
+					:src="
+						personal_data.avatar ||
+						'/img/icon/cabinet/no-avatar.svg'
+					"
+					class="page-profile__form-avatar"
 					alt=""
 				/>
 
-				<label class="the-profile__image-pick">
+				<label class="page-profile__image-pick">
 					<input
 						type="file"
 						name=""
-						class="the-profile__image-pick-input"
+						class="page-profile__image-pick-input"
 						accept="image/*"
 						@change="change_avatar($event.target)"
 					/>
-					<div type="button" class="the-profile__image-pick-btn">
+					<div type="button" class="page-profile__image-pick-btn">
 						<img src="/img/icon/cabinet/edit.svg" alt="" />
 						Изменить
 					</div>
 				</label>
 			</form>
 
-			<form class="the-profile__form the-profile__change-personal-data">
-				<h4 class="the-profile__form-title">Личные данные</h4>
+			<form class="page-profile__form page-profile__change-personal-data">
+				<h4 class="page-profile__form-title">Личные данные</h4>
 				<transition mode="out-in">
 					<button
 						type="button"
-						class="the-profile__form-edit"
+						class="page-profile__form-edit"
 						@click="isPersonalDataFormDisabled = false"
 						v-if="isPersonalDataFormDisabled === true"
 					>
@@ -39,22 +42,22 @@
 					</button>
 				</transition>
 
-				<fieldset class="the-profile__form-body">
-					<p class="the-profile__form-input-description">Имя</p>
+				<fieldset class="page-profile__form-body">
+					<p class="page-profile__form-input-description">Имя</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
 						:value="personal_data.first_name"
 						v-model="personal_data.first_name"
 					></r-input>
 
-					<p class="the-profile__form-input-description">Фамилия</p>
+					<p class="page-profile__form-input-description">Фамилия</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
 						:value="personal_data.last_name"
 						v-model="personal_data.last_name"
 					></r-input>
 
-					<p class="the-profile__form-input-description">Телефон</p>
+					<p class="page-profile__form-input-description">Телефон</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
 						input_type="tel"
@@ -62,7 +65,7 @@
 						v-model="personal_data.phone_number"
 					></r-input>
 
-					<p class="the-profile__form-input-description">E-mail</p>
+					<p class="page-profile__form-input-description">E-mail</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
 						input_type="tel"
@@ -72,12 +75,12 @@
 				</fieldset>
 			</form>
 
-			<form class="the-profile__form the-profile__change-password">
-				<h4 class="the-profile__form-title">Пароль</h4>
+			<form class="page-profile__form page-profile__change-password">
+				<h4 class="page-profile__form-title">Пароль</h4>
 				<transition mode="out-in">
 					<button
 						type="button"
-						class="the-profile__form-edit"
+						class="page-profile__form-edit"
 						@click="isPasswordsFormDisabled = false"
 						v-if="isPasswordsFormDisabled === true"
 					>
@@ -86,8 +89,8 @@
 					</button>
 				</transition>
 
-				<fieldset class="the-profile__form-body">
-					<p class="the-profile__form-input-description">
+				<fieldset class="page-profile__form-body">
+					<p class="page-profile__form-input-description">
 						Старый пароль
 					</p>
 					<r-input
@@ -97,7 +100,7 @@
 						v-model="passwords.old_password"
 					></r-input>
 
-					<p class="the-profile__form-input-description">
+					<p class="page-profile__form-input-description">
 						Новый пароль
 					</p>
 					<r-input
@@ -128,7 +131,7 @@
 	import { useToast } from "vue-toastification";
 
 	export default {
-		name: "TheProfile",
+		name: "PageProfile",
 		watch: {
 			user_data: {
 				handler() {
@@ -335,7 +338,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-profile {
+	.page-profile {
 		display: grid;
 		grid-template-columns: 1fr minmax(0, 29rem);
 		grid-template-rows: repeat(2, max-content);

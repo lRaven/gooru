@@ -157,6 +157,11 @@ export const sortParsources = {
 }
 
 export const sortParsourcesUser = {
+	watch: {
+		sortByDropdown() {
+			this.sort_list({ key: this.sortByDropdown.key, direction: this.sortByDropdown.direction });
+		},
+	},
 	data: () => ({
 		sortUser: [
 			{
@@ -203,7 +208,95 @@ export const sortParsourcesUser = {
 			},
 		],
 
+		sortUserDropdown: [
+			{
+				id: 1,
+				key: "data_source",
+				description: "по источнику (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 2,
+				key: "data_source",
+				description: "по источнику (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 3,
+				key: "name",
+				description: "по названию (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 4,
+				key: "name",
+				description: "по названию (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 5,
+				key: "date",
+				description: "по дате (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 6,
+				key: "date",
+				description: "по дате (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 7,
+				key: "condition",
+				description: "по статусу (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 8,
+				key: "condition",
+				description: "по статусу (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 9,
+				key: "find",
+				description: "по найденным (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 10,
+				key: "find",
+				description: "по найденным (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 11,
+				key: "favorite",
+				description: "по числу в избранном (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 12,
+				key: "favorite",
+				description: "по числу в избранном (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 13,
+				key: "lost_time",
+				description: "по времени парсинга (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 14,
+				key: "lost_time",
+				description: "по времени парсинга (по-убыванию)",
+				direction: "descending",
+			},
+		],
+
 		sortBy: null,
+		sortByDropdown: null,
 	}),
 
 	methods: {
@@ -261,6 +354,11 @@ export const sortParsourcesUser = {
 }
 
 export const sortUsers = {
+	watch: {
+		sortByDropdown() {
+			this.sort_list({ key: this.sortByDropdown.key, direction: this.sortByDropdown.direction });
+		},
+	},
 	data: () => ({
 		sortManager: [
 			{
@@ -282,6 +380,7 @@ export const sortUsers = {
 				direction: "descending",
 			},
 		],
+
 		sortAdmin: [
 			{
 				id: 1,
@@ -309,7 +408,98 @@ export const sortUsers = {
 			},
 		],
 
+		sortManagerDropdown: [
+			{
+				id: 1,
+				key: "id",
+				description: "По id пользователя (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 2,
+				key: "id",
+				description: "По id пользователя (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 3,
+				key: "is_active",
+				description: "По статусу (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 4,
+				key: "is_active",
+				description: "По статусу (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 5,
+				key: "",
+				description: "По кол-ву парсеров (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 6,
+				key: "",
+				description: "По кол-ву парсеров (по-убыванию)",
+				direction: "descending",
+			},
+		],
+
+		sortAdminDropdown: [
+			{
+				id: 1,
+				key: "id",
+				description: "По id пользователя (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 2,
+				key: "id",
+				description: "По id пользователя (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 3,
+				key: "is_active",
+				description: "По статусу (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 4,
+				key: "is_active",
+				description: "По статусу (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 5,
+				key: "",
+				description: "По кол-ву парсеров (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 6,
+				key: "",
+				description: "По кол-ву парсеров (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 7,
+				key: "",
+				description: "По менеджеру (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 8,
+				key: "",
+				description: "По менеджеру (по-убыванию)",
+				direction: "descending",
+			},
+		],
+
 		sortBy: null,
+		sortByDropdown: null,
 	}),
 
 	methods: {

@@ -1,12 +1,12 @@
 <template>
-	<section class="the-favorites">
-		<div class="the-favorites__main">
-			<h2 class="the-favorites__title">Избранное</h2>
+	<section class="page-favorites">
+		<div class="page-favorites__main">
+			<h2 class="page-favorites__title">Избранное</h2>
 
-			<div class="the-favorites__sort-panel">
-				<div class="the-favorites__sort-panel-header">
+			<div class="page-favorites__sort-panel">
+				<div class="page-favorites__sort-panel-header">
 					<button
-						class="the-favorites__sort-panel-btn"
+						class="page-favorites__sort-panel-btn"
 						type="button"
 						@click="
 							if (isSortPanelVisible === false)
@@ -16,35 +16,35 @@
 						<img
 							src="/img/icon/cabinet/sort.svg"
 							alt=""
-							class="the-favorites__sort-panel-btn-icon"
+							class="page-favorites__sort-panel-btn-icon"
 						/>
-						<p class="the-favorites__sort-panel-btn-description">
+						<p class="page-favorites__sort-panel-btn-description">
 							Сортировать
 						</p>
 					</button>
 
 					<button
-						class="the-favorites__sort-panel-btn"
+						class="page-favorites__sort-panel-btn"
 						v-if="isSortPanelVisible === true"
 						@click="isSortPanelVisible = false"
 					>
-						<p class="the-favorites__sort-panel-btn-description">
+						<p class="page-favorites__sort-panel-btn-description">
 							Свернуть параметры
 						</p>
 						<img
 							src="/img/icon/cabinet/arrow-double.svg"
 							alt=""
-							class="the-favorites__sort-panel-btn-icon"
+							class="page-favorites__sort-panel-btn-icon"
 						/>
 					</button>
 				</div>
 
 				<div
-					class="the-favorites__sort-panel-body"
+					class="page-favorites__sort-panel-body"
 					v-show="isSortPanelVisible === true"
 				>
-					<div class="the-favorites__sort-panel-col">
-						<p class="the-favorites__sort-panel-description">
+					<div class="page-favorites__sort-panel-col">
+						<p class="page-favorites__sort-panel-description">
 							Поиск по источнику
 						</p>
 						<r-dropdown
@@ -54,15 +54,15 @@
 						></r-dropdown>
 					</div>
 
-					<div class="the-favorites__sort-panel-col">
-						<p class="the-favorites__sort-panel-description">
+					<div class="page-favorites__sort-panel-col">
+						<p class="page-favorites__sort-panel-description">
 							Поиск по дате
 						</p>
 						<r-date-range-picker></r-date-range-picker>
 					</div>
 
-					<div class="the-favorites__sort-panel-col">
-						<p class="the-favorites__sort-panel-description">
+					<div class="page-favorites__sort-panel-col">
+						<p class="page-favorites__sort-panel-description">
 							Поиск по типу контента
 						</p>
 						<r-dropdown
@@ -82,7 +82,7 @@
 
 			<transition mode="out-in">
 				<div
-					class="the-favorites__list"
+					class="page-favorites__list"
 					v-if="isFavoritesLoaded && favorites.length > 0"
 				>
 					<favorite-card
@@ -96,7 +96,7 @@
 
 			<transition mode="out-in">
 				<p
-					class="the-favorites__empty"
+					class="page-favorites__empty"
 					v-if="favorites.length === 0 && isFavoritesLoaded"
 				>
 					Список избранного пуст
@@ -107,7 +107,7 @@
 		<right-panel
 			icon="/img/icon/cabinet/tick-bordered.svg"
 			title="Выбрано"
-			class="the-favorites__right-panel"
+			class="page-favorites__right-panel"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
 			@close-right-panel="isMinimizedRightPanel = true"
@@ -130,7 +130,7 @@
 	import RightPanel from "@/components/Cabinet/RightPanel";
 
 	export default {
-		name: "TheFavorites",
+		name: "PageFavorites",
 		components: {
 			rDateRangePicker,
 			FavoriteCard,
@@ -167,7 +167,7 @@
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getFavoriteParsers"]),
 			minimizeRightPanel() {
-				console.log('yes');
+				console.log("yes");
 			},
 			updateSelectedParsers(favoriteCardObj) {
 				const { parsourceId, selectedParsers } = favoriteCardObj;
@@ -218,7 +218,7 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 
-	.the-favorites {
+	.page-favorites {
 		display: grid;
 		grid-template-columns: 1fr max-content;
 		padding: 0;
@@ -251,7 +251,7 @@
 				gap: 1rem;
 				background-color: transparent;
 				&:nth-child(2) {
-					.the-favorites__sort-panel-btn {
+					.page-favorites__sort-panel-btn {
 						&-description {
 							font-weight: 400;
 						}

@@ -11,7 +11,7 @@
 				class="the-favorites__right-panel-social"
 				@click.capture="handleClickSharedIcon($event)"
 			>
-				<ShareNetwork
+				<!-- <ShareNetwork
 					network="facebook"
 					:url="shareContent.url"
 					:title="shareContent.title"
@@ -23,7 +23,7 @@
 					@close="callbackCloseSharedIcon"
 				>
 					<img src="/img/icon/cabinet/fb.svg" alt="facebook" />
-				</ShareNetwork>
+				</ShareNetwork> -->
 
 				<ShareNetwork
 					network="odnoklassniki"

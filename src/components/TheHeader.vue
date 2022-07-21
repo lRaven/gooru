@@ -474,20 +474,7 @@
 
 		&.bg__cabinet {
 			padding: 1rem 4rem;
-			.the-header {
-				&__container {
-					display: grid;
-					grid-template-columns: 22rem 1fr;
-					grid-gap: 4rem;
 
-					@media (max-width: 1023px) {
-						grid-template-columns: min-content max-content;
-					}
-				}
-				&__col {
-					justify-content: space-between;
-				}
-			}
 			@media (max-width: 1023px) {
 				.the-header {
 					&__logo {
@@ -496,35 +483,56 @@
 				}
 			}
 			@media (max-width: 767px) {
-				padding: 1.5rem;
+				padding: 1rem 1.5rem;
+			}
+
+			.the-header {
+				&__container {
+					display: grid;
+					grid-template-columns: 22rem 1fr;
+					grid-gap: 4rem;
+
+					@media (max-width: 1140px) {
+						grid-template-columns: min-content max-content;
+					}
+				}
+				&__col {
+					justify-content: space-between;
+				}
+
+				&__burger {
+					@media (max-width: 1023px) {
+						background-color: transparent;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between;
+						gap: 0.6rem;
+						height: 2rem;
+						width: 2.7rem;
+						color: $gray;
+						z-index: 4;
+					}
+					&-line {
+						&:nth-child(3) {
+							transform: scaleX(0.7) translateX(-0.48rem);
+						}
+					}
+				}
 			}
 		}
 
 		&__burger {
 			display: none;
-
-			@media (max-width: 1023px) {
-				background-color: transparent;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				gap: 0.6rem;
-				height: 2rem;
-				width: 2.7rem;
-				color: $gray;
-				z-index: 4;
-			}
-			&-line {
-				&:nth-child(3) {
-					width: 1.8rem;
-				}
-			}
 		}
 
 		&__container {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+
+			@media (max-width: 375px) {
+				flex-wrap: wrap;
+			}
 		}
 
 		&__col {
@@ -534,6 +542,9 @@
 				gap: 13rem;
 				@media (max-width: 1420px) {
 					gap: 2rem;
+				}
+				@media (max-width: 375px) {
+					gap: 0;
 				}
 			}
 		}
@@ -546,10 +557,6 @@
 				display: none;
 			}
 			.r-button {
-				min-width: inherit;
-				@media (max-width: 1140px) {
-					padding: 1rem 2rem;
-				}
 				&:hover {
 					.r-button__icon {
 						path {
@@ -704,8 +711,15 @@
 			font-size: 1.4rem;
 			font-weight: 700;
 			color: rgba($black, $alpha: 0.7);
-			@media (max-width: 1140px) {
+			@media (max-width: 1140px) and (min-width: 1024px) {
 				max-width: 14rem;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			@media (max-width: 540px) {
+				max-width: 12rem;
 				overflow: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;

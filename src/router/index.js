@@ -7,24 +7,24 @@ import PageRegistration from '@/views/PageRegistration'
 //* cabinet 
 import PageCabinet from '@/views/PageCabinet'
 
-import TheRates from '@/components/Cabinet/Pages/TheRates'
-import TheAppeals from '@/components/Cabinet/Pages/TheAppeals'
-import TheAppeal from '@/components/Cabinet/Pages/TheAppeal'
+import PageRates from '@/views/CabinetPages/PageRates'
+import PageAppeals from '@/views/CabinetPages/PageAppeals'
+import PageAppeal from '@/views/CabinetPages/PageAppeal'
 
-import TheParsources from '@/components/Cabinet/Pages/TheParsources'
-import TheParsource from '@/components/Cabinet/Pages/TheParsource'
+import PageParsources from '@/views/CabinetPages/PageParsources'
+import PageParsource from '@/views/CabinetPages/PageParsource'
 
-import TheFavorites from '@/components/Cabinet/Pages/TheFavorites'
+import PageFavorites from '@/views/CabinetPages/PageFavorites'
 
-import TheProfile from '@/components/Cabinet/Pages/TheProfile'
+import PageProfile from '@/views/CabinetPages/PageProfile'
 
-import TheNewParser from '@/components/Cabinet/Pages/TheNewParser'
-import TheNewGroupParser from '@/components/Cabinet/Pages/TheNewGroupParser'
+import PageNewParser from '@/views/CabinetPages/PageNewParser'
+import PageNewGroupParser from '@/views/CabinetPages/PageNewGroupParser'
 
 //* admin pages
-import TheUsers from '@/components/Cabinet/Pages/TheUsers'
-import TheUser from '@/components/Cabinet/Pages/TheUser'
-import TheControl from '@/components/Cabinet/Pages/TheControl';
+import PageUsers from '@/views/CabinetPages/PageUsers'
+import PageUser from '@/views/CabinetPages/PageUser'
+import PageControl from '@/views/CabinetPages/PageControl';
 //*
 
 import PageBrief from '@/views/PageBrief'
@@ -57,7 +57,7 @@ const routes = [
 			{
 				path: 'rates',
 				name: 'rates',
-				component: TheRates,
+				component: PageRates,
 				meta: {
 					title: 'Тарифы',
 					requiresAuth: true,
@@ -67,7 +67,7 @@ const routes = [
 			{
 				path: 'appeals',
 				name: 'appeals',
-				component: TheAppeals,
+				component: PageAppeals,
 				meta: {
 					title: 'Обращения',
 					requiresAuth: true,
@@ -77,7 +77,7 @@ const routes = [
 			{
 				path: 'appeal',
 				name: 'appeal',
-				component: TheAppeal,
+				component: PageAppeal,
 				meta: {
 					title: 'Обращение',
 					requiresAuth: true,
@@ -87,7 +87,7 @@ const routes = [
 			{
 				path: 'parsources',
 				name: 'parsources',
-				component: TheParsources,
+				component: PageParsources,
 				meta: {
 					title: 'Мои парсеры',
 					requiresAuth: true,
@@ -97,7 +97,7 @@ const routes = [
 			{
 				path: 'parsource/:id',
 				name: 'parsource',
-				component: TheParsource,
+				component: PageParsource,
 				meta: {
 					title: 'Парсер',
 					requiresAuth: true,
@@ -107,7 +107,7 @@ const routes = [
 			{
 				path: 'favorites',
 				name: 'favorites',
-				component: TheFavorites,
+				component: PageFavorites,
 				meta: {
 					title: 'Избранное',
 					requiresAuth: true,
@@ -117,7 +117,7 @@ const routes = [
 			{
 				path: 'profile',
 				name: 'profile',
-				component: TheProfile,
+				component: PageProfile,
 				meta: {
 					title: 'Мой профиль',
 					requiresAuth: true,
@@ -127,7 +127,7 @@ const routes = [
 			{
 				path: 'new_parser',
 				name: 'new_parser',
-				component: TheNewParser,
+				component: PageNewParser,
 				meta: {
 					title: 'Новый парсер',
 					requiresAuth: true,
@@ -137,7 +137,7 @@ const routes = [
 			{
 				path: 'new_group_parser',
 				name: 'new_group_parser',
-				component: TheNewGroupParser,
+				component: PageNewGroupParser,
 				meta: {
 					title: 'Новая группа парсеров',
 					requiresAuth: true,
@@ -149,7 +149,7 @@ const routes = [
 			{
 				path: 'control',
 				name: 'control',
-				component: TheControl,
+				component: PageControl,
 				meta: {
 					title: 'Управление',
 					requiresAuth: true,
@@ -158,7 +158,7 @@ const routes = [
 			{
 				path: 'users',
 				name: 'users',
-				component: TheUsers,
+				component: PageUsers,
 				meta: {
 					title: 'Пользователи',
 					requiresAuth: true,
@@ -169,7 +169,7 @@ const routes = [
 			{
 				path: 'user/:id',
 				name: 'user',
-				component: TheUser,
+				component: PageUser,
 				meta: {
 					title: 'Пользователь',
 					requiresAuth: true,

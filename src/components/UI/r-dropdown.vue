@@ -42,7 +42,9 @@
 					class="r-dropdown__list-item"
 					v-for="item in list"
 					:key="item.id"
-					@click="selectValue(item.id, item[showedValue])"
+					@click="
+						selectValue(item[sendValue] || item, item[showedValue])
+					"
 					:title="item[showedValue]"
 				>
 					{{ item[showedValue] }}
@@ -74,6 +76,10 @@
 					{ id: 3, description: "item-3" },
 				],
 			},
+			sendValue: {
+				value: [String, Number],
+				default: "id",
+			},
 			showedValue: {
 				value: String,
 				default: "description",
@@ -81,9 +87,9 @@
 		},
 		data: () => ({ isContentVisible: false }),
 		methods: {
-			selectValue(id, text) {
+			selectValue(sendValue, text) {
 				this.$refs.selected.textContent = text;
-				this.$emit("update:modelValue", id);
+				this.$emit("update:modelValue", sendValue);
 				this.closeDropdown();
 			},
 			openDropdown() {
@@ -119,7 +125,8 @@
 
 		&__header {
 			cursor: pointer;
-			display: flex;
+			display: grid;
+			grid-template-columns: 1fr max-content;
 			align-items: center;
 			justify-content: space-between;
 			background-color: $white;
