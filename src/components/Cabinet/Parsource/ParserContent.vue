@@ -89,6 +89,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
+					@click="openConfirmPopup"
 					v-if="isFavorited"
 				>
 					<path
@@ -103,6 +104,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
+					@click="updateFavoriteParser"
 					v-else
 				>
 					<path
@@ -358,13 +360,19 @@
 			></r-button>
 		</div>
 	</li>
+	<r-confirm-popup
+		v-if="isDeleteFavoritePopupVisible"
+		:text="`Вы действительно хотите удалить «${parserProp.article}» из избранного?`"
+		@action_confirm="updateFavoriteParser"
+		@close_popup="isDeleteFavoritePopupVisible = false"
+	/>
 </template>
 
 <script>
 	import { useToast } from "vue-toastification";
 
 	import { directive } from "vue3-click-away";
-	import { mapState } from "vuex";
+	import { mapState, mapActions } from "vuex";
 
 	import {
 		createComment,
@@ -404,7 +412,10 @@
 			},
 		},
 		computed: {
-			...mapState({ favorites: (state) => state.favorites.favorites }),
+			...mapState({
+				favorites: (state) => state.favorites.favorites,
+				user: (state) => state.cabinet.user,
+			}),
 
 			isFavorited() {
 				let find = false;
@@ -434,6 +445,7 @@
 				isDownloadOpen: false,
 				isEditComment: false,
 				isCroppedText: true,
+				isDeleteFavoritePopupVisible: false,
 
 				parser: this.parserProp,
 
@@ -454,6 +466,7 @@
 		},
 
 		methods: {
+			...mapActions(["getFavoriteParsers", "updateFavorites"]),
 			hideAllExtras() {
 				this.isMessagesOpen = false;
 				this.isShareOpen = false;
@@ -471,6 +484,33 @@
 			stateReset() {
 				this.minimizeArticle();
 				this.hideAllExtras();
+			},
+			openConfirmPopup() {
+				this.isDeleteFavoritePopupVisible = true;
+			},
+			async updateFavoriteParser() {
+				try {
+					await this.updateFavorites({
+						parserToUpdate: this.parserProp,
+						userId: this.user.id,
+						isFavorite: this.isFavorited,
+					});
+					console.log('after await', this.isFavorited)
+					if (this.isFavorited) {
+						this.toast.success(`Парсер «${this.parserProp.article}» добавлен в избранное!`);
+					} else {
+						this.toast.success(`Парсер «${this.parserProp.article}» удален из избранного!`);
+					}
+					setTimeout(() => this.isDeleteFavoritePopupVisible = false, 1000);
+				} catch (error) {
+					console.log(error);
+					if (this.isFavorited) {
+						this.toast.error(`Не удалось удалить «${this.parserProp.article}» из избранного!`);
+					} else {
+						this.toast.error(`Не удалось добавить «${this.parserProp.article}» в избранное!`);
+					}
+					
+				}
 			},
 			handleEditClick() {
 				this.isEditComment = !this.isEditComment;
@@ -560,6 +600,9 @@
 		},
 
 		directives: { ClickAway: directive },
+		created() {
+			this.getFavoriteParsers();
+		},
 		setup() {
 			const toast = useToast();
 			return { toast };

@@ -220,7 +220,7 @@
 		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["updateRateData", "getAllParsers"]),
+			...mapActions(["getUserRate" ,"updateRateData", "getAllParsers"]),
 			select_rate(rate_id) {
 				console.log("Rate selected: ", rate_id);
 
@@ -314,6 +314,7 @@
 		created() {
 			this.SET_TAB("rates");
 			this.getAllParsers();
+			this.getUserRate();
 		},
 		setup() {
 			const toast = useToast();
