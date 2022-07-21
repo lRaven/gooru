@@ -115,7 +115,7 @@
 	@import "@/assets/scss/variables";
 
 	.page-control {
-		padding: 4rem;
+		padding: 6.4rem 4rem 4rem 4rem;
 		height: 100%;
 		overflow: auto;
 		&__title {

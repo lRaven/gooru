@@ -300,7 +300,7 @@
 			grid-template-columns: 1fr max-content;
 			grid-gap: 2rem;
 			.page-appeals__main {
-				padding: 4rem 0 4rem 4rem;
+				padding: 6.4rem 0 4rem 4rem;
 			}
 		}
 
@@ -321,7 +321,7 @@
 		}
 
 		&__main {
-			padding: 4rem;
+			padding: 6.4rem 4rem 4rem 4rem;
 			display: flex;
 			gap: 4rem;
 			flex-direction: column;

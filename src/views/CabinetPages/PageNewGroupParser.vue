@@ -303,7 +303,7 @@
 	@import "@/assets/scss/variables";
 
 	.page-new-group-parser {
-		padding: 4rem;
+		padding: 6.4rem 4rem 4rem 4rem;
 
 		&__title {
 			font-weight: 400;
