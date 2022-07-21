@@ -104,7 +104,7 @@
 				<template v-slot>
 					<form
 						class="page-rates__create-appeal"
-						@submit="create_ticket"
+						@submit.prevent="create_ticket"
 					>
 						<h2 class="page-rates__create-appeal-title">
 							Новое обращение
