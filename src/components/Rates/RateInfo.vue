@@ -18,21 +18,22 @@
 			<p class="rate-info__more-value">{{ finish_date }}</p>
 		</div>
 
-		<!-- <svg
+		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			xmlns:xlink="http://www.w3.org/1999/xlink"
-			class="rara"
+			class="rate-info__progressbar"
+			viewBox="0 0 350 350"
 		>
 			<circle
-				cx="50%"
-				cy="50%"
+				cx="175"
+				cy="175"
 				r="145"
 				stroke="#5960c7"
 				stroke-width="50px"
 				fill="transparent"
-				class="hmmm"
+				ref="circle"
 			/>
-		</svg> -->
+		</svg>
 	</div>
 </template>
 
@@ -62,11 +63,19 @@
 					return 100;
 				}
 
+				if (start > today) {
+					return 0;
+				}
+
 				return Math.round(((today - start) / (end - start)) * 100);
 			},
 
 			degree() {
 				return (this.percent / 100) * 360;
+			},
+
+			circleLength() {
+				return this.$refs.circle.getTotalLength();
 			},
 		},
 		data: () => ({ percentIncrement: 0, degreeIncrement: 0 }),
@@ -107,8 +116,15 @@
 		},
 		mounted() {
 			setTimeout(() => {
-				this.animatePercent();
-				this.animateDegree();
+				if (this.percent > 0) {
+					this.animatePercent();
+					this.animateDegree();
+				}
+
+				this.$refs.circle.setAttribute(
+					"style",
+					`stroke-dasharray: ${this.circleLength}; stroke-dashoffset: ${this.circleLength};`
+				);
 			}, 300);
 		},
 	};
@@ -167,6 +183,21 @@
 				color: $primary;
 				font-size: 2.4rem;
 			}
+		}
+
+		&__progressbar {
+			height: 35rem;
+			width: 35rem;
+			circle {
+				animation: progress 5s linear forwards;
+			}
+		}
+	}
+
+	@keyframes progress {
+		100% {
+			stroke-dashoffset: 0;
+			background-color: #fff;
 		}
 	}
 </style>
