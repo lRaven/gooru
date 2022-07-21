@@ -92,6 +92,7 @@
 				try {
 					await this.updateRate(this.selectedRate);
 					this.toast.success("Тариф успешно изменен!");
+					this.isLoading = false;
 					setTimeout(this.closeModal, 1000);
 				} catch (error) {
 					this.isLoading = false;
