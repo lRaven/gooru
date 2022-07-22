@@ -110,7 +110,7 @@
 
 				this.$refs.progressbar.setAttribute(
 					"style",
-					`stroke-dasharray: ${this.circleLengthPercent},${this.circleLength}; stroke-dashoffset: ${this.circleLengthPercent};`
+					`stroke-linecap: round; stroke-dasharray: ${this.circleLengthPercent},${this.circleLength}; stroke-dashoffset: ${this.circleLengthPercent};`
 				);
 			}, 300);
 		},
