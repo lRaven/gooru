@@ -43,6 +43,8 @@
 </template>
 
 <script>
+	import { prettyDate } from "@/js/processStrings";
+
 	export default {
 		name: "RateInfo",
 		props: {
@@ -53,10 +55,10 @@
 		},
 		computed: {
 			created_date() {
-				return this.rate.created.split("-").reverse().join(".");
+				return prettyDate(this.rate.created);
 			},
 			finish_date() {
-				return this.rate.finish_date.split("-").reverse().join(".");
+				return prettyDate(this.rate.finish_date);
 			},
 
 			percent() {
