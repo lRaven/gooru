@@ -122,7 +122,9 @@
 								v-model="new_appeal.topic"
 							></r-dropdown>
 							<template v-if="hasParsers">
-								<p class="the-rates__create-appeal-description">
+								<p
+									class="page-rates__create-appeal-description"
+								>
 									Выберите парсер
 								</p>
 								<r-dropdown
@@ -133,7 +135,10 @@
 								></r-dropdown>
 							</template>
 
-							<p class="the-rates__create-appeal-description" :class="{ alignselfstart: !hasParsers }">
+							<p
+								class="page-rates__create-appeal-description"
+								:class="{ alignselfstart: !hasParsers }"
+							>
 								Напишите текст обращения
 							</p>
 							<r-textarea
@@ -224,7 +229,7 @@
 		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getUserRate" ,"updateRateData", "getAllParsers"]),
+			...mapActions(["getUserRate", "updateRateData", "getAllParsers"]),
 			select_rate(rate_id) {
 				console.log("Rate selected: ", rate_id);
 
@@ -431,10 +436,6 @@
 			}
 
 			&-description {
-				&.alignselfstart {
-					align-self: flex-start;
-					margin: 1rem 0 0 0;
-				}
 				&:nth-child(5) {
 					align-self: flex-start;
 					padding-top: 1rem;
