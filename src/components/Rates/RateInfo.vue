@@ -85,7 +85,7 @@
 			animatePercent() {
 				let range;
 
-				this.percent > 10 ? (range = 1500) : (range = 300);
+				this.percent > 10 ? (range = 2000) : (range = 500);
 
 				const interval = setInterval(() => {
 					this.percentIncrement++;
