@@ -17,7 +17,7 @@
 						@select-rate="select_rate"
 					></rate-card>
 
-					<div class="page-rates__brief">
+					<!-- <div class="page-rates__brief">
 						<div class="page-rates__brief-col">
 							<p class="page-rates__brief-text">
 								<span class="page-rates__brief-text-big">
@@ -37,7 +37,9 @@
 							text="Ответить на вопросы"
 							@click="this.$router.push({ name: 'brief' })"
 						></r-button>
-					</div>
+					</div> -->
+
+					<brief-card></brief-card>
 
 					<div class="page-rates__help">
 						<div class="page-rates__help-row">
@@ -157,6 +159,7 @@
 
 	import RateCard from "@/components/Rates/RateCard.vue";
 	import StatsCard from "@/components/Cabinet/Stats/StatsCard.vue";
+	import BriefCard from "@/components/Brief/BriefCard.vue";
 	import { add_ticket } from "@/api/tickets";
 	import { useToast } from "vue-toastification";
 
@@ -165,6 +168,7 @@
 		components: {
 			RateCard,
 			StatsCard,
+			BriefCard,
 		},
 		watch: {
 			userRate() {},
@@ -331,44 +335,8 @@
 			grid-gap: 4rem 3rem;
 		}
 
-		&__brief {
-			display: flex;
-			justify-content: space-between;
-			border-radius: 2rem;
-			padding: 3rem 3rem 3rem 4rem;
+		.brief-card {
 			grid-column: 1/4;
-			background: url("/public/img/brief/brief-bg.png") center / 120% auto
-				no-repeat;
-			background-position: 0 70%;
-			&-text {
-				color: $white;
-				font-size: 2.4rem;
-				font-weight: 600;
-				&:first-child {
-					margin-bottom: 2rem;
-				}
-
-				&-big {
-					text-transform: uppercase;
-					color: $white;
-					font-size: 3.2rem;
-					font-weight: 600;
-					&:nth-child(2) {
-						margin-bottom: 3rem;
-						margin-left: auto;
-					}
-				}
-			}
-
-			&-col {
-				display: flex;
-				flex-direction: column;
-			}
-			.r-button {
-				margin-top: auto;
-				padding: 1.2rem 3rem;
-				height: max-content;
-			}
 		}
 
 		&__help {

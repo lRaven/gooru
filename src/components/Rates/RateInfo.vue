@@ -2,12 +2,34 @@
 	<div class="rate-info">
 		<h3 class="rate-info__name">Израсходовано подписки</h3>
 
-		<div class="rate-info__diagram" ref="progressbar">
-			<div class="rate-info__diagram-item">
-				<h4 class="rate-info__diagram-counter">
-					{{ percentIncrement }}%
-				</h4>
-			</div>
+		<div class="rate-info__diagram">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink"
+				class="rate-info__diagram-svg"
+				viewBox="0 0 350 350"
+			>
+				<circle
+					cx="175"
+					cy="175"
+					r="145"
+					stroke="#e0e7f0"
+					stroke-width="50px"
+					fill="transparent"
+					class="rate-info__diagram-bg"
+				/>
+				<circle
+					cx="175"
+					cy="175"
+					r="145"
+					stroke="#5960c7"
+					stroke-width="50px"
+					fill="transparent"
+					ref="progressbar"
+					class="rate-info__diagram-progressbar"
+				/>
+			</svg>
+			<h4 class="rate-info__diagram-counter">{{ percentIncrement }}%</h4>
 		</div>
 
 		<div class="rate-info__more">
@@ -17,23 +39,6 @@
 			<p class="rate-info__more-key">Дата окончания подписки</p>
 			<p class="rate-info__more-value">{{ finish_date }}</p>
 		</div>
-
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			xmlns:xlink="http://www.w3.org/1999/xlink"
-			class="rate-info__progressbar"
-			viewBox="0 0 350 350"
-		>
-			<circle
-				cx="175"
-				cy="175"
-				r="145"
-				stroke="#5960c7"
-				stroke-width="50px"
-				fill="transparent"
-				ref="circle"
-			/>
-		</svg>
 	</div>
 </template>
 
@@ -59,47 +64,24 @@
 				const end = +new Date(this.rate.finish_date);
 				const today = +new Date();
 
-				if (this.created_date === this.finish_date) {
+				if (new Date() >= new Date(this.rate.finish_date)) {
 					return 100;
-				}
-
-				if (start > today) {
-					return 0;
 				}
 
 				return Math.round(((today - start) / (end - start)) * 100);
 			},
 
-			degree() {
-				return (this.percent / 100) * 360;
-			},
-
 			circleLength() {
-				return this.$refs.circle.getTotalLength();
+				return this.$refs.progressbar.getTotalLength();
+			},
+			circleLengthPercent() {
+				const percent = this.circleLength / 100;
+
+				return percent * this.percent;
 			},
 		},
-		data: () => ({ percentIncrement: 0, degreeIncrement: 0 }),
+		data: () => ({ percentIncrement: 0 }),
 		methods: {
-			setRateProgress() {
-				this.$refs.progressbar.setAttribute(
-					"style",
-					`background: conic-gradient(#5960c7 ${this.degreeIncrement}deg, #e0e7f0 0deg);`
-				);
-			},
-			animateDegree() {
-				let range;
-
-				this.percent > 10 ? (range = 1500) : (range = 300);
-
-				const interval = setInterval(() => {
-					this.setRateProgress();
-					this.degreeIncrement++;
-
-					if (this.degree < this.degreeIncrement) {
-						clearInterval(interval);
-					}
-				}, range / this.degree);
-			},
 			animatePercent() {
 				let range;
 
@@ -115,15 +97,20 @@
 			},
 		},
 		mounted() {
+			//* указываем по дефолту 0%
+			this.$refs.progressbar.setAttribute(
+				"style",
+				`stroke-dasharray: 0,${this.circleLength}; stroke-dashoffset: ${this.circleLengthPercent};`
+			);
+
 			setTimeout(() => {
 				if (this.percent > 0) {
 					this.animatePercent();
-					this.animateDegree();
 				}
 
-				this.$refs.circle.setAttribute(
+				this.$refs.progressbar.setAttribute(
 					"style",
-					`stroke-dasharray: ${this.circleLength}; stroke-dashoffset: ${this.circleLength};`
+					`stroke-dasharray: ${this.circleLengthPercent},${this.circleLength}; stroke-dashoffset: ${this.circleLengthPercent};`
 				);
 			}, 300);
 		},
@@ -141,28 +128,28 @@
 			margin-bottom: 3rem;
 			font-weight: 700;
 		}
+
 		&__diagram {
 			position: relative;
-			width: 35rem;
-			height: 35rem;
-			border-radius: 50%;
-			transition: all 1s ease;
-			background: conic-gradient($primary 0deg, rgba($gray, 0.1) 0deg);
-			margin-bottom: 4rem;
+			margin-bottom: 3rem;
 			&-counter {
-				display: flex;
-				justify-content: center;
-				align-items: center;
 				position: absolute;
-				left: 5rem;
-				right: 5rem;
-				top: 5rem;
-				bottom: 5rem;
-				background-color: $light-blue;
-				border-radius: 50%;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
 				font-weight: 700;
 				color: $primary;
 				font-size: 4rem;
+			}
+			&-bg {
+			}
+			&-progressbar {
+				height: 35rem;
+				width: 35rem;
+				animation: progress 2s ease forwards;
+				transform: rotate(-90deg);
+				transform-origin: 50%;
+				animation-delay: 0.3s;
 			}
 		}
 
@@ -184,20 +171,11 @@
 				font-size: 2.4rem;
 			}
 		}
-
-		&__progressbar {
-			height: 35rem;
-			width: 35rem;
-			circle {
-				animation: progress 5s linear forwards;
-			}
-		}
 	}
 
 	@keyframes progress {
 		100% {
 			stroke-dashoffset: 0;
-			background-color: #fff;
 		}
 	}
 </style>

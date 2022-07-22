@@ -122,7 +122,7 @@
 		<transition-group mode="out-in">
 			<rate-info :rate="rate" v-if="isHasRate || false"></rate-info>
 
-			<div class="page-profile__rate" v-else>
+			<div class="page-profile__rate" v-else-if="!isHasRate || false">
 				<h3 class="page-profile__rate-title">Активировать подписку</h3>
 
 				<r-button
@@ -130,14 +130,7 @@
 					@click="this.$router.push({ name: 'rates' })"
 				></r-button>
 
-				<h4 class="page-profile__rate-help">
-					Не можете определиться с выбором подписки??
-				</h4>
-
-				<r-button
-					text="Пройти бриф"
-					@click="this.$router.push({ name: 'brief' })"
-				></r-button>
+				<brief-card></brief-card>
 			</div>
 		</transition-group>
 	</section>
@@ -151,11 +144,12 @@
 		change_password,
 	} from "@/api/userApi";
 	import RateInfo from "@/components/Rates/RateInfo.vue";
+	import BriefCard from "@/components/Brief/BriefCard.vue";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageProfile",
-		components: { RateInfo },
+		components: { RateInfo, BriefCard },
 		watch: {
 			user_data: {
 				handler() {
@@ -374,7 +368,7 @@
 		display: grid;
 		grid-template-columns: max-content 1fr;
 		padding: 6.4rem 4rem 4rem 4rem;
-		grid-gap: 3rem 20rem;
+		grid-gap: 3rem 10rem;
 		height: 100%;
 		overflow: auto;
 
@@ -468,6 +462,10 @@
 			width: max-content;
 			padding: 1.6rem 4rem;
 			font-size: 1.4rem;
+		}
+
+		.rate-info {
+			margin-left: 10rem;
 		}
 
 		&__rate {
