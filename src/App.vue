@@ -22,12 +22,13 @@
 		},
 		computed: { ...mapState(["baseURL"]) },
 		methods: {
-			...mapActions(["getDocumentWidth", "getUserData", "getUserRate"]),
+			...mapActions(["getDocumentWidth", "getUserData", "getUserRate", "getRates"]),
 		},
 		created() {
 			this.getDocumentWidth();
 			this.getUserData();
 			this.getUserRate();
+			this.getRates();
 		},
 	};
 </script>
