@@ -3,13 +3,13 @@
 		<r-checkbox
 			v-model="isSelected"
 			:checked="isSelected"
-			v-if="isCanSelect"
+			v-if="isCanSelect && document_width > 1140"
 		></r-checkbox>
 
 		<div
 			class="parsource-card__content"
 			:class="{ selected: isSelected }"
-			v-if="document_width > 767"
+			v-if="document_width > 1140"
 		>
 			<p
 				class="parsource-card__id"
@@ -128,7 +128,7 @@
 			</p>
 
 			<r-button
-				:text="document_width > 1240 ? 'Подробнее' : ''"
+				:text="document_width > 1440 ? 'Подробнее' : ''"
 				color="bordered"
 				direction="revert"
 				@click="
@@ -149,7 +149,7 @@
 						src="/img/icon/dot_list.svg"
 						alt="notification"
 						class="parsource-card__notification"
-						v-if="document_width <= 1240"
+						v-if="document_width <= 1440"
 					/>
 				</template>
 			</r-button>
@@ -207,7 +207,7 @@
 				</div>
 
 				<r-button
-					:text="document_width > 1240 ? 'Подробнее' : ''"
+					:text="document_width > 1440 ? 'Подробнее' : ''"
 					color="bordered"
 					direction="revert"
 					@click="
@@ -228,7 +228,7 @@
 							src="/img/icon/dot_list.svg"
 							alt="notification"
 							class="parsource-card__notification"
-							v-if="document_width <= 1240"
+							v-if="document_width < 1440"
 						/>
 					</template>
 				</r-button>
@@ -345,12 +345,13 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+
 		&.manager {
 			.parsource-card {
 				&__content {
 					grid-template-columns: repeat(6, 1fr) 18rem;
 
-					@media (max-width: 1240px) {
+					@media (max-width: 1440px) {
 						grid-template-columns: repeat(6, 1fr) 4rem;
 					}
 				}
@@ -372,10 +373,10 @@
 			outline: 0.1rem solid transparent;
 			transition: all 0.2s ease;
 
-			@media (max-width: 1240px) {
+			@media (max-width: 1440px) {
 				grid-template-columns: repeat(7, 1fr) 4rem;
 			}
-			@media (max-width: 767px) {
+			@media (max-width: 1140px) {
 				padding: 1rem;
 				display: flex;
 				flex-direction: column;
@@ -398,7 +399,7 @@
 				padding: 1rem 2.8rem;
 				min-height: 4.2rem;
 
-				@media (max-width: 1240px) {
+				@media (max-width: 1440px) {
 					min-height: inherit;
 					height: 4rem;
 					width: 4rem;
@@ -419,11 +420,19 @@
 		}
 
 		&__col {
+			&:first-child {
+				@media (max-width: 1140px) {
+					display: flex;
+					gap: 1rem;
+					align-items: center;
+				}
+			}
+
 			&:nth-child(n + 2) {
 				margin: 0 auto;
 				max-width: 100%;
 
-				@media (max-width: 767px) {
+				@media (max-width: 1140px) {
 					margin: 0;
 				}
 			}

@@ -170,7 +170,7 @@
 				</p>
 				<div class="parser-content__controls">
 					<svg
-						class="parser-content__contorl-edit-button"
+						class="parser-content__control-edit-button"
 						@click.stop="handleEditClick"
 						width="20"
 						height="20"
@@ -198,7 +198,7 @@
 						/>
 					</svg>
 					<svg
-						class="parser-content__contorl-remove-button"
+						class="parser-content__control-remove-button"
 						@click.stop="handleDeleteComment"
 						width="20"
 						height="21"
@@ -238,7 +238,7 @@
 					v-model="comment"
 				></textarea>
 				<p
-					class="parser-content__contorl-edit-button parser-content__contorl-edit-button_text parser-content__contorl-edit-button_align_end"
+					class="parser-content__control-edit-button parser-content__control-edit-button_text parser-content__control-edit-button_align_end"
 					v-if="parser.comment.text"
 					@click.stop="handleEditClick"
 				>
@@ -344,12 +344,14 @@
 			></r-button>
 		</div>
 	</li>
-	<r-confirm-popup
-		v-if="isDeleteFavoritePopupVisible"
-		:text="`Вы действительно хотите удалить «${parserProp.article}» из избранного?`"
-		@action_confirm="updateFavoriteParser"
-		@close_popup="isDeleteFavoritePopupVisible = false"
-	/>
+	<transition mode="out-in" name="fade">
+		<r-confirm-popup
+			v-if="isDeleteFavoritePopupVisible"
+			:text="`Вы действительно хотите удалить «${parserProp.article}» из избранного?`"
+			@action_confirm="updateFavoriteParser"
+			@close_popup="isDeleteFavoritePopupVisible = false"
+		/>
+	</transition>
 </template>
 
 <script>
@@ -494,8 +496,7 @@
 						() => (this.isDeleteFavoritePopupVisible = false),
 						1000
 					);
-				} catch (error) {
-					console.log(error);
+				} catch (err) {
 					if (this.isFavorited) {
 						this.toast.error(
 							`Не удалось удалить «${this.parserProp.article}» из избранного!`
@@ -505,6 +506,7 @@
 							`Не удалось добавить «${this.parserProp.article}» в избранное!`
 						);
 					}
+					throw new Error(err);
 				}
 			},
 			handleEditClick() {
@@ -727,7 +729,7 @@
 			align-items: center;
 			gap: 1rem;
 		}
-		&__contorl-edit-button {
+		&__control-edit-button {
 			cursor: pointer;
 
 			width: 2rem;
@@ -752,7 +754,7 @@
 				}
 			}
 		}
-		&__contorl-remove-button {
+		&__control-remove-button {
 			cursor: pointer;
 			width: 2rem;
 			height: 2rem;

@@ -339,7 +339,7 @@
 							);
 							let dataFileType =
 								response.value.type.split("/")[1];
-							// преобразование mime-типов ответа в расширение
+							//* преобразование mime-типов ответа в расширение
 							if (
 								dataFileType ===
 								"vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -358,8 +358,8 @@
 							linkForDownload.remove();
 						}
 					});
-				} catch (error) {
-					console.log(error);
+				} catch (err) {
+					throw new Error(err);
 				}
 			},
 		},

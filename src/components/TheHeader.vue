@@ -718,7 +718,7 @@
 				text-overflow: ellipsis;
 			}
 
-			@media (max-width: 540px) {
+			@media (max-width: 475px) {
 				max-width: 12rem;
 				overflow: hidden;
 				white-space: nowrap;
