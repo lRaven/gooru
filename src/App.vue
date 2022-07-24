@@ -19,15 +19,34 @@
 				//* срабатывает при переходе по router-link
 				document.querySelector("body").classList.remove("locked");
 			},
+
+			//* получать тариф юзера только после того как получили данные юзера
+			user: {
+				handler() {
+					if (Object.keys(this.user).length > 0) {
+						this.getUserRate();
+					}
+				},
+				deep: true,
+			},
 		},
-		computed: { ...mapState(["baseURL"]) },
+		computed: {
+			...mapState(["baseURL"]),
+			...mapState({
+				user: (state) => state.cabinet.user,
+			}),
+		},
 		methods: {
-			...mapActions(["getDocumentWidth", "getUserData", "getUserRate", "getRates"]),
+			...mapActions([
+				"getDocumentWidth",
+				"getUserData",
+				"getUserRate",
+				"getRates",
+			]),
 		},
 		created() {
 			this.getDocumentWidth();
 			this.getUserData();
-			this.getUserRate();
 			this.getRates();
 		},
 	};

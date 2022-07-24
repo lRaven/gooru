@@ -120,9 +120,18 @@
 		</div>
 
 		<transition-group mode="out-in">
-			<rate-info :rate="rate" v-if="isHasRate || false"></rate-info>
+			<div class="page-profile__wait" v-if="!rate.loaded">
+				<r-loader class="page-profile__loader"></r-loader>
+			</div>
+			<rate-info
+				:rate="rate"
+				v-else-if="isHasRate && rate.loaded"
+			></rate-info>
 
-			<div class="page-profile__rate" v-else-if="!isHasRate || false">
+			<div
+				class="page-profile__rate"
+				v-else-if="!isHasRate && rate.loaded"
+			>
 				<h3 class="page-profile__rate-title">Активировать подписку</h3>
 
 				<r-button
@@ -484,6 +493,10 @@
 					margin-bottom: 2rem;
 				}
 			}
+		}
+		&__wait {
+			position: relative;
+			max-height: calc(100vh - 25rem);
 		}
 	}
 </style>

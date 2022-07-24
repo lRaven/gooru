@@ -375,9 +375,9 @@
 
 			@media (max-width: 1440px) {
 				grid-template-columns: repeat(7, 1fr) 4rem;
+				padding: 1rem;
 			}
 			@media (max-width: 1140px) {
-				padding: 1rem;
 				display: flex;
 				flex-direction: column;
 				align-items: flex-start;
@@ -422,7 +422,8 @@
 		&__col {
 			&:first-child {
 				@media (max-width: 1140px) {
-					display: flex;
+					display: grid;
+					grid-template-columns: max-content 1fr;
 					gap: 1rem;
 					align-items: center;
 				}
@@ -454,6 +455,12 @@
 				display: grid;
 				grid-template-columns: repeat(2, 1fr) 4rem;
 				grid-gap: 2rem;
+			}
+		}
+
+		.r-status {
+			@media (max-width: 540px) {
+				min-width: max-content;
 			}
 		}
 
