@@ -217,10 +217,26 @@
 
 	.page-new-parser {
 		padding: 6.4rem 4rem 4rem 4rem;
+		@media (max-width: 740px) {
+			padding: 5.4rem 3rem 3rem 3rem;
+		}
+		@media (max-width: 540px) {
+			padding: 4rem 2rem 2.5rem 2rem;
+		}
+		@media (max-width: 450px) {
+			padding: 3rem 1.5rem 2rem 1.5rem;
+		}
 
 		&__title {
 			font-weight: 400;
 			margin-bottom: 4rem;
+			@media (max-width: 540px) {
+				font-size: 2.4rem;
+				line-height: 3.4rem;
+			}
+			@media (max-width: 450px) {
+			margin-bottom: 2.5rem;
+		}
 		}
 
 		&__form {
@@ -228,10 +244,25 @@
 			grid-template-columns: 32rem 1fr 15rem;
 			grid-gap: 3rem 4rem;
 			align-items: center;
+			@media (max-width: 1024px) {
+				grid-template-columns: 29rem 1fr;
+			}
+			@media (max-width: 700px) {
+				grid-template-columns: 1fr;
+			}
+			@media (max-width: 540px) {
+				grid-gap: 2.5rem;
+			}
+			@media (max-width: 450px) {
+				grid-gap: 1rem;
+			}
 			.r-input,
 			.r-textarea {
 				grid-column: 2/3;
 				font-size: 1.6rem;
+				@media (max-width: 700px) {
+					grid-column: 1/2;
+				}
 			}
 			.r-textarea {
 				height: 14.5rem;
@@ -248,6 +279,11 @@
 		}
 		.r-button {
 			max-width: 25rem;
+			@media (max-width: 450px) {
+				width: 100%;
+				max-width: 100%;
+				margin: 2rem 0 0 0;
+			}
 		}
 	}
 </style>

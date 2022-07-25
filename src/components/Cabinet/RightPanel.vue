@@ -1,5 +1,5 @@
 <template>
-	<div class="right-panel" ref="filters">
+	<div class="right-panel" :class="{ minimized: isMinimized }" ref="filters">
 		<button
 			type="button"
 			class="right-panel__minimize"
@@ -12,6 +12,7 @@
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"
 				class="right-panel__minimize-icon"
+				:class="{ minimized: isMinimized }"
 				ref="arrow"
 			>
 				<path
@@ -62,10 +63,10 @@
 		methods: {
 			handleMinimize() {
 				if (this.isMinimized) {
-					this.$emit('open-right-panel');
+					this.$emit("open-right-panel");
 					this.resetMinimizePanel();
 				} else {
-					this.$emit('close-right-panel');
+					this.$emit("close-right-panel");
 					this.minimizePanel();
 				}
 			},
@@ -92,8 +93,23 @@
 		height: calc(100vh - 8rem);
 		padding: 2rem 1.5rem 1.5rem 1.5rem;
 		transition: all 0.2s ease;
+		@media (max-width: 425px) {
+			width: 18rem;
+		}
 		&.minimized {
 			width: 6.2rem;
+			@media (max-width: 76.7rem) {
+				width: 3.2rem;
+				padding: 2rem 0 0 0;
+			}
+		}
+		&.brokedocumentflow {
+			z-index: 3;
+			position: absolute;
+			top: 0;
+			right: 0;
+			background-color: rgba(255, 255, 255, 1);
+			transition: all 0.4s ease;
 		}
 
 		&__minimize {
@@ -109,6 +125,12 @@
 			border-radius: 50%;
 			box-shadow: $shadow;
 			margin-bottom: 1rem;
+			@media (max-width: 76.7rem) {
+				left: -1rem;
+				.brokedocumentflow & {
+					left: -2.7rem;
+				}
+			}
 			&-icon {
 				transition: all 0.2s ease;
 				transform: rotate(-90deg);
@@ -130,6 +152,9 @@
 		&__title {
 			font-weight: 600;
 			color: $gray;
+			@media (max-width: 425px) {
+				font-size: 1.8rem;
+			}
 		}
 
 		&__body {

@@ -43,13 +43,29 @@
 			justify-content: flex-start;
 			gap: 2rem;
 			border: none;
+			@media (max-width: 550px) {
+				justify-content: space-between;
+				gap: 2rem;
+			}
 			.stats-card-row {
 				&__description {
 					width: 20rem;
 					max-width: inherit;
+					@media (max-width: 410px) {
+						width: 15rem;
+					}
 				}
 				&__value {
 					font-size: 1.8rem;
+					@media (max-width: 1280px) {
+						font-size: 1.5rem;
+					}
+					@media (max-width: 1024px) {
+						font-size: 1.8rem;
+					}
+					@media (max-width: 860px) {
+						font-size: 1.7rem;
+					}
 					&.bold {
 						font-weight: 600;
 					}
@@ -68,6 +84,18 @@
 			font-size: 3.2rem;
 			color: $gray;
 			font-weight: 500;
+			@media (max-width: 1280px) {
+				font-size: 2.7rem;
+			}
+			@media (max-width: 1024px) {
+				font-size: 3.2rem;
+			}
+			@media (max-width: 860px) {
+				font-size: 2.8rem;
+			}
+			@media (max-width: 767px) {
+				font-size: 2.6rem;
+			}
 		}
 	}
 </style>

@@ -47,6 +47,9 @@
 			border: 0.2rem solid rgba($black, $alpha: 0.5);
 			font-weight: 500;
 			transition: all 0.2s ease;
+			@media (max-width: 425px) {
+				padding: 0.8rem 1.4rem;
+			}
 			&:hover {
 				color: $primary;
 				border-color: $primary;

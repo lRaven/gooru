@@ -38,6 +38,8 @@
 					:value="url.text"
 					input_type="url"
 					placeholder="https://"
+					class="r-input_area_url"
+					:class="{'r-input_area_added-url':  index > 0}"
 				></r-input>
 
 				<r-button
@@ -304,10 +306,19 @@
 
 	.page-new-group-parser {
 		padding: 6.4rem 4rem 4rem 4rem;
-
+		@media (max-width: 570px) {
+			padding: 4rem 2rem 2.5rem 2rem;
+		}
 		&__title {
 			font-weight: 400;
 			margin-bottom: 4rem;
+			@media (max-width: 570px) {
+				font-size: 2.4rem;
+				line-height: 3.4rem;
+			}
+			@media (max-width: 450px) {
+			margin-bottom: 2.5rem;
+		}
 		}
 
 		&__form {
@@ -315,10 +326,43 @@
 			grid-template-columns: 32rem 1fr 4rem 12rem;
 			grid-gap: 3rem 4rem;
 			align-items: center;
-			.r-input,
+			@media (max-width: 1100px) {
+				grid-template-columns: 29rem 1fr 4rem;
+			}
+			@media (max-width: 768px) {
+				grid-template-columns: 1fr;
+			}
+			@media (max-width: 540px) {
+				grid-gap: 2.5rem;
+			}
+			@media (max-width: 450px) {
+				grid-gap: 1rem;
+			}
+			.r-input {
+				font-size: 1.6rem;
+				@media (max-width: 768px) {
+				grid-column: 1/3;
+			}
+			&_area{
+				&_url {
+					@media (max-width: 768px) {
+						grid-column: 1;
+					}
+				}
+				&_added-url {
+					grid-column: 2/3;
+					@media (max-width: 768px) {
+						grid-column: 1;
+					}
+				}
+			}
+			}
 			.r-textarea {
 				grid-column: 2/3;
 				font-size: 1.6rem;
+				@media (max-width: 768px) {
+				grid-column: 1/3;
+			}
 			}
 			.r-textarea {
 				height: 14.5rem;
@@ -338,6 +382,9 @@
 		&__input-description {
 			font-size: 1.6rem;
 			color: rgba($black, $alpha: 0.7);
+			@media (max-width: 768px) {
+				grid-column: 1/3;
+			}
 		}
 
 		&__add-url {
@@ -345,6 +392,10 @@
 			padding: 0 !important;
 			height: 4rem;
 			width: 4rem;
+			@media (max-width: 768px) {
+				grid-column: -1;
+				grid-row: 4;
+			}
 			&:hover {
 				.page-new-group-parser__add-url-icon {
 					path {
@@ -373,10 +424,19 @@
 			padding: 0;
 			height: 4rem;
 			width: 4rem;
+			@media (max-width: 768px) {
+				grid-column: -1;
+			}
 		}
 
 		&__submit {
 			max-width: 25rem;
+			@media (max-width: 450px) {
+				width: 100%;
+				max-width: 100%;
+				margin: 2rem 0 0 0;
+				grid-column: 1/3;
+			}
 		}
 	}
 </style>

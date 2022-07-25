@@ -100,10 +100,16 @@
 			gap: 5rem;
 			padding: 1.2rem 0;
 			cursor: pointer;
+			@media (max-widht: 425px) {
+				gap: 0;
+			}
 		}
 		&__title {
 			font-weight: 600;
 			max-width: 50rem;
+			@media (max-width: 540px) {
+				font-size: 1.6rem;
+			}
 		}
 		&__arrow {
 			pointer-events: all;
@@ -130,17 +136,8 @@
 		}
 		&__content {
 			padding: 2rem 0;
-		}
-	}
-
-	@media (max-width: 540px) {
-		.r-spoiler {
-			&__header,
-			&__content {
+			@media (max-width: 540px) {
 				padding: 1.2rem;
-			}
-			&__title {
-				font-size: 1.6rem;
 			}
 		}
 	}

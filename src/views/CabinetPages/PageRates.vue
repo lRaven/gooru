@@ -131,7 +131,10 @@
 								></r-dropdown>
 							</template>
 
-							<p class="the-rates__create-appeal-description" :class="{ alignselfstart: !hasParsers }">
+							<p
+								class="the-rates__create-appeal-description"
+								:class="{ alignselfstart: !hasParsers }"
+							>
 								Напишите текст обращения
 							</p>
 							<r-textarea
@@ -158,6 +161,7 @@
 
 	import RateCard from "@/components/Rates/RateCard.vue";
 	import StatsCard from "@/components/Cabinet/Stats/StatsCard.vue";
+
 	import { add_ticket } from "@/api/tickets";
 	import { useToast } from "vue-toastification";
 
@@ -220,7 +224,7 @@
 		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getUserRate" ,"updateRateData", "getAllParsers"]),
+			...mapActions(["getUserRate", "updateRateData", "getAllParsers"]),
 			select_rate(rate_id) {
 				console.log("Rate selected: ", rate_id);
 
@@ -330,6 +334,18 @@
 		padding: 6.4rem 4rem 4rem 4rem;
 		height: 100%;
 		overflow: auto;
+		@media (max-width: 1180px) {
+			padding: 4rem 3rem 4rem 3rem;
+		}
+		@media (max-width: 550px) {
+			padding: 3rem 2.5rem 4rem 2.5rem;
+		}
+		@media (max-width: 500px) {
+			padding: 3rem 2rem 3rem 2rem;
+		}
+		@media (max-width: 410px) {
+			padding: 3rem 1.5rem 2rem 1.5rem;
+		}
 
 		&__title {
 			font-weight: 400;
@@ -352,10 +368,18 @@
 			background: url("/public/img/brief/brief-bg.png") center / 120% auto
 				no-repeat;
 			background-position: 0 70%;
+			@media (max-width: 1630px) {
+				justify-content: flex-start;
+				gap: 4rem;
+				background-position: 0 60%;
+			}
 			&-text {
 				color: $white;
 				font-size: 2.4rem;
 				font-weight: 600;
+				@media (max-width: 1630px) {
+					font-size: 2.2rem;
+				}
 				&:first-child {
 					margin-bottom: 2rem;
 				}
@@ -365,6 +389,9 @@
 					color: $white;
 					font-size: 3.2rem;
 					font-weight: 600;
+					@media (max-width: 1630px) {
+						font-size: 2.8rem;
+					}
 					&:nth-child(2) {
 						margin-bottom: 3rem;
 						margin-left: auto;
@@ -413,6 +440,17 @@
 			display: grid;
 			grid-template-columns: repeat(2, 52rem);
 			grid-gap: 6rem 14rem;
+			@media (max-width: 1400px) {
+				grid-template-columns: repeat(2, 1fr);
+				grid-gap: 3rem 7rem;
+			}
+			@media (max-width: 1280px) {
+				grid-gap: 3rem 5rem;
+			}
+			@media (max-width: 700px) {
+				grid-template-columns: 1fr;
+				grid-gap: 3rem 0;
+			}
 
 			&-status {
 				padding: 2rem;
@@ -427,11 +465,21 @@
 				flex-direction: column;
 				gap: 2rem;
 				padding-top: 6.6rem;
+				@media (max-width: 700px) {
+					padding-top: 2rem;
+				}
 				.r-button {
 					width: max-content;
 					font-size: 1.4rem;
+					@media (max-width: 450px) {
+						width: 100%;
+						max-width: 100%;
+					}
 					&:first-child {
 						padding: 1.6rem 4rem;
+						@media (max-width: 1180px) {
+							padding: 1.4rem 3rem;
+						}
 					}
 					&:last-child {
 						padding: 1rem 2.8rem;
@@ -442,6 +490,24 @@
 			.page-rates {
 				&__title {
 					margin-bottom: 3rem;
+					@media (max-width: 1280px) {
+						font-size: 2.8rem;
+						line-height: 3.7rem;
+						margin-bottom: 2rem;
+					}
+					@media (max-width: 1024px) {
+						font-size: 3rem;
+						line-height: 4rem;
+						margin-bottom: 2.5rem;
+					}
+					@media (max-width: 810px) {
+						font-size: 2.6rem;
+						margin: 0 0 2rem;
+					}
+					@media (max-width: 765px) {
+						font-size: 2.4rem;
+						margin: 0 0 1.8rem;
+					}
 				}
 			}
 		}

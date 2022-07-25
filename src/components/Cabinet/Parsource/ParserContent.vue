@@ -1,7 +1,7 @@
 <template>
 	<li class="parser-content" v-click-away="stateReset">
 		<div
-			class="parser-content__row"
+			:class="documentWidth > 490 ? 'parser-content__row' : 'parser-content__grid'"
 			@click="
 				isCroppedText === true ? expandArticle() : minimizeArticle()
 			"
@@ -16,19 +16,33 @@
 				<p
 					class="parser-content__text"
 					:class="{ cropped: isCroppedText }"
+					ref="textBlock"
 				>
 					{{ parser.article }}
 				</p>
 				<a
+					v-if="documentWidth > 490"
 					:href="parser.url"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="parser-content__link"
 				>
-					{{ parser.url }}
+					Ссылка на ресурс
 				</a>
 			</div>
-			<div class="parser-content__col">
+			<a
+					v-if="documentWidth <= 490"
+					:href="parser.url"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="parser-content__link"
+				>
+					Ссылка на ресурс
+				</a>
+			<div
+				class="parser-content__col"
+				:class="{ alignicons: isTextOverFlow }"
+			>
 				<svg
 					width="20"
 					height="17"
@@ -89,7 +103,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
-					@click="openConfirmPopup"
+					@click.stop="openConfirmPopup"
 					v-if="isFavorited"
 				>
 					<path
@@ -104,7 +118,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
-					@click="updateFavoriteParser"
+					@click.stop="updateFavoriteParser"
 					v-else
 				>
 					<path
@@ -159,7 +173,10 @@
 			</div>
 		</div>
 
-		<div class="parser-content__row" v-if="isMessagesOpen === true">
+		<div
+			:class="documentWidth > 490 ? 'parser-content__row' : 'parser-content__column'"
+			v-if="isMessagesOpen === true"
+		>
 			<div
 				v-if="parser.comment.text && !isEditComment"
 				class="parser-content__comment"
@@ -253,7 +270,7 @@
 			</template>
 		</div>
 
-		<div class="parser-content__row" v-if="isShareOpen === true">
+		<div :class="documentWidth > 490 ? 'parser-content__row' : 'parser-content__column'" v-if="isShareOpen === true">
 			<div class="parser-content__social">
 				<p class="parser-content__social-description">
 					Поделиться в социальных сетях:
@@ -328,7 +345,7 @@
 			<r-button text="Отправить" color="bordered"></r-button>
 		</div>
 
-		<div class="parser-content__row" v-if="isDownloadOpen === true">
+		<div :class="documentWidth > 490 ? 'parser-content__row' : 'parser-content__column'" v-if="isDownloadOpen === true">
 			<div class="parser-content__download">
 				<p class="parser-content__download-description">
 					Выберите формат
@@ -362,7 +379,7 @@
 	</li>
 	<r-confirm-popup
 		v-if="isDeleteFavoritePopupVisible"
-		:text="`Вы действительно хотите удалить «${parserProp.article}» из избранного?`"
+		:text="`Вы действительно хотите удалить «${parserProp.title}» из избранного?`"
 		@action_confirm="updateFavoriteParser"
 		@close_popup="isDeleteFavoritePopupVisible = false"
 	/>
@@ -410,11 +427,17 @@
 					this.$refs.download.classList.remove("selected");
 				}
 			},
+			textBlockHeight() {
+				if (this.textBlockHeight + 25 > document.documentElement.scrollHeight) {
+					this.hasScrollForTextBlock = true;
+				}
+			}
 		},
 		computed: {
 			...mapState({
 				favorites: (state) => state.favorites.favorites,
 				user: (state) => state.cabinet.user,
+				documentWidth: (state) => state.document_width,
 			}),
 
 			isFavorited() {
@@ -423,7 +446,7 @@
 					parsource.parsers.forEach((parser) => {
 						if (parser.id === this.parser.id) {
 							find = true;
-						this.parser.favoriteId = parser.favoriteId;
+							this.parser.favoriteId = parser.favoriteId;
 						}
 					});
 				});
@@ -447,6 +470,7 @@
 				isEditComment: false,
 				isCroppedText: true,
 				isDeleteFavoritePopupVisible: false,
+				isTextOverFlow: false,
 
 				parser: this.parserProp,
 
@@ -476,10 +500,17 @@
 
 			expandArticle() {
 				this.isCroppedText = false;
+				setTimeout(() => {
+					if (this.$refs.textBlock.offsetHeight > 60) {
+						this.textBlockHeight = this.$refs.textBlock.offsetHeight;
+						this.isTextOverFlow = true;
+					}
+				}, 100);
 			},
 
 			minimizeArticle() {
 				this.isCroppedText = true;
+				this.isTextOverFlow = false;
 			},
 
 			stateReset() {
@@ -496,21 +527,31 @@
 						userId: this.user.id,
 						isFavorite: this.isFavorited,
 					});
-					console.log('after await', this.isFavorited)
+					console.log("after await", this.isFavorited);
 					if (this.isFavorited) {
-						this.toast.success(`Парсер «${this.parserProp.article}» добавлен в избранное!`);
+						this.toast.success(
+							`Парсер «${this.parserProp.article}» добавлен в избранное!`
+						);
 					} else {
-						this.toast.success(`Парсер «${this.parserProp.article}» удален из избранного!`);
+						this.toast.success(
+							`Парсер «${this.parserProp.article}» удален из избранного!`
+						);
 					}
-					setTimeout(() => this.isDeleteFavoritePopupVisible = false, 1000);
+					setTimeout(
+						() => (this.isDeleteFavoritePopupVisible = false),
+						1000
+					);
 				} catch (error) {
 					console.log(error);
 					if (this.isFavorited) {
-						this.toast.error(`Не удалось удалить «${this.parserProp.article}» из избранного!`);
+						this.toast.error(
+							`Не удалось удалить «${this.parserProp.title}» из избранного!`
+						);
 					} else {
-						this.toast.error(`Не удалось добавить «${this.parserProp.article}» в избранное!`);
+						this.toast.error(
+							`Не удалось добавить «${this.parserProp.title}» в избранное!`
+						);
 					}
-					
 				}
 			},
 			handleEditClick() {
@@ -619,7 +660,12 @@
 		border-top: 0.1rem solid #999;
 		padding: 1rem 3rem;
 		background-color: $white;
-
+		@media screen and (max-width: 515px) {
+			padding: 1rem 2rem;
+		}
+		@media screen and (max-width: 400px) {
+			padding: 0.8rem 0.4rem;
+		}
 		&__row {
 			display: flex;
 			justify-content: space-between;
@@ -642,17 +688,40 @@
 				height: max-content;
 			}
 		}
+		&__column {
+			display: flex;
+			flex-direction: column;
+			margin: 2rem 0 0 0;
+			.r-button {
+				width: 100%;
+				padding: 1.1rem 10rem;
+				font-size: 1.4rem;
+				font-weight: 500;
+				height: max-content;
+				margin: 1rem 0 0 0;
+			}
+		}
+		&__grid {
+			display: grid;
+			grid-template-columns: 1fr max-content;
+		}
 
 		&__col {
 			&:first-child {
 				max-width: 90%;
 				overflow: hidden;
+				@media (max-width: 490px) {
+					grid-column: 1/3;
+				}
 			}
 			&:last-child {
 				display: flex;
 				align-items: center;
 				gap: 1.2rem;
 				width: max-content;
+			}
+			&.alignicons {
+				align-self: flex-start;
 			}
 		}
 
@@ -664,9 +733,11 @@
 		}
 		&__text {
 			font-size: 1.6rem;
+			font-weight: 500;
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
 			word-break: break-word;
+			
 			&.cropped {
 				display: -webkit-box;
 				text-overflow: ellipsis;
@@ -677,8 +748,14 @@
 		}
 		&__link {
 			text-decoration: underline;
+			max-width: 10rem;
 			color: $primary;
 			font-size: 1.4rem;
+			@media (max-width: 490px) {
+				max-width: max-content;
+				width: max-content;
+				line-height: 1.3;
+			}
 		}
 
 		&__icon {
@@ -820,6 +897,9 @@
 
 <style lang="scss">
 	.parser-content {
+		@media screen and (max-width: 400px) {
+
+		}
 		&__download {
 			&-list {
 				&-item {

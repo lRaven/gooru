@@ -46,6 +46,9 @@
 		border-radius: 1rem;
 		padding: 2rem;
 		grid-area: card;
+		@media (max-width: 810px) {
+			padding: 1rem;
+		}
 		&__title {
 			font-size: 2.4rem;
 			text-transform: uppercase;

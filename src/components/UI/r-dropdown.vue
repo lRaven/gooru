@@ -135,6 +135,14 @@
 			border: 0.1rem solid rgba(50, 50, 50, 0.1);
 			border-radius: 0.6rem;
 			min-height: 4rem;
+			.r-dropdown_mode_mobile & {
+				border: none;
+				background: transparent;
+				padding: 0 0 0 1.5rem;
+				grid-template-columns: fit-content(15.5rem) max-content;
+				gap: 1rem;
+				justify-content: flex-start;
+			}
 		}
 		&__selected {
 			font-size: 1.6rem;
@@ -142,6 +150,11 @@
 			text-overflow: ellipsis;
 			white-space: nowrap;
 			overflow: hidden;
+			.r-dropdown_mode_mobile & {
+				font-size: 1.2rem;
+				font-weight: 600;
+				line-height: 1.4rem;
+			}
 		}
 		&__arrow {
 			transition: all 0.2s ease;

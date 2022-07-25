@@ -38,7 +38,7 @@
 						v-if="isPersonalDataFormDisabled === true"
 					>
 						<img src="/img/icon/cabinet/edit.svg" alt="" />
-						Редактировать
+						{{ documentWidth <= 425 ? '' : 'Редактировать' }}
 					</button>
 				</transition>
 
@@ -85,7 +85,7 @@
 						v-if="isPasswordsFormDisabled === true"
 					>
 						<img src="/img/icon/cabinet/edit.svg" alt="" />
-						Редактировать
+						{{ documentWidth <= 425 ? '' : 'Редактировать' }}
 					</button>
 				</transition>
 
@@ -153,7 +153,10 @@
 			},
 		},
 		computed: {
-			...mapState({ user_data: (state) => state.cabinet.user }),
+			...mapState({
+				user_data: (state) => state.cabinet.user,
+				documentWidth: (state) => state.document_width,
+			}),
 
 			isUserDataChanged() {
 				if (
@@ -346,6 +349,14 @@
 		gap: 3rem;
 		height: 100%;
 		overflow: auto;
+		@media (max-width: 600px) {
+			grid-template-columns: 1fr;
+			padding: 6rem 1.5rem 3.5rem 3.5rem;
+			column-gap: 0;
+		}
+		@media (max-width: 425px) {
+			padding: 3rem 1.5rem 3rem 1.5rem;
+		}
 
 		&__title,
 		&__main {
@@ -357,10 +368,20 @@
 			grid-template-columns: 52rem;
 			grid-gap: 8rem;
 			column-gap: 25rem;
+			@media (max-width: 600px) {
+				grid-template-columns: 1fr;
+			}
+			@media (max-width: 425px) {
+				grid-gap: 6rem;
+			}
 		}
 
 		&__title {
 			font-weight: 400;
+			@media (max-width: 425px) {
+				font-size: 2.4rem;
+				line-height: 3.4rem;
+			}
 		}
 
 		&__form {
@@ -368,6 +389,12 @@
 			grid-template-columns: repeat(2, 1fr);
 			grid-gap: 2rem 3rem;
 			align-items: center;
+			@media (max-width: 510px) {
+				grid-template-columns: 1fr;
+			}
+			@media (max-width: 425px) {
+				grid-gap: 2rem 0;
+			}
 			&-title {
 			}
 			&-edit {
@@ -387,6 +414,10 @@
 				grid-template-columns: 1fr 1.6fr;
 				align-items: center;
 				grid-gap: 2rem 1rem;
+				@media (max-width: 425px) {
+					grid-template-columns: 1fr;
+					grid-gap: 1rem;
+				}
 			}
 
 			&-input-description {
@@ -408,6 +439,11 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			@media (max-width: 520px) {
+				flex-direction: column;
+				justify-content: flex-start;
+				gap: 2rem;
+			}
 		}
 
 		&__image-pick {
@@ -430,6 +466,9 @@
 			width: max-content;
 			padding: 1.6rem 4rem;
 			font-size: 1.4rem;
+			@media (max-width: 425px) {
+				width: 100%;
+			}
 		}
 	}
 </style>

@@ -187,7 +187,7 @@
 	</li>
 	<r-confirm-popup
 		v-if="isDeleteFavoritePopupVisible"
-		:text="`Вы действительно хотите удалить «${parser.article}» из избранного?`"
+		:text="`Вы действительно хотите удалить «${parser.title}» из избранного?`"
 		@action_confirm="deleteFavoriteParser"
 		@close_popup="isDeleteFavoritePopupVisible = false"
 	/>
@@ -321,7 +321,7 @@
 						isFavorite: true,
 					});
 					this.toast.success(
-						`Парсер «${this.parser.article}» удален из избранного!`
+						`Парсер «${this.parser.title}» удален из избранного!`
 					);
 					setTimeout(
 						() => (this.isDeleteFavoritePopupVisible = false),
@@ -329,7 +329,7 @@
 					);
 				} catch (error) {
 					this.toast.error(
-						`Не удалось удалить «${this.parser.article}» из избранного !`
+						`Не удалось удалить «${this.parser.title}» из избранного !`
 					);
 				}
 			},
