@@ -1,6 +1,6 @@
 <template>
 	<div class="page-login theme-container">
-		<the-header :isCabinetVersion="true" :isClear="true"></the-header>
+		<the-header :isClear="true" class="bg"></the-header>
 
 		<main class="page-login__main main">
 			<section class="page-login__section">
@@ -97,7 +97,7 @@
 						this.getUserData();
 						this.getUserRate();
 						this.getRates();
-						
+
 						this.$router.push({ name: "cabinet" });
 					}
 				} catch (err) {

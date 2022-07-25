@@ -147,8 +147,8 @@
 					/>
 					<img
 						src="/img/icon/dot_list.svg"
-						alt="notification"
-						class="parsource-card__notification"
+						alt="dots"
+						class="parsource-card__dots"
 						v-if="document_width <= 1440"
 					/>
 				</template>
@@ -226,8 +226,8 @@
 						/>
 						<img
 							src="/img/icon/dot_list.svg"
-							alt="notification"
-							class="parsource-card__notification"
+							alt="dots"
+							class="parsource-card__dots"
 							v-if="document_width < 1440"
 						/>
 					</template>
@@ -352,7 +352,7 @@
 					grid-template-columns: repeat(6, 1fr) 18rem;
 
 					@media (max-width: 1440px) {
-						grid-template-columns: repeat(6, 1fr) 4rem;
+						grid-template-columns: repeat(6, 1fr) 6.5rem;
 					}
 				}
 			}
@@ -374,7 +374,7 @@
 			transition: all 0.2s ease;
 
 			@media (max-width: 1440px) {
-				grid-template-columns: repeat(7, 1fr) 4rem;
+				grid-template-columns: repeat(7, 1fr) 6.5rem;
 				padding: 1rem;
 			}
 			@media (max-width: 1140px) {
@@ -398,12 +398,13 @@
 				font-size: 1.4rem;
 				padding: 1rem 2.8rem;
 				min-height: 4.2rem;
+				margin-left: auto;
 
 				@media (max-width: 1440px) {
 					min-height: inherit;
 					height: 4rem;
 					width: 4rem;
-					padding: 0;
+					padding: 0 1rem;
 				}
 			}
 
@@ -417,6 +418,9 @@
 		&__notification {
 			width: 2.4rem;
 			height: 2.4rem;
+			@media (max-width: 1440px) {
+				width: 1.5rem;
+			}
 		}
 
 		&__col {
@@ -453,7 +457,7 @@
 
 			&:last-child {
 				display: grid;
-				grid-template-columns: repeat(2, 1fr) 4rem;
+				grid-template-columns: repeat(2, 1fr) 6.5rem;
 				grid-gap: 2rem;
 			}
 		}

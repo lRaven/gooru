@@ -1,6 +1,6 @@
 <template>
 	<div class="page-registration theme-container">
-		<the-header :isCabinetVersion="true" :isClear="true"></the-header>
+		<the-header :isClear="true" class="bg"></the-header>
 
 		<main class="page-registration__main main">
 			<section class="page-registration__section">

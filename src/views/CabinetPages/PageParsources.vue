@@ -73,15 +73,27 @@
 					<p class="page-parsources__sort-description">Сортировать</p>
 				</button>
 
-				<transition mode="out-in">
-					<r-dropdown
-						selected_item="-"
-						sendValue=""
-						:list="sortUserDropdown"
-						v-model="sortByDropdown"
-						v-show="isSortDropdownVisible"
-					></r-dropdown>
-				</transition>
+				<transition-group mode="out-in">
+					<template v-if="userRole === 'DefaultUser'">
+						<r-dropdown
+							selected_item="-"
+							sendValue=""
+							:list="sortUserDropdown"
+							v-model="sortByDropdown"
+							v-show="isSortDropdownVisible"
+						></r-dropdown>
+					</template>
+
+					<template v-else>
+						<r-dropdown
+							selected_item="-"
+							sendValue=""
+							:list="sortManagerDropdown"
+							v-model="sortByDropdown"
+							v-show="isSortDropdownVisible"
+						></r-dropdown>
+					</template>
+				</transition-group>
 			</div>
 
 			<transition mode="out-in">
@@ -426,7 +438,7 @@
 			padding: 0 3rem 0 5.6rem;
 
 			@media (max-width: 1440px) {
-				grid-template-columns: repeat(7, 1fr) 4rem;
+				grid-template-columns: repeat(7, 1fr) 6.5rem;
 				padding: 0 1rem 0 3.6rem;
 			}
 			@media (max-width: 1140px) {
@@ -449,7 +461,7 @@
 				grid-template-columns: repeat(6, 1fr) 18rem;
 
 				@media (max-width: 1440px) {
-					grid-template-columns: repeat(6, 1fr) 4rem;
+					grid-template-columns: repeat(6, 1fr) 6.5rem;
 				}
 			}
 			.sort-button {
@@ -463,6 +475,11 @@
 				align-items: center;
 				gap: 1rem;
 				background-color: transparent;
+			}
+
+			&-description {
+				color: $primary;
+				font-weight: 600;
 			}
 		}
 		&__list {
