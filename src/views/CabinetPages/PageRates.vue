@@ -7,7 +7,9 @@
 		<transition-group mode="out-in">
 			<template v-if="!userRate?.id && !isLoading">
 				<h2 class="page-rates__title">Выберите тариф</h2>
-				<div class="page-rates__body">
+				<div
+					class="page-rates__body page-rates__body_align-items_center"
+				>
 					<rate-card
 						v-for="rate in rates"
 						:key="rate.id"
@@ -186,6 +188,7 @@
 				rates: (state) => state.rates.rates,
 				stats: (state) => state.stats.stats,
 				userRate: (state) => state.cabinet.rate,
+				documentWidth: (state) => state.document_width,
 
 				topics: (state) => state.appeals.topics,
 				all_parsers: (state) => state.parsers.all_parsers,
@@ -357,6 +360,34 @@
 			display: grid;
 			grid-template-columns: repeat(4, 30rem);
 			grid-gap: 4rem 3rem;
+			@media (max-width: 1630px) {
+				grid-template-columns: repeat(4, 1fr);
+			}
+			@media (max-width: 1530px) {
+				grid-template-columns: repeat(2, 30rem);
+			}
+			@media (max-width: 1024px) {
+				grid-template-columns: repeat(2, 35rem);
+				grid-gap: 4rem 6rem;
+			}
+			@media (max-width: 810px) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+			@media (max-width: 768px) {
+				grid-gap: 3.5rem 5rem;
+			}
+			@media (max-width: 680px) {
+				grid-gap: 3rem 0;
+				grid-template-columns: 1fr;
+			}
+			&_align-items {
+				&_center {
+					@media (max-width: 680px) {
+						justify-items: center;
+						align-items: center;
+					}
+				}
+			}
 		}
 
 		&__brief {
@@ -373,6 +404,24 @@
 				gap: 4rem;
 				background-position: 0 60%;
 			}
+			@media (max-width: 1530px) {
+				grid-column: 1/3;
+				background-position: 0 100%;
+			}
+			@media (max-width: 1024px) {
+				margin-top: 2rem;
+			}
+			@media (max-width: 680px) {
+				flex-direction: column;
+				grid-column: 1/2;
+			}
+			@media (max-width: 500px) {
+				padding: 1.5rem 1.5rem 2rem 1.5rem;
+				gap: 2rem;
+			}
+			@media (max-width: 350px) {
+				gap: 1rem;
+			}
 			&-text {
 				color: $white;
 				font-size: 2.4rem;
@@ -380,8 +429,30 @@
 				@media (max-width: 1630px) {
 					font-size: 2.2rem;
 				}
+				@media (max-width: 1530px) {
+					font-size: 2rem;
+				}
+				@media (max-width: 500px) {
+					font-size: 2rem;
+				}
+				@media (max-width: 400px) {
+					font-size: 1.8rem;
+				}
+				@media (max-width: 370px) {
+					font-size: 1.6rem;
+				}
+				@media (max-width: 350px) {
+						font-size: 1.4rem;
+					}
+				
 				&:first-child {
 					margin-bottom: 2rem;
+					@media (max-width: 500px) {
+						margin-bottom: 1.3rem;
+					}
+					@media (max-width: 350px) {
+						margin-bottom: 1rem;
+					}
 				}
 
 				&-big {
@@ -392,9 +463,40 @@
 					@media (max-width: 1630px) {
 						font-size: 2.8rem;
 					}
+					@media (max-width: 1530px) {
+						font-size: 2.5rem;
+					}
+					@media (max-width: 767px) {
+						font-size: 2.3rem;
+					}
+					@media (max-width: 500px) {
+						font-size: 2rem;
+					}
+					@media (max-width: 400px) {
+						font-size: 1.8rem;
+					}
+					@media (max-width: 370px) {
+						font-size: 1.6rem;
+					}
+					@media (max-width: 350px) {
+						font-size: 1.4rem;
+					}
 					&:nth-child(2) {
 						margin-bottom: 3rem;
 						margin-left: auto;
+						@media (max-width: 767px) {
+							margin-bottom: 2.5rem;
+						}
+						@media (max-width: 680px) {
+							margin-bottom: 2rem;
+							margin-left: 0;
+						}
+						@media (max-width: 400px) {
+							margin-bottom: 1.5rem;
+						}
+						@media (max-width: 350px) {
+						margin-bottom: 1rem;
+					}
 					}
 				}
 			}
@@ -407,6 +509,14 @@
 				margin-top: auto;
 				padding: 1.2rem 3rem;
 				height: max-content;
+				@media (max-width: 680px) {
+					width: max-content;
+					align-self: flex-end;
+				}
+				@media (max-width: 350px) {
+					width: 100%;
+					
+				}
 			}
 		}
 
@@ -419,6 +529,23 @@
 			background-color: $secondary;
 			border-radius: 2rem;
 			padding: 2rem 2rem 3rem 2rem;
+			@media (max-width: 1530px) {
+				grid-column: 1/3;
+			}
+			@media (max-width: 1530px) {
+				background-position: 85%;
+				background-size: contain;
+			}
+			@media (max-width: 680px) {
+				grid-column: 1/2;
+				width: 100%;
+			}
+			@media (max-width: 500px) {
+				padding: 1.5rem 1.5rem 2rem 1.5rem;
+			}
+			@media (max-width: 350px) {
+				gap: 1rem;
+			}
 			&-text {
 				color: $white;
 				line-height: 1.2;
@@ -426,13 +553,26 @@
 					font-weight: 600;
 					color: $white;
 					line-height: 1.2;
+					@media (max-width: 370px) {
+						font-size: 1.6rem;
+					}
 				}
+				@media (max-width: 370px) {
+						font-size: 1.6rem;
+					}
 			}
 
 			.r-button {
 				padding: 1.2rem 3rem;
 				width: 100%;
 				margin-top: auto;
+				@media (max-width: 1530px) {
+					width: max-content;
+					align-self: flex-end;
+				}
+				@media (max-width: 350px) {
+					width: 100%;
+				}
 			}
 		}
 

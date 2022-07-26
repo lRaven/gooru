@@ -82,11 +82,17 @@
 		&__name {
 			text-align: center;
 			margin-bottom: 2.5rem;
+			@media (max-width: 768px) {
+				margin-bottom: 2rem;
+			}
 		}
 
 		&__price {
 			font-size: 4rem;
 			font-weight: 600;
+			@media (max-width: 768px) {
+				font-size: 3.7rem;
+			}
 			&-wrapper {
 				margin-bottom: 2rem;
 			}
@@ -108,6 +114,9 @@
 			text-align: center;
 			margin-bottom: 3rem;
 			line-height: 1.3;
+			@media (max-width: 768px) {
+				margin-bottom: 2.5rem;
+			}
 		}
 
 		&__checklist {
@@ -152,6 +161,11 @@
 				font-size: 2.4rem;
 				margin-bottom: 1.7rem;
 			}
+		}
+	}
+	@media (max-width: 680px) {
+		.rate-card {
+			max-width: 35rem;
 		}
 	}
 </style>

@@ -14,7 +14,7 @@
 				></r-checkbox>
 
 				<h5 class="favorite-content-item__title">{{ parser.title }}</h5>
-				<p class="favorite-content-item__text">{{ parser.article }}</p>
+				<p class="favorite-content-item__text" :class="{ cropped: isCroppedText }">{{ parser.article }}</p>
 			</div>
 
 			<div class="favorite-content-item__col">
@@ -234,6 +234,7 @@
 				favorites: (state) => state.favorites.favorites,
 				user: (state) => state.cabinet.user,
 			}),
+			
 
 			isFavorited() {
 				let find = false;
