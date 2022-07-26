@@ -1,23 +1,24 @@
 <template>
 	<li class="favorite-content-item" v-click-away="stateReset">
 		<div
-			class="favorite-content-item__row"
+			class='favorite-content-item__row'
 			@click="
 				isCroppedText === true ? expandArticle() : minimizeArticle()
 			"
 		>
 			<div class="favorite-content-item__col">
 				<r-checkbox
+					:class="{ alignicons: isTextOverFlow }"
 					@update:modelValue="handleChangeSelectItem"
 					:modelValue="isSelected"
 					:checked="checked"
 				></r-checkbox>
 
 				<h5 class="favorite-content-item__title">{{ parser.title }}</h5>
-				<p class="favorite-content-item__text" :class="{ cropped: isCroppedText }">{{ parser.article }}</p>
+				<p class="favorite-content-item__text" :class="{ cropped: isCroppedText }" ref="textBlock">{{ parser.article }}</p>
 			</div>
 
-			<div class="favorite-content-item__col">
+			<div class="favorite-content-item__col" :class="{ alignicons: isTextOverFlow }">
 				<svg
 					width="18"
 					height="18"
@@ -233,6 +234,7 @@
 			...mapState({
 				favorites: (state) => state.favorites.favorites,
 				user: (state) => state.cabinet.user,
+				documentWidth: (state) => state.document_width,
 			}),
 			
 
@@ -261,6 +263,7 @@
 				isDownloadOpen: false,
 				isSelected: this.checked,
 				isCroppedText: true,
+				isTextOverFlow: false,
 				isDeleteFavoritePopupVisible: false,
 
 				comment: "",
@@ -290,10 +293,17 @@
 			},
 			expandArticle() {
 				this.isCroppedText = false;
+				setTimeout(() => {
+					if (this.$refs.textBlock.offsetHeight > 60) {
+						this.textBlockHeight = this.$refs.textBlock.offsetHeight;
+						this.isTextOverFlow = true;
+					}
+				}, 100);
 			},
 
 			minimizeArticle() {
 				this.isCroppedText = true;
+				this.isTextOverFlow = false;
 			},
 
 			stateReset() {
@@ -397,6 +407,11 @@
 		padding: 1rem 3rem 1rem 1rem;
 		background-color: $white;
 
+		&__grid {
+			display: grid;
+			grid-template-columns: 1fr max-content;
+		}
+
 		&__row {
 			display: flex;
 			justify-content: space-between;
@@ -418,6 +433,9 @@
 				height: max-content;
 			}
 		}
+		& .alignicons {
+				align-self: flex-start;
+			}
 
 		&__col {
 			&:first-child {
@@ -425,12 +443,18 @@
 				display: grid;
 				grid-template-columns: max-content 1fr;
 				grid-gap: 0.5rem 3rem;
+				@media (max-width: 500px) {
+					grid-gap: 0.5rem 2rem;
+				}
 			}
 			&:last-child {
 				display: flex;
 				align-items: center;
 				gap: 1.2rem;
 				width: max-content;
+				@media (max-width: 500px) {
+					gap: 1rem;
+				}
 			}
 		}
 		.r-checkbox {
