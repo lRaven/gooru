@@ -244,6 +244,9 @@
 			grid-template-columns: 32rem 1fr 15rem;
 			grid-gap: 3rem 4rem;
 			align-items: center;
+			@media (max-width: 1300px) {
+				grid-template-columns: 32rem minmax(30rem, 50rem);
+			}
 			@media (max-width: 1024px) {
 				grid-template-columns: 29rem 1fr;
 			}

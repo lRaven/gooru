@@ -18,29 +18,6 @@
 						ButtonText="Оплатить"
 						@select-rate="select_rate"
 					></rate-card>
-
-					<!-- <div class="page-rates__brief">
-						<div class="page-rates__brief-col">
-							<p class="page-rates__brief-text">
-								<span class="page-rates__brief-text-big">
-									не знаете,
-								</span>
-								что вам подходит?
-							</p>
-							<p class="page-rates__brief-text-big">
-								Мы вам поможем!
-							</p>
-							<p class="page-rates__brief-text">
-								Для этого ответьте на 8 простых вопросов
-							</p>
-						</div>
-
-						<r-button
-							text="Ответить на вопросы"
-							@click="this.$router.push({ name: 'brief' })"
-						></r-button>
-					</div> -->
-
 					<brief-card></brief-card>
 
 					<div class="page-rates__help">
@@ -433,8 +410,8 @@
 					}
 				}
 				@media (max-width: 370px) {
-						font-size: 1.6rem;
-					}
+					font-size: 1.6rem;
+				}
 			}
 
 			.r-button {
@@ -535,12 +512,35 @@
 				margin-bottom: 3rem;
 				font-weight: 600;
 				color: $gray;
+				@media (max-width: 1300px) {
+					font-size: 3.2rem;
+					margin-bottom: 2.5rem;
+				}
+				@media (max-width: 1220px) {
+					font-size: 3rem;
+					margin-bottom: 2.3rem;
+				}
 			}
 			&-inputs {
 				display: grid;
 				grid-template-columns: max-content minmax(40rem, max-content);
 				grid-gap: 2rem;
 				align-items: center;
+				@media (max-width: 1550px) {
+					grid-template-columns: max-content minmax(
+							30rem,
+							max-content
+						);
+				}
+				@media (max-width: 1250px) {
+					grid-template-columns: max-content minmax(
+							25rem,
+							max-content
+						);
+				}
+				@media (max-width: 1150px) {
+					grid-template-columns: max-content max-content;
+				}
 			}
 
 			&-description {

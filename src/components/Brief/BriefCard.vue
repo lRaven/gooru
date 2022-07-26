@@ -29,6 +29,7 @@
 	@import "@/assets/scss/variables";
 	.brief-card {
 		display: flex;
+		padding: 3rem 3rem 3rem 4rem;
 		grid-column: 1/4;
 		border-radius: 2rem;
 		background: url("/public/img/brief/brief-bg.png") center / 120% auto

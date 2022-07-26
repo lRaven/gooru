@@ -22,7 +22,7 @@
 							Сортировать
 						</p>
 					</button>
-					<template v-if="documentWidth <= 500">
+					<template v-if="documentWidth <= 500 && !isSortPanelVisible">
 						<button class="page-favorites__favorite-panel-btn" @click="isMinimizedRightPanel = false">
 							<svg
 								width="32"

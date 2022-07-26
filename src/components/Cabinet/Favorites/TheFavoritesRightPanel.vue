@@ -204,9 +204,6 @@
 					$event.stopPropagation();
 				}
 			},
-			callbackOpenSharedIcon() {
-				console.log("open callback", this.shareContent);
-			},
 			callbackCloseSharedIcon(networkName, url) {
 				this.sharedPointer += 1;
 				if (this.sharedPointer < this.selectedParsers.length) {
