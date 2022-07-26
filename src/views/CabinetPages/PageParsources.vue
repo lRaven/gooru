@@ -13,7 +13,7 @@
 			<button class="page-parsources__postpone" type="button">
 				<img src="/img/icon/cabinet/postpone.svg" alt="postpone" />
 				<p class="page-parsources__postpone-description">
-					Отложить выбранные
+					Отложить {{ document_width > 540 ? "выбранные" : "" }}
 				</p>
 			</button>
 			<button
@@ -23,7 +23,7 @@
 			>
 				<img src="/img/icon/cabinet/remove.svg" alt="remove" />
 				<p class="page-parsources__remove-description">
-					Удалить выбранные
+					Удалить {{ document_width > 540 ? "выбранные" : "" }}
 				</p>
 			</button>
 		</div>
@@ -32,6 +32,7 @@
 			<div
 				class="page-parsources__sort"
 				:class="{ manager: userRole !== 'DefaultUser' }"
+				v-if="document_width > 1140"
 			>
 				<template v-if="userRole !== 'DefaultUser'">
 					<sort-button
@@ -56,6 +57,43 @@
 						@new_sort="new_sort"
 					></sort-button>
 				</template>
+			</div>
+
+			<div class="page-parsources__sort" v-else>
+				<button
+					type="button"
+					class="page-parsources__sort-btn"
+					@click="
+						isSortDropdownVisible
+							? (isSortDropdownVisible = false)
+							: (isSortDropdownVisible = true)
+					"
+				>
+					<img src="/img/icon/cabinet/sort.svg" alt="" />
+					<p class="page-parsources__sort-description">Сортировать</p>
+				</button>
+
+				<transition-group mode="out-in">
+					<template v-if="userRole === 'DefaultUser'">
+						<r-dropdown
+							selected_item="-"
+							sendValue=""
+							:list="sortUserDropdown"
+							v-model="sortByDropdown"
+							v-show="isSortDropdownVisible"
+						></r-dropdown>
+					</template>
+
+					<template v-else>
+						<r-dropdown
+							selected_item="-"
+							sendValue=""
+							:list="sortManagerDropdown"
+							v-model="sortByDropdown"
+							v-show="isSortDropdownVisible"
+						></r-dropdown>
+					</template>
+				</transition-group>
 			</div>
 
 			<transition mode="out-in">
@@ -207,6 +245,8 @@
 				userId: (state) => state.cabinet.user.id,
 
 				all_parsers: (state) => state.parsers.all_parsers,
+
+				document_width: (state) => state.document_width,
 			}),
 			...mapGetters([
 				"parsources_notifications",
@@ -261,6 +301,8 @@
 				parsources_list: [],
 
 				parsources_in_page: 10,
+
+				isSortDropdownVisible: false,
 			};
 		},
 		methods: {
@@ -327,12 +369,20 @@
 		grid-template-rows: repeat(2, max-content) 1fr;
 		padding: 6.4rem 4rem 4rem 4rem;
 		min-height: 100%;
-		overflow: auto;
+
+		@media (max-width: 1440px) {
+			padding: 6.4rem 2rem 4rem 2rem;
+		}
+		@media (max-width: 1023px) {
+			padding: 4rem;
+		}
+		@media (max-width: 767px) {
+			padding: 4rem 1.5rem;
+		}
 
 		&__title {
 			font-weight: 400;
 			margin-bottom: 2.4rem;
-			padding: 0 1rem;
 		}
 
 		&__control {
@@ -340,7 +390,12 @@
 			align-items: center;
 			gap: 3rem;
 			margin-bottom: 2rem;
-			padding: 0 1rem;
+
+			@media (max-width: 540px) {
+				flex-wrap: wrap;
+				gap: 1rem;
+				justify-content: space-between;
+			}
 		}
 
 		&__postpone,
@@ -353,6 +408,10 @@
 		&__postpone-description,
 		&__remove-description {
 			font-size: 1.2rem;
+
+			@media (max-width: 375px) {
+				font-size: 1rem;
+			}
 		}
 
 		&__postpone {
@@ -369,24 +428,58 @@
 		&__content {
 			display: grid;
 			grid-template-rows: max-content 1fr max-content;
-			padding: 0 1rem;
 		}
 		&__sort {
 			display: grid;
-			grid-template-columns: repeat(7, minmax(15rem, 1fr)) 18rem;
+			grid-template-columns: repeat(7, 1fr) 18rem;
 			grid-gap: 2rem;
 			justify-content: space-between;
 			align-items: center;
 			padding: 0 3rem 0 5.6rem;
+
+			@media (max-width: 1440px) {
+				grid-template-columns: repeat(7, 1fr) 6.5rem;
+				padding: 0 1rem 0 3.6rem;
+			}
+			@media (max-width: 1140px) {
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+				align-items: flex-start;
+				gap: 1rem;
+				padding: 0;
+				margin-bottom: 1rem;
+				.r-dropdown {
+					min-width: 50%;
+					@media (max-width: 540px) {
+						width: 100%;
+					}
+				}
+			}
+
 			&.manager {
 				grid-template-columns: repeat(6, 1fr) 18rem;
+
+				@media (max-width: 1440px) {
+					grid-template-columns: repeat(6, 1fr) 6.5rem;
+				}
 			}
 			.sort-button {
-				width: max-content;
-
 				&:nth-child(n + 2) {
 					justify-self: center;
 				}
+			}
+
+			&-btn {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				background-color: transparent;
+			}
+
+			&-description {
+				color: $primary;
+				font-weight: 600;
 			}
 		}
 		&__list {
@@ -413,6 +506,34 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
+		}
+	}
+</style>
+
+<style lang="scss">
+	.page-parsources {
+		.r-checkbox {
+			&__description {
+				@media (max-width: 375px) {
+					font-size: 1rem;
+				}
+			}
+		}
+		&__sort {
+			.r-dropdown {
+				&__selected {
+					@media (max-width: 540px) {
+						font-size: 1.4rem !important;
+					}
+				}
+				&__list {
+					&-item {
+						@media (max-width: 540px) {
+							font-size: 1.4rem !important;
+						}
+					}
+				}
+			}
 		}
 	}
 </style>

@@ -5,26 +5,12 @@
 		}}</span>
 		материала
 	</p>
-	<r-spoiler title="Выложить в соц.сети" arrowType="gray">
+	<r-spoiler :class="{ mobile: documentWidth <= 450 }" title="Выложить в соц.сети" arrowType="gray">
 		<template v-slot>
 			<div
 				class="the-favorites__right-panel-social"
 				@click.capture="handleClickSharedIcon($event)"
 			>
-				<!-- <ShareNetwork
-					network="facebook"
-					:url="shareContent.url"
-					:title="shareContent.title"
-					:description="shareContent.description"
-					:media="shareContent.image"
-					:quote="shareContent.quote"
-					:hashtags="shareContent.hashtags"
-					@open="callbackOpenSharedIcon"
-					@close="callbackCloseSharedIcon"
-				>
-					<img src="/img/icon/cabinet/fb.svg" alt="facebook" />
-				</ShareNetwork> -->
-
 				<ShareNetwork
 					network="odnoklassniki"
 					:url="shareContent.url"
@@ -178,6 +164,7 @@
 		computed: {
 			...mapState({
 				favorites: (state) => state.favorites.favorites,
+				documentWidth: (state) => state.document_width,
 			}),
 			...mapActions(["getFavoriteParsers"]),
 			isDisabledDownloadButton() {
@@ -310,10 +297,15 @@
 
 	.the-favorites {
 		&__right-panel {
+			.mobile {
+						.r-spoiler__content {
+							padding: 0;
+						}
 			&-counter {
 				font-size: 3.6rem;
 				&-wrapper {
 					margin-bottom: 2rem;
+					}
 				}
 			}
 			&-alert-message {

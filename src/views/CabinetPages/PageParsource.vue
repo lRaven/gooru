@@ -147,7 +147,9 @@
 								{ id: 3, description: 'с комментариями' },
 							]"
 							v-model="selectedListFilter"
-							:class="{'r-dropdown_mode_mobile': documentWidth <= 400}"
+							:class="{
+								'r-dropdown_mode_mobile': documentWidth <= 400,
+							}"
 						></r-dropdown>
 					</div>
 
@@ -337,7 +339,12 @@
 							></r-dropdown>
 						</template>
 
-						<p class="page-parsource__info-key">Источник</p>
+						<p
+							class="page-parsource__info-key"
+							v-if="documentWidth > 450"
+						>
+							Источник
+						</p>
 						<a
 							:href="parsource.data_source"
 							target="_blank"
@@ -347,12 +354,26 @@
 							{{ parsource.data_source }}
 						</a>
 
-						<p class="page-parsource__info-key">Дата</p>
+						<p
+							class="page-parsource__info-key"
+							v-if="documentWidth > 450"
+						>
+							Дата
+						</p>
 						<p class="page-parsource__info-value">
-							{{ parsource.date || "1.1.1970" }}
+							{{
+								parsource.date
+									? prettyDate(parsource.date)
+									: "1.1.1970"
+							}}
 						</p>
 
-						<p class="page-parsource__info-key">Статус</p>
+						<p
+							class="page-parsource__info-key"
+							v-if="documentWidth > 450"
+						>
+							Статус
+						</p>
 						<r-status :status="1 || parsource.condition"></r-status>
 					</div>
 				</div>
@@ -371,17 +392,19 @@
 </template>
 
 <script>
-	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 	import rStatus from "@/components/Cabinet/r-status";
 	import ParserContent from "@/components/Cabinet/Parsource/ParserContent";
-
 	import RightPanel from "@/components/Cabinet/RightPanel";
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
 
 	import { change_manager } from "@/api/userApi";
 	import { read_notification } from "@/api/notifications";
 	import { multiaction_delete } from "@/api/multiaction_delete";
+
+	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 	import { useToast } from "vue-toastification";
+
+	import { prettyDate } from "@/js/processStrings";
 
 	export default {
 		name: "PageParsource",
@@ -630,6 +653,7 @@
 					throw new Error();
 				}
 			},
+			prettyDate,
 		},
 		created() {
 			this.SET_TAB("parsers");
@@ -725,7 +749,6 @@
 				line-height: 3rem;
 			}
 			@media (max-width: 400px) {
-				
 				overflow: hidden;
 				padding: 0 0 0 1.5rem;
 				font-size: 2.4rem;
@@ -745,6 +768,12 @@
 			grid-template-columns: max-content 1fr;
 			align-items: center;
 			grid-gap: 1rem;
+			@media (max-width: 450px) {
+				grid-template-columns: max-content;
+				.r-status {
+					padding: 0.8rem 2rem;
+				}
+			}
 
 			&-key {
 				font-size: 1.2rem;

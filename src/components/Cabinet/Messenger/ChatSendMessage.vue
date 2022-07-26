@@ -42,11 +42,18 @@
 <style lang="scss" scoped>
 	.chat-send-message {
 		padding: 0 4rem 4rem;
+		@media (max-width: 450px) {
+			padding: 0 1.5rem;
+		}
 		&__content {
 			display: flex;
 			border: 0.1rem solid rgba(50, 50, 50, 0.1);
 			border-radius: 0.6rem;
 			gap: 2rem;
+			@media (max-width: 450px) {
+				flex-direction: column;
+				padding: 1rem;
+			}
 		}
 		.r-textarea {
 			width: 100%;
@@ -58,6 +65,9 @@
 			margin-top: auto;
 			margin-right: 1rem;
 			margin-bottom: 1rem;
+			@media (max-width: 450px) {
+				width: 100%;
+			}
 		}
 	}
 </style>

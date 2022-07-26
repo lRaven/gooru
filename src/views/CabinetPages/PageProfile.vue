@@ -28,6 +28,11 @@
 				</label>
 			</form>
 
+			<rate-info
+				:rate="rate"
+				v-if="isHasRate && rate.loaded && documentWidth <= 600"
+			></rate-info>
+
 			<form class="page-profile__form page-profile__change-personal-data">
 				<h4 class="page-profile__form-title">Личные данные</h4>
 				<transition mode="out-in">
@@ -38,7 +43,7 @@
 						v-if="isPersonalDataFormDisabled === true"
 					>
 						<img src="/img/icon/cabinet/edit.svg" alt="" />
-						{{ documentWidth <= 425 ? '' : 'Редактировать' }}
+						{{ documentWidth <= 425 ? "" : "Редактировать" }}
 					</button>
 				</transition>
 
@@ -85,7 +90,7 @@
 						v-if="isPasswordsFormDisabled === true"
 					>
 						<img src="/img/icon/cabinet/edit.svg" alt="" />
-						{{ documentWidth <= 425 ? '' : 'Редактировать' }}
+						{{ documentWidth <= 425 ? "" : "Редактировать" }}
 					</button>
 				</transition>
 
@@ -118,6 +123,30 @@
 				@click="postUpdatedData"
 			></r-button>
 		</div>
+
+		<transition-group mode="out-in">
+			<div class="page-profile__wait" v-if="!rate.loaded">
+				<r-loader class="page-profile__loader"></r-loader>
+			</div>
+			<rate-info
+				:rate="rate"
+				v-else-if="isHasRate && rate.loaded && documentWidth > 600"
+			></rate-info>
+
+			<div
+				class="page-profile__rate"
+				v-else-if="!isHasRate && rate.loaded"
+			>
+				<h3 class="page-profile__rate-title">Активировать подписку</h3>
+
+				<r-button
+					text="Активация"
+					@click="this.$router.push({ name: 'rates' })"
+				></r-button>
+
+				<brief-card></brief-card>
+			</div>
+		</transition-group>
 	</section>
 </template>
 
@@ -128,10 +157,13 @@
 		upload_avatar,
 		change_password,
 	} from "@/api/userApi";
+	import RateInfo from "@/components/Rates/RateInfo.vue";
+	import BriefCard from "@/components/Brief/BriefCard.vue";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageProfile",
+		components: { RateInfo, BriefCard },
 		watch: {
 			user_data: {
 				handler() {
@@ -156,6 +188,7 @@
 			...mapState({
 				user_data: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
+				rate: (state) => state.cabinet.rate,
 			}),
 
 			isUserDataChanged() {
@@ -194,6 +227,10 @@
 					? true
 					: false;
 			},
+
+			isHasRate() {
+				return this.rate.id ? true : false;
+			},
 		},
 		data: () => ({
 			isPersonalDataFormDisabled: true,
@@ -208,6 +245,7 @@
 				phone_number: "",
 				email: "",
 			},
+
 			new_avatar: "",
 
 			passwords: {
@@ -343,12 +381,21 @@
 
 	.page-profile {
 		display: grid;
-		grid-template-columns: 1fr minmax(0, 29rem);
-		grid-template-rows: repeat(2, max-content);
-		padding: 6.4rem 0 4rem 4rem;
-		gap: 3rem;
+		grid-template-columns: max-content 1fr;
+		padding: 6.4rem 4rem 4rem 4rem;
+		grid-gap: 3rem 10rem;
 		height: 100%;
 		overflow: auto;
+		@media (max-width: 1110px) {
+			grid-gap: 3rem 7rem;
+		}
+		@media (max-width: 780px) {
+			grid-gap: 3rem 5rem;
+		}
+		@media (max-width: 750px) {
+			grid-template-columns: 1fr 1fr;
+		}
+
 		@media (max-width: 600px) {
 			grid-template-columns: 1fr;
 			padding: 6rem 1.5rem 3.5rem 3.5rem;
@@ -356,6 +403,14 @@
 		}
 		@media (max-width: 425px) {
 			padding: 3rem 1.5rem 3rem 1.5rem;
+		}
+
+		@media (max-width: 1023px) {
+			padding: 4rem;
+		}
+
+		@media (max-width: 767px) {
+			padding: 4rem 1.5rem;
 		}
 
 		&__title,
@@ -368,6 +423,27 @@
 			grid-template-columns: 52rem;
 			grid-gap: 8rem;
 			column-gap: 25rem;
+			@media (max-width: 1240px) {
+				grid-template-columns: 40rem;
+			}
+			@media (max-width: 1110px) {
+				grid-template-columns: 38rem;
+			}
+			@media (max-width: 1110px) {
+				grid-template-columns: 35rem;
+			}
+			@media (max-width: 1023px) {
+				grid-template-columns: 40rem;
+			}
+			@media (max-width: 860px) {
+				grid-template-columns: 35rem;
+			}
+			@media (max-width: 700px) {
+				grid-template-columns: 30rem;
+			}
+			@media (max-width: 670px) {
+				grid-template-columns: 29rem;
+			}
 			@media (max-width: 600px) {
 				grid-template-columns: 1fr;
 			}
@@ -414,6 +490,12 @@
 				grid-template-columns: 1fr 1.6fr;
 				align-items: center;
 				grid-gap: 2rem 1rem;
+				@media (max-width: 750px) {
+					grid-template-columns: 1fr;
+				}
+				@media (max-width: 600px) {
+					grid-template-columns: 1fr 1.6fr;
+				}
 				@media (max-width: 425px) {
 					grid-template-columns: 1fr;
 					grid-gap: 1rem;
@@ -469,6 +551,35 @@
 			@media (max-width: 425px) {
 				width: 100%;
 			}
+		}
+
+		.rate-info {
+			margin-left: 10rem;
+			@media (max-width: 1410px) {
+				margin-left: 0;
+			}
+		}
+
+		&__rate {
+			&-title {
+				font-weight: 500;
+				color: $primary;
+				margin-bottom: 3rem;
+			}
+			&-help {
+				font-weight: 500;
+				color: $primary;
+				margin-bottom: 3rem;
+			}
+			.r-button {
+				&:nth-child(2) {
+					margin-bottom: 2rem;
+				}
+			}
+		}
+		&__wait {
+			position: relative;
+			max-height: calc(100vh - 25rem);
 		}
 	}
 </style>

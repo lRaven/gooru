@@ -65,11 +65,17 @@
 			background-color: #fff;
 			z-index: 1;
 			border-radius: 1rem;
+			@media (max-width: 450px) {
+				width: 90%
+			}
 		}
 
 		&__text {
 			grid-column: 1/3;
 			text-align: center;
+			@media (max-width: 450px) {
+				font-size: 1.8rem;
+			}
 		}
 	}
 </style>

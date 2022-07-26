@@ -18,6 +18,7 @@
 							? this.$emit('open_menu')
 							: this.$emit('close_menu')
 					"
+					v-if="!isClear"
 				>
 					<svg
 						width="27"
@@ -475,13 +476,6 @@
 		&.bg__cabinet {
 			padding: 1rem 4rem;
 
-			@media (max-width: 1023px) {
-				.the-header {
-					&__logo {
-						display: none;
-					}
-				}
-			}
 			@media (max-width: 767px) {
 				padding: 1rem 1.5rem;
 			}
@@ -499,7 +493,11 @@
 				&__col {
 					justify-content: space-between;
 				}
-
+				&__logo {
+					@media (max-width: 1023px) {
+						display: none;
+					}
+				}
 				&__burger {
 					@media (max-width: 1023px) {
 						background-color: transparent;
@@ -529,10 +527,6 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-
-			@media (max-width: 375px) {
-				flex-wrap: wrap;
-			}
 		}
 
 		&__col {
@@ -718,7 +712,7 @@
 				text-overflow: ellipsis;
 			}
 
-			@media (max-width: 540px) {
+			@media (max-width: 475px) {
 				max-width: 12rem;
 				overflow: hidden;
 				white-space: nowrap;

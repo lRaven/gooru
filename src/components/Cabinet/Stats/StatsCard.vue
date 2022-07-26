@@ -55,6 +55,11 @@
 			font-weight: 700;
 			color: $primary;
 			margin-bottom: 1.6rem;
+			@media (max-width: 380px) {
+				font-size: 2rem;
+				margin-bottom: 1rem;
+				text-align: center;
+			}
 		}
 		&__rate-info-item {
 			margin: 0 0 2rem 0;

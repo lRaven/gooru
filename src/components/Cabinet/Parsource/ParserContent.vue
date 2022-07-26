@@ -187,7 +187,7 @@
 				</p>
 				<div class="parser-content__controls">
 					<svg
-						class="parser-content__contorl-edit-button"
+						class="parser-content__control-edit-button"
 						@click.stop="handleEditClick"
 						width="20"
 						height="20"
@@ -215,7 +215,7 @@
 						/>
 					</svg>
 					<svg
-						class="parser-content__contorl-remove-button"
+						class="parser-content__control-remove-button"
 						@click.stop="handleDeleteComment"
 						width="20"
 						height="21"
@@ -255,7 +255,7 @@
 					v-model="comment"
 				></textarea>
 				<p
-					class="parser-content__contorl-edit-button parser-content__contorl-edit-button_text parser-content__contorl-edit-button_align_end"
+					class="parser-content__control-edit-button parser-content__control-edit-button_text parser-content__control-edit-button_align_end"
 					v-if="parser.comment.text"
 					@click.stop="handleEditClick"
 				>
@@ -276,22 +276,6 @@
 					Поделиться в социальных сетях:
 				</p>
 				<ul class="parser-content__social-list">
-					<!-- <li class="parser-content__social-list-item">
-						<ShareNetwork
-							network="facebook"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
-							:quote="shareContent.quote"
-							:hashtags="shareContent.hashtags"
-						>
-							<img
-								src="/img/icon/cabinet/fb.svg"
-								alt="facebook"
-							/>
-						</ShareNetwork>
-					</li> -->
 					<li class="parser-content__social-list-item">
 						<ShareNetwork
 							network="odnoklassniki"
@@ -377,12 +361,14 @@
 			></r-button>
 		</div>
 	</li>
-	<r-confirm-popup
-		v-if="isDeleteFavoritePopupVisible"
-		:text="`Вы действительно хотите удалить «${parserProp.title}» из избранного?`"
-		@action_confirm="updateFavoriteParser"
-		@close_popup="isDeleteFavoritePopupVisible = false"
-	/>
+	<transition mode="out-in" name="fade">
+		<r-confirm-popup
+			v-if="isDeleteFavoritePopupVisible"
+			:text="`Вы действительно хотите удалить «${parserProp.title}» из избранного?`"
+			@action_confirm="updateFavoriteParser"
+			@close_popup="isDeleteFavoritePopupVisible = false"
+		/>
+	</transition>
 </template>
 
 <script>
@@ -810,7 +796,7 @@
 			align-items: center;
 			gap: 1rem;
 		}
-		&__contorl-edit-button {
+		&__control-edit-button {
 			cursor: pointer;
 
 			width: 2rem;
@@ -835,7 +821,7 @@
 				}
 			}
 		}
-		&__contorl-remove-button {
+		&__control-remove-button {
 			cursor: pointer;
 			width: 2rem;
 			height: 2rem;

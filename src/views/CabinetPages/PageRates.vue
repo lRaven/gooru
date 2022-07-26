@@ -19,7 +19,7 @@
 						@select-rate="select_rate"
 					></rate-card>
 
-					<div class="page-rates__brief">
+					<!-- <div class="page-rates__brief">
 						<div class="page-rates__brief-col">
 							<p class="page-rates__brief-text">
 								<span class="page-rates__brief-text-big">
@@ -39,7 +39,9 @@
 							text="Ответить на вопросы"
 							@click="this.$router.push({ name: 'brief' })"
 						></r-button>
-					</div>
+					</div> -->
+
+					<brief-card></brief-card>
 
 					<div class="page-rates__help">
 						<div class="page-rates__help-row">
@@ -122,7 +124,9 @@
 								v-model="new_appeal.topic"
 							></r-dropdown>
 							<template v-if="hasParsers">
-								<p class="the-rates__create-appeal-description">
+								<p
+									class="page-rates__create-appeal-description"
+								>
 									Выберите парсер
 								</p>
 								<r-dropdown
@@ -134,7 +138,7 @@
 							</template>
 
 							<p
-								class="the-rates__create-appeal-description"
+								class="page-rates__create-appeal-description"
 								:class="{ alignselfstart: !hasParsers }"
 							>
 								Напишите текст обращения
@@ -163,7 +167,7 @@
 
 	import RateCard from "@/components/Rates/RateCard.vue";
 	import StatsCard from "@/components/Cabinet/Stats/StatsCard.vue";
-
+	import BriefCard from "@/components/Brief/BriefCard.vue";
 	import { add_ticket } from "@/api/tickets";
 	import { useToast } from "vue-toastification";
 
@@ -172,6 +176,7 @@
 		components: {
 			RateCard,
 			StatsCard,
+			BriefCard,
 		},
 		watch: {
 			userRate() {},
@@ -390,136 +395,6 @@
 			}
 		}
 
-		&__brief {
-			display: flex;
-			justify-content: space-between;
-			border-radius: 2rem;
-			padding: 3rem 3rem 3rem 4rem;
-			grid-column: 1/4;
-			background: url("/public/img/brief/brief-bg.png") center / 120% auto
-				no-repeat;
-			background-position: 0 70%;
-			@media (max-width: 1630px) {
-				justify-content: flex-start;
-				gap: 4rem;
-				background-position: 0 60%;
-			}
-			@media (max-width: 1530px) {
-				grid-column: 1/3;
-				background-position: 0 100%;
-			}
-			@media (max-width: 1024px) {
-				margin-top: 2rem;
-			}
-			@media (max-width: 680px) {
-				flex-direction: column;
-				grid-column: 1/2;
-			}
-			@media (max-width: 500px) {
-				padding: 1.5rem 1.5rem 2rem 1.5rem;
-				gap: 2rem;
-			}
-			@media (max-width: 350px) {
-				gap: 1rem;
-			}
-			&-text {
-				color: $white;
-				font-size: 2.4rem;
-				font-weight: 600;
-				@media (max-width: 1630px) {
-					font-size: 2.2rem;
-				}
-				@media (max-width: 1530px) {
-					font-size: 2rem;
-				}
-				@media (max-width: 500px) {
-					font-size: 2rem;
-				}
-				@media (max-width: 400px) {
-					font-size: 1.8rem;
-				}
-				@media (max-width: 370px) {
-					font-size: 1.6rem;
-				}
-				@media (max-width: 350px) {
-						font-size: 1.4rem;
-					}
-				
-				&:first-child {
-					margin-bottom: 2rem;
-					@media (max-width: 500px) {
-						margin-bottom: 1.3rem;
-					}
-					@media (max-width: 350px) {
-						margin-bottom: 1rem;
-					}
-				}
-
-				&-big {
-					text-transform: uppercase;
-					color: $white;
-					font-size: 3.2rem;
-					font-weight: 600;
-					@media (max-width: 1630px) {
-						font-size: 2.8rem;
-					}
-					@media (max-width: 1530px) {
-						font-size: 2.5rem;
-					}
-					@media (max-width: 767px) {
-						font-size: 2.3rem;
-					}
-					@media (max-width: 500px) {
-						font-size: 2rem;
-					}
-					@media (max-width: 400px) {
-						font-size: 1.8rem;
-					}
-					@media (max-width: 370px) {
-						font-size: 1.6rem;
-					}
-					@media (max-width: 350px) {
-						font-size: 1.4rem;
-					}
-					&:nth-child(2) {
-						margin-bottom: 3rem;
-						margin-left: auto;
-						@media (max-width: 767px) {
-							margin-bottom: 2.5rem;
-						}
-						@media (max-width: 680px) {
-							margin-bottom: 2rem;
-							margin-left: 0;
-						}
-						@media (max-width: 400px) {
-							margin-bottom: 1.5rem;
-						}
-						@media (max-width: 350px) {
-						margin-bottom: 1rem;
-					}
-					}
-				}
-			}
-
-			&-col {
-				display: flex;
-				flex-direction: column;
-			}
-			.r-button {
-				margin-top: auto;
-				padding: 1.2rem 3rem;
-				height: max-content;
-				@media (max-width: 680px) {
-					width: max-content;
-					align-self: flex-end;
-				}
-				@media (max-width: 350px) {
-					width: 100%;
-					
-				}
-			}
-		}
-
 		&__help {
 			background: url("/public/img/cabinet/message.png") center / cover
 				no-repeat;
@@ -669,10 +544,6 @@
 			}
 
 			&-description {
-				&.alignselfstart {
-					align-self: flex-start;
-					margin: 1rem 0 0 0;
-				}
 				&:nth-child(5) {
 					align-self: flex-start;
 					padding-top: 1rem;

@@ -11,7 +11,7 @@ const state = () => ({
 
 	user: {},
 
-	rate: null,
+	rate: {},
 });
 
 const getters = {};
@@ -69,10 +69,11 @@ const actions = {
 					...userRate,
 					name: tariffInfo.name,
 					amount: tariffInfo.cost,
+					loaded: true,
 				});
 
 			} else {
-				context.commit("SET_USER_RATE_DATA", {});
+				context.commit("SET_USER_RATE_DATA", { loaded: true });
 			}
 		} catch (error) {
 			throw new Error(error);

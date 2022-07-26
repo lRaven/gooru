@@ -1,7 +1,7 @@
 <template>
 	<li class="favorite-content-item" v-click-away="stateReset">
 		<div
-			class='favorite-content-item__row'
+			class="favorite-content-item__row"
 			@click="
 				isCroppedText === true ? expandArticle() : minimizeArticle()
 			"
@@ -15,10 +15,19 @@
 				></r-checkbox>
 
 				<h5 class="favorite-content-item__title">{{ parser.title }}</h5>
-				<p class="favorite-content-item__text" :class="{ cropped: isCroppedText }" ref="textBlock">{{ parser.article }}</p>
+				<p
+					class="favorite-content-item__text"
+					:class="{ cropped: isCroppedText }"
+					ref="textBlock"
+				>
+					{{ parser.article }}
+				</p>
 			</div>
 
-			<div class="favorite-content-item__col" :class="{ alignicons: isTextOverFlow }">
+			<div
+				class="favorite-content-item__col"
+				:class="{ alignicons: isTextOverFlow }"
+			>
 				<svg
 					width="18"
 					height="18"
@@ -26,7 +35,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="favorite-content-item__icon"
-					@click="openConfirmPopup"
+					@click.stop="openConfirmPopup"
 					v-if="isFavorited"
 				>
 					<path
@@ -81,28 +90,19 @@
 			</div>
 		</div>
 
-		<div class="favorite-content-item__row" v-if="isShareOpen === true">
+		<div
+			:class="
+				documentWidth <= 450
+					? 'favorite-content-item__column'
+					: 'favorite-content-item__row'
+			"
+			v-if="isShareOpen === true"
+		>
 			<div class="favorite-content-item__social">
 				<p class="favorite-content-item__social-description">
 					Поделиться в социальных сетях:
 				</p>
 				<ul class="favorite-content-item__social-list">
-					<!-- <li class="favorite-content-item__social-list-item">
-						<ShareNetwork
-							network="facebook"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
-							:quote="shareContent.quote"
-							:hashtags="shareContent.hashtags"
-						>
-							<img
-								src="/img/icon/cabinet/fb.svg"
-								alt="facebook"
-							/>
-						</ShareNetwork>
-					</li> -->
 					<li class="favorite-content-item__social-list-item">
 						<ShareNetwork
 							network="odnoklassniki"
@@ -156,7 +156,14 @@
 			<r-button text="Отправить" color="bordered"></r-button>
 		</div>
 
-		<div class="favorite-content-item__row" v-if="isDownloadOpen === true">
+		<div
+			:class="
+				documentWidth <= 450
+					? 'favorite-content-item__column'
+					: 'favorite-content-item__row'
+			"
+			v-if="isDownloadOpen === true"
+		>
 			<div class="favorite-content-item__download">
 				<p class="favorite-content-item__download-description">
 					Выберите формат
@@ -236,7 +243,6 @@
 				user: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
 			}),
-			
 
 			isFavorited() {
 				let find = false;
@@ -295,7 +301,8 @@
 				this.isCroppedText = false;
 				setTimeout(() => {
 					if (this.$refs.textBlock.offsetHeight > 60) {
-						this.textBlockHeight = this.$refs.textBlock.offsetHeight;
+						this.textBlockHeight =
+							this.$refs.textBlock.offsetHeight;
 						this.isTextOverFlow = true;
 					}
 				}, 100);
@@ -366,7 +373,7 @@
 							);
 							let dataFileType =
 								response.value.type.split("/")[1];
-							// преобразование mime-типов ответа в расширение
+							//* преобразование mime-типов ответа в расширение
 							if (
 								dataFileType ===
 								"vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -385,8 +392,8 @@
 							linkForDownload.remove();
 						}
 					});
-				} catch (error) {
-					console.log(error);
+				} catch (err) {
+					throw new Error(err);
 				}
 			},
 		},
@@ -411,10 +418,23 @@
 			display: grid;
 			grid-template-columns: 1fr max-content;
 		}
+		&__column {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+			.r-button {
+				width: 100%;
+				padding: 1.1rem 3rem;
+				font-size: 1.4rem;
+				font-weight: 500;
+				height: max-content;
+			}
+		}
 
 		&__row {
 			display: flex;
 			justify-content: space-between;
+
 			+ .favorite-content-item__row {
 				margin-top: 2rem;
 			}
@@ -434,8 +454,8 @@
 			}
 		}
 		& .alignicons {
-				align-self: flex-start;
-			}
+			align-self: flex-start;
+		}
 
 		&__col {
 			&:first-child {
@@ -556,6 +576,7 @@
 			&-list {
 				display: flex;
 				gap: 5rem;
+
 				&-item {
 					.r-checkbox__description {
 						font-weight: 500;

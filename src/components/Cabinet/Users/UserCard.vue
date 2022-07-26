@@ -375,6 +375,7 @@
 			font-size: 1.5rem;
 			text-overflow: ellipsis;
 			overflow: hidden;
+			white-space: nowrap;
 
 			&:nth-child(n + 3) {
 				margin: 0 auto;

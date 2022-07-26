@@ -35,6 +35,9 @@
 		align-items: center;
 		border-bottom: 0.1rem solid $light-gray;
 		padding: 1rem 0;
+		@media (max-width: 380px) {
+			padding: 0.5rem 0;
+		}
 		&:last-child {
 			border: none;
 		}

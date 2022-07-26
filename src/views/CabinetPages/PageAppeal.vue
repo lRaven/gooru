@@ -4,7 +4,7 @@
 		:class="{ has_right_panel: user.role === 'DefaultUser' }"
 	>
 		<div class="page-appeal__main">
-			<h2 class="page-appeal__title">Обращения</h2>
+			<h2 class="page-appeal__title" v-if="documentWidth > 450">Обращения</h2>
 
 			<div class="page-appeal__header">
 				<button
@@ -43,6 +43,7 @@
 			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			class="page-appeal__right-panel"
+			:class="{ mobile: !isMinimizedRightPanel }"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
 			@close-right-panel="isMinimizedRightPanel = true"
@@ -116,6 +117,11 @@
 			TheMessenger,
 		},
 		watch: {
+			documentWidth() {
+				if (this.documentWidth <= 1150) {
+					this.isMinimizedRightPanel = true;
+				}
+			},
 			appeal_id() {
 				if (this.$route.path === this.path) {
 					this.getAppeal(this.appeal_id);
@@ -134,6 +140,7 @@
 				all_parsers: (state) => state.parsers.all_parsers,
 				topics: (state) => state.appeals.topics,
 				user: (state) => state.cabinet.user,
+				documentWidth: (state) => state.document_width,
 			}),
 
 			appeal_id() {
@@ -232,6 +239,8 @@
 			},
 		},
 		created() {
+			this.isMinimizedRightPanel =
+				this.documentWidth <= 1150 ? true : false;
 			this.SET_TAB("appeals");
 			this.getAllParsers();
 
@@ -249,18 +258,68 @@
 
 	.page-appeal {
 		padding: 0;
-
 		&.has_right_panel {
 			display: grid;
 			grid-template-columns: 1fr max-content;
 			grid-gap: 2rem;
+			@media (max-width: 1150px) {
+				grid-gap: 0;
+			}
 			.page-appeal__main {
 				padding: 4rem 0 0 4rem;
+				@media (max-width: 1150px) {
+					padding: 4rem 4rem 4rem 4rem;
+				}
+				@media (max-width: 768px) {
+					padding: 3rem 2.5rem 3rem 2.5rem;
+				}
+				@media (max-width: 650px) {
+					padding: 3rem 2rem 3rem 2rem;
+				}
+				@media (max-width: 450px) {
+					padding: 3rem 0 0 0;
+				}
 			}
 		}
 
 		&__title {
 			font-weight: 400;
+			@media (max-width: 570px) {
+				font-size: 2.5rem;
+			}
+		}
+		&__header {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			align-items: center;
+			font-weight: 500;
+			@media (max-width: 450px) {
+				padding: 0 1.5rem;
+			}
+		}
+		&__id,
+		&__source,
+		&__topic {
+			font-size: 3.2rem;
+			@media (max-width: 1280px) {
+				font-size: 2.8rem;
+			}
+			@media (max-width: 1210px) {
+				font-size: 2.5rem;
+			}
+			@media (max-width: 670px) {
+				font-size: 2.2rem;
+			}
+			@media (max-width: 600px) {
+				font-size: 2rem;
+			}
+			@media (max-width: 550px) {
+				font-size: 1.8rem;
+			}
+			@media (max-width: 470px) {
+				font-size: 1.7rem;
+			}
 		}
 		&__topic-message {
 			width: 100%;
@@ -271,15 +330,25 @@
 			overflow: hidden;
 			white-space: nowrap;
 			padding: 0 0 1.5rem 0;
-		}
-		&__header {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 1rem;
-			align-items: center;
-			font-weight: 500;
-			p {
-				font-size: 3.2rem;
+			font-size: 3.2rem;
+			@media (max-width: 1210px) {
+				font-size: 2.9rem;
+			}
+			@media (max-width: 670px) {
+				font-size: 2.7rem;
+			}
+			@media (max-width: 600px) {
+				font-size: 2.5rem;
+			}
+			@media (max-width: 650px) {
+				transform: translate(0, 2.5rem);
+				padding: 0 0 1.5rem 0;
+			}
+			@media (max-width: 550px) {
+				font-size: 2.2rem;
+			}
+			@media (max-width: 470px) {
+font-size: 2.1rem;
 			}
 		}
 
@@ -287,7 +356,13 @@
 			background-color: transparent;
 			width: 3rem;
 			margin-right: 2rem;
+			@media (max-width: 470px) {
+				margin-right: 0;
+				width: 2.5rem;
+			}
 			&-icon {
+				width: 2.5rem;
+				height: 1.5rem;
 			}
 		}
 
@@ -298,9 +373,34 @@
 			flex-direction: column;
 			overflow-y: auto;
 			height: calc(100vh - 8rem);
+			@media (max-width: 650px) {
+				gap: 2.5rem;
+			}
 		}
 
 		&__right-panel {
+			@media (max-width: 1150px) {
+				position: absolute;
+				top: 0;
+				right: 0;
+				background-color: rgba($color: $white, $alpha: 1);
+			}
+			@media (max-width: 450px) {
+				display: none;
+			}
+			&.mobile {
+				@media (max-width: 540px) {
+					display: flex;
+					position: fixed;
+					right: 0;
+					top: 0;
+					width: 100vw;
+					height: 100%;
+					z-index: 3;
+					background-color: rgba($color: $white, $alpha: 1);
+					transition: all 0.2s ease, padding 0.2s ease 0.2s;
+				}
+			}
 			&-form {
 				padding: 2rem 0;
 				border-top: 0.05rem solid rgba($black, $alpha: 0.5);

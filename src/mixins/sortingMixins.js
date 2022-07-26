@@ -1,6 +1,11 @@
 import { sortArrayByObjectKey, sortArrayByNumberKey } from '@/js/sortArrayByObjectKey';
 
 export const sortParsources = {
+	watch: {
+		sortByDropdown() {
+			this.sort_list({ key: this.sortByDropdown.key, direction: this.sortByDropdown.direction });
+		},
+	},
 	data: () => ({
 		sortManager: [
 			{
@@ -85,7 +90,193 @@ export const sortParsources = {
 			},
 		],
 
+		sortUserDropdown: [
+			{
+				id: 1,
+				key: "data_source",
+				description: "по источнику (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 2,
+				key: "data_source",
+				description: "по источнику (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 3,
+				key: "name",
+				description: "по названию (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 4,
+				key: "name",
+				description: "по названию (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 5,
+				key: "date",
+				description: "по дате (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 6,
+				key: "date",
+				description: "по дате (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 7,
+				key: "condition",
+				description: "по статусу (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 8,
+				key: "condition",
+				description: "по статусу (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 9,
+				key: "find",
+				description: "по числу найденных (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 10,
+				key: "find",
+				description: "по числу найденных (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 11,
+				key: "favorite",
+				description: "по числу в избранном (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 12,
+				key: "favorite",
+				description: "по числу в избранном (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 13,
+				key: "lost_time",
+				description: "по времени парсинга (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 14,
+				key: "lost_time",
+				description: "по времени парсинга (по-убыванию)",
+				direction: "descending",
+			},
+		],
+		sortManagerDropdown: [
+			{
+				id: 1,
+				key: "user",
+				description: "по пользователю (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 2,
+				key: "user",
+				description: "по пользователю (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 3,
+				key: "data_source",
+				description: "по источнику (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 4,
+				key: "data_source",
+				description: "по источнику (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 5,
+				key: "name",
+				description: "по названию (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 6,
+				key: "name",
+				description: "по названию (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 7,
+				key: "date",
+				description: "по дате (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 8,
+				key: "date",
+				description: "по дате (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 9,
+				key: "condition",
+				description: "по статусу (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 10,
+				key: "condition",
+				description: "по статусу (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 11,
+				key: "find",
+				description: "по числу найденных (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 12,
+				key: "find",
+				description: "по числу найденных (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 13,
+				key: "favorite",
+				description: "по числу в избранном (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 14,
+				key: "favorite",
+				description: "по числу в избранном (по-убыванию)",
+				direction: "descending",
+			},
+			{
+				id: 15,
+				key: "lost_time",
+				description: "по времени парсинга (по-возрастанию)",
+				direction: "ascending",
+			},
+			{
+				id: 16,
+				key: "lost_time",
+				description: "по времени парсинга (по-убыванию)",
+				direction: "descending",
+			},
+		],
+
 		sortBy: null,
+		sortByDropdown: null,
 	}),
 
 	methods: {

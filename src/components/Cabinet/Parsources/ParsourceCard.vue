@@ -3,13 +3,13 @@
 		<r-checkbox
 			v-model="isSelected"
 			:checked="isSelected"
-			v-if="isCanSelect"
+			v-if="isCanSelect && document_width > 1140"
 		></r-checkbox>
 
 		<div
 			class="parsource-card__content"
 			:class="{ selected: isSelected }"
-			v-if="document_width > 767"
+			v-if="document_width > 1140"
 		>
 			<p
 				class="parsource-card__id"
@@ -128,7 +128,7 @@
 			</p>
 
 			<r-button
-				:text="document_width > 1240 ? 'Подробнее' : ''"
+				:text="document_width > 1440 ? 'Подробнее' : ''"
 				color="bordered"
 				direction="revert"
 				@click="
@@ -147,9 +147,9 @@
 					/>
 					<img
 						src="/img/icon/dot_list.svg"
-						alt="notification"
-						class="parsource-card__notification"
-						v-if="document_width <= 1240"
+						alt="dots"
+						class="parsource-card__dots"
+						v-if="document_width <= 1440"
 					/>
 				</template>
 			</r-button>
@@ -207,7 +207,7 @@
 				</div>
 
 				<r-button
-					:text="document_width > 1240 ? 'Подробнее' : ''"
+					:text="document_width > 1440 ? 'Подробнее' : ''"
 					color="bordered"
 					direction="revert"
 					@click="
@@ -226,9 +226,9 @@
 						/>
 						<img
 							src="/img/icon/dot_list.svg"
-							alt="notification"
-							class="parsource-card__notification"
-							v-if="document_width <= 1240"
+							alt="dots"
+							class="parsource-card__dots"
+							v-if="document_width < 1440"
 						/>
 					</template>
 				</r-button>
@@ -345,13 +345,14 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+
 		&.manager {
 			.parsource-card {
 				&__content {
 					grid-template-columns: repeat(6, 1fr) 18rem;
 
-					@media (max-width: 1240px) {
-						grid-template-columns: repeat(6, 1fr) 4rem;
+					@media (max-width: 1440px) {
+						grid-template-columns: repeat(6, 1fr) 6.5rem;
 					}
 				}
 			}
@@ -372,11 +373,11 @@
 			outline: 0.1rem solid transparent;
 			transition: all 0.2s ease;
 
-			@media (max-width: 1240px) {
-				grid-template-columns: repeat(7, 1fr) 4rem;
-			}
-			@media (max-width: 767px) {
+			@media (max-width: 1440px) {
+				grid-template-columns: repeat(7, 1fr) 6.5rem;
 				padding: 1rem;
+			}
+			@media (max-width: 1140px) {
 				display: flex;
 				flex-direction: column;
 				align-items: flex-start;
@@ -397,12 +398,13 @@
 				font-size: 1.4rem;
 				padding: 1rem 2.8rem;
 				min-height: 4.2rem;
+				margin-left: auto;
 
-				@media (max-width: 1240px) {
+				@media (max-width: 1440px) {
 					min-height: inherit;
 					height: 4rem;
 					width: 4rem;
-					padding: 0;
+					padding: 0 1rem;
 				}
 			}
 
@@ -416,14 +418,26 @@
 		&__notification {
 			width: 2.4rem;
 			height: 2.4rem;
+			@media (max-width: 1440px) {
+				width: 1.5rem;
+			}
 		}
 
 		&__col {
+			&:first-child {
+				@media (max-width: 1140px) {
+					display: grid;
+					grid-template-columns: max-content 1fr;
+					gap: 1rem;
+					align-items: center;
+				}
+			}
+
 			&:nth-child(n + 2) {
 				margin: 0 auto;
 				max-width: 100%;
 
-				@media (max-width: 767px) {
+				@media (max-width: 1140px) {
 					margin: 0;
 				}
 			}
@@ -443,8 +457,14 @@
 
 			&:last-child {
 				display: grid;
-				grid-template-columns: repeat(2, 1fr) 4rem;
+				grid-template-columns: repeat(2, 1fr) 6.5rem;
 				grid-gap: 2rem;
+			}
+		}
+
+		.r-status {
+			@media (max-width: 540px) {
+				min-width: max-content;
 			}
 		}
 

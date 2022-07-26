@@ -446,6 +446,7 @@
 					right: 0;
 					top: 0;
 					width: 100vw;
+					height: 100%;
 					z-index: 3;
 					background-color: rgba($color: $white, $alpha: 1);
 					transition: all 0.2s ease, padding 0.2s ease 0.2s;
