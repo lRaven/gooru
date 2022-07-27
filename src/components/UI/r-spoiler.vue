@@ -88,10 +88,10 @@
 <style lang="scss" scoped>
 	.r-spoiler {
 		&.mobile {
-				.r-spoiler__content {
-					
-				}
+			.r-spoiler__content {
+				padding: 0 0 0.5rem 0;
 			}
+		}
 		&__header {
 			user-select: none;
 			display: flex;
@@ -139,7 +139,6 @@
 		}
 		&__content {
 			padding: 2rem 0;
-
 			@media (max-width: 540px) {
 				padding: 1.2rem;
 			}

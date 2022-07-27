@@ -976,6 +976,11 @@
 				font-size: 1.4rem;
 				padding-top: 1.5rem;
 				padding-bottom: 1.5rem;
+				@media (max-width: 450px) {
+					padding-top: 1rem;
+					padding-bottom: 1rem;
+					font-size: 1.2rem;
+				}
 			}
 		}
 	}

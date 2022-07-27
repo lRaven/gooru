@@ -5,7 +5,11 @@
 		}}</span>
 		материала
 	</p>
-	<r-spoiler :class="{ mobile: documentWidth <= 450 }" title="Выложить в соц.сети" arrowType="gray">
+	<r-spoiler
+		:class="{ mobile: documentWidth <= 450 }"
+		title="Выложить в соц.сети"
+		arrowType="gray"
+	>
 		<template v-slot>
 			<div
 				class="the-favorites__right-panel-social"
@@ -17,7 +21,6 @@
 					:title="shareContent.title"
 					:description="shareContent.description"
 					:media="shareContent.image"
-					
 					@close="callbackCloseSharedIcon"
 				>
 					<img
@@ -33,7 +36,6 @@
 					:title="shareContent.title"
 					:description="shareContent.description"
 					:media="shareContent.image"
-					
 					@close="callbackCloseSharedIcon"
 				>
 					<img src="/img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
@@ -46,7 +48,6 @@
 					:description="shareContent.description"
 					:media="shareContent.image"
 					:hashtags="shareContent.hashtags"
-					
 					@close="callbackCloseSharedIcon"
 				>
 					<img
@@ -62,7 +63,6 @@
 					:title="shareContent.title"
 					:description="shareContent.description"
 					:media="shareContent.image"
-					
 					@close="callbackCloseSharedIcon"
 				>
 					<img
@@ -295,13 +295,13 @@
 	.the-favorites {
 		&__right-panel {
 			.mobile {
-						.r-spoiler__content {
-							padding: 0 0 0.5rem 0;
-						}
-			&-counter {
-				font-size: 3.6rem;
-				&-wrapper {
-					margin-bottom: 2rem;
+				.r-spoiler__content {
+					padding: 0 0 0.5rem 0;
+				}
+				&-counter {
+					font-size: 3.6rem;
+					&-wrapper {
+						margin-bottom: 2rem;
 					}
 				}
 			}
@@ -330,6 +330,11 @@
 				font-size: 1.4rem;
 				padding-top: 1.5rem;
 				padding-bottom: 1.5rem;
+				@media (max-width: 450px) {
+					font-size: 1rem;
+					padding-top: 1rem;
+					padding-bottom: 1rem;
+				}
 			}
 		}
 	}

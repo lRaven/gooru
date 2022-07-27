@@ -153,7 +153,7 @@
 					</li>
 				</ul>
 			</div>
-			<r-button text="Отправить" color="bordered"></r-button>
+			
 		</div>
 
 		<div

@@ -326,7 +326,7 @@
 					</li>
 				</ul>
 			</div>
-			<r-button text="Отправить" color="bordered"></r-button>
+			
 		</div>
 
 		<div :class="documentWidth > 490 ? 'parser-content__row' : 'parser-content__column'" v-if="isDownloadOpen === true">

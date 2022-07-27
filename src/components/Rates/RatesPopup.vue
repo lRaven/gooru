@@ -25,7 +25,7 @@
 				<ul class="rates-popup__checklist">
 					<li
 						class="rates-popup__checklist-item"
-						v-for="item in selectedRate.checklist"
+						v-for="item in selectedRate.checkList"
 						:key="item.id"
 					>
 						<img

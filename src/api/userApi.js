@@ -102,11 +102,7 @@ const logout = async () => {
 
 const getRates = async () => {
 	try {
-		const { data:rates } = await axios.get(`${baseURL}/tariff`, {
-			headers: {
-				Authorization: `token ${cookie.get("auth_token")}`,
-			},
-		});
+		const { data:rates } = await axios.get(`${baseURL}/tariff`);
 		return rates.results;
 	} catch (error) {
 		throw new Error(error);
