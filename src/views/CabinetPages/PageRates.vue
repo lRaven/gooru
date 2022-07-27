@@ -81,7 +81,7 @@
 		</transition-group>
 
 		<transition name="fade" mode="out-in">
-			<r-modal v-if="isModalVisible" @close-modal="close_modal">
+			<r-modal :class="{ mobile: documentWidth <= 570 }" v-if="isModalVisible" @close-modal="close_modal">
 				<template v-slot>
 					<form
 						class="page-rates__create-appeal"
@@ -348,7 +348,7 @@
 			@media (max-width: 1530px) {
 				grid-template-columns: repeat(2, 30rem);
 			}
-			@media (max-width: 1024px) {
+			@media (max-width: 1023px) {
 				grid-template-columns: repeat(2, 35rem);
 				grid-gap: 4rem 6rem;
 			}
@@ -520,6 +520,14 @@
 					font-size: 3rem;
 					margin-bottom: 2.3rem;
 				}
+				@media (max-width: 1050px) {
+					font-size: 2.8rem;
+					margin-bottom: 2rem;
+				}
+				@media (max-width: 970px) {
+					font-size: 2.5rem;
+					margin-bottom: 2rem;
+				}
 			}
 			&-inputs {
 				display: grid;
@@ -539,11 +547,35 @@
 						);
 				}
 				@media (max-width: 1150px) {
-					grid-template-columns: max-content max-content;
+					grid-template-columns: max-content minmax(
+							20rem,
+							max-content
+						);
+				}
+				@media (max-width: 1050px) {
+					grid-template-columns: max-content minmax(
+							18rem,
+							max-content
+						);
+				}
+				@media (max-width: 970px) {
+					grid-template-columns: 45vw;
+					grid-gap: 1rem;
+				}
+				@media (max-width: 570px) {
+					grid-template-columns: 100%;
+					grid-gap: 1rem;
 				}
 			}
 
 			&-description {
+				@media (max-width: 1150px) {
+					font-size: 1.7rem;
+					grid-column: 1/2;
+				}
+				@media (max-width: 970px) {
+					grid-column: 1/2;
+				}
 				&:nth-child(5) {
 					align-self: flex-start;
 					padding-top: 1rem;
@@ -551,6 +583,9 @@
 			}
 
 			.r-dropdown {
+				@media (max-width: 970px) {
+					grid-column: 1/2;
+				}
 				&__selected {
 					font-size: 1.8rem;
 				}
@@ -559,10 +594,20 @@
 			.r-textarea {
 				font-size: 1.8rem;
 				height: 14rem;
+				@media (max-width: 1150px) {
+					font-size: 1.7rem;
+				}
+				@media (max-width: 970px) {
+					grid-column: 1/2;
+					height: 12rem;
+				}
 			}
 			.r-button {
 				margin-top: 2rem;
 				grid-column: 1/3;
+				@media (max-width: 970px) {
+grid-column: 1/2;
+				}
 			}
 		}
 	}
@@ -575,6 +620,9 @@
 				&__selected,
 				&__list-item {
 					font-size: 1.8rem;
+					@media (max-width: 1150px) {
+					font-size: 1.7rem;
+				}
 				}
 			}
 		}

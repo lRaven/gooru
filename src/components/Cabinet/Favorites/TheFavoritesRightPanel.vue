@@ -17,7 +17,7 @@
 					:title="shareContent.title"
 					:description="shareContent.description"
 					:media="shareContent.image"
-					@open="callbackOpenSharedIcon"
+					
 					@close="callbackCloseSharedIcon"
 				>
 					<img
@@ -33,7 +33,7 @@
 					:title="shareContent.title"
 					:description="shareContent.description"
 					:media="shareContent.image"
-					@open="callbackOpenSharedIcon"
+					
 					@close="callbackCloseSharedIcon"
 				>
 					<img src="/img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
@@ -46,7 +46,7 @@
 					:description="shareContent.description"
 					:media="shareContent.image"
 					:hashtags="shareContent.hashtags"
-					@open="callbackOpenSharedIcon"
+					
 					@close="callbackCloseSharedIcon"
 				>
 					<img
@@ -62,7 +62,7 @@
 					:title="shareContent.title"
 					:description="shareContent.description"
 					:media="shareContent.image"
-					@open="callbackOpenSharedIcon"
+					
 					@close="callbackCloseSharedIcon"
 				>
 					<img
@@ -296,7 +296,7 @@
 		&__right-panel {
 			.mobile {
 						.r-spoiler__content {
-							padding: 0;
+							padding: 0 0 0.5rem 0;
 						}
 			&-counter {
 				font-size: 3.6rem;
@@ -311,6 +311,9 @@
 				font-weight: 500;
 				line-height: 1.7rem;
 				color: $red;
+				@media (max-width: 450px) {
+					font-size: 1rem;
+				}
 			}
 			&-social {
 				display: flex;

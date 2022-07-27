@@ -195,7 +195,7 @@
 	</li>
 	<r-confirm-popup
 		v-if="isDeleteFavoritePopupVisible"
-		:text="`Вы действительно хотите удалить «${parser.title}» из избранного?`"
+		:text="`Вы действительно хотите удалить «${croppedTitle}» из избранного?`"
 		@action_confirm="deleteFavoriteParser"
 		@close_popup="isDeleteFavoritePopupVisible = false"
 	/>
@@ -243,6 +243,16 @@
 				user: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
 			}),
+
+			croppedTitle() {
+				if (this.parser.title.length > 20) {
+					const croppedStr = this.parser.title.slice(0, 21);
+					
+					return croppedStr[croppedStr.length - 1] === '' ? croppedStr.slice(0, croppedStr.length - 1) : croppedStr;
+				} else {
+					return this.parser.title;
+				}
+			},
 
 			isFavorited() {
 				let find = false;
@@ -339,7 +349,7 @@
 						isFavorite: true,
 					});
 					this.toast.success(
-						`Парсер «${this.parser.title}» удален из избранного!`
+						`Парсер «${this.croppedTitle}» удален из избранного!`
 					);
 					setTimeout(
 						() => (this.isDeleteFavoritePopupVisible = false),

@@ -364,7 +364,7 @@
 	<transition mode="out-in" name="fade">
 		<r-confirm-popup
 			v-if="isDeleteFavoritePopupVisible"
-			:text="`Вы действительно хотите удалить «${parserProp.title}» из избранного?`"
+			:text="`Вы действительно хотите удалить «${this.croppedTitle}» из избранного?`"
 			@action_confirm="updateFavoriteParser"
 			@close_popup="isDeleteFavoritePopupVisible = false"
 		/>
@@ -425,6 +425,16 @@
 				user: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
 			}),
+
+			croppedTitle() {
+				if (this.parser.title.length > 20) {
+					const croppedStr = this.parser.title.slice(0, 21);
+					
+					return croppedStr[croppedStr.length - 1] === '' ? croppedStr.slice(0, croppedStr.length - 1) : croppedStr;
+				} else {
+					return this.parser.title;
+				}
+			},
 
 			isFavorited() {
 				let find = false;
@@ -516,11 +526,11 @@
 					console.log("after await", this.isFavorited);
 					if (this.isFavorited) {
 						this.toast.success(
-							`Парсер «${this.parserProp.article}» добавлен в избранное!`
+							`Парсер «${this.croppedTitle}» добавлен в избранное!`
 						);
 					} else {
 						this.toast.success(
-							`Парсер «${this.parserProp.article}» удален из избранного!`
+							`Парсер «${this.croppedTitle}» удален из избранного!`
 						);
 					}
 					setTimeout(
@@ -531,11 +541,11 @@
 					console.log(error);
 					if (this.isFavorited) {
 						this.toast.error(
-							`Не удалось удалить «${this.parserProp.title}» из избранного!`
+							`Не удалось удалить «${this.croppedTitle}» из избранного!`
 						);
 					} else {
 						this.toast.error(
-							`Не удалось добавить «${this.parserProp.title}» в избранное!`
+							`Не удалось добавить «${this.croppedTitle}» в избранное!`
 						);
 					}
 				}

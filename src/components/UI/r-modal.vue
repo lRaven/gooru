@@ -41,6 +41,12 @@
 		top: 0;
 		bottom: 0;
 		z-index: 3;
+		&.mobile {
+			.r-modal__content {
+				width: 100%;
+				max-width: max-content;
+			}
+		}
 
 		&::after {
 			content: "";

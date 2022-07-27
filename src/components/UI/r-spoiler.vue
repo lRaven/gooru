@@ -71,13 +71,8 @@
 		},
 		methods: {
 			openSpoiler() {
-				const contentHeight = this.$refs.content.offsetHeight;
 				this.$refs.arrow.classList.add("open");
 				this.$refs.body.classList.add("open");
-				this.$refs.body.setAttribute(
-					"style",
-					`height: ${contentHeight}px`
-				);
 			},
 			closeSpoiler() {
 				this.$refs.arrow.classList.remove("open");
@@ -92,6 +87,11 @@
 
 <style lang="scss" scoped>
 	.r-spoiler {
+		&.mobile {
+				.r-spoiler__content {
+					
+				}
+			}
 		&__header {
 			user-select: none;
 			display: flex;
@@ -133,9 +133,13 @@
 			overflow: hidden;
 			transition: all 0.2s ease;
 			border-bottom: 0.1rem solid #cdcdcd;
+			&.open {
+				height: max-content;
+			}
 		}
 		&__content {
 			padding: 2rem 0;
+
 			@media (max-width: 540px) {
 				padding: 1.2rem;
 			}
