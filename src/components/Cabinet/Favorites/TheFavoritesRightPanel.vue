@@ -78,7 +78,7 @@
 		</template>
 	</r-spoiler>
 
-	<r-spoiler title="Скачать" arrowType="gray">
+	<r-spoiler :class="{ mobile: documentWidth <= 450 }" title="Скачать" arrowType="gray">
 		<template v-slot>
 			<div class="the-favorites__right-panel__checkboxes">
 				<r-checkbox
@@ -95,6 +95,7 @@
 				></r-checkbox>
 			</div>
 			<r-button
+				class="the-favorites__right-panel-submit-button"
 				@click="handleClickDownload"
 				text="Скачать"
 				:disabled="isDisabledDownloadButton"
@@ -102,7 +103,7 @@
 		</template>
 	</r-spoiler>
 
-	<r-spoiler title="Удалить" arrowType="gray">
+	<r-spoiler :class="{ mobile: documentWidth <= 450 }" title="Удалить" arrowType="gray">
 		<template v-slot>
 			<div class="the-favorites__right-panel__checkboxes">
 				<r-checkbox
@@ -111,6 +112,7 @@
 				></r-checkbox>
 			</div>
 			<r-button
+				class="the-favorites__right-panel-submit-button"
 				@click="handleClickRemoveButton"
 				:disabled="!confirmRemoveValue || !selectedParsers.length"
 				text="Удалить"
@@ -296,7 +298,7 @@
 		&__right-panel {
 			.mobile {
 				.r-spoiler__content {
-					padding: 0 0 0.5rem 0;
+					/* padding: 0 0 0.5rem 0; */
 				}
 				&-counter {
 					font-size: 3.6rem;
@@ -325,7 +327,7 @@
 				gap: 1rem;
 				margin-bottom: 2rem;
 			}
-			.r-button {
+			&-submit-button {
 				width: 100%;
 				font-size: 1.4rem;
 				padding-top: 1.5rem;

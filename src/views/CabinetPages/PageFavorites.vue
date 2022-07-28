@@ -3,7 +3,7 @@
 		<div class="page-favorites__main">
 			<h2 class="page-favorites__title">Избранное</h2>
 
-			<div class="page-favorites__sort-panel">
+			<div class="page-favorites__sort-panel" ref="sortPanel">
 				<div class="page-favorites__sort-panel-header">
 					<button
 						class="page-favorites__sort-panel-btn"
@@ -22,8 +22,13 @@
 							Сортировать
 						</p>
 					</button>
-					<template v-if="documentWidth <= 500 && !isSortPanelVisible">
-						<button class="page-favorites__favorite-panel-btn" @click="isMinimizedRightPanel = false">
+					<template
+						v-if="documentWidth <= 500 && !isSortPanelVisible"
+					>
+						<button
+							class="page-favorites__favorite-panel-btn"
+							@click="isMinimizedRightPanel = false"
+						>
 							<svg
 								width="32"
 								height="32"
@@ -43,10 +48,10 @@
 								</g>
 							</svg>
 							<p
-							class="page-favorites__favorite-panel-btn-description"
-						>
-							Выбрать
-						</p>
+								class="page-favorites__favorite-panel-btn-description"
+							>
+								Выбрать
+							</p>
 						</button>
 					</template>
 
@@ -68,6 +73,11 @@
 
 				<div
 					class="page-favorites__sort-panel-body"
+					:class="
+						sortPanelSize <= 880
+							? 'page-favorites__sort-panel-body_tiny'
+							: ''
+					"
 					v-show="isSortPanelVisible === true"
 				>
 					<div class="page-favorites__sort-panel-col">
@@ -99,7 +109,11 @@
 						></r-dropdown>
 					</div>
 
-					<r-button color="bordered" text="Применить"></r-button>
+					<r-button
+						class="page-favorites__sort-panel-submit-button"
+						color="bordered"
+						text="Применить"
+					></r-button>
 				</div>
 			</div>
 
@@ -174,6 +188,7 @@
 				if (this.documentWidth <= 1100) {
 					this.isMinimizedRightPanel = true;
 				}
+				this.sortPanelSize = this.$refs.sortPanel.offsetWidth;
 			},
 		},
 		computed: {
@@ -194,6 +209,9 @@
 			isMinimizedRightPanel: false,
 			isFavoritesLoaded: false,
 			isSortPanelVisible: false,
+
+			sortPanelSize: 0,
+
 			show_by_source: "",
 			show_by_content: "",
 			selectedParsources: [],
@@ -249,6 +267,9 @@
 			this.SET_TAB("favorites");
 			this.getFavoriteParsers();
 		},
+		mounted() {
+			this.sortPanelSize = this.$refs.sortPanel.offsetWidth;
+		},
 	};
 </script>
 
@@ -269,7 +290,7 @@
 
 		&__main {
 			position: relative;
-			padding: 6.4rem 0 4rem 4rem;
+			padding: 6.4rem 1rem 4rem 4rem;
 			width: 100%;
 			height: calc(100vh - 8rem);
 			overflow-y: auto;
@@ -281,7 +302,6 @@
 			}
 			@media (max-width: 500px) {
 				padding: 3rem 2rem 3rem 2rem;
-				
 			}
 		}
 		&__title {
@@ -302,7 +322,8 @@
 				justify-content: space-between;
 				margin-bottom: 0.6rem;
 			}
-
+			&-submit-button {
+			}
 			&-btn {
 				display: flex;
 				align-items: center;
@@ -334,10 +355,26 @@
 				align-items: flex-end;
 				padding: 2rem;
 				background-color: rgba(255, 255, 255, 0.5);
-				.r-button {
+				.page-favorites__sort-panel-submit-button {
 					padding: 1rem 2.8rem;
 					width: max-content;
 					margin-left: auto;
+				}
+				&_tiny {
+					display: grid;
+					grid-template-columns: repeat(2, 1fr);
+					grid-gap: 2rem;
+					.page-favorites__sort-panel-submit-button {
+						width: 100%;
+						padding: 1rem 2.8rem;
+					}
+					@media (max-width: 550px) {
+						grid-template-columns: 1fr;
+					}
+				}
+				@media (max-width: 1740px) {
+					grid-gap: 2rem;
+					padding: 1.7rem;
 				}
 			}
 			&-col {
@@ -348,7 +385,7 @@
 				color: rgba($black, $alpha: 0.5);
 			}
 		}
-		&__favorite-panel-btn{
+		&__favorite-panel-btn {
 			display: flex;
 			align-items: center;
 			gap: 1rem;

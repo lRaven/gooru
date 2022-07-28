@@ -87,6 +87,7 @@
 		<right-panel
 			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
+			:closeIcon="documentWidth <= 540 && !isMinimizedRightPanel ? 'cross' : 'arrow' "
 			class="page-appeals__right-panel"
 			:class="{ mobile: !isMinimizedRightPanel }"
 			:isMinimized="isMinimizedRightPanel"

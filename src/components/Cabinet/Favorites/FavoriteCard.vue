@@ -1,5 +1,5 @@
 <template>
-	<div class="favorite-card" v-click-away="closeContent" ref="card">
+	<div class="favorite-card" v-click-away="closeContent" ref="card" >
 		<div
 			:class="
 				cardSize >= 652
@@ -107,7 +107,7 @@
 								: openContent()
 						"
 					>
-						<p class="favorite-card__hide-description">свернуть</p>
+						<p class="favorite-card__hide-description">{{ isContentVisible ? 'свернуть' : 'развернуть' }}</p>
 						<svg
 							width="10"
 							height="6"
@@ -150,7 +150,7 @@
 	export default {
 		name: "FavoriteCard",
 		components: { FavoriteContentItem },
-		props: { parsource: Object },
+		props: { parsource: Object,},
 		emits: ["update-selected-parsers"],
 		data() {
 			return {

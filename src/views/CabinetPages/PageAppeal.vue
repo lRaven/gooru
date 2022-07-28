@@ -4,7 +4,9 @@
 		:class="{ has_right_panel: user.role === 'DefaultUser' }"
 	>
 		<div class="page-appeal__main">
-			<h2 class="page-appeal__title" v-if="documentWidth > 450">Обращения</h2>
+			<h2 class="page-appeal__title" v-if="documentWidth > 450">
+				Обращения
+			</h2>
 
 			<div class="page-appeal__header">
 				<button
@@ -271,10 +273,10 @@
 					padding: 4rem 4rem 4rem 4rem;
 				}
 				@media (max-width: 768px) {
-					padding: 3rem 2.5rem 3rem 2.5rem;
+					padding: 3rem 5rem 3rem 2.5rem;
 				}
 				@media (max-width: 650px) {
-					padding: 3rem 2rem 3rem 2rem;
+					padding: 3rem 5rem 0rem 2rem;
 				}
 				@media (max-width: 450px) {
 					padding: 3rem 0 0 0;
@@ -296,6 +298,9 @@
 			font-weight: 500;
 			@media (max-width: 450px) {
 				padding: 0 1.5rem;
+			}
+			@media (max-width: 380px) {
+				gap: 0.5rem;
 			}
 		}
 		&__id,
@@ -319,6 +324,9 @@
 			}
 			@media (max-width: 470px) {
 				font-size: 1.7rem;
+			}
+			@media (max-width: 380px) {
+				font-size: 1.6rem;
 			}
 		}
 		&__topic-message {
@@ -348,7 +356,7 @@
 				font-size: 2.2rem;
 			}
 			@media (max-width: 470px) {
-font-size: 2.1rem;
+				font-size: 2.1rem;
 			}
 		}
 
