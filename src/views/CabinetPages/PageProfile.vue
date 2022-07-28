@@ -333,7 +333,10 @@
 					}
 				} catch (err) {
 					this.isDisabledBtn = false;
-					this.toast.error("Ошибка смены изображения профиля");
+					this.personal_data.avatar = this.user_data.avatar;
+					this.toast.error(
+						"Данное изображение не доступно, пожалуйста загрузите jpg', '.png', '.svg' максимальный размер 4096px"
+					);
 					throw new Error(err);
 				}
 			},
