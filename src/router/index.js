@@ -175,7 +175,6 @@ const routes = [
 					requiresAuth: true,
 					isNotForDefaultUser: true,
 				},
-				props: true,
 			},
 		],
 	},

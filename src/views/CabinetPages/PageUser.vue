@@ -315,10 +315,6 @@
 			SortButton,
 			AppealsCard,
 		},
-		props: {
-			notification: String,
-			id: String,
-		},
 		watch: {
 			user: {
 				handler() {
@@ -503,7 +499,7 @@
 			this.getAllParsers();
 			this.getAllMessages();
 			
-			const readNotification = this.notification ? JSON.parse(this.notification) : '';
+			const readNotification = this.$route.params.notification ? JSON.parse(this.$route.params.notification) : '';
 			if (readNotification) {
 				read_notification({read: true, user_id: readNotification.user, notification_id: readNotification.id })
 				.then(() => {
