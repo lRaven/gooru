@@ -194,6 +194,7 @@
 						:key="user.id"
 						:user_me="user_me"
 						:user="user"
+						:notification="user_notifications.get(user.email)"
 						:users="all_users"
 						:managers="users_managers"
 						:parsources="all_parsources"
@@ -222,7 +223,7 @@
 </template>
 
 <script>
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 	import UserCard from "@/components/Cabinet/Users/UserCard.vue";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
 
@@ -320,6 +321,7 @@
 
 				document_width: (state) => state.document_width,
 			}),
+			...mapGetters(['user_notifications']),
 			page() {
 				return +this.$route.query.page;
 			},

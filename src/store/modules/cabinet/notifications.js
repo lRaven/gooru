@@ -20,7 +20,21 @@ const getters = {
 		return state.notifications.filter((notification) =>
 			notification.message.toLowerCase().includes('парсер')
 		) || [];
-	}
+	},
+	user_notifications(state) {
+		const notificationsAboutUsers = state.notifications.filter( notification => {
+			return notification.message.toLowerCase().includes('пользователь');
+		}) || [];
+		if (notificationsAboutUsers) {
+			const notificationsMap = new Map();
+			notificationsAboutUsers.forEach( notification => {
+				const userEmail = notification.message.split(': ');
+				notificationsMap.set(userEmail[1], notification);
+			});
+			return notificationsMap;
+		}
+		return new Map();
+	},
 };
 
 const mutations = { SET_NOTIFICATIONS: (state, payload) => (state.notifications = payload), };
