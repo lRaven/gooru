@@ -8,7 +8,7 @@
 
 		<div
 			class="parsource-card__content"
-			:class="{ selected: isSelected }"
+			:class="{ selected: isSelected, 'parsource-card__content_border_red': isHasNotifications }"
 			v-if="document_width > 1140"
 		>
 			<p
@@ -157,7 +157,7 @@
 
 		<div
 			class="parsource-card__content"
-			:class="{ selected: isSelected }"
+			:class="{ selected: isSelected, 'parsource-card__content_border_red': isHasNotifications }"
 			v-else
 		>
 			<div class="parsource-card__row">
@@ -372,6 +372,11 @@
 			box-shadow: $shadow;
 			outline: 0.1rem solid transparent;
 			transition: all 0.2s ease;
+			&_border {
+				&_red {
+					border: 0.1rem solid $red;
+				}
+			}
 
 			@media (max-width: 1440px) {
 				grid-template-columns: repeat(7, 1fr) 6.5rem;
