@@ -500,6 +500,7 @@
 			this.getAllMessages();
 			
 			const readNotification = this.$route.params.notification ? JSON.parse(this.$route.params.notification) : '';
+			console.log(readNotification)
 			if (readNotification) {
 				read_notification({read: true, user_id: readNotification.user, notification_id: readNotification.id })
 				.then(() => {

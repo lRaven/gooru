@@ -93,7 +93,7 @@
 
 		<div
 			class="user-card__content"
-			:class="{ selected: isSelected }"
+			:class="{ selected: isSelected, 'user-card__content_border_red': notification, }"
 			v-else
 		>
 			<div class="user-card__content-row">
@@ -163,6 +163,8 @@
 						this.$router.push({
 							path: `/cabinet/user/${user.id}`,
 							query: { page: 1 },
+							name: 'user',
+							params: { notification: notification ? JSON.stringify({...notification, email: user.email}) : '', id: user.id }
 						})
 					"
 				>
