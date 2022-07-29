@@ -227,10 +227,10 @@
 					<transition mode="out-in">
 						<div
 							class="page-user__parsers-list"
-							v-if="isParsourcesLoaded && parsources.length > 0"
+							v-if="isParsourcesLoaded && cards.length > 0"
 						>
 							<parsource-card
-								v-for="parsource in parsources_list"
+								v-for="parsource in cards_list"
 								:key="parsource.id"
 								:parsource="parsource"
 								:isCanSelect="false"
@@ -242,10 +242,7 @@
 						<div class="page-user__tabs-tab-empty">
 							<p
 								class="page-user__tabs-tab-text"
-								v-if="
-									parsources.length === 0 &&
-									isParsourcesLoaded
-								"
+								v-if="cards.length === 0 && isParsourcesLoaded"
 							>
 								Парсеров нет
 							</p>
@@ -296,7 +293,7 @@
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
-	import { sortParsourcesUser } from "@/mixins/sortingMixins";
+	import { sortCards, sortParsourcesUser } from "@/mixins/sortingMixins";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard";
 	import {
 		change_user_data,
@@ -307,7 +304,7 @@
 
 	export default {
 		name: "PageUser",
-		mixins: [sortParsourcesUser],
+		mixins: [sortCards, sortParsourcesUser],
 		components: {
 			ParsourceCard,
 			SortButton,
@@ -322,9 +319,9 @@
 				deep: true,
 			},
 
-			parsources: {
+			cards: {
 				handler: function () {
-					this.parsources_list = this.parsources;
+					this.cards_list = this.cards;
 					this.isParsourcesLoaded = true;
 				},
 				deep: true,
@@ -389,7 +386,7 @@
 				return manager || { username: "-" };
 			},
 
-			parsources() {
+			cards() {
 				return this.all_parsources.filter((parsource) => {
 					return parsource.user === this.user.id;
 				});
@@ -419,7 +416,7 @@
 
 				tab: 1,
 
-				parsources_list: [],
+				cards_list: [],
 				isParsourcesLoaded: false,
 				isSortDropdownVisible: false,
 

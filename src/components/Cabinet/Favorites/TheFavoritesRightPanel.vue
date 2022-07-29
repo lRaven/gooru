@@ -1,122 +1,124 @@
 <template>
-	<p class="the-favorites__right-panel-counter-wrapper">
-		<span class="the-favorites__right-panel-counter">{{
-			totalSelected
-		}}</span>
-		материала
-	</p>
-	<r-spoiler
-		:class="{ mobile: documentWidth <= 450 }"
-		title="Выложить в соц.сети"
-		arrowType="gray"
-	>
-		<template v-slot>
-			<div
-				class="the-favorites__right-panel-social"
-				@click.capture="handleClickSharedIcon($event)"
-			>
-				<ShareNetwork
-					network="odnoklassniki"
-					:url="shareContent.url"
-					:title="shareContent.title"
-					:description="shareContent.description"
-					:media="shareContent.image"
-					@close="callbackCloseSharedIcon"
+	<div class="the-favorites__right-panel">
+		<p class="the-favorites__right-panel-counter-wrapper">
+			<span class="the-favorites__right-panel-counter">
+				{{ totalSelected }}
+			</span>
+			материала
+		</p>
+		<r-spoiler
+			:class="{ mobile: documentWidth <= 450 }"
+			title="Выложить в соц.сети"
+			arrowType="gray"
+		>
+			<template v-slot>
+				<div
+					class="the-favorites__right-panel-social"
+					@click.capture="handleClickSharedIcon($event)"
 				>
-					<img
-						src="/img/icon/cabinet/ok.svg"
-						alt="ok"
-						ref="odnoklassniki"
-					/>
-				</ShareNetwork>
+					<ShareNetwork
+						network="odnoklassniki"
+						:url="shareContent.url"
+						:title="shareContent.title"
+						:description="shareContent.description"
+						:media="shareContent.image"
+						@close="callbackCloseSharedIcon"
+					>
+						<img
+							src="/img/icon/cabinet/ok.svg"
+							alt="ok"
+							ref="odnoklassniki"
+						/>
+					</ShareNetwork>
 
-				<ShareNetwork
-					network="vk"
-					:url="shareContent.url"
-					:title="shareContent.title"
-					:description="shareContent.description"
-					:media="shareContent.image"
-					@close="callbackCloseSharedIcon"
-				>
-					<img src="/img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
-				</ShareNetwork>
+					<ShareNetwork
+						network="vk"
+						:url="shareContent.url"
+						:title="shareContent.title"
+						:description="shareContent.description"
+						:media="shareContent.image"
+						@close="callbackCloseSharedIcon"
+					>
+						<img src="/img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
+					</ShareNetwork>
 
-				<ShareNetwork
-					network="twitter"
-					:url="shareContent.url"
-					:title="shareContent.title"
-					:description="shareContent.description"
-					:media="shareContent.image"
-					:hashtags="shareContent.hashtags"
-					@close="callbackCloseSharedIcon"
-				>
-					<img
-						src="/img/icon/cabinet/twtr.svg"
-						alt="twitter"
-						ref="twitter"
-					/>
-				</ShareNetwork>
+					<ShareNetwork
+						network="twitter"
+						:url="shareContent.url"
+						:title="shareContent.title"
+						:description="shareContent.description"
+						:media="shareContent.image"
+						:hashtags="shareContent.hashtags"
+						@close="callbackCloseSharedIcon"
+					>
+						<img
+							src="/img/icon/cabinet/twtr.svg"
+							alt="twitter"
+							ref="twitter"
+						/>
+					</ShareNetwork>
 
-				<ShareNetwork
-					network="telegram"
-					:url="shareContent.url"
-					:title="shareContent.title"
-					:description="shareContent.description"
-					:media="shareContent.image"
-					@close="callbackCloseSharedIcon"
-				>
-					<img
-						src="/img/icon/cabinet/tg.svg"
-						alt="tg"
-						ref="telegram"
-					/>
-				</ShareNetwork>
-			</div>
-			<p class="the-favorites__right-panel-alert-message">
-				{{ alertMessage }}
-			</p>
-		</template>
-	</r-spoiler>
+					<ShareNetwork
+						network="telegram"
+						:url="shareContent.url"
+						:title="shareContent.title"
+						:description="shareContent.description"
+						:media="shareContent.image"
+						@close="callbackCloseSharedIcon"
+					>
+						<img
+							src="/img/icon/cabinet/tg.svg"
+							alt="tg"
+							ref="telegram"
+						/>
+					</ShareNetwork>
+				</div>
+				<p class="the-favorites__right-panel-alert-message">
+					{{ alertMessage }}
+				</p>
+			</template>
+		</r-spoiler>
 
-	<r-spoiler title="Скачать" arrowType="gray">
-		<template v-slot>
-			<div class="the-favorites__right-panel__checkboxes">
-				<r-checkbox
-					v-model="downloadFormatFiles.xls"
-					description="Excel"
-				></r-checkbox>
-				<r-checkbox
-					v-model="downloadFormatFiles.csv"
-					description="CSV"
-				></r-checkbox>
-				<r-checkbox
-					v-model="downloadFormatFiles.json"
-					description="JSON"
-				></r-checkbox>
-			</div>
-			<r-button
-				@click="handleClickDownload"
-				text="Скачать"
-				:disabled="isDisabledDownloadButton"
-			></r-button>
-		</template>
-	</r-spoiler>
+		<r-spoiler title="Скачать" arrowType="gray">
+			<template v-slot>
+				<div class="the-favorites__right-panel__checkboxes">
+					<r-checkbox
+						v-model="downloadFormatFiles.xls"
+						description="Excel"
+					></r-checkbox>
+					<r-checkbox
+						v-model="downloadFormatFiles.csv"
+						description="CSV"
+					></r-checkbox>
+					<r-checkbox
+						v-model="downloadFormatFiles.json"
+						description="JSON"
+					></r-checkbox>
+				</div>
+				<r-button
+					@click="handleClickDownload"
+					text="Скачать"
+					:disabled="isDisabledDownloadButton"
+				></r-button>
+			</template>
+		</r-spoiler>
 
-	<r-spoiler title="Удалить" arrowType="gray">
-		<template v-slot>
-			<div class="the-favorites__right-panel__checkboxes">
-				<r-checkbox
-					v-model="confirmRemoveValue"
-					description="Подтверждаете удаление"
-				></r-checkbox>
-			</div>
-			<r-button
-				@click="handleClickRemoveButton"
-				:disabled="!confirmRemoveValue || !selectedParsers.length"
-				text="Удалить"
-			></r-button>
-		</template>
-	</r-spoiler>
+		<r-spoiler title="Удалить" arrowType="gray">
+			<template v-slot>
+				<div class="the-favorites__right-panel__checkboxes">
+					<r-checkbox
+						v-model="confirmRemoveValue"
+						description="Подтверждаете удаление"
+					></r-checkbox>
+				</div>
+				<r-button
+					@click="handleClickRemoveButton"
+					:disabled="!confirmRemoveValue || !selectedParsers.length"
+					text="Удалить"
+				></r-button>
+			</template>
+		</r-spoiler>
+	</div>
 </template>
 
 <script>
@@ -138,29 +140,27 @@
 				},
 			},
 		},
-		data() {
-			return {
-				confirmRemoveValue: false,
-				model: null,
-				downloadFormatFiles: {
-					xls: false,
-					csv: false,
-					json: false,
-				},
-				shareContent: {
-					url: window.location.href,
-					title: "",
-					description: "",
+		data: () => ({
+			confirmRemoveValue: false,
+			model: null,
+			downloadFormatFiles: {
+				xls: false,
+				csv: false,
+				json: false,
+			},
+			shareContent: {
+				url: window.location.href,
+				title: "",
+				description: "",
 
-					// *fb only
-					quote: "",
-					//*fb, twtr only
-					hashtags: "",
-				},
-				sharedPointer: 0,
-				alertMessage: "",
-			};
-		},
+				// *fb only
+				quote: "",
+				//*fb, twtr only
+				hashtags: "",
+			},
+			sharedPointer: 0,
+			alertMessage: "",
+		}),
 		computed: {
 			...mapState({
 				favorites: (state) => state.favorites.favorites,
@@ -306,7 +306,9 @@
 				}
 			}
 			&-alert-message {
+				padding-top: 1rem;
 				width: 100%;
+				height: 2rem;
 				font-size: 1.2rem;
 				font-weight: 500;
 				line-height: 1.7rem;
@@ -326,7 +328,7 @@
 				margin-bottom: 2rem;
 			}
 			.r-button {
-				width: 100%;
+				width: 100% !important;
 				font-size: 1.4rem;
 				padding-top: 1.5rem;
 				padding-bottom: 1.5rem;

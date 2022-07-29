@@ -1,11 +1,40 @@
 import { sortArrayByObjectKey, sortArrayByNumberKey } from '@/js/sortArrayByObjectKey';
 
+function sort_list({ key, direction }) {
+	//* по ключам [user, id] другая функция сортировки
+	if (this.pagination) {
+		if (key === "id" || key === 'user') {
+			this.pagination.cards_list = sortArrayByNumberKey({
+				array: this.cards,
+				key: key,
+				direction: direction,
+			});
+		} else {
+			this.pagination.cards_list = sortArrayByObjectKey({
+				array: this.cards,
+				key: key,
+				direction: direction,
+			});
+		}
+	}
+	else {
+		if (key === "id" || key === 'user') {
+			this.cards_list = sortArrayByNumberKey({
+				array: this.cards,
+				key: key,
+				direction: direction,
+			});
+		} else {
+			this.cards_list = sortArrayByObjectKey({
+				array: this.cards,
+				key: key,
+				direction: direction,
+			});
+		}
+	}
+}
+
 export const sortParsources = {
-	watch: {
-		sortByDropdown() {
-			this.sort_list({ key: this.sortByDropdown.key, direction: this.sortByDropdown.direction });
-		},
-	},
 	data: () => ({
 		sortManager: [
 			{
@@ -274,9 +303,6 @@ export const sortParsources = {
 				direction: "descending",
 			},
 		],
-
-		sortBy: null,
-		sortByDropdown: null,
 	}),
 
 	methods: {
@@ -327,32 +353,11 @@ export const sortParsources = {
 				});
 			}
 		},
-
-		sort_list({ key, direction }) {
-			//* по ключу user числа, поэтому другая функция сортировки
-			if (key === "user") {
-				this.parsources_list = sortArrayByNumberKey({
-					array: this.parsources,
-					key: key,
-					direction: direction,
-				});
-			} else {
-				this.parsources_list = sortArrayByObjectKey({
-					array: this.parsources,
-					key: key,
-					direction: direction,
-				});
-			}
-		},
+		sort_list,
 	},
 }
 
 export const sortParsourcesUser = {
-	watch: {
-		sortByDropdown() {
-			this.sort_list({ key: this.sortByDropdown.key, direction: this.sortByDropdown.direction });
-		},
-	},
 	data: () => ({
 		sortUser: [
 			{
@@ -485,9 +490,6 @@ export const sortParsourcesUser = {
 				direction: "descending",
 			},
 		],
-
-		sortBy: null,
-		sortByDropdown: null,
 	}),
 
 	methods: {
@@ -524,32 +526,11 @@ export const sortParsourcesUser = {
 			});
 
 		},
-
-		sort_list({ key, direction }) {
-			//* по ключу user числа, поэтому другая функция сортировки
-			if (key === "user") {
-				this.parsources_list = sortArrayByNumberKey({
-					array: this.parsources,
-					key: key,
-					direction: direction,
-				});
-			} else {
-				this.parsources_list = sortArrayByObjectKey({
-					array: this.parsources,
-					key: key,
-					direction: direction,
-				});
-			}
-		},
+		sort_list,
 	},
 }
 
 export const sortUsers = {
-	watch: {
-		sortByDropdown() {
-			this.sort_list({ key: this.sortByDropdown.key, direction: this.sortByDropdown.direction });
-		},
-	},
 	data: () => ({
 		sortManager: [
 			{
@@ -688,9 +669,6 @@ export const sortUsers = {
 				direction: "descending",
 			},
 		],
-
-		sortBy: null,
-		sortByDropdown: null,
 	}),
 
 	methods: {
@@ -714,8 +692,6 @@ export const sortUsers = {
 					}
 				});
 			}
-
-
 		},
 
 		//* функция вызывается при первом клике на кнопку сортировки (сортировка по-возрастанию)
@@ -742,25 +718,19 @@ export const sortUsers = {
 					}
 				});
 			}
-
-
 		},
+		sort_list,
+	},
+}
 
-		sort_list({ key, direction }) {
-			//* по ключу user числа, поэтому другая функция сортировки
-			if (key === "id") {
-				this.users_list = sortArrayByNumberKey({
-					array: this.users,
-					key: key,
-					direction: direction,
-				});
-			} else {
-				this.users_list = sortArrayByObjectKey({
-					array: this.users,
-					key: key,
-					direction: direction,
-				});
-			}
+export const sortCards = {
+	watch: {
+		sortByDropdown() {
+			this.sort_list({ key: this.sortByDropdown.key, direction: this.sortByDropdown.direction });
 		},
 	},
+	data: () => ({
+		sortBy: null,
+		sortByDropdown: null,
+	}),
 }

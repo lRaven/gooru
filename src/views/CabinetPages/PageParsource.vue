@@ -160,7 +160,7 @@
 					<transition mode="out-in" v-if="isParsersLoaded">
 						<ol class="page-parsource__content-list">
 							<parser-content
-								v-for="parser in parsers"
+								v-for="parser in pagination.cards_list"
 								:key="parser.id"
 								:parserProp="parser"
 							></parser-content>
@@ -176,12 +176,12 @@
 						:disabled="page >= number_of_pages"
 						color="bordered"
 						text="Показать ещё"
-						@click="page_changed(page + 1)"
+						@click="page_changed(page + 1, true)"
 					></r-button>
 					<r-pagination
 						:start_page="page"
 						:count="count"
-						:items_on_page="parsers_in_page"
+						:items_on_page="pagination.cards_in_page"
 						@page_changed="page_changed"
 					></r-pagination>
 				</div>
@@ -398,16 +398,18 @@
 	import TextCheckbox from "@/components/Cabinet/TextCheckbox";
 
 	import { change_manager } from "@/api/userApi";
+	import { prettyDate } from "@/js/processStrings";
 	import { read_notification } from "@/api/notifications";
 	import { multiaction_delete } from "@/api/multiaction_delete";
+
+	import { paginationMixin } from "@/mixins/paginationMixins";
 
 	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 	import { useToast } from "vue-toastification";
 
-	import { prettyDate } from "@/js/processStrings";
-
 	export default {
 		name: "PageParsource",
+		mixins: [paginationMixin],
 		components: {
 			rStatus,
 			ParserContent,
@@ -416,43 +418,28 @@
 			TextCheckbox,
 		},
 		watch: {
-			page() {
-				if (this.$route.path === this.path) {
-					this.getParsers({
-						parsource_name: this.parsource_name,
-						page_number: this.page,
-						page_size: this.parsers_in_page,
-					});
-				}
-			},
 			parsource_id() {
 				if (this.$route.name === "parsource") {
 					this.getParsource(this.parsource_id);
-					this.getParsers({
-						parsource_name: this.parsource_name,
-						page_number: this.page,
-						page_size: this.parsers_in_page,
-					});
 				}
 			},
 
 			parsource() {
-				this.getParsers({
+				this.getCards({
 					parsource_name: this.parsource_name,
 					page_number: this.page,
-					page_size: this.parsers_in_page,
+					page_size: this.pagination.cards_in_page,
+					nextPage: false,
 				});
 			},
-			parsers() {
+			cards() {
 				this.isParsersLoaded = true;
 
 				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 				this.parsers_notifications.forEach((notification) => {
 					const id = +notification.url.slice(7);
 
-					const bool = this.parsers.find(
-						(parser) => parser.id === id
-					);
+					const bool = this.cards.find((parser) => parser.id === id);
 
 					if (bool) {
 						console.log("Parsers notifications read");
@@ -500,8 +487,8 @@
 
 				documentWidth: (state) => state.document_width,
 
-				parsers: (state) => state.parsers.parsers,
-				parsers_pagination: (state) => state.parsers.parsers_pagination,
+				cards: (state) => state.parsers.parsers,
+				pagination_data: (state) => state.parsers.parsers_pagination,
 
 				userRole: (state) => state.cabinet.user.role,
 				all_users: (state) => state.users.all_users,
@@ -512,19 +499,9 @@
 			parsource_id() {
 				return +this.$route.params.id;
 			},
-			page() {
-				return +this.$route.query.page;
-			},
-			number_of_pages() {
-				return Math.ceil(this.count / this.parsers_in_page);
-			},
 
 			parsource_name() {
 				return this.parsource.name;
-			},
-
-			count() {
-				return this.parsers_pagination.count;
 			},
 
 			user_manager() {
@@ -553,16 +530,10 @@
 				isMinimizedRightPanel: false,
 				isConfirmPopupVisible: false,
 				isParsersLoaded: false,
-				path: this.$route.path,
-
-				parsers_in_page: 10,
 
 				selected_manager: "",
-
 				selectedListFilter: "",
-
 				selected_parsource: {},
-
 				filters: {
 					texts: false,
 					images: false,
@@ -573,7 +544,7 @@
 			};
 		},
 		methods: {
-			...mapMutations(["SET_TAB"]),
+			...mapMutations(["SET_TAB", "ADD_PARSERS"]),
 			...mapActions([
 				"getParsers",
 				"getParsource",
@@ -583,7 +554,40 @@
 				"getNotifications",
 			]),
 
-			page_changed(page_number) {
+			async getCards(params) {
+				try {
+					this.getParsers({
+						parsource_name: this.parsource_name,
+						...params,
+					});
+				} catch (err) {
+					throw new Error();
+				}
+			},
+			async getNextCards(params) {
+				try {
+					const response = await this.getParsers({
+						parsource_name: this.parsource_name,
+						...params,
+					});
+
+					if (response.status === 200) {
+						this.pagination.cards_list.push(
+							...response.data.results
+						);
+						this.ADD_PARSERS(this.pagination.cards_list);
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
+
+			page_changed(page_number, type) {
+				if (type) {
+					this.pagination.load_next_cards = true;
+				} else {
+					this.pagination.load_next_cards = false;
+				}
 				this.$router.push({
 					name: "parsource",
 					query: { page: page_number },
@@ -595,7 +599,7 @@
 					search: this.filters.description,
 					parsource_name: this.parsource_name,
 					page_number: this.page,
-					page_size: this.parsers_in_page,
+					page_size: this.pagination.cards_in_page,
 				});
 			},
 
@@ -662,7 +666,7 @@
 			this.parsers_notifications.forEach((notification) => {
 				const id = +notification.url.slice(7);
 
-				const bool = this.parsers.find((parser) => parser.id === id);
+				const bool = this.cards.find((parser) => parser.id === id);
 
 				if (bool) {
 					console.log("Parsers notifications read");
@@ -677,7 +681,6 @@
 				this.userRole !== "DefaultUser" &&
 				this.userRole !== undefined
 			) {
-				console.log(this.userRole);
 				this.getAllUsers();
 				this.getUsersManagers();
 			}

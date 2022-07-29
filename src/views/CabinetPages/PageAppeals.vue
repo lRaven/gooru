@@ -49,10 +49,10 @@
 			<transition mode="out-in">
 				<div
 					class="page-appeals__list shadow"
-					v-if="isAppealsLoaded && appeals.length > 0"
+					v-if="isAppealsLoaded && pagination.cards_list.length > 0"
 				>
 					<appeals-card
-						v-for="appeal in appeals"
+						v-for="appeal in pagination.cards_list"
 						:key="appeal.id"
 						:appeal="appeal"
 						:parsers="all_parsers"
@@ -63,7 +63,10 @@
 			</transition>
 
 			<transition mode="out-in">
-				<p class="page-appeals__empty" v-if="appeals.length === 0">
+				<p
+					class="page-appeals__empty"
+					v-if="pagination.cards_list.length === 0"
+				>
 					Обращений нет
 				</p>
 			</transition>
@@ -73,17 +76,18 @@
 					:disabled="page >= number_of_pages"
 					color="bordered"
 					text="Показать ещё"
-					@click="page_changed(page + 1)"
+					@click="page_changed(page + 1, true)"
 				></r-button>
 
 				<r-pagination
 					:start_page="page"
 					:count="count"
-					:items_on_page="appeals_in_page"
+					:items_on_page="pagination.cards_in_page"
 					@page_changed="page_changed"
 				></r-pagination>
 			</div>
 		</div>
+
 		<right-panel
 			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
@@ -153,27 +157,25 @@
 	import { add_ticket } from "@/api/tickets";
 	import { read_notification } from "@/api/notifications";
 
-	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
+	import { paginationMixin } from "@/mixins/paginationMixins";
+
+	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageAppeals",
+		mixins: [paginationMixin],
 		components: {
 			RightPanel,
 			AppealsCard,
 		},
 		watch: {
-			page() {
-				if (this.$route.path === this.path) {
-					this.getAppeals({
-						page_number: this.page,
-						page_size: this.appeals_in_page,
-					});
-				}
-			},
-			appeals() {
-				this.isAppealsLoaded = true;
+			cards: {
+				handler() {
+					this.isAppealsLoaded = true;
+				},
+				deep: true,
 			},
 			new_appeal: {
 				handler() {
@@ -194,31 +196,18 @@
 				all_parsers: (state) => state.parsers.all_parsers,
 				topics: (state) => state.appeals.topics,
 				user: (state) => state.cabinet.user,
-				appeals: (state) => state.appeals.appeals,
-				appeals_pagination: (state) => state.appeals.appeals_pagination,
+				cards: (state) => state.appeals.appeals,
+				pagination_data: (state) => state.appeals.appeals_pagination,
 				documentWidth: (state) => state.document_width,
 
 				all_messages: (state) => state.messenger.all_messages,
 			}),
 			...mapGetters(["appeals_notifications"]),
-			page() {
-				return +this.$route.query.page;
-			},
-
-			count() {
-				return this.appeals_pagination.count;
-			},
-
-			number_of_pages() {
-				return Math.ceil(this.count / this.appeals_in_page);
-			},
 		},
 		data() {
 			return {
 				isMinimizedRightPanel: false,
-
 				isAppealsLoaded: false,
-				path: this.$route.path,
 
 				new_appeal: {
 					topic: "",
@@ -226,12 +215,10 @@
 					message: "",
 				},
 				isNewAppealValid: false,
-
-				appeals_in_page: 10,
 			};
 		},
 		methods: {
-			...mapMutations(["SET_TAB"]),
+			...mapMutations(["SET_TAB", "ADD_APPEALS"]),
 			...mapActions([
 				"getAllParsers",
 				"getAppeals",
@@ -253,7 +240,7 @@
 						this.resetForm();
 						this.getAppeals({
 							page_number: this.page,
-							page_size: this.appeals_in_page,
+							page_size: this.pagination.cards_in_page,
 						});
 
 						console.log("Ticket created");
@@ -267,7 +254,35 @@
 				}
 			},
 
-			page_changed(page_number) {
+			async getCards(params) {
+				try {
+					this.getAppeals(params);
+				} catch (err) {
+					throw new Error();
+				}
+			},
+			async getNextCards(params) {
+				try {
+					const response = await this.getAppeals(params);
+
+					if (response.status === 200) {
+						this.pagination.cards_list.push(
+							...response.data.results
+						);
+						this.ADD_APPEALS(this.pagination.cards_list);
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
+
+			page_changed(page_number, type) {
+				if (type) {
+					this.pagination.load_next_cards = true;
+				} else {
+					this.pagination.load_next_cards = false;
+				}
+
 				this.$router.push({
 					name: "appeals",
 					query: { page: page_number },
@@ -313,9 +328,10 @@
 				this.clear_notifications(notification.id);
 			});
 
-			this.getAppeals({
+			this.getCards({
 				page_number: this.page,
-				page_size: this.appeals_in_page,
+				page_size: this.pagination.cards_in_page,
+				nextPage: false,
 			});
 			this.getAllMessages();
 
