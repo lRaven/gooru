@@ -53,15 +53,13 @@
 			>
 				<template v-slot>
 					<form
-						class="page-login__reset-password"
+						class="page-login__modal-form"
 						@submit.prevent="send_password_change_email_request"
 					>
-						<h2 class="page-login__reset-password-title">
+						<h2 class="page-login__modal-form-title">
 							Восстановление пароля
 						</h2>
-						<p class="page-login__reset-password-description">
-							Email:
-						</p>
+						<p class="page-login__modal-form-description">Email:</p>
 						<r-input
 							input_type="email"
 							placeholder="Введите email"
@@ -81,13 +79,13 @@
 			>
 				<template v-slot>
 					<form
-						class="page-login__change-password"
+						class="page-login__modal-form"
 						@submit.prevent="send_reset_password"
 					>
-						<h2 class="page-login__change-password-title">
+						<h2 class="page-login__modal-form-title">
 							Сменить пароль
 						</h2>
-						<p class="page-login__change-password-description">
+						<p class="page-login__modal-form-description">
 							Новый пароль:
 						</p>
 						<r-input
@@ -96,7 +94,7 @@
 							v-model="change_password_data.new_password"
 							:value="change_password_data.new_password"
 						></r-input>
-						<p class="page-login__change-password-description">
+						<p class="page-login__modal-form-description">
 							Подтверждение пароля:
 						</p>
 						<r-input
@@ -341,32 +339,33 @@
 			}
 		}
 
-		&__reset-password {
+		&__modal-form {
 			display: grid;
-			grid-template-columns: 10rem minmax(40rem, 1fr);
+			grid-template-columns: 10rem 1fr;
 			align-items: center;
 			grid-gap: 5rem 2rem;
 			padding: 0 2rem 2rem 2rem;
+			min-width: 60rem;
+			@media (max-width: 767px) {
+				min-width: 90vw;
+			}
+			@media (max-width: 540px) {
+				grid-gap: 1rem;
+				grid-template-columns: 1fr;
+			}
+
 			&-title,
 			.r-button {
 				grid-column: 1/3;
+				@media (max-width: 540px) {
+					grid-column: 1/1;
+				}
 			}
 			&-title {
 				text-align: center;
-			}
-		}
-		&__change-password {
-			display: grid;
-			grid-template-columns: 15rem minmax(35rem, 1fr);
-			align-items: center;
-			grid-gap: 5rem 2rem;
-			padding: 0 2rem 2rem 2rem;
-			&-title,
-			.r-button {
-				grid-column: 1/3;
-			}
-			&-title {
-				text-align: center;
+				@media (max-width: 540px) {
+					margin-bottom: 2rem;
+				}
 			}
 		}
 	}
