@@ -397,7 +397,7 @@
 	import { useToast } from "vue-toastification";
 
 	import { directive } from "vue3-click-away";
-	import { mapState, mapActions } from "vuex";
+	import { mapState, mapActions, mapMutations } from "vuex";
 
 	import {
 		createComment,
@@ -469,7 +469,8 @@
 					parsource.parsers.forEach((parser) => {
 						if (parser.id === this.parser.id) {
 							find = true;
-							this.parser.favoriteId = parser.favoriteId;
+							//this.parser.favoriteId = parser.favoriteId;
+							this.favoriteId = parser.favoriteId;
 						}
 					});
 				});
@@ -495,7 +496,8 @@
 				isDeleteFavoritePopupVisible: false,
 				isTextOverFlow: false,
 
-				parser: this.parserProp,
+				parser: JSON.parse(JSON.stringify(this.parserProp)),
+				favoriteId: null,
 
 				comment: this.parserProp.comment.text,
 				downloadFormatFiles: { excel: false, csv: false },
@@ -515,6 +517,7 @@
 
 		methods: {
 			...mapActions(["getFavoriteParsers", "updateFavorites"]),
+			...mapMutations(["SET_UPDATED_ALL_PARSERS", "SET_UPDATED_PARSERS", "SET_UPDATED_FAVORITES"]),
 			hideAllExtras() {
 				this.isMessagesOpen = false;
 				this.isShareOpen = false;
@@ -547,11 +550,11 @@
 			async updateFavoriteParser() {
 				try {
 					await this.updateFavorites({
-						parserToUpdate: this.parserProp,
+						parserToUpdate: {...this.parser, favoriteId: this.favoriteId },
 						userId: this.user.id,
 						isFavorite: this.isFavorited,
 					});
-					console.log("after await", this.isFavorited);
+					
 					if (this.isFavorited) {
 						this.toast.success(
 							`Парсер «${this.croppedTitle}» добавлен в избранное!`
@@ -592,6 +595,7 @@
 							parser: this.parser.id,
 						});
 						this.parser.comment = { text: comment, id };
+
 						this.isEditComment = false;
 					} else {
 						const { comment } = await updateComment({
@@ -602,6 +606,11 @@
 						this.parser.comment.text = comment;
 						this.isEditComment = false;
 					}
+					this.SET_UPDATED_PARSERS(this.parser);
+					this.SET_UPDATED_ALL_PARSERS(this.parser);
+					if (this.isFavorited) {
+						this.SET_UPDATED_FAVORITES({ ...this.parser, favoriteId: this.favoriteId });
+					}
 				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
 					throw new Error(err);
@@ -611,6 +620,11 @@
 				try {
 					await deleteComment({ id: this.parser.comment.id });
 					this.parser.comment = { text: "", id: null };
+					this.SET_UPDATED_PARSERS(this.parser);
+					this.SET_UPDATED_ALL_PARSERS(this.parser);
+					if (this.isFavorited) {
+						this.SET_UPDATED_FAVORITES({ ...this.parser, favoriteId: this.favoriteId });
+					}
 					this.comment = "";
 				} catch (err) {
 					this.toast.error("Что-то пошло не так!");

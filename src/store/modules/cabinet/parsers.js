@@ -15,7 +15,14 @@ const state = () => ({
 	all_parsers: [],
 })
 
-const getters = {}
+const getters = {
+	parsersWithComments: (state) => {
+		return state.parsers.filter( parser => {
+			
+			return parser.comment.id !== null;
+		}) || [];
+	}
+}
 
 const mutations = {
 	SET_PARSOURCES: (state, payload) => state.parsources = payload,
@@ -49,10 +56,30 @@ const mutations = {
 	},
 
 	SET_PARSERS: (state, payload) => state.parsers = payload,
+	SET_UPDATED_PARSERS: (state, payload) => {
+		const parsersCopy = JSON.parse(JSON.stringify(state.parsers));
+		const updatedParsers = parsersCopy.map( parser => {
+			if (parser.id === payload.id) {
+				return payload;
+			}
+			return parser;
+		});
+		state.parsers = updatedParsers;
+	},
 	SET_PARSERS_PAGINATION: (state, payload) => state.parsers_pagination = payload,
 	CLEAR_PARSERS: (state) => { state.parsers = []; state.parsers_pagination = {} },
 
 	SET_ALL_PARSERS: (state, payload) => state.all_parsers = payload,
+	SET_UPDATED_ALL_PARSERS: (state, payload) => {
+		const parsersCopy = JSON.parse(JSON.stringify(state.all_parsers));
+		const updatedParsers = parsersCopy.map( parser => {
+			if (parser.id === payload.id) {
+				return payload;
+			}
+			return parser;
+		});
+		state.all_parsers = updatedParsers;
+	},
 	CLEAR_ALL_PARSERS: (state) => state.all_parsers = [],
 
 	CLEAR_PARSERS_STATE: (state) => {
@@ -158,6 +185,7 @@ const actions = {
 						return { ...parser, comment: { text: "", id: null } };
 					}
 				});
+				parsersList.reverse();
 				context.commit("SET_PARSERS", parsersList);
 
 				let pagination_info = {};
@@ -181,7 +209,22 @@ const actions = {
 					{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
 
 			if (response.status === 200) {
-				context.commit('SET_ALL_PARSERS', response.data.results);
+				const comments = await getComments();
+				const parsersList = response.data.results.map((parser) => {
+					const matchedComment = comments.find(
+						(commentItem) => commentItem.parser === parser.id
+					);
+					if (matchedComment) {
+						return {
+							...parser,
+							comment: { text: matchedComment.comment, id: matchedComment.id },
+						};
+					} else {
+						return { ...parser, comment: { text: "", id: null } };
+					}
+				});
+				parsersList.reverse();
+				context.commit('SET_ALL_PARSERS', parsersList);
 				console.log('Full parser list saved');
 			}
 
