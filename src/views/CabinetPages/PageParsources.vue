@@ -354,9 +354,11 @@
 			});
 		},
 		mounted() {
-			setTimeout(() => {
-				this.sort_list({ key: 'date', direction: 'descending' });
-			}, 500);
+			if (this.userRole === "Manager") {
+				setTimeout(() => {
+					this.sort_list({ key: "date", direction: "descending" });
+				}, 500);
+			}
 		},
 		setup() {
 			const toast = useToast();
