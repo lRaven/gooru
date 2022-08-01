@@ -505,7 +505,7 @@
 			&-input-description {
 				font-size: 1.6rem;
 				line-height: 1.2;
-				color: rgba($black, $alpha: 0.7);
+				color: rgba($black, 0.7);
 			}
 
 			&-avatar {

@@ -278,7 +278,7 @@
 		}
 		&__input-description {
 			font-size: 1.6rem;
-			color: rgba($black, $alpha: 0.7);
+			color: rgba($black,0.7);
 		}
 		.r-button {
 			max-width: 25rem;

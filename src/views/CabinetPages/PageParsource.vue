@@ -780,7 +780,7 @@
 
 			&-key {
 				font-size: 1.2rem;
-				color: rgba($black, $alpha: 0.7);
+				color: rgba($black,  0.7);
 			}
 			&-value {
 				font-size: 1.4rem;
@@ -907,7 +907,7 @@
 		&__total-processed {
 			font-size: 1.8rem;
 			line-height: 2.9rem;
-			color: rgba($black, $alpha: 0.7);
+			color: rgba($black, 0.7);
 			@media screen and (max-width: 620px) {
 				font-size: 1.7rem;
 				line-height: 2.7rem;
@@ -918,10 +918,10 @@
 			background-color: $white !important;
 			font-size: 1.2rem;
 			line-height: 1.7rem;
-			color: rgba($black, $alpha: 0.5);
+			color: rgba($black, 0.5);
 			&.selected {
 				font-weight: 600;
-				color: rgba($black, $alpha: 0.7);
+				color: rgba($black, 0.7);
 			}
 		}
 

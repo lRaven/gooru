@@ -41,10 +41,10 @@
 			cursor: pointer;
 			width: fit-content;
 			font-size: 1.3rem;
-			color: rgba($black, $alpha: 0.7);
+			color: rgba($black, 0.7);
 			border-radius: 2.2rem;
 			padding: 1rem 2rem;
-			border: 0.2rem solid rgba($black, $alpha: 0.5);
+			border: 0.2rem solid rgba($black, 0.5);
 			font-weight: 500;
 			transition: all 0.2s ease;
 			@media (max-width: 425px) {

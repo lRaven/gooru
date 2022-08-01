@@ -535,7 +535,7 @@
 			grid-template-columns: 14rem repeat(3, minmax(19rem, 24rem));
 			grid-gap: 0 1rem;
 			padding: 1rem;
-			background-color: rgba($white, $alpha: 0.5);
+			background-color: rgba($white, 0.5);
 			width: fit-content;
 
 			@media (max-width: 1300px) {
@@ -552,7 +552,7 @@
 			}
 
 			&-description {
-				color: rgba($black, $alpha: 0.5);
+				color: rgba($black, 0.5);
 				margin-bottom: 1.5rem;
 				font-size: 1.2rem;
 				padding-left: 1rem;
@@ -626,7 +626,7 @@
 				display: flex;
 				border-radius: 1rem 1rem 0 0;
 				height: 6rem;
-				background-color: rgba($secondary, $alpha: 0.1);
+				background-color: rgba($secondary, 0.1);
 				overflow: hidden;
 			}
 			&-button {
@@ -660,7 +660,7 @@
 					}
 				}
 				&.current {
-					background-color: rgba($secondary, $alpha: 0.2);
+					background-color: rgba($secondary, 0.2);
 					font-weight: 700;
 					&::after {
 						width: 100%;

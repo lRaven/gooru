@@ -189,7 +189,7 @@
 			&-input {
 				&-description {
 					font-size: 1.5rem;
-					color: rgba($black, $alpha: 0.7);
+					color: rgba($black, 0.7);
 				}
 			}
 
@@ -209,7 +209,7 @@
 				max-width: 33rem;
 				font-size: 1.1rem;
 				line-height: 1.3;
-				color: rgba($black, $alpha: 0.7);
+				color: rgba($black, 0.7);
 				&-link {
 					color: $primary;
 				}

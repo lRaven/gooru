@@ -98,11 +98,30 @@ const logout = async () => {
 	}
 };
 
-// операции по тарифам для конкретного пользователя
+//* запрос на подтверждение сброса пароля 
+const reset_password_request = async (email) => {
+	try {
+		const response = await axios.post(`${store.state.baseURL}/user/verify/reset_password/`, { email });
+		return response;
+	}
+	catch (err) { throw new Error }
+}
+
+const reset_password = async ({ uid, token, password }) => {
+	try {
+		const response = await axios.post(`${store.state.baseURL}/user/verify/${uid}/${token}/change_password/`,
+			{ password }
+		);
+		return response;
+	}
+	catch (err) { throw new Error(err) }
+}
+
+//* операции по тарифам для конкретного пользователя
 
 const getRates = async () => {
 	try {
-		const { data:rates } = await axios.get(`${baseURL}/tariff`);
+		const { data: rates } = await axios.get(`${baseURL}/tariff`);
 		return rates.results;
 	} catch (error) {
 		throw new Error(error);
@@ -187,7 +206,7 @@ const upload_avatar = async ({ user_id, avatar }) => {
 	}
 };
 
-// admin requests
+//* admin requests
 
 const updateRate = async (rateObjToUpdate) => {
 	try {
@@ -239,6 +258,8 @@ export {
 	registration_by_tel,
 	login,
 	logout,
+	reset_password_request,
+	reset_password,
 	getRates,
 	getUserRates,
 	getUserRate,

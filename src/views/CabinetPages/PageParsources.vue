@@ -425,7 +425,7 @@
 
 		&__postpone {
 			&-description {
-				color: rgba($black, $alpha: 0.7);
+				color: rgba($black, 0.7);
 			}
 		}
 		&__remove {

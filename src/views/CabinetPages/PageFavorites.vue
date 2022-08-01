@@ -22,8 +22,13 @@
 							Сортировать
 						</p>
 					</button>
-					<template v-if="documentWidth <= 500 && !isSortPanelVisible">
-						<button class="page-favorites__favorite-panel-btn" @click="isMinimizedRightPanel = false">
+					<template
+						v-if="documentWidth <= 500 && !isSortPanelVisible"
+					>
+						<button
+							class="page-favorites__favorite-panel-btn"
+							@click="isMinimizedRightPanel = false"
+						>
 							<svg
 								width="32"
 								height="32"
@@ -43,10 +48,10 @@
 								</g>
 							</svg>
 							<p
-							class="page-favorites__favorite-panel-btn-description"
-						>
-							Выбрать
-						</p>
+								class="page-favorites__favorite-panel-btn-description"
+							>
+								Выбрать
+							</p>
 						</button>
 					</template>
 
@@ -281,7 +286,6 @@
 			}
 			@media (max-width: 500px) {
 				padding: 3rem 2rem 3rem 2rem;
-				
 			}
 		}
 		&__title {
@@ -345,10 +349,10 @@
 			&-description {
 				margin-bottom: 0.5rem;
 				font-size: 1.2rem;
-				color: rgba($black, $alpha: 0.5);
+				color: rgba($black, 0.5);
 			}
 		}
-		&__favorite-panel-btn{
+		&__favorite-panel-btn {
 			display: flex;
 			align-items: center;
 			gap: 1rem;
@@ -375,7 +379,7 @@
 				position: absolute;
 				top: 0;
 				right: 0;
-				background-color: rgba($color: $white, $alpha: 1);
+				background-color: $white;
 			}
 			@media (max-width: 500px) {
 				display: none;

@@ -37,6 +37,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables";
+
 	.r-confirm-popup {
 		display: flex;
 		align-items: center;
@@ -53,7 +55,7 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
-			background-color: rgba($color: #000, $alpha: 0.5);
+			background-color: rgba($black, 0.5);
 		}
 
 		&__body {
@@ -66,7 +68,7 @@
 			z-index: 1;
 			border-radius: 1rem;
 			@media (max-width: 450px) {
-				width: 90%
+				width: 90%;
 			}
 		}
 

@@ -187,7 +187,7 @@
 				overflow: hidden;
 				transition: all 0.2s ease;
 				&:hover {
-					background-color: rgba($primary, $alpha: 0.15);
+					background-color: rgba($primary, 0.15);
 				}
 			}
 		}

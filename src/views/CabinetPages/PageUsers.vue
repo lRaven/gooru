@@ -445,7 +445,7 @@
 				}
 				&-description {
 					font-size: 1.2rem;
-					color: rgba($black, $alpha: 0.7);
+					color: rgba($black, 0.7);
 				}
 			}
 		}
@@ -526,7 +526,7 @@
 				&-description {
 					font-size: 1.2rem;
 					font-weight: 500;
-					color: rgba($black, $alpha: 0.5);
+					color: rgba($black, 0.5);
 					margin-bottom: 1rem;
 				}
 

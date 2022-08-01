@@ -4,7 +4,9 @@
 		:class="{ has_right_panel: user.role === 'DefaultUser' }"
 	>
 		<div class="page-appeal__main">
-			<h2 class="page-appeal__title" v-if="documentWidth > 450">Обращения</h2>
+			<h2 class="page-appeal__title" v-if="documentWidth > 450">
+				Обращения
+			</h2>
 
 			<div class="page-appeal__header">
 				<button
@@ -348,7 +350,7 @@
 				font-size: 2.2rem;
 			}
 			@media (max-width: 470px) {
-font-size: 2.1rem;
+				font-size: 2.1rem;
 			}
 		}
 
@@ -383,7 +385,7 @@ font-size: 2.1rem;
 				position: absolute;
 				top: 0;
 				right: 0;
-				background-color: rgba($color: $white, $alpha: 1);
+				background-color: $white;
 			}
 			@media (max-width: 450px) {
 				display: none;
@@ -397,13 +399,13 @@ font-size: 2.1rem;
 					width: 100vw;
 					height: 100%;
 					z-index: 3;
-					background-color: rgba($color: $white, $alpha: 1);
+					background-color: $white;
 					transition: all 0.2s ease, padding 0.2s ease 0.2s;
 				}
 			}
 			&-form {
 				padding: 2rem 0;
-				border-top: 0.05rem solid rgba($black, $alpha: 0.5);
+				border-top: 0.05rem solid rgba($black, 0.5);
 				display: flex;
 				flex-direction: column;
 				gap: 4rem;

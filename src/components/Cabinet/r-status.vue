@@ -67,14 +67,14 @@
 		font-size: 1.4rem;
 		&.works {
 			color: $secondary;
-			background-color: rgba($secondary, $alpha: 0.1);
+			background-color: rgba($secondary, 0.1);
 		}
 		&.completed {
 			color: $primary;
-			background-color: rgba($primary, $alpha: 0.15);
+			background-color: rgba($primary, 0.15);
 		}
 		&.postpone {
-			color: rgba($black, $alpha: 0.5);
+			color: rgba($black, 0.5);
 			background-color: #f0f0f0;
 		}
 	}

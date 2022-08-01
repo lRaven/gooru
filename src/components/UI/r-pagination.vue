@@ -207,7 +207,7 @@
 				gap: 0.8rem;
 				background-color: transparent;
 				font-size: 1rem;
-				color: rgba($black, $alpha: 0.5);
+				color: rgba($black, 0.5);
 				transition: all 0.2s ease;
 				&.disabled {
 					pointer-events: none;
@@ -241,7 +241,7 @@
 				cursor: pointer;
 				background-color: transparent;
 				font-size: 1.2rem;
-				color: rgba($black, $alpha: 0.5);
+				color: rgba($black, 0.5);
 				width: 2.4rem;
 				height: 2.4rem;
 				border-radius: 50%;
@@ -252,8 +252,8 @@
 				&.current {
 					cursor: default;
 					font-weight: 700;
-					color: rgba($black, $alpha: 0.7);
-					background-color: rgba($primary, $alpha: 0.2);
+					color: rgba($black, 0.7);
+					background-color: rgba($primary, 0.2);
 				}
 				&.wide {
 					width: max-content;
@@ -270,7 +270,7 @@
 			font-size: 1.2rem;
 			width: 2.4rem;
 			height: 2.4rem;
-			color: rgba($black, $alpha: 0.5);
+			color: rgba($black, 0.5);
 		}
 	}
 </style>

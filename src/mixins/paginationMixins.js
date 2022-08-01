@@ -36,7 +36,7 @@ export const paginationMixin = {
 		return {
 			pagination: {
 				path: this.$route.path,
-				cards_in_page: 1,
+				cards_in_page: 10,
 				cards_list: [],
 				load_next_cards: false,
 			},

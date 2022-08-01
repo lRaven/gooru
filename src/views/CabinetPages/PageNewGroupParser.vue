@@ -39,7 +39,7 @@
 					input_type="url"
 					placeholder="https://"
 					class="r-input_area_url"
-					:class="{'r-input_area_added-url':  index > 0}"
+					:class="{ 'r-input_area_added-url': index > 0 }"
 				></r-input>
 
 				<r-button
@@ -317,8 +317,8 @@
 				line-height: 3.4rem;
 			}
 			@media (max-width: 450px) {
-			margin-bottom: 2.5rem;
-		}
+				margin-bottom: 2.5rem;
+			}
 		}
 
 		&__form {
@@ -344,28 +344,28 @@
 			.r-input {
 				font-size: 1.6rem;
 				@media (max-width: 768px) {
-				grid-column: 1/3;
-			}
-			&_area{
-				&_url {
-					@media (max-width: 768px) {
-						grid-column: 1;
+					grid-column: 1/3;
+				}
+				&_area {
+					&_url {
+						@media (max-width: 768px) {
+							grid-column: 1;
+						}
+					}
+					&_added-url {
+						grid-column: 2/3;
+						@media (max-width: 768px) {
+							grid-column: 1;
+						}
 					}
 				}
-				&_added-url {
-					grid-column: 2/3;
-					@media (max-width: 768px) {
-						grid-column: 1;
-					}
-				}
-			}
 			}
 			.r-textarea {
 				grid-column: 2/3;
 				font-size: 1.6rem;
 				@media (max-width: 768px) {
-				grid-column: 1/3;
-			}
+					grid-column: 1/3;
+				}
 			}
 			.r-textarea {
 				height: 14.5rem;
@@ -384,7 +384,7 @@
 		}
 		&__input-description {
 			font-size: 1.6rem;
-			color: rgba($black, $alpha: 0.7);
+			color: rgba($black, 0.7);
 			@media (max-width: 768px) {
 				grid-column: 1/3;
 			}

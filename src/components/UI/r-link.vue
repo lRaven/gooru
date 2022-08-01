@@ -10,7 +10,7 @@
 		name: "rLink",
 		props: {
 			way: {
-				type: String,
+				type: [String, Object],
 				default: "/",
 			},
 			text: {
