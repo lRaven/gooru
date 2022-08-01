@@ -86,7 +86,7 @@
 
 					<template v-else>
 						<r-dropdown
-							selected_item="-"
+							selected_item="по дате (по-убыванию)"
 							sendValue=""
 							:list="sortManagerDropdown"
 							v-model="sortByDropdown"
@@ -352,6 +352,11 @@
 				page_number: this.page,
 				page_size: this.parsources_in_page,
 			});
+		},
+		mounted() {
+			setTimeout(() => {
+				this.sort_list({ key: 'date', direction: 'descending' });
+			}, 500);
 		},
 		setup() {
 			const toast = useToast();
