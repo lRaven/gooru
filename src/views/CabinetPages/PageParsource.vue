@@ -65,7 +65,9 @@
 							<button
 								type="button"
 								class="page-parsource__sortby"
-								:class="{ selected: selectedListFilter === 'newest' }"
+								:class="{
+									selected: selectedListFilter === 'newest',
+								}"
 								@click="selectedListFilter = 'newest'"
 							>
 								по свежести материала
@@ -73,7 +75,10 @@
 							<button
 								type="button"
 								class="page-parsource__sortby"
-								:class="{ selected: selectedListFilter === 'favorites' }"
+								:class="{
+									selected:
+										selectedListFilter === 'favorites',
+								}"
 								@click="selectedListFilter = 'favorites'"
 							>
 								отмеченные
@@ -82,7 +87,10 @@
 							<button
 								type="button"
 								class="page-parsource__sortby"
-								:class="{ selected: selectedListFilter === 'withComments' }"
+								:class="{
+									selected:
+										selectedListFilter === 'withComments',
+								}"
 								@click="selectedListFilter = 'withComments'"
 							>
 								с комментариями
@@ -94,9 +102,21 @@
 							sendValue="filterValue"
 							showedValue="description"
 							:list="[
-								{ id: 1, description: 'по свежести материала', filterValue: 'newest' },
-								{ id: 2, description: 'отмеченные', filterValue: 'favorites' },
-								{ id: 3, description: 'с комментариями', filterValue: 'withComments' },
+								{
+									id: 1,
+									description: 'по свежести материала',
+									filterValue: 'newest',
+								},
+								{
+									id: 2,
+									description: 'отмеченные',
+									filterValue: 'favorites',
+								},
+								{
+									id: 3,
+									description: 'с комментариями',
+									filterValue: 'withComments',
+								},
 							]"
 							v-model="selectedListFilter"
 							:class="{
@@ -110,14 +130,19 @@
 					</transition>
 
 					<transition mode="out-in" v-if="isParsersLoaded">
-						<ol class="page-parsource__content-list" v-if="parsers.length">
+						<ol
+							class="page-parsource__content-list"
+							v-if="parsers.length"
+						>
 							<parser-content
 								v-for="parser in parsers"
 								:key="parser.id"
 								:parserProp="parser"
 							></parser-content>
 						</ol>
-						<h2 v-else>{{ emptyMessage }}</h2>
+						<h2 class="page-parsource__empty-message" v-else>
+							{{ emptyMessage }}
+						</h2>
 					</transition>
 				</div>
 
@@ -355,25 +380,29 @@
 				all_users: (state) => state.users.all_users,
 				users_managers: (state) => state.users.users_managers,
 			}),
-			...mapGetters(["parsers_notifications", "parsersWithComments", "favoriteParsers"]),
+			...mapGetters([
+				"parsers_notifications",
+				"parsersWithComments",
+				"favoriteParsers",
+			]),
 
 			parsers() {
-				if (this.selectedListFilter === 'favorites') {
+				if (this.selectedListFilter === "favorites") {
 					return this.favoriteParsers(this.parsource_id);
-				} else if (this.selectedListFilter === 'withComments') {
+				} else if (this.selectedListFilter === "withComments") {
 					return this.parsersWithComments;
 				} else {
 					return this.$store.state.parsers.parsers;
 				}
 			},
 			emptyMessage() {
-				switch(this.selectedListFilter) {
-					case 'withComments':
-						return 'У вас нет парсеров с комментариями';
-					case 'favorites':
-						return 'У вас нет избранных парсеров';
+				switch (this.selectedListFilter) {
+					case "withComments":
+						return "У вас нет парсеров с комментариями";
+					case "favorites":
+						return "У вас нет избранных парсеров";
 					default:
-						return 'У вас нет парсеров!';
+						return "У вас нет парсеров!";
 				}
 			},
 
@@ -614,6 +643,13 @@
 				font-size: 2.4rem;
 				line-height: 3.4rem;
 			}
+		}
+		&__empty-message {
+			color: rgba($black, $alpha: 0.7);
+			margin: 0 auto;
+			padding: 2rem;
+			font-size: 2rem;
+			font-weight: 500;
 		}
 
 		&__image {

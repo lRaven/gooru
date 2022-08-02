@@ -96,11 +96,16 @@
 			},
 			minimizePanel() {
 				this.$refs.filters.classList.add("minimized");
-				this.$refs.arrow.classList.add("minimized");
+				if (this.$refs.arrow) {
+					this.$refs.arrow.classList.add("minimized");
+				}
 			},
 			resetMinimizePanel() {
 				this.$refs.filters.classList.remove("minimized");
-				this.$refs.arrow.classList.remove("minimized");
+				if (this.$refs.arrow) {
+					this.$refs.arrow.classList.remove("minimized");
+				}
+				
 			},
 		},
 	};

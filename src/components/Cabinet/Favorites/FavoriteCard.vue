@@ -130,7 +130,7 @@
 				<favorite-content-item
 					v-for="parser in parsource.parsers"
 					:key="parser.id"
-					:parser="parser"
+					:parserProp="parser"
 					@change-selected="handleChangeSelectedParsers"
 					:checked="isAllSelected"
 				></favorite-content-item>
