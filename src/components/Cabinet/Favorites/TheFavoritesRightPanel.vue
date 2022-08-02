@@ -43,22 +43,6 @@
 					</ShareNetwork>
 
 					<ShareNetwork
-						network="twitter"
-						:url="shareContent.url"
-						:title="shareContent.title"
-						:description="shareContent.description"
-						:media="shareContent.image"
-						:hashtags="shareContent.hashtags"
-						@close="callbackCloseSharedIcon"
-					>
-						<img
-							src="/img/icon/cabinet/twtr.svg"
-							alt="twitter"
-							ref="twitter"
-						/>
-					</ShareNetwork>
-
-					<ShareNetwork
 						network="telegram"
 						:url="shareContent.url"
 						:title="shareContent.title"

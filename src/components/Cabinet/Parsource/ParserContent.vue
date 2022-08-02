@@ -1,7 +1,11 @@
 <template>
 	<li class="parser-content" v-click-away="stateReset">
 		<div
-			:class="documentWidth > 490 ? 'parser-content__row' : 'parser-content__grid'"
+			:class="
+				documentWidth > 490
+					? 'parser-content__row'
+					: 'parser-content__grid'
+			"
 			@click="
 				isCroppedText === true ? expandArticle() : minimizeArticle()
 			"
@@ -31,14 +35,14 @@
 				</a>
 			</div>
 			<a
-					v-if="documentWidth <= 490"
-					:href="parser.url"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="parser-content__link"
-				>
-					Ссылка на ресурс
-				</a>
+				v-if="documentWidth <= 490"
+				:href="parser.url"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="parser-content__link"
+			>
+				Ссылка на ресурс
+			</a>
 			<div
 				class="parser-content__col"
 				:class="{ alignicons: isTextOverFlow }"
@@ -174,7 +178,11 @@
 		</div>
 
 		<div
-			:class="documentWidth > 490 ? 'parser-content__row' : 'parser-content__column'"
+			:class="
+				documentWidth > 490
+					? 'parser-content__row'
+					: 'parser-content__column'
+			"
 			v-if="isMessagesOpen === true"
 		>
 			<div
@@ -270,7 +278,14 @@
 			</template>
 		</div>
 
-		<div :class="documentWidth > 490 ? 'parser-content__row' : 'parser-content__column'" v-if="isShareOpen === true">
+		<div
+			:class="
+				documentWidth > 490
+					? 'parser-content__row'
+					: 'parser-content__column'
+			"
+			v-if="isShareOpen === true"
+		>
 			<div class="parser-content__social">
 				<p class="parser-content__social-description">
 					Поделиться в социальных сетях:
@@ -300,21 +315,6 @@
 					</li>
 					<li class="parser-content__social-list-item">
 						<ShareNetwork
-							network="twitter"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
-							:hashtags="shareContent.hashtags"
-						>
-							<img
-								src="/img/icon/cabinet/twtr.svg"
-								alt="twitter"
-							/>
-						</ShareNetwork>
-					</li>
-					<li class="parser-content__social-list-item">
-						<ShareNetwork
 							network="telegram"
 							:url="shareContent.url"
 							:title="shareContent.title"
@@ -326,10 +326,16 @@
 					</li>
 				</ul>
 			</div>
-			
 		</div>
 
-		<div :class="documentWidth > 490 ? 'parser-content__row' : 'parser-content__column'" v-if="isDownloadOpen === true">
+		<div
+			:class="
+				documentWidth > 490
+					? 'parser-content__row'
+					: 'parser-content__column'
+			"
+			v-if="isDownloadOpen === true"
+		>
 			<div class="parser-content__download">
 				<p class="parser-content__download-description">
 					Выберите формат
@@ -414,10 +420,13 @@
 				}
 			},
 			textBlockHeight() {
-				if (this.textBlockHeight + 25 > document.documentElement.scrollHeight) {
+				if (
+					this.textBlockHeight + 25 >
+					document.documentElement.scrollHeight
+				) {
 					this.hasScrollForTextBlock = true;
 				}
-			}
+			},
 		},
 		computed: {
 			...mapState({
@@ -429,8 +438,10 @@
 			croppedTitle() {
 				if (this.parser.title.length > 20) {
 					const croppedStr = this.parser.title.slice(0, 21);
-					
-					return croppedStr[croppedStr.length - 1] === '' ? croppedStr.slice(0, croppedStr.length - 1) : croppedStr;
+
+					return croppedStr[croppedStr.length - 1] === ""
+						? croppedStr.slice(0, croppedStr.length - 1)
+						: croppedStr;
 				} else {
 					return this.parser.title;
 				}
@@ -498,7 +509,8 @@
 				this.isCroppedText = false;
 				setTimeout(() => {
 					if (this.$refs.textBlock.offsetHeight > 60) {
-						this.textBlockHeight = this.$refs.textBlock.offsetHeight;
+						this.textBlockHeight =
+							this.$refs.textBlock.offsetHeight;
 						this.isTextOverFlow = true;
 					}
 				}, 100);
@@ -733,7 +745,7 @@
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
 			word-break: break-word;
-			
+
 			&.cropped {
 				display: -webkit-box;
 				text-overflow: ellipsis;
@@ -894,7 +906,6 @@
 <style lang="scss">
 	.parser-content {
 		@media screen and (max-width: 400px) {
-
 		}
 		&__download {
 			&-list {
