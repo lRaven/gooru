@@ -25,6 +25,7 @@
 						E-mail
 					</p>
 					<r-input
+						class="page-registration__form-input"
 						v-model="user_data.email.value"
 						v-model:Valid="user_data.email.valid"
 						:value="user_data.email.value"
@@ -35,10 +36,32 @@
 						Пароль
 					</p>
 					<r-input
-						v-model="user_data.password"
-						:value="user_data.password"
+						class="page-registration__form-input"
+						@blur="markInput"
+						inputName="password"
+						v-model="user_data.password.value"
+						:value="user_data.password.value"
 						input_type="password"
 					></r-input>
+
+					<p
+						class="page-registration__form-input-description page-registration__form-input-description_confirm-password"
+					>
+						Подтверждение пароля
+					</p>
+					<r-input
+						class="page-registration__form-input"
+						@blur="markInput"
+						inputName="reapetedPassword"
+						v-model="user_data.reapetedPassword.value"
+						:value="user_data.reapetedPassword.value"
+						input_type="password"
+					></r-input>
+					<span
+						v-if="isInvalidPasswords"
+						class="page-registration__form-input-error"
+						>Пароли не совпадают</span
+					>
 
 					<div class="page-registration__buttons">
 						<r-button
@@ -64,6 +87,11 @@
 							публичной оферты
 						</a>
 					</p>
+					<img
+						class="page-registration__form-image"
+						src="http://localhost:8080/img/goo-colored.70a6d289.svg"
+						alt="gooruLogo"
+					/>
 				</form>
 			</section>
 		</main>
@@ -87,7 +115,17 @@
 				return (
 					this.user_data.email.value.length > 0 &&
 					this.user_data.email.valid &&
-					this.user_data.password.length >= 8
+					this.user_data.password.value.length >= 8 &&
+					this.user_data.password.value ===
+						this.user_data.reapetedPassword.value
+				);
+			},
+			isInvalidPasswords() {
+				return (
+					this.user_data.password.isEdited &&
+					this.user_data.reapetedPassword.isEdited &&
+					this.user_data.password.value !==
+						this.user_data.reapetedPassword.value
 				);
 			},
 		},
@@ -97,15 +135,25 @@
 					value: "",
 					valid: false,
 				},
-				password: "",
+				password: {
+					value: "",
+					isEdited: false,
+				},
+				reapetedPassword: {
+					value: "",
+					isEdited: false,
+				},
 			},
 		}),
 		methods: {
+			markInput(targetName) {
+				this.user_data[targetName].isEdited = true;
+			},
 			async create_account() {
 				try {
 					const response = await registration({
 						email: this.user_data.email.value,
-						password: this.user_data.password,
+						password: this.user_data.password.value,
 					});
 
 					if (response.status === 201) {
@@ -150,13 +198,48 @@
 			background: url("/public/img/icon/cabinet/goo-colored.svg") center
 				right 60px / auto 60% no-repeat;
 			width: 100%;
+			@media (max-width: 900px) {
+				background: none;
+			}
+			@media (max-width: 768px) {
+				justify-content: flex-start;
+			}
 		}
 
 		&__form {
 			display: grid;
-			grid-template-columns: 11rem max-content;
+			grid-template-columns: repeat(2, max-content);
 			align-items: center;
-			grid-gap: 2rem 0;
+			grid-gap: 2rem 1rem;
+			@media (max-width: 900px) {
+				grid-template-columns: max-content 1fr 1.5fr;
+			}
+			@media (max-width: 800px) {
+				grid-template-columns: max-content max-content;
+				justify-content: center;
+			}
+			@media (max-width: 600px) {
+				grid-template-columns: max-content 1fr;
+				justify-content: center;
+			}
+			@media (max-width: 450px) {
+				grid-template-columns: max-content 1fr;
+			}
+			&-image {
+				display: none;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: center;
+				grid-column: 3/4;
+				grid-row: 1/6;
+				@media (max-width: 900px) {
+					display: block;
+				}
+				@media (max-width: 800px) {
+					display: none;
+				}
+			}
 
 			&-link {
 				position: relative;
@@ -165,6 +248,10 @@
 				opacity: 0.4;
 				margin-bottom: 4rem;
 				width: max-content;
+				@media (max-width: 510px) {
+					font-size: 2.8rem;
+					margin-bottom: 1rem;
+				}
 				&:first-child {
 					&::after {
 						content: "";
@@ -179,6 +266,9 @@
 				}
 				&:nth-child(2) {
 					margin-left: 3rem;
+					@media (max-width: 510px) {
+
+					}
 				}
 
 				&.selected {
@@ -187,15 +277,41 @@
 			}
 
 			&-input {
+				@media (max-width: 510px) {
+					grid-column: 1/3;
+				}
 				&-description {
 					font-size: 1.5rem;
 					color: rgba($black, $alpha: 0.7);
+					@media (max-width: 510px) {
+						grid-column: 1/3;
+					}
+					&_confirm-password {
+						width: min-content;
+						@media (max-width: 510px) {
+							width: fit-content;
+						}
+					}
+				}
+				&-error {
+					grid-column: 2/3;
+					margin: 1rem 0 0 0;
+					color: $red;
+					font-size: 1.4rem;
+					@media (max-width: 510px) {
+						grid-column: 1/3;
+						margin: 0;
+					}
 				}
 			}
 
 			&-disclaimer {
 				grid-column: 2/3;
 				width: max-content;
+				@media (max-width: 510px) {
+						grid-column: 1/3;
+						width: 100%;
+					}
 			}
 
 			.r-button,
@@ -203,6 +319,14 @@
 				padding: 1.2rem 2rem;
 				font-size: 1.4rem;
 				width: max-content;
+				@media (max-width: 560px) {
+					font-size: 1.2rem;
+					padding: 1rem 1.8rem;
+				}
+				@media (max-width: 510px) {
+					font-size: 1.4rem;
+					width: 100%;
+				}
 			}
 
 			&-disclaimer {
@@ -210,6 +334,12 @@
 				font-size: 1.1rem;
 				line-height: 1.3;
 				color: rgba($black, $alpha: 0.7);
+				@media (max-width: 560px) {
+					font-size: 1rem;
+				}
+				@media (max-width: 510px) {
+					font-size: 1.1rem;
+				}
 				&-link {
 					color: $primary;
 				}
@@ -223,6 +353,15 @@
 			margin-top: 2rem;
 			gap: 2rem;
 			grid-column: 2/3;
+			@media (max-width: 560px) {
+				margin-top: 0;
+				gap: 1rem;
+			}
+			@media (max-width: 510px) {
+				flex-direction: column;
+				align-items: flex-start;
+				grid-column: 1/3;
+			}
 		}
 	}
 </style>
