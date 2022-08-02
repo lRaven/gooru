@@ -132,7 +132,11 @@
 	.page-control {
 		padding: 6.4rem 4rem 4rem 4rem;
 		height: 100%;
-		overflow: auto;
+		overflow-y: auto;
+		overflow-x: hidden;
+		@media (max-width: 767px) {
+			padding: 4rem 1.5rem;
+		}
 		&__title {
 			margin-bottom: 4rem;
 			font-weight: 400;
@@ -184,9 +188,15 @@
 		}
 
 		&__rate-cards {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 3rem;
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+			grid-gap: 3rem;
+			@media (max-width: 540px) {
+				grid-template-columns: 1fr;
+			}
+			.rate-card {
+				max-width: 100%;
+			}
 		}
 	}
 </style>
