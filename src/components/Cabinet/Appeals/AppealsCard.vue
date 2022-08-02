@@ -25,6 +25,23 @@
 				</span>
 			</div>
 
+			<router-link
+				:to="{ name: 'user', params: { id: appeal.user.id } }"
+				class="appeals-card__user"
+				:title="appeal.user.username"
+				v-if="userRole !== 'DefaultUser'"
+				@click.stop
+			>
+				<img
+					:src="appeal.user.avatar"
+					class="appeals-card__user-avatar"
+					alt="user avatar"
+				/>
+				<p class="appeals-card__user-name">
+					{{ appeal.user.username }}
+				</p>
+			</router-link>
+
 			<div class="appeals-card__col appeals-card__topic" :title="topic">
 				{{ topic }}
 			</div>
@@ -163,13 +180,12 @@
 	.appeals-card {
 		cursor: pointer;
 		display: grid;
-		grid-template-columns: max-content 20rem 16rem 1fr max-content;
+		grid-template-columns: max-content repeat(2, 1fr) 20rem 2fr max-content;
 		align-items: center;
 		justify-content: space-between;
 		gap: 3rem;
 		padding: 2rem 3rem;
-		background-color: white;
-		font-weight: 500;
+		background-color: $white;
 
 		@media (max-width: 1023px) {
 			grid-template-columns: 1fr;
@@ -224,6 +240,7 @@
 		}
 
 		&__topic {
+			text-align: center;
 			padding: 0.6rem 2.4rem;
 			background-color: rgba(152, 152, 152, 0.15);
 			border-radius: 4rem;
@@ -250,6 +267,24 @@
 			font-size: 1.4rem;
 			font-weight: 400;
 			color: rgba($black, 0.7);
+		}
+
+		&__user {
+			display: flex;
+			align-items: center;
+			gap: 2rem;
+			&-avatar {
+				width: 4rem;
+				height: 4rem;
+				border-radius: 50%;
+			}
+			&-name {
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+				font-size: 1.4rem;
+				color: $black;
+			}
 		}
 	}
 </style>
