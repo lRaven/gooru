@@ -1,6 +1,7 @@
 <template>
 	<div
 		class="appeals-card"
+		:class="{ manager: user.role !== 'DefaultUser' }"
 		@click="
 			this.$router.push({
 				name: 'appeal',
@@ -180,12 +181,15 @@
 	.appeals-card {
 		cursor: pointer;
 		display: grid;
-		grid-template-columns: max-content repeat(2, 1fr) 20rem 2fr max-content;
+		grid-template-columns: max-content 1fr 20rem 2fr max-content;
 		align-items: center;
 		justify-content: space-between;
 		gap: 3rem;
 		padding: 2rem 3rem;
 		background-color: $white;
+		&.manager {
+			grid-template-columns: max-content repeat(2, 1fr) 20rem 2fr max-content;
+		}
 
 		@media (max-width: 1023px) {
 			grid-template-columns: 1fr;
