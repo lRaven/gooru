@@ -5,14 +5,8 @@
 			manager: user.role !== 'DefaultUser',
 			has_notifications: isHasNotifications,
 		}"
-		@click="
-			this.$router.push({
-				name: 'appeal',
-				query: { appeal_id: appeal.id },
-			})
-		"
 	>
-		<template v-if="document_width > 1023">
+		<template v-if="document_width > 1300">
 			<p class="appeals-card__col appeals-card__id">#{{ appeal.id }}</p>
 
 			<div class="appeals-card__col">
@@ -34,7 +28,6 @@
 				class="appeals-card__user"
 				:title="appeal.user.username"
 				v-if="user.role !== 'DefaultUser'"
-				@click.stop
 			>
 				<img
 					:src="appeal.user.avatar"
@@ -57,12 +50,16 @@
 				{{ last_message.text || appeal.message }}
 			</p>
 
-			<p
-				class="appeals-card__col appeals-card__date"
-				:title="appeal.date || '1.1.1970'"
-			>
-				{{ appeal.date || "1.1.1970" }}
-			</p>
+			<r-button
+				color="bordered"
+				text="Развернуть"
+				@click="
+					this.$router.push({
+						name: 'appeal',
+						query: { appeal_id: appeal.id },
+					})
+				"
+			></r-button>
 		</template>
 
 		<template v-else>
@@ -81,12 +78,16 @@
 					</div>
 				</div>
 
-				<p
-					class="appeals-card__col appeals-card__date"
-					:title="appeal.date || '1.1.1970'"
-				>
-					{{ appeal.date || "1.1.1970" }}
-				</p>
+				<r-button
+					color="bordered"
+					text="Развернуть"
+					@click="
+						this.$router.push({
+							name: 'appeal',
+							query: { appeal_id: appeal.id },
+						})
+					"
+				></r-button>
 			</div>
 
 			<div class="appeals-card__row">
@@ -192,7 +193,6 @@
 	@import "@/assets/scss/variables";
 
 	.appeals-card {
-		cursor: pointer;
 		display: grid;
 		grid-template-columns: max-content 1fr 20rem 2fr max-content;
 		align-items: center;
@@ -224,10 +224,12 @@
 		}
 
 		&.manager {
-			grid-template-columns: max-content repeat(2, 1fr) 20rem 2fr max-content;
+			@media (min-width: 1300px) {
+				grid-template-columns: max-content repeat(2, 1fr) 20rem 2fr max-content;
+			}
 		}
 
-		@media (max-width: 1023px) {
+		@media (max-width: 1300px) {
 			grid-template-columns: 1fr;
 			justify-content: flex-start;
 			align-items: flex-start;
@@ -246,7 +248,7 @@
 			align-items: center;
 			gap: 1rem;
 
-			@media (max-width: 1023px) {
+			@media (max-width: 1300px) {
 				&:first-child {
 					display: grid;
 					grid-template-columns: max-content 1fr;
@@ -279,6 +281,25 @@
 			font-size: 1.4rem;
 		}
 
+		&__user {
+			display: flex;
+			align-items: center;
+			gap: 2rem;
+			&-avatar {
+				width: 4rem;
+				height: 4rem;
+				border-radius: 50%;
+				object-fit: contain;
+			}
+			&-name {
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+				font-size: 1.4rem;
+				color: $black;
+			}
+		}
+
 		&__topic {
 			text-align: center;
 			padding: 0.6rem 2.4rem;
@@ -303,28 +324,9 @@
 			line-height: 1.2;
 		}
 
-		&__date {
+		.r-button {
+			padding: 1rem 2rem !important;
 			font-size: 1.4rem;
-			font-weight: 400;
-			color: rgba($black, 0.7);
-		}
-
-		&__user {
-			display: flex;
-			align-items: center;
-			gap: 2rem;
-			&-avatar {
-				width: 4rem;
-				height: 4rem;
-				border-radius: 50%;
-			}
-			&-name {
-				text-overflow: ellipsis;
-				overflow: hidden;
-				white-space: nowrap;
-				font-size: 1.4rem;
-				color: $black;
-			}
 		}
 	}
 </style>

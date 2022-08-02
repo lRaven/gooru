@@ -531,6 +531,11 @@
 					this.resetMinimizePanel();
 				}
 			},
+			document_width() {
+				if (this.document_width < 1023 && !this.isMenuMinimized) {
+					this.$emit("close_menu");
+				}
+			},
 		},
 		computed: {
 			...mapState({

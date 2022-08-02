@@ -5,11 +5,12 @@
 	>
 		<div class="page-appeals__main">
 			<h2 class="page-appeals__title">Обращения</h2>
-			<template v-if="documentWidth <= 450">
+			<template v-if="documentWidth <= 540">
 				<div class="page-appeals__controls">
 					<button
 						class="page-appeals__new-appeal-button"
 						@click="isMinimizedRightPanel = false"
+						v-if="user.role === 'DefaultUser'"
 					>
 						<svg
 							width="32"
@@ -38,8 +39,10 @@
 								/>
 							</g>
 						</svg>
+						<p class="page-appeals__controls-text">
+							Новое обращение
+						</p>
 					</button>
-					<p class="page-appeals__controls-text">Новое обращение</p>
 				</div>
 			</template>
 			<transition mode="out-in">
@@ -93,7 +96,6 @@
 			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			class="page-appeals__right-panel"
-			:class="{ mobile: !isMinimizedRightPanel }"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
 			@close-right-panel="isMinimizedRightPanel = true"
@@ -359,19 +361,20 @@
 			display: grid;
 			grid-template-columns: 1fr max-content;
 			grid-gap: 2rem;
-			@media (max-width: 450px) {
+			@media (max-width: 540px) {
+				grid-template-columns: 1fr;
 				grid-gap: 0;
 			}
 			.page-appeals__main {
 				padding: 6.4rem 0 4rem 4rem;
-				@media (max-width: 1100px) {
-					padding: 6.4rem 4rem 4rem 4rem;
+				@media (max-width: 1440px) {
+					padding-right: 6rem;
+				}
+				@media (max-width: 767px) {
+					padding: 4rem 6rem 4rem 1.5rem;
 				}
 				@media (max-width: 540px) {
-					padding: 3.2rem 2.5rem 3rem 2.5rem;
-				}
-				@media (max-width: 450px) {
-					padding: 3rem 1.5rem 3rem 1.5rem;
+					padding: 3rem 1.5rem;
 				}
 			}
 		}
@@ -381,6 +384,9 @@
 			gap: 1.6rem;
 		}
 		&__new-appeal-button {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
 			background-color: $light-blue;
 			&-icon {
 				path {
@@ -419,7 +425,13 @@
 			overflow-y: auto;
 			height: calc(100vh - 8rem);
 			position: relative;
-			@media (max-width: 450px) {
+			@media (max-width: 767px) {
+				padding: 4rem 1.5rem;
+			}
+			@media (max-width: 540px) {
+				padding: 3rem 1.5rem;
+			}
+			@media (max-width: 540px) {
 				gap: 1.5rem;
 			}
 		}
@@ -452,28 +464,6 @@
 		}
 
 		&__right-panel {
-			@media (max-width: 1100px) {
-				position: absolute;
-				top: 0;
-				right: 0;
-				background-color: $white;
-			}
-			@media (max-width: 450px) {
-				display: none;
-			}
-			&.mobile {
-				@media (max-width: 540px) {
-					display: flex;
-					position: fixed;
-					right: 0;
-					top: 0;
-					width: 100vw;
-					height: 100%;
-					z-index: 3;
-					background-color: $white;
-					transition: all 0.2s ease, padding 0.2s ease 0.2s;
-				}
-			}
 			&-form {
 				padding: 2rem 0;
 				border-top: 0.05rem solid rgba($black, 0.5);
