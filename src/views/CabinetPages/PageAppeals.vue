@@ -58,6 +58,7 @@
 						:parsers="all_parsers"
 						:topics="topics"
 						:messages="all_messages"
+						:appealsHasNotifications="appealsHasNotifications"
 					></appeals-card>
 				</div>
 			</transition>
@@ -183,13 +184,6 @@
 				},
 				deep: true,
 			},
-
-			appeals_notification() {
-				//* TODO: пока нет функционала прочитать несколько уведомлений за раз, то это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
-				this.appeals_notifications.forEach((notification) => {
-					this.clear_notifications(notification.id);
-				});
-			},
 		},
 		computed: {
 			...mapState({
@@ -203,6 +197,23 @@
 				all_messages: (state) => state.messenger.all_messages,
 			}),
 			...mapGetters(["appeals_notifications"]),
+
+			appealsHasNotifications() {
+				return this.appeals_notifications.reduce((acc, current) => {
+					if (!acc.includes(+current.url.split("/")[2])) {
+						acc.push(+current.url.split("/")[2]);
+					}
+					return acc;
+				}, []);
+			},
+
+			isHasNotifications() {
+				const find = this.appealsHasNotifications.find((el) => {
+					return el === this.appeal.id;
+				});
+
+				return find !== undefined;
+			},
 		},
 		data() {
 			return {
@@ -322,11 +333,6 @@
 		created() {
 			this.SET_TAB("appeals");
 			this.isMinimizedRightPanel = this.documentWidth <= 1100;
-
-			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
-			this.appeals_notifications.forEach((notification) => {
-				this.clear_notifications(notification.id);
-			});
 
 			this.getCards({
 				page_number: this.page,

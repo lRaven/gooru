@@ -8,17 +8,17 @@ const getters = {
 	//* TODO: после получения подробной инфы уведомлений - поправить
 	appeals_notifications(state) {
 		return state.notifications.filter((notification) =>
-			notification.message.toLowerCase().includes('тикет')
+			notification.url.toLowerCase().includes('support')
 		) || [];
 	},
 	parsources_notifications(state) {
 		return state.notifications.filter((notification) =>
-			notification.message.toLowerCase().includes('источник')
+			notification.url.toLowerCase().includes('parsource')
 		) || [];
 	},
 	parsers_notifications(state) {
 		return state.notifications.filter((notification) =>
-			notification.message.toLowerCase().includes('парсер')
+			notification.url.toLowerCase().includes('parser')
 		) || [];
 	}
 };

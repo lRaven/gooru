@@ -1,7 +1,10 @@
 <template>
 	<div
 		class="appeals-card"
-		:class="{ manager: user.role !== 'DefaultUser' }"
+		:class="{
+			manager: user.role !== 'DefaultUser',
+			has_notifications: isHasNotifications,
+		}"
 		@click="
 			this.$router.push({
 				name: 'appeal',
@@ -121,6 +124,7 @@
 			topics: Array,
 			parsers: Array,
 			messages: Array,
+			appealsHasNotifications: Array,
 		},
 		computed: {
 			...mapState({
@@ -171,7 +175,16 @@
 
 				return result.length || 0;
 			},
+
+			isHasNotifications() {
+				const find = this.appealsHasNotifications.find((el) => {
+					return el === this.appeal.id;
+				});
+
+				return find !== undefined;
+			},
 		},
+		mounted() {},
 	};
 </script>
 
@@ -187,6 +200,29 @@
 		gap: 3rem;
 		padding: 2rem 3rem;
 		background-color: $white;
+		transition: all 0.2s ease;
+
+		&:first-child {
+			border-radius: 0.6rem 0.6rem 0 0;
+		}
+		&:last-child {
+			border-radius: 0 0 0.6rem 0.6rem;
+		}
+
+		&.has_notifications {
+			border: 0.1rem solid $red;
+			box-shadow: $shadow;
+			.appeals-card {
+				&__id,
+				&__source,
+				&__user-name,
+				&__message,
+				&__date {
+					font-weight: 600;
+				}
+			}
+		}
+
 		&.manager {
 			grid-template-columns: max-content repeat(2, 1fr) 20rem 2fr max-content;
 		}
@@ -201,7 +237,7 @@
 			padding: 1rem;
 		}
 
-		+ .appeals-card {
+		+ .appeals-card:not(.has_notifications) {
 			border-top: 0.1rem solid rgba($black, 0.5);
 		}
 
