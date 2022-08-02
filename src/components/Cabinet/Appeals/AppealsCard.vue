@@ -29,7 +29,7 @@
 				:to="{ name: 'user', params: { id: appeal.user.id } }"
 				class="appeals-card__user"
 				:title="appeal.user.username"
-				v-if="userRole !== 'DefaultUser'"
+				v-if="user.role !== 'DefaultUser'"
 				@click.stop
 			>
 				<img
