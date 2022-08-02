@@ -23,7 +23,7 @@
 						</p>
 					</button>
 					<template
-						v-if="documentWidth <= 500 && !isSortPanelVisible"
+						v-if="documentWidth <= 540 && !isSortPanelVisible"
 					>
 						<button
 							class="page-favorites__favorite-panel-btn"
@@ -140,7 +140,6 @@
 			icon="/img/icon/cabinet/tick-bordered.svg"
 			title="Выбрано"
 			class="page-favorites__right-panel"
-			:class="{ mobile: !isMinimizedRightPanel }"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
 			@close-right-panel="isMinimizedRightPanel = true"
@@ -261,15 +260,15 @@
 	@import "@/assets/scss/variables";
 
 	.page-favorites {
+		position: relative;
 		display: grid;
 		grid-template-columns: 1fr max-content;
 		padding: 0;
 		gap: 3rem;
-		@media (max-width: 1360px) {
-			gap: 1.2rem;
-		}
-		@media (max-width: 500px) {
+
+		@media (max-width: 540px) {
 			gap: 0;
+			grid-template-columns: 1fr;
 		}
 
 		&__main {
@@ -278,14 +277,11 @@
 			width: 100%;
 			height: calc(100vh - 8rem);
 			overflow-y: auto;
-			@media (max-width: 1100px) {
-				padding: 6.4rem 4rem 4rem 4rem;
+			@media (max-width: 1440px) {
+				padding: 6.4rem 6rem 4rem 4rem;
 			}
-			@media (max-width: 800px) {
-				padding: 3rem 4rem 4rem 2.1rem;
-			}
-			@media (max-width: 500px) {
-				padding: 3rem 2rem 3rem 2rem;
+			@media (max-width: 540px) {
+				padding: 3rem 1.5rem;
 			}
 		}
 		&__title {
@@ -300,6 +296,9 @@
 
 		&__sort-panel {
 			margin-bottom: 4rem;
+			@media (max-width: 540px) {
+				margin-bottom: 2rem;
+			}
 			&-header {
 				display: flex;
 				align-items: center;
@@ -375,18 +374,6 @@
 		}
 
 		&__right-panel {
-			@media (max-width: 1100px) {
-				position: absolute;
-				top: 0;
-				right: 0;
-				background-color: $white;
-			}
-			@media (max-width: 500px) {
-				display: none;
-			}
-			&.mobile {
-				display: flex;
-			}
 			&-counter {
 				font-size: 3.6rem;
 				&-wrapper {

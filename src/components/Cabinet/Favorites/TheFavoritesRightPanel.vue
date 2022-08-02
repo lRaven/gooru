@@ -303,7 +303,7 @@
 			}
 			&-social {
 				display: flex;
-				justify-content: space-between;
+				gap: 1rem;
 			}
 			&__checkboxes {
 				display: flex;
