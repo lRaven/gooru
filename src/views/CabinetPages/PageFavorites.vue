@@ -280,6 +280,9 @@
 			@media (max-width: 1440px) {
 				padding: 6.4rem 6rem 4rem 4rem;
 			}
+			@media (max-width: 767px) {
+				padding: 4rem 6rem 4rem 1.5rem;
+			}
 			@media (max-width: 540px) {
 				padding: 3rem 1.5rem;
 			}

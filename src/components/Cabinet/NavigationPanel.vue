@@ -192,6 +192,7 @@
 					value="rates"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[5].selected"
+					:isMinimized="isMenuMinimized"
 					v-if="user.role === 'DefaultUser'"
 				>
 					<template v-slot:icon>
@@ -230,6 +231,7 @@
 					value="users"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[4].selected"
+					:isMinimized="isMenuMinimized"
 					v-if="user.role !== 'DefaultUser'"
 				>
 					<template v-slot:icon>
@@ -262,6 +264,7 @@
 					value="control"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[6].selected"
+					:isMinimized="isMenuMinimized"
 					ref="control"
 				>
 					<template v-slot:icon>
@@ -329,6 +332,7 @@
 					value="appeals"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[0].selected"
+					:isMinimized="isMenuMinimized"
 					:counter="appeals_notifications.length"
 				>
 					<template v-slot:icon>
@@ -378,6 +382,7 @@
 					value="parsources"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[1].selected"
+					:isMinimized="isMenuMinimized"
 					:counter="
 						parsources_notifications.length +
 						parsers_notifications.length
@@ -429,6 +434,7 @@
 					value="favorites"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[2].selected"
+					:isMinimized="isMenuMinimized"
 					v-if="user.role === 'DefaultUser'"
 				>
 					<template v-slot:icon>
@@ -462,6 +468,7 @@
 					:pagination="false"
 					@set_tab="set_tab"
 					:isDefaultChecked="tabs[3].selected"
+					:isMinimized="isMenuMinimized"
 				>
 					<template v-slot:icon>
 						<svg
@@ -568,6 +575,7 @@
 				if (this.document_width <= 1023) {
 					this.$emit("close_menu");
 				}
+				console.log("some huita");
 
 				this.SET_TAB(tab);
 				switch (pagination) {

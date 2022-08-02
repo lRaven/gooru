@@ -1,5 +1,8 @@
 <template>
-	<li class="navigation-item">
+	<li
+		class="navigation-item"
+		:class="{ has_counter: counter > 0, minimized: isMinimized }"
+	>
 		<label class="navigation-item__label">
 			<input
 				type="radio"
@@ -7,7 +10,11 @@
 				class="navigation-item__radio-real"
 				:checked="isDefaultChecked"
 				@change="this.$emit('set_tab', value, pagination)"
-				@click="this.$emit('set_tab', value, pagination)"
+				@click="
+					isDefaultChecked
+						? this.$emit('set_tab', value, pagination)
+						: ''
+				"
 			/>
 			<div class="navigation-item__radio-fake" ref="content">
 				<div class="navigation-item__col">
@@ -28,13 +35,14 @@
 	export default {
 		name: "NavigationItem",
 		props: {
-			description: {
-				value: String,
-				default: "Nav item",
-			},
 			isDefaultChecked: {
 				value: Boolean,
 				default: false,
+			},
+			isMinimized: Boolean,
+			description: {
+				value: String,
+				default: "Nav item",
 			},
 			value: String,
 			pagination: {
@@ -59,6 +67,23 @@
 	.navigation-item {
 		user-select: none;
 		width: 100%;
+		&.has_counter {
+			.navigation-item {
+				&__col {
+					margin-right: 2.4rem;
+				}
+			}
+		}
+		&.minimized {
+			.navigation-item {
+				&__col {
+					margin-right: 0;
+				}
+				&__counter {
+					top: 10%;
+				}
+			}
+		}
 
 		&__radio {
 			&-real {
@@ -73,6 +98,7 @@
 			}
 
 			&-fake {
+				position: relative;
 				cursor: pointer;
 				display: flex;
 				align-items: center;
@@ -92,12 +118,10 @@
 			display: flex;
 			align-items: center;
 			transition: all 0.2s ease;
-			&:first-child {
-				border-radius: 5rem;
-				padding: 0.4rem 0.7rem 0.4rem 2rem;
-				gap: 1.7rem;
-				width: 100%;
-			}
+			border-radius: 5rem;
+			padding: 0.4rem 0.7rem 0.4rem 2rem;
+			gap: 1.7rem;
+			width: 100%;
 		}
 
 		&__description {
@@ -107,6 +131,10 @@
 		}
 
 		&__counter {
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
 			display: flex;
 			justify-content: center;
 			align-items: center;
