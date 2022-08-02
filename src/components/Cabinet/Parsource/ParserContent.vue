@@ -295,10 +295,10 @@
 					<li class="parser-content__social-list-item">
 						<ShareNetwork
 							network="odnoklassniki"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
+							:url="sharedContentUrl"
+							:title="sharedContentTitle"
+							:description="sharedContentDescription"
+							
 						>
 							<img src="/img/icon/cabinet/ok.svg" alt="ok" />
 						</ShareNetwork>
@@ -306,36 +306,21 @@
 					<li class="parser-content__social-list-item">
 						<ShareNetwork
 							network="vk"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
+							:url="sharedContentUrl"
+							:title="sharedContentTitle"
+							:description="sharedContentDescription"
+							
 						>
 							<img src="/img/icon/cabinet/vk.svg" alt="vk" />
 						</ShareNetwork>
 					</li>
-					<li class="parser-content__social-list-item">
-						<ShareNetwork
-							network="twitter"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
-							:hashtags="shareContent.hashtags"
-						>
-							<img
-								src="/img/icon/cabinet/twtr.svg"
-								alt="twitter"
-							/>
-						</ShareNetwork>
-					</li>
+					
 					<li class="parser-content__social-list-item">
 						<ShareNetwork
 							network="telegram"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
+							:url="sharedContentUrl"
+							:title="sharedContentTitle"
+							:description="sharedContentDescription"
 						>
 							<img src="/img/icon/cabinet/tg.svg" alt="tg" />
 						</ShareNetwork>
@@ -469,13 +454,21 @@
 					parsource.parsers.forEach((parser) => {
 						if (parser.id === this.parser.id) {
 							find = true;
-							//this.parser.favoriteId = parser.favoriteId;
 							this.favoriteId = parser.favoriteId;
 						}
 					});
 				});
 
 				return find;
+			},
+			sharedContentTitle() {
+				return this.parser.comment.text ? this.parser.comment.text : this.parser.title;
+			},
+			sharedContentUrl() {
+				return this.parser.url;
+			},
+			sharedContentDescription() {
+				return this.parser.comment.text ? '' : this.parser.article;
 			},
 			isDisabledCommentButton() {
 				return this.comment.length > 0 ? false : true;
@@ -501,17 +494,6 @@
 
 				comment: this.parserProp.comment.text,
 				downloadFormatFiles: { excel: false, csv: false },
-
-				shareContent: {
-					url: this.parserProp.url,
-					title: this.parserProp.title,
-					description: this.parserProp.article,
-					image: "https://gitlab.com/uploads/-/system/project/avatar/32004440/Vue.js_Logo_2.svg.png",
-					// *fb only
-					quote: "",
-					// *fb, twtr only
-					hashtags: "",
-				},
 			};
 		},
 

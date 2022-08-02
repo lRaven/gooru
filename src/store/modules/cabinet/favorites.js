@@ -1,7 +1,4 @@
-// import store from "@/store";
-
 import {
-	//getUserParsources,
 	getUserFavoriteParsers,
 	createFavoriteParser,
 	deleteFavoriteParser,
@@ -71,16 +68,9 @@ const actions = {
 					(parser) => parser.id === parserIdData.parser
 				);
 				if (favoriteParser) {
-					/* const parserDataWithoutComment = { favoriteId: parserIdData.id };
-					Object.keys(favoriteParser).forEach((key) => {
-						if (key !== "comment") {
-							parserDataWithoutComment[key] = favoriteParser[key];
-						}
-					}); */
 					return { ...favoriteParser, favoriteId: parserIdData.id };
 				}
 			});
-			console.log(favoriteParsers);
 			context.dispatch("getFavoriteParsources", favoriteParsers);
 		} catch (err) {
 			throw new Error(err);

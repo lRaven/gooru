@@ -261,10 +261,10 @@
 					<li class="favorite-content-item__social-list-item">
 						<ShareNetwork
 							network="odnoklassniki"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
+							:url="sharedContentUrl"
+							:title="sharedContentTitle"
+							:description="sharedContentDescription"
+							
 						>
 							<img src="/img/icon/cabinet/ok.svg" alt="ok" />
 						</ShareNetwork>
@@ -272,10 +272,10 @@
 					<li class="favorite-content-item__social-list-item">
 						<ShareNetwork
 							network="vk"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
+							:url="sharedContentUrl"
+							:title="sharedContentTitle"
+							:description="sharedContentDescription"
+							
 						>
 							<img src="/img/icon/cabinet/vk.svg" alt="vk" />
 						</ShareNetwork>
@@ -283,11 +283,10 @@
 					<li class="favorite-content-item__social-list-item">
 						<ShareNetwork
 							network="twitter"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
-							:hashtags="shareContent.hashtags"
+							:url="sharedContentUrl"
+							:title="sharedContentTitle"
+							:description="sharedContentDescription"
+							
 						>
 							<img
 								src="/img/icon/cabinet/twtr.svg"
@@ -298,10 +297,10 @@
 					<li class="favorite-content-item__social-list-item">
 						<ShareNetwork
 							network="telegram"
-							:url="shareContent.url"
-							:title="shareContent.title"
-							:description="shareContent.description"
-							:media="shareContent.image"
+							:url="sharedContentUrl"
+							:title="sharedContentTitle"
+							:description="sharedContentDescription"
+							
 						>
 							<img src="/img/icon/cabinet/tg.svg" alt="tg" />
 						</ShareNetwork>
@@ -408,6 +407,15 @@
 				} else {
 					return this.parser.title;
 				}
+			},
+			sharedContentTitle() {
+				return this.parser.comment.text ? this.parser.comment.text : this.parser.title;
+			},
+			sharedContentUrl() {
+				return this.parser.url;
+			},
+			sharedContentDescription() {
+				return this.parser.comment.text ? '' : this.parser.article;
 			},
 
 			isFavorited() {
