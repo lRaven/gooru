@@ -171,7 +171,6 @@
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания аккаунта");
-					throw new Error(err);
 				}
 			},
 		},

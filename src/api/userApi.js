@@ -14,7 +14,7 @@ const registration = async ({ email, password }) => {
 		});
 		return response;
 	} catch (error) {
-		throw new Error(error);
+		throw new Error(`data:${JSON.stringify(error.response)}`);
 	}
 };
 
