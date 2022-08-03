@@ -10,7 +10,7 @@
 			<div class="rates-popup__rate">
 				<h4 class="rates-popup__subtitle">Вами выбран тариф</h4>
 				<h2 class="rates-popup__rate-name">
-					{{ `«${selectedRate.name}»` }}
+					«{{ selectedRate.name }}»
 				</h2>
 
 				<h5 v-if="selectedRate.price" class="rates-popup__price">
@@ -231,12 +231,14 @@
 							this.getUserData();
 							this.getUserRate();
 
-							window
-								.open(
-									`${this.baseURL}/api/pay/${this.selectedRate.id}`,
-									"_blank"
-								)
-								.focus();
+							setTimeout(() => {
+								window
+									.open(
+										`${this.baseURL}/api/pay/${this.selectedRate.id}`,
+										"_blank"
+									)
+									.focus();
+							});
 						}
 					} catch (err) {
 						throw new Error(err);

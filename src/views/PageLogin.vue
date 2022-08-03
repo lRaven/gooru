@@ -251,7 +251,7 @@
 				this.isChangePasswordModalOpen = true;
 			}
 			//* если есть параметр reset_password_request то открыть модалку запроса смены пароля через email
-			if (this.$route.query.reset_password_request) {
+			if (this.$route.query.reset_password_request === "true") {
 				this.isChangePasswordRequestModalOpen = true;
 			}
 		},

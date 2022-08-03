@@ -423,6 +423,7 @@
 			gap: 4rem;
 			flex-direction: column;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			height: calc(100vh - 8rem);
 			position: relative;
 			@media (max-width: 767px) {
@@ -442,6 +443,7 @@
 			background-color: $white;
 			border-radius: 0.6rem;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			box-shadow: $shadow;
 		}
 		&__empty {

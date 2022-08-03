@@ -508,6 +508,7 @@
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
 		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
 
 		@media (max-width: 1023px) {
 			padding: 4rem;

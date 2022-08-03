@@ -99,6 +99,7 @@
 			flex-direction: column;
 			gap: 6rem;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			overflow-x: hidden;
 			padding: 1rem;
 			width: 100%;

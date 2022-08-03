@@ -412,6 +412,7 @@
 	@media (max-width: 540px) {
 		.brief-number-of-positions {
 			overflow-y: auto !important;
+			-webkit-overflow-scrolling: touch;
 			&__title {
 				flex-direction: column;
 				width: 100%;

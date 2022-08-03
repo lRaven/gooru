@@ -157,6 +157,7 @@
 
 		&__body {
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			overflow-x: hidden;
 			height: 100%;
 

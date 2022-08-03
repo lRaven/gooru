@@ -386,6 +386,7 @@
 		grid-gap: 3rem 10rem;
 		height: 100%;
 		overflow: auto;
+		-webkit-overflow-scrolling: touch;
 		@media (max-width: 1110px) {
 			grid-gap: 3rem 7rem;
 		}

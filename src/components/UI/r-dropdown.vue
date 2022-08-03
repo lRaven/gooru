@@ -176,6 +176,7 @@
 			z-index: 2;
 			max-height: calc(14.6rem);
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			overflow-x: hidden;
 			&-item {
 				cursor: pointer;

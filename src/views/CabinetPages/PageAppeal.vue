@@ -427,6 +427,7 @@
 			gap: 4rem;
 			flex-direction: column;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			height: calc(100vh - 8rem);
 			@media (max-width: 650px) {
 				gap: 2.5rem;

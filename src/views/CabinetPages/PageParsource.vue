@@ -888,6 +888,7 @@
 
 			&-list {
 				overflow-y: auto;
+				-webkit-overflow-scrolling: touch;
 				@media screen and (max-width: 400px) {
 					padding: 1rem 1.5rem;
 				}

@@ -277,6 +277,7 @@
 			width: 100%;
 			height: calc(100vh - 8rem);
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			@media (max-width: 1440px) {
 				padding: 6.4rem 6rem 4rem 4rem;
 			}
