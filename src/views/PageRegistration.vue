@@ -220,10 +220,16 @@
 			}
 			@media (max-width: 600px) {
 				grid-template-columns: max-content 1fr;
-				justify-content: center;
+			}
+			@media (max-width: 510px) {
+				grid-template-columns: max-content 1fr;
+
+				width: 90%;
 			}
 			@media (max-width: 450px) {
 				grid-template-columns: max-content 1fr;
+				grid-gap: 2rem 0;
+				width: 100%;
 			}
 			&-image {
 				display: none;
@@ -253,21 +259,20 @@
 					margin-bottom: 1rem;
 				}
 				&:first-child {
-					&::after {
-						content: "";
-						position: absolute;
-						top: -0.5rem;
-						bottom: -0.5rem;
-						right: -3rem;
-						width: 0.1rem;
-						background-color: $black;
-						opacity: 0.4;
+					border-right: 0.1rem solid rgba($black, $alpha: 0.4);
+					width: 100%;
+					@media (max-width: 510px) {
+						padding: 0 2rem 0 0;
 					}
+					@media (max-width: 450px) {
+						margin: 0;
+					}
+					
 				}
 				&:nth-child(2) {
 					margin-left: 3rem;
-					@media (max-width: 510px) {
-
+					@media (max-width: 450px) {
+						margin: 0 0 0 1rem;
 					}
 				}
 
@@ -295,7 +300,7 @@
 				}
 				&-error {
 					grid-column: 2/3;
-					margin: 1rem 0 0 0;
+					margin: 0;
 					color: $red;
 					font-size: 1.4rem;
 					@media (max-width: 510px) {
@@ -309,9 +314,9 @@
 				grid-column: 2/3;
 				width: max-content;
 				@media (max-width: 510px) {
-						grid-column: 1/3;
-						width: 100%;
-					}
+					grid-column: 1/3;
+					width: 100%;
+				}
 			}
 
 			.r-button,
@@ -354,7 +359,7 @@
 			gap: 2rem;
 			grid-column: 2/3;
 			@media (max-width: 560px) {
-				margin-top: 0;
+				margin-top: 1rem;
 				gap: 1rem;
 			}
 			@media (max-width: 510px) {

@@ -165,9 +165,14 @@
 			}
 			@media (max-width: 600px) {
 				grid-template-columns: 11rem 30rem;
+				justify-content: center;
+			}
+			@media (max-width: 510px) {
+				grid-template-columns: max-content 1fr;
+				width: 90%;
 			}
 			@media (max-width: 450px) {
-				grid-template-columns: max-content 1fr;
+				width: 100%;
 			}
 			&-image {
 				display: none;
@@ -203,6 +208,7 @@
 					margin: 0;
 					font-size: 2.8rem;
 				}
+				
 				&:first-child {
 					&::after {
 						content: "";
@@ -213,18 +219,18 @@
 						width: 0.1rem;
 						background-color: $black;
 						opacity: 0.4;
-						@media (max-width: 450px) {
+						@media (max-width: 510px) {
 							content: none;
 						}
 					}
-					@media (max-width: 450px) {
+					@media (max-width: 510px) {
 						border-right: 0.1rem solid rgba($black, $alpha: 0.4);
 						padding: 0 2rem 0 0;
 					}
 				}
 				&:nth-child(2) {
 					margin-left: 3rem;
-					@media (max-width: 450px) {
+					@media (max-width: 510px) {
 						margin: 0 0 0 1rem;
 					}
 				}
@@ -235,23 +241,26 @@
 			}
 
 			&-input {
-				@media (max-width: 768px) {
-				}
-				@media (max-width: 450px) {
+				@media (max-width: 510px) {
 					grid-column: 1/3;
 				}
+			
 				&-description {
 					font-size: 1.5rem;
 					color: rgba($black, $alpha: 0.7);
-					@media (max-width: 450px) {
-						grid-column: 1/3;
-					}
+					@media (max-width: 510px) {
+					grid-column: 1/3;
+				}
+				
 				}
 			}
 
 			&-forgot {
 				grid-column: 2/3;
 				width: max-content;
+				@media (max-width: 510px) {
+					grid-column: 1/3;
+				}
 				@media (max-width: 450px) {
 					grid-column: 1/3;
 				}
@@ -265,6 +274,10 @@
 				}
 				@media (max-width: 550px) {
 					width: 20rem;
+				}
+				@media (max-width: 510px) {
+					grid-column: 1/4;
+					width: 100%;
 				}
 				@media (max-width: 450px) {
 					grid-column: 1/4;
