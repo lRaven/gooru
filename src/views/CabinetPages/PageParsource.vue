@@ -549,7 +549,7 @@
 			this.isMinimizedRightPanel = this.documentWidth < 1023;
 			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 			this.parsers_notifications.forEach((notification) => {
-				const id = +notification.url.slice(7);
+				const id = +notification.url.split('/')[2];
 
 				const bool = this.parsers.find((parser) => parser.id === id);
 

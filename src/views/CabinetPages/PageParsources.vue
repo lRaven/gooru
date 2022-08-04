@@ -268,12 +268,12 @@
 				//* получить id парсеров из уведомлений
 				const parsers_id = this.parsers_notifications.reduce(
 					(arr, current) => {
-						arr.push(+current.url.slice(7));
+						arr.push(+current.url.split('/')[2]);
 						return arr;
 					},
 					[]
 				);
-
+				console.log(parsers_id)
 				//* получить список id парсоурсов (уникальные) по id парсеров
 				return this.all_parsers.reduce((arr, current) => {
 					parsers_id.find((id) => {

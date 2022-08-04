@@ -198,6 +198,9 @@
 		display: flex;
 		align-items: center;
 		gap: 3rem;
+		@media (max-width: 425px) {
+			gap: 1.5rem
+		}
 
 		&__btn {
 			&-prev,
@@ -232,6 +235,7 @@
 			align-items: center;
 			gap: 0.9rem;
 			@media (max-width: 425px) {
+				justify-content: center;
 				flex-wrap: wrap;
 			}
 		}
