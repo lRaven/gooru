@@ -51,7 +51,7 @@
 
 			<transition mode="out-in">
 				<div
-					class="page-appeals__list shadow"
+					class="page-appeals__list page-appeals__list_space shadow"
 					v-if="isAppealsLoaded && pagination.cards_list.length > 0"
 				>
 					<appeals-card
@@ -95,6 +95,7 @@
 		<right-panel
 			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
+			:closeIcon="documentWidth <= 540 && !isMinimizedRightPanel ? 'cross' : 'arrow' "
 			class="page-appeals__right-panel"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
@@ -202,8 +203,8 @@
 
 			appealsHasNotifications() {
 				return this.appeals_notifications.reduce((acc, current) => {
-					if (!acc.includes(+current.url.split("/")[2])) {
-						acc.push(+current.url.split("/")[2]);
+					if (!acc.includes(+current.url.split("=")[1])) {
+						acc.push(+current.url.split("=")[1]);
 					}
 					return acc;
 				}, []);
@@ -446,11 +447,19 @@
 		&__list {
 			display: flex;
 			flex-direction: column;
-			background-color: $white;
+			background-color: $light-blue;
 			border-radius: 0.6rem;
 			overflow-y: auto;
 			-webkit-overflow-scrolling: touch;
 			box-shadow: $shadow;
+			.appeals-card {
+				&:nth-child(n) {
+					margin: 0 0 0.5rem 0;
+				}
+				&:last-child {
+					margin: 0;
+				}
+			}
 		}
 		&__empty {
 			width: 100%;

@@ -61,11 +61,13 @@
 		&__content {
 			width: max-content;
 			max-width: 90vw;
-			max-height: 80vh;
 			border-radius: 1rem;
 			background-color: $white;
 			overflow: hidden;
 			z-index: 1;
+			@media (max-width: 767px) {
+				width: 100%;
+			}
 		}
 
 		&__header {

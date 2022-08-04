@@ -2,6 +2,7 @@
 	<label class="r-input">
 		<input
 			class="r-input__input"
+			:name="inputName"
 			:class="{
 				transparent: isTransparent,
 				error: error_message !== null,
@@ -10,6 +11,7 @@
 			:value="value"
 			:placeholder="placeholder"
 			:disabled="isDisabled"
+			@blur="$emit('blur', $event.target.name)"
 			@input="
 				this.$emit('update:modelValue', $event.target.value);
 				this.$emit('update:Valid', $event.target.checkValidity());
@@ -54,6 +56,11 @@
 <script>
 	export default {
 		name: "r-input",
+		emits: {
+			blur: null,
+			'update:Valid': null,
+			'update:modelValue': null,
+		},
 		props: {
 			isDisabled: {
 				value: Boolean,
@@ -74,6 +81,7 @@
 				value: [null, String],
 				default: null,
 			},
+			inputName: String,
 		},
 		computed: {
 			isPasswordHide() {

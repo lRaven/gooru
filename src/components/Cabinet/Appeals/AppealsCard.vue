@@ -204,6 +204,7 @@
 		padding: 2rem 3rem;
 		background-color: $white;
 		transition: all 0.2s ease;
+		border-radius: 0 0 0.6rem 0.6rem;
 
 		&:first-child {
 			border-radius: 0.6rem 0.6rem 0 0;

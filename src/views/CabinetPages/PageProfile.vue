@@ -144,7 +144,7 @@
 					@click="this.$router.push({ name: 'rates' })"
 				></r-button>
 
-				<brief-card></brief-card>
+				<!-- <brief-card class="profile"></brief-card> -->
 			</div>
 		</transition-group>
 	</section>
@@ -159,12 +159,12 @@
 	} from "@/api/userApi";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import RateInfo from "@/components/Rates/RateInfo.vue";
-	import BriefCard from "@/components/Brief/BriefCard.vue";
+	/* import BriefCard from "@/components/Brief/BriefCard.vue"; */
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageProfile",
-		components: { RateInfo, BriefCard },
+		components: { RateInfo, /* BriefCard */ },
 		watch: {
 			user_data: {
 				handler() {
@@ -348,7 +348,10 @@
 					}
 				} catch (err) {
 					this.isDisabledBtn = false;
-					this.toast.error("Ошибка смены изображения профиля");
+					this.personal_data.avatar = this.user_data.avatar;
+					this.toast.error(
+						"Данное изображение не доступно, пожалуйста загрузите jpg', '.png', '.svg' максимальный размер 4096px"
+					);
 					throw new Error(err);
 				}
 			},
@@ -581,8 +584,10 @@
 				margin-left: 0;
 			}
 		}
+		
 
 		&__rate {
+
 			&-title {
 				font-weight: 500;
 				color: $primary;

@@ -86,7 +86,7 @@
 
 					<template v-else>
 						<r-dropdown
-							selected_item="-"
+							selected_item="по дате (по-убыванию)"
 							sendValue=""
 							:list="sortManagerDropdown"
 							v-model="sortByDropdown"
@@ -261,12 +261,12 @@
 				//* получить id парсеров из уведомлений
 				const parsers_id = this.parsers_notifications.reduce(
 					(arr, current) => {
-						arr.push(+current.url.slice(7));
+						arr.push(+current.url.split('/')[2]);
 						return arr;
 					},
 					[]
 				);
-
+				console.log(parsers_id)
 				//* получить список id парсоурсов (уникальные) по id парсеров
 				return this.all_parsers.reduce((arr, current) => {
 					parsers_id.find((id) => {
@@ -369,9 +369,16 @@
 			});
 
 			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
-			this.parsources_notifications.forEach((notification) => {
+			/* this.parsources_notifications.forEach((notification) => {
 				this.clear_notifications(notification.id);
-			});
+			}); */
+		},
+		mounted() {
+			if (this.userRole === "Manager") {
+				setTimeout(() => {
+					this.sort_list({ key: "date", direction: "descending" });
+				}, 500);
+			}
 		},
 		setup() {
 			const toast = useToast();

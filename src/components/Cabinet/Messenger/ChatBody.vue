@@ -90,8 +90,11 @@
 		justify-content: center;
 		height: 100%;
 		overflow: hidden;
+		@media (max-width: 500px) {
+			padding: 2rem;
+		}
 		@media (max-width: 450px) {
-			padding: 0;
+			padding: 2rem 0 0 0;
 		}
 
 		&__messages {

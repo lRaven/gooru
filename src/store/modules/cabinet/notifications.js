@@ -8,19 +8,34 @@ const getters = {
 	//* TODO: после получения подробной инфы уведомлений - поправить
 	appeals_notifications(state) {
 		return state.notifications.filter((notification) =>
-			notification.url.toLowerCase().includes('support')
+			notification.category === 'SupportTicket'
 		) || [];
 	},
 	parsources_notifications(state) {
 		return state.notifications.filter((notification) =>
-			notification.url.toLowerCase().includes('parsource')
+		notification.category === 'Parsource'
 		) || [];
 	},
 	parsers_notifications(state) {
 		return state.notifications.filter((notification) =>
-			notification.url.toLowerCase().includes('parser')
+			notification.category === 'Parser'
 		) || [];
-	}
+	},
+	user_notifications(state) {
+		const notificationsAboutUsers = state.notifications.filter( notification => {
+			return notification.category === 'User'
+		}) || [];
+		console.log(notificationsAboutUsers)
+		if (notificationsAboutUsers) {
+			const notificationsMap = new Map();
+			notificationsAboutUsers.forEach( notification => {
+				const userEmail = notification.message.split(': ');
+				notificationsMap.set(userEmail[1], notification);
+			});
+			return notificationsMap;
+		}
+		return new Map();
+	},
 };
 
 const mutations = { SET_NOTIFICATIONS: (state, payload) => (state.notifications = payload), };

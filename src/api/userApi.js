@@ -228,7 +228,7 @@ const change_manager = async ({ user, manager, user_manager }) => {
 
 const delete_user = async (user_id) => {
 	try {
-		const response = await axios.delete(`${baseURL} / user / ${user_id} / `, {
+		const response = await axios.delete(`${baseURL}/user/${user_id}/`, {
 			headers: { Authorization: `token ${cookie.get("auth_token")}` },
 		});
 		return response;

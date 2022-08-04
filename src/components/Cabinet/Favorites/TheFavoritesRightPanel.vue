@@ -160,6 +160,9 @@
 			},
 		},
 		watch: {
+			// вообще, тут очень плохой код написан, но пусть пока так, хоть работает
+			// после тестирования буду рефачить
+			// тут очень сильно требуется рефакторинг
 			totalSelected() {
 				if (this.totalSelected && this.alertMessage) {
 					this.alertMessage = "";
@@ -173,9 +176,8 @@
 						);
 						if (currentParser) {
 							this.shareContent.url = currentParser.url;
-							this.shareContent.title = currentParser.title;
-							this.shareContent.description =
-								currentParser.article;
+							this.shareContent.title = currentParser.comment.text ? currentParser.comment.text : currentParser.title;
+							this.shareContent.description = currentParser.comment.text ? '' : currentParser.article;
 						}
 					});
 				}
@@ -199,9 +201,8 @@
 						);
 						if (currentParser) {
 							this.shareContent.url = currentParser.url;
-							this.shareContent.title = currentParser.title;
-							this.shareContent.description =
-								currentParser.article;
+							this.shareContent.title = currentParser.comment.text ? currentParser.comment.text : currentParser.title;
+							this.shareContent.description = currentParser.comment.text ? '' : currentParser.article;
 						}
 					});
 
@@ -210,6 +211,18 @@
 					}, 0);
 				} else {
 					this.sharedPointer = 0;
+					const parserId = this.selectedParsers[this.sharedPointer];
+					let currentParser = null;
+					this.favorites.forEach(({ parsers }) => {
+						currentParser = parsers.find(
+							(parser) => parser.id === parserId
+						);
+						if (currentParser) {
+							this.shareContent.url = currentParser.url;
+							this.shareContent.title = currentParser.comment.text ? currentParser.comment.text : currentParser.title;
+							this.shareContent.description = currentParser.comment.text ? '' : currentParser.article;
+						}
+					});
 					console.log("finish", url);
 				}
 			},
@@ -280,7 +293,7 @@
 		&__right-panel {
 			.mobile {
 				.r-spoiler__content {
-					padding: 0 0 0.5rem 0;
+					/* padding: 0 0 0.5rem 0; */
 				}
 				&-counter {
 					font-size: 3.6rem;

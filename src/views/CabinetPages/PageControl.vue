@@ -164,6 +164,12 @@
 				grid-template-columns: max-content 40rem;
 				grid-gap: 2rem;
 				align-items: center;
+				@media (max-width: 767px) {
+					grid-template-columns: max-content 1fr;
+				}
+				@media (max-width: 540px) {
+					grid-template-columns: 1fr;
+				}
 			}
 
 			&-title {
@@ -172,6 +178,9 @@
 				grid-column: 1/3;
 				color: $gray;
 				font-weight: 600;
+				@media (max-width: 540px) {
+					grid-column: 1/1;
+				}
 			}
 			&-submit {
 				grid-column: 1/3;
@@ -189,8 +198,10 @@
 				color: $white;
 				min-width: max-content;
 				height: max-content;
-				// opacity: 1;
 				transition: all 0.2s ease;
+				@media (max-width: 540px) {
+					grid-column: 1/1;
+				}
 				&.white {
 					background-color: $white;
 				}

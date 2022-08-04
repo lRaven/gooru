@@ -8,7 +8,10 @@
 
 		<div
 			class="user-card__content"
-			:class="{ selected: isSelected }"
+			:class="{
+				selected: isSelected,
+				'user-card__content_border_red': notification,
+			}"
 			v-if="document_width > 767"
 		>
 			<div
@@ -55,6 +58,8 @@
 					this.$router.push({
 						path: `/cabinet/user/${user.id}`,
 						query: { page: 1 },
+						name: 'user',
+						params: { notification: notification ? JSON.stringify({...notification, email: user.email}) : '', id: user.id }
 					})
 				"
 			>
@@ -88,7 +93,7 @@
 
 		<div
 			class="user-card__content"
-			:class="{ selected: isSelected }"
+			:class="{ selected: isSelected, 'user-card__content_border_red': notification, }"
 			v-else
 		>
 			<div class="user-card__content-row">
@@ -158,6 +163,8 @@
 						this.$router.push({
 							path: `/cabinet/user/${user.id}`,
 							query: { page: 1 },
+							name: 'user',
+							params: { notification: notification ? JSON.stringify({...notification, email: user.email}) : '', id: user.id }
 						})
 					"
 				>
@@ -198,6 +205,7 @@
 </template>
 
 <script>
+
 	import { mapState, mapMutations } from "vuex";
 
 	export default {
@@ -210,6 +218,8 @@
 
 			parsources: Array,
 			parsers: Array,
+
+			notification: Object,
 		},
 		watch: {
 			isSelected() {
@@ -279,7 +289,7 @@
 			};
 		},
 		methods: {
-			...mapMutations(["SELECT_USER", "UNSELECT_USER"]),
+			...mapMutations(["SELECT_USER", "UNSELECT_USER",]),
 		},
 	};
 </script>
@@ -305,6 +315,11 @@
 			box-shadow: $shadow;
 			outline: 0.1rem solid transparent;
 			transition: all 0.2s ease;
+			&_border {
+				&_red {
+					border: 0.1rem solid $red;
+				}
+			}
 
 			@media (max-width: 1023px) {
 				padding: 1rem;

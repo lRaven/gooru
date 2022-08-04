@@ -290,7 +290,7 @@
 </template>
 
 <script>
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
 	import { sortCards, sortParsourcesUser } from "@/mixins/sortingMixins";
@@ -300,6 +300,8 @@
 		change_manager,
 		delete_user,
 	} from "@/api/userApi";
+	import { read_notification } from "@/api/notifications";
+
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -358,6 +360,7 @@
 				user: (state) => state.users.selected_user,
 				users: (state) => state.users.all_users,
 				users_managers: (state) => state.users.users_managers,
+				notifications: (state) => state.notifications.notifications,
 
 				all_parsources: (state) => state.parsers.all_parsources,
 				all_parsers: (state) => state.parsers.all_parsers,
@@ -368,6 +371,7 @@
 
 				document_width: (state) => state.document_width,
 			}),
+			...mapGetters(["user_notifications"]),
 
 			user_manager() {
 				let manager;
@@ -424,7 +428,7 @@
 			};
 		},
 		methods: {
-			...mapMutations(["SET_TAB"]),
+			...mapMutations(["SET_TAB", "SET_NOTIFICATIONS"]),
 			...mapActions([
 				"getSelectedUser",
 				"getAllUsers",
@@ -475,7 +479,7 @@
 						});
 					}
 				} catch (err) {
-					this.toast.err("Ошибка удаления пользователя");
+					this.toast.error("Ошибка удаления пользователя");
 					throw new Error(err);
 				}
 			},
@@ -491,6 +495,26 @@
 			this.getAllAppeals();
 			this.getAllParsers();
 			this.getAllMessages();
+
+			const readNotification = this.$route.params.notification
+				? JSON.parse(this.$route.params.notification)
+				: "";
+			console.log(readNotification);
+			if (readNotification) {
+				read_notification({
+					read: true,
+					user_id: readNotification.user,
+					notification_id: readNotification.id,
+				})
+					.then(() => {
+						const updatedNotifications = this.notifications.filter(
+							(notification) =>
+								notification.id !== readNotification.id
+						);
+						this.SET_NOTIFICATIONS(updatedNotifications);
+					})
+					.catch((error) => console.log(error));
+			}
 		},
 		setup() {
 			const toast = useToast();

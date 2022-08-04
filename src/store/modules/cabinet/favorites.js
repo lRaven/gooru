@@ -1,7 +1,4 @@
-// import store from "@/store";
-
 import {
-	//getUserParsources,
 	getUserFavoriteParsers,
 	createFavoriteParser,
 	deleteFavoriteParser,
@@ -9,11 +6,37 @@ import {
 
 const state = () => ({ favorites: [] });
 
-const getters = {};
+const getters = {
+	favoriteParsers: (state) => (parsourceId) => {
+		const desiredParsource = state.favorites.find(
+			(favoriteParsource) => favoriteParsource.id === parsourceId
+		);
+		if (desiredParsource) {
+			return desiredParsource.parsers;
+		}
+		return [];
+	},
+};
 
 const mutations = {
-	SET_FAVORITES: (state, payload) => state.favorites = payload,
-	CLEAR_FAVORITES: (state) => state.favorites = [],
+	SET_FAVORITES: (state, payload) => (state.favorites = payload),
+	SET_UPDATED_FAVORITES: (state, payload) => {
+		const favoritesCopy = JSON.parse(JSON.stringify(state.favorites));
+		const parsourceToUpdate = favoritesCopy.find(
+			(parsource) => parsource.id === payload.parsource
+		);
+		
+		const updatedParsers = parsourceToUpdate.parsers.map((parser) => {
+			if (parser.id === payload.id) {
+				return payload;
+			}
+			return parser;
+		});
+		parsourceToUpdate.parsers = updatedParsers; 
+		
+		state.favorites = favoritesCopy;
+	},
+	CLEAR_FAVORITES: (state) => (state.favorites = []),
 
 	CLEAR_FAVORITES_STATE: (state) => state.favorites = [],
 };
@@ -45,13 +68,7 @@ const actions = {
 					(parser) => parser.id === parserIdData.parser
 				);
 				if (favoriteParser) {
-					const parserDataWithoutComment = { favoriteId: parserIdData.id };
-					Object.keys(favoriteParser).forEach((key) => {
-						if (key !== "comment") {
-							parserDataWithoutComment[key] = favoriteParser[key];
-						}
-					});
-					return parserDataWithoutComment;
+					return { ...favoriteParser, favoriteId: parserIdData.id };
 				}
 			});
 			context.dispatch("getFavoriteParsources", favoriteParsers);
@@ -106,7 +123,9 @@ const actions = {
 		try {
 			if (isFavorite) {
 				await deleteFavoriteParser({ id: parserToUpdate.favoriteId });
-				const favoritesCopy = JSON.parse(JSON.stringify(context.state.favorites));
+				const favoritesCopy = JSON.parse(
+					JSON.stringify(context.state.favorites)
+				);
 
 				const updatedFavorites = favoritesCopy.filter(
 					(favoriteParsource) => {
@@ -132,16 +151,15 @@ const actions = {
 						favoriteParsource.id === parserToUpdate.parsource
 				);
 				if (updatedFavoriteParsource) {
-					const newFavoriteParser = { favoriteId: newFavoriteParserIds.id };
-					Object.keys(parserToUpdate).forEach((key) => {
-						if (key !== "comment") {
-							newFavoriteParser[key] = parserToUpdate[key];
-						}
+					updatedFavoriteParsource.parsers.push({
+						...parserToUpdate,
+						favoriteId: newFavoriteParserIds.id,
 					});
-					updatedFavoriteParsource.parsers.push(newFavoriteParser);
 					context.commit("SET_FAVORITES", favoriteParsourcesCopy);
 				} else {
-					const parsourcesCopy = JSON.parse(JSON.stringify(context.rootState.parsers.all_parsources));
+					const parsourcesCopy = JSON.parse(
+						JSON.stringify(context.rootState.parsers.all_parsources)
+					);
 					const newFavoriteParsource = parsourcesCopy.find(
 						(parsource) => parsource.id === parserToUpdate.parsource
 					);

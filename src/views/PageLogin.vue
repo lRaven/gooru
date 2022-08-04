@@ -20,6 +20,7 @@
 
 					<p class="page-login__form-input-description">E-mail</p>
 					<r-input
+						class="page-login__form-input"
 						v-model="user_data.email.value"
 						v-model:Valid="user_data.email.valid"
 						:value="user_data.email.value"
@@ -29,6 +30,7 @@
 
 					<p class="page-login__form-input-description">Пароль</p>
 					<r-input
+						class="page-login__form-input"
 						v-model="user_data.password.value"
 						:value="user_data.password.value"
 						input_type="password"
@@ -44,6 +46,11 @@
 					</button>
 
 					<r-button :disabled="!isValidForm" text="Войти"></r-button>
+					<img
+						class="page-login__form-image"
+						src="http://localhost:8080/img/goo-colored.70a6d289.svg"
+						alt="gooruLogo"
+					/>
 				</form>
 			</section>
 		</main>
@@ -295,6 +302,14 @@
 		justify-content: center;
 		align-items: center;
 		background-color: $light-blue;
+		&__section {
+			@media (max-width: 768px) {
+				margin: 5rem 0 0 0;
+			}
+			@media (max-width: 600px) {
+				margin: 3rem 0 0 0;
+			}
+		}
 
 		&__main {
 			display: flex;
@@ -303,6 +318,12 @@
 			background: url("/public/img/icon/cabinet/goo-colored.svg") center
 				right 60px / auto 60% no-repeat;
 			width: 100%;
+			@media (max-width: 768px) {
+				background: none;
+			}
+			@media (max-width: 768px) {
+				justify-content: flex-start;
+			}
 		}
 
 		&__form {
@@ -310,6 +331,35 @@
 			grid-template-columns: 11rem 30rem;
 			align-items: center;
 			grid-gap: 2rem 0;
+			@media (max-width: 768px) {
+				grid-template-columns: 11rem 20rem 1fr;
+				width: 100%;
+			}
+			@media (max-width: 600px) {
+				grid-template-columns: 11rem 30rem;
+				justify-content: center;
+			}
+			@media (max-width: 540px) {
+				grid-template-columns: max-content 1fr;
+			}
+			@media (max-width: 450px) {
+				width: 100%;
+			}
+			&-image {
+				display: none;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: center;
+				grid-column: 3/4;
+				grid-row: 1/6;
+				@media (max-width: 768px) {
+					display: block;
+				}
+				@media (max-width: 600px) {
+					display: none;
+				}
+			}
 
 			&-link {
 				position: relative;
@@ -318,6 +368,18 @@
 				opacity: 0.4;
 				margin-bottom: 4rem;
 				width: max-content;
+				@media (max-width: 600px) {
+					margin: 0 0 2rem 0;
+				}
+				@media (max-width: 540px) {
+					margin: 0;
+					font-size: 3rem;
+				}
+				@media (max-width: 450px) {
+					margin: 0;
+					font-size: 2.8rem;
+				}
+
 				&:first-child {
 					&::after {
 						content: "";
@@ -328,6 +390,13 @@
 						width: 0.1rem;
 						background-color: $black;
 						opacity: 0.4;
+						@media (max-width: 540px) {
+							content: none;
+						}
+					}
+					@media (max-width: 540px) {
+						border-right: 0.1rem solid rgba($black, $alpha: 0.4);
+						padding: 0 2rem 0 0;
 					}
 				}
 				&:nth-child(2) {
@@ -340,16 +409,47 @@
 			}
 
 			&-input {
+				@media (max-width: 540px) {
+					grid-column: 1/3;
+				}
+
 				&-description {
 					font-size: 1.5rem;
-					color: rgba($black, 0.7);
+					color: rgba($black, $alpha: 0.7);
+					@media (max-width: 540px) {
+						grid-column: 1/3;
+					}
 				}
 			}
 
-			&-forgot,
+			&-forgot {
+				grid-column: 2/3;
+				width: max-content;
+				@media (max-width: 540px) {
+					grid-column: 1/3;
+				}
+				@media (max-width: 450px) {
+					grid-column: 1/3;
+				}
+			}
 			.r-button {
 				grid-column: 2/3;
 				width: max-content;
+				@media (max-width: 768px) {
+					grid-column: 2/3;
+					width: 100%;
+				}
+				@media (max-width: 550px) {
+					width: 20rem;
+				}
+				@media (max-width: 540px) {
+					grid-column: 1/4;
+					width: 100%;
+				}
+				@media (max-width: 450px) {
+					grid-column: 1/4;
+					width: 100%;
+				}
 			}
 
 			.r-button {

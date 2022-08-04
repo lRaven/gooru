@@ -29,6 +29,14 @@
 	export default {
 		name: "rDateRangePicker",
 		components: { Datepicker },
+		emits: {
+			'update:modelValue': null
+		},
+		watch: {
+			date() {
+				this.$emit('update:modelValue', this.date);
+			}
+		},
 		setup() {
 			const date = ref(new Date());
 

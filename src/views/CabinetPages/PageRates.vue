@@ -81,11 +81,7 @@
 		</transition-group>
 
 		<transition name="fade" mode="out-in">
-			<r-modal
-				:class="{ mobile: documentWidth <= 570 }"
-				v-if="isModalVisible"
-				@close-modal="close_modal"
-			>
+			<r-modal v-if="isModalVisible" @close-modal="close_modal">
 				<template v-slot>
 					<form
 						class="page-rates__create-appeal"
@@ -525,24 +521,9 @@
 							max-content
 						);
 				}
-				@media (max-width: 1150px) {
-					grid-template-columns: max-content minmax(
-							20rem,
-							max-content
-						);
-				}
-				@media (max-width: 1050px) {
-					grid-template-columns: max-content minmax(
-							18rem,
-							max-content
-						);
-				}
-				@media (max-width: 970px) {
-					grid-template-columns: 45vw;
-					grid-gap: 1rem;
-				}
-				@media (max-width: 570px) {
-					grid-template-columns: 100%;
+
+				@media (max-width: 767px) {
+					grid-template-columns: 1fr;
 					grid-gap: 1rem;
 				}
 			}
@@ -552,8 +533,8 @@
 					font-size: 1.7rem;
 					grid-column: 1/2;
 				}
-				@media (max-width: 970px) {
-					grid-column: 1/2;
+				@media (max-width: 767px) {
+					grid-column: 1/1;
 				}
 				&:nth-child(5) {
 					align-self: flex-start;
@@ -562,9 +543,6 @@
 			}
 
 			.r-dropdown {
-				@media (max-width: 970px) {
-					grid-column: 1/2;
-				}
 				&__selected {
 					font-size: 1.8rem;
 				}
@@ -577,15 +555,14 @@
 					font-size: 1.7rem;
 				}
 				@media (max-width: 970px) {
-					grid-column: 1/2;
 					height: 12rem;
 				}
 			}
 			.r-button {
 				margin-top: 2rem;
 				grid-column: 1/3;
-				@media (max-width: 970px) {
-					grid-column: 1/2;
+				@media (max-width: 767px) {
+					grid-column: 1/1;
 				}
 			}
 		}

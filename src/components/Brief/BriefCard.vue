@@ -36,6 +36,7 @@
 		background: url("/public/img/brief/brief-bg.png") center / 120% auto
 			no-repeat;
 		background-position: 0 70%;
+
 		@media (max-width: 1630px) {
 			justify-content: flex-start;
 			gap: 4rem;
@@ -150,6 +151,41 @@
 			}
 			@media (max-width: 350px) {
 				width: 100%;
+			}
+		}
+	}
+</style>
+
+<style scoped lang="scss">
+	.brief-card {
+		&.profile {
+			display: flex;
+			padding: 3rem 3rem 3rem 4rem;
+			grid-column: 1/4;
+			border-radius: 2rem;
+			background: url("/public/img/brief/brief-bg.png") center / 120% auto
+				no-repeat;
+			background-position: 0 70%;
+			flex-direction: column;
+			.r-button {
+				padding: 1.6rem 4rem;
+				width: max-content;
+				align-self: flex-end;
+			}
+			@media (max-width: 1450px) {
+				gap: 2rem;
+				.brief-card__text-big {
+					font-size: 2.2rem;
+					&:nth-child(2) {
+						margin: 0 0 2rem 0;
+					}
+				}
+			}
+			@media (max-width: 1380px) {
+				padding: 2rem 2rem 2rem 2rem;
+				.r-button {
+					width: 100%;
+				}
 			}
 		}
 	}

@@ -5,11 +5,10 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title></title>
-
+  
 </head>
-
-<body>
-  <style>
+<head>
+<style>
     body {
       margin: 0;
     }
@@ -67,6 +66,15 @@
       .footer__text-logo_accent_light {
         margin: 0 0 0 4px !important;
       }
+    }
+    @media screen and (max-width: 480px) {
+      .redirect-button {
+        margin: 0 auto 20px auto !important;
+        width: 150px !important;
+      }
+      .redirect-button__text {
+        padding: 12px 26px !important;
+      } 
     }
 
     @media screen and (max-width: 475px) {
@@ -141,11 +149,13 @@
         font-size: 7px !important;
         line-height: 8px !important;
         width: 55px !important;
+        min-width: 55px !important;
       }
 
       .footer__slogan-caption {
         font-size: 7px !important;
         line-height: 7px !important;
+        min-width: 125px !important;
         width: 125px !important;
       }
 
@@ -211,6 +221,14 @@
         font-size: 12px !important;
         line-height: 16px !important;
       }
+      .redirect-button {
+        margin: 0 auto 20px auto !important;
+        width: 130px !important;
+      }
+      .redirect-button__text {
+        
+        padding: 10px 24px !important;
+      } 
     }
 
     @media screen and (max-width: 385px) {
@@ -230,6 +248,9 @@
       .main__item {
         font-size: 9px !important;
         line-height: 10px !important;
+      }
+      .redirect-button {
+        margin: 0 auto 10px auto !important;
       }
       .footer__text-logo {
         width: 95px !important;
@@ -263,6 +284,9 @@
       }
     }
   </style>
+</head>
+
+<body>
   <table border="0" cellpadding="0" cellspacing="0" style="margin: 0; padding: 0; width: 100%;">
     <tr style="width: 100%;">
       <td align="center" valign="top" style="width: inherit;">
@@ -278,7 +302,7 @@
             background-repeat: no-repeat;
             background-size: contain;" 
             valign="center" 
-            background="./advertNotifyHeaderImage.png">
+            background="https://s6786525.sendpul.se/image/files/emailservice/userfiles/2882481d5ab9c347268936a5ca5054d06786525/GooRu/advertNotifyHeaderImage.png">
               <h2 class="header__tilte" 
               style="margin: 0 0 0 55px;
               font-weight: 600;
@@ -296,12 +320,17 @@
             width: 100%;
             font-family: Arial, sans-serif;
             padding: 46px 20px 8px 20px;">
-              <h3 class="main__title" style="margin: 0 0 40px 0; font-weight: 700; font-size: 13px; line-height: 15px;">
-                Давно заходил ко мне? А у меня для тебя хорошие вести!
+              <h3 class="main__title" style="color: #000000; margin: 0 0 40px 0; font-weight: 700; font-size: 13px; line-height: 15px;">
+                {{ title }}
               </h3>
-              <p class="main__item main__item_last" style="margin: 0 0 10px 0; font-weight: 400; font-size: 12px; line-height: 14px;">
-                Появились новые возможности. (Теперь ты можешь парсить даже в темноте:)) видеть сквозь стены, принимать решения даже во сне 
+              <p class="main__item main__item_last" style="color: #000000; margin: 0 0 10px 0; font-weight: 400; font-size: 12px; line-height: 14px;">
+                {{ text }}
               </p>
+              <div class="redirect-button" style="margin: 0 auto 20px auto; width: 200px; background-color: #378DD2; border-radius: 5px; text-align: center;">
+                <a class="redirect-button__text" href="{{ url }}" style="display: block; color: #FFFFFF; padding: 14px 28px; font-weight: 600; font-size: 12px; line-height: 14px; text-decoration: none;">
+                  Перейти
+                </a>
+              </div>
               <hr size="1px" style="margin: 0; background-color: #D9D9D9;" />
             </td>
           </tr>
@@ -315,12 +344,12 @@
                 style="background-color: #FFFFFF; max-width: 500px; width: 100%; font-family: Arial, sans-serif;">
                 <tr>
                   <td class="footer__logo" width="36" valign="top">
-                    <img src="../img/compasLogo.png" alt="Логотип"
+                    <img src="https://s6786525.sendpul.se/image/files/emailservice/userfiles/2882481d5ab9c347268936a5ca5054d06786525/GooRu/compasLogo.png" alt="Логотип"
                       style="margin: 0 8px 0 0; width: inherit; height: inherit; max-width: inherit; max-height: inherit; display: block;" />
                   </td>
                   <td valign="center">
                     <h3 class="footer__slogan"
-                      style="font-size: 9px; line-height: 13px; font-weight: 700; margin: 0 0 3px 0; width: 65px;">
+                      style="color: #000000; font-size: 9px; line-height: 13px; font-weight: 700; margin: 0 0 3px 0; width: 65px;">
                       КОМПАС ПРО</h3>
                     <p class="footer__slogan-caption"
                       style="font-size: 9px; line-height: 9px; font-weight: 400; margin: 0; color: #434343; width: 150px;">
