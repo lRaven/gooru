@@ -282,20 +282,6 @@
 					</li>
 					<li class="favorite-content-item__social-list-item">
 						<ShareNetwork
-							network="twitter"
-							:url="sharedContentUrl"
-							:title="sharedContentTitle"
-							:description="sharedContentDescription"
-							
-						>
-							<img
-								src="/img/icon/cabinet/twtr.svg"
-								alt="twitter"
-							/>
-						</ShareNetwork>
-					</li>
-					<li class="favorite-content-item__social-list-item">
-						<ShareNetwork
 							network="telegram"
 							:url="sharedContentUrl"
 							:title="sharedContentTitle"

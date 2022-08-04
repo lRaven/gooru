@@ -27,6 +27,7 @@ const getters = {
 const mutations = {
 	SET_PARSOURCES: (state, payload) => state.parsources = payload,
 	SET_PARSOURCES_PAGINATION: (state, payload) => state.parsources_pagination = payload,
+	ADD_PARSOURCES: (state, payload) => state.parsources = payload,
 	CLEAR_PARSOURCES: (state) => { state.parsources = []; state.parsources_pagination = {} },
 
 	SET_ALL_PARSOURCES: (state, payload) => state.all_parsources = payload,
@@ -67,6 +68,7 @@ const mutations = {
 		state.parsers = updatedParsers;
 	},
 	SET_PARSERS_PAGINATION: (state, payload) => state.parsers_pagination = payload,
+	ADD_PARSERS: (state, payload) => state.parsers = payload,
 	CLEAR_PARSERS: (state) => { state.parsers = []; state.parsers_pagination = {} },
 
 	SET_ALL_PARSERS: (state, payload) => state.all_parsers = payload,
@@ -100,21 +102,24 @@ const actions = {
 			const response = await axios.get(`${store.state.baseURL}/parsource/?page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
-			if (response.status === 200) {
-				context.commit('SET_PARSOURCES', response.data.results);
+			if (!args.nextPage) {
+				if (response.status === 200) {
+					context.commit('SET_PARSOURCES', response.data.results);
 
-				let pagination_info = {};
+					let pagination_info = {};
 
-				for (const iterator in response.data) {
-					if (iterator !== 'results') {
-						pagination_info[iterator] = response.data[iterator]
+					for (const iterator in response.data) {
+						if (iterator !== 'results') {
+							pagination_info[iterator] = response.data[iterator]
+						}
 					}
-				}
-				context.commit('SET_PARSOURCES_PAGINATION', pagination_info);
+					context.commit('SET_PARSOURCES_PAGINATION', pagination_info);
 
-				console.log('Parsource list saved');
+					console.log('Parsource list saved');
+				}
 			}
 
+			return response;
 		}
 		catch (err) { throw new Error(err) }
 	},
@@ -170,35 +175,40 @@ const actions = {
 				`${store.state.baseURL}/parser/?${args.search ? `search=${args.search}&` : ''}parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 			);
-			if (response.status === 200) {
-				const comments = await getComments();
-				const parsersList = response.data.results.map((parser) => {
-					const matchedComment = comments.find(
-						(commentItem) => commentItem.parser === parser.id
-					);
-					if (matchedComment) {
-						return {
-							...parser,
-							comment: { text: matchedComment.comment, id: matchedComment.id },
-						};
-					} else {
-						return { ...parser, comment: { text: "", id: null } };
-					}
-				});
-				parsersList.reverse();
-				context.commit("SET_PARSERS", parsersList);
 
-				let pagination_info = {};
+			if (!args.nextPage) {
+				if (response.status === 200) {
+					const comments = await getComments();
+					const parsersList = response.data.results.map((parser) => {
+						const matchedComment = comments.find(
+							(commentItem) => commentItem.parser === parser.id
+						);
+						if (matchedComment) {
+							return {
+								...parser,
+								comment: { text: matchedComment.comment, id: matchedComment.id },
+							};
+						} else {
+							return { ...parser, comment: { text: "", id: null } };
+						}
+					});
+					parsersList.reverse();
+					context.commit("SET_PARSERS", parsersList);
 
-				for (const iterator in response.data) {
-					if (iterator !== 'results') {
-						pagination_info[iterator] = response.data[iterator]
+					let pagination_info = {};
+
+					for (const iterator in response.data) {
+						if (iterator !== 'results') {
+							pagination_info[iterator] = response.data[iterator]
+						}
 					}
+					context.commit('SET_PARSERS_PAGINATION', pagination_info);
+
+					console.log('Parser list saved');
 				}
-				context.commit('SET_PARSERS_PAGINATION', pagination_info);
-
-				console.log('Parser list saved');
 			}
+
+			return response;
 		}
 		catch (err) { throw new Error(err) }
 	},

@@ -19,6 +19,7 @@ const getters = {}
 const mutations = {
 	SET_USERS: (state, payload) => state.users = payload,
 	SET_USERS_PAGINATION: (state, payload) => state.users_pagination = payload,
+	ADD_USERS: (state, payload) => state.users = payload,
 	CLEAR_USERS: (state) => { state.users = []; state.users_pagination = {} },
 
 	SET_ALL_USERS: (state, payload) => state.all_users = payload,
@@ -64,20 +65,22 @@ const actions = {
 			const response = await axios.get(`${store.state.baseURL}/user/?page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
-			if (response.status === 200) {
-				context.commit('SET_USERS', response.data.results);
-				console.log('Users list saved');
+			if (!args.nextPage) {
+				if (response.status === 200) {
+					context.commit('SET_USERS', response.data.results);
+					console.log('Users list saved');
 
-				let pagination_info = {};
+					let pagination_info = {};
 
-				for (const iterator in response.data) {
-					if (iterator !== 'results') {
-						pagination_info[iterator] = response.data[iterator]
+					for (const iterator in response.data) {
+						if (iterator !== 'results') {
+							pagination_info[iterator] = response.data[iterator]
+						}
 					}
+					context.commit('SET_USERS_PAGINATION', pagination_info);
 				}
-				context.commit('SET_USERS_PAGINATION', pagination_info);
 			}
-
+			return response;
 		}
 		catch (err) { throw new Error(err) }
 	},

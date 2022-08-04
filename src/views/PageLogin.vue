@@ -35,7 +35,11 @@
 						input_type="password"
 					></r-input>
 
-					<button class="page-login__form-forgot" type="button">
+					<button
+						class="page-login__form-forgot"
+						type="button"
+						@click="isChangePasswordRequestModalOpen = true"
+					>
 						Забыли пароль
 					</button>
 
@@ -48,6 +52,72 @@
 				</form>
 			</section>
 		</main>
+
+		<transition mode="out-in" name="fade">
+			<r-modal
+				v-if="isChangePasswordRequestModalOpen"
+				@close-modal="close_modal"
+			>
+				<template v-slot>
+					<form
+						class="page-login__modal-form"
+						@submit.prevent="send_password_change_email_request"
+					>
+						<h2 class="page-login__modal-form-title">
+							Восстановление пароля
+						</h2>
+						<p class="page-login__modal-form-description">Email:</p>
+						<r-input
+							input_type="email"
+							placeholder="Введите email"
+							v-model="email_for_password_reset"
+							:value="email_for_password_reset"
+						></r-input>
+						<r-button text="Отправить"></r-button>
+					</form>
+				</template>
+			</r-modal>
+		</transition>
+
+		<transition mode="out-in" name="fade">
+			<r-modal
+				v-if="isChangePasswordModalOpen"
+				@close-modal="close_modal"
+			>
+				<template v-slot>
+					<form
+						class="page-login__modal-form"
+						@submit.prevent="send_reset_password"
+					>
+						<h2 class="page-login__modal-form-title">
+							Сменить пароль
+						</h2>
+						<p class="page-login__modal-form-description">
+							Новый пароль:
+						</p>
+						<r-input
+							input_type="password"
+							placeholder="Введите новый пароль"
+							v-model="change_password_data.new_password"
+							:value="change_password_data.new_password"
+						></r-input>
+						<p class="page-login__modal-form-description">
+							Подтверждение пароля:
+						</p>
+						<r-input
+							input_type="password"
+							placeholder="Введите его ещё раз"
+							v-model="change_password_data.new_password_confirm"
+							:value="change_password_data.new_password_confirm"
+						></r-input>
+						<r-button
+							text="Отправить"
+							:disabled="!isResetPasswordFormValid"
+						></r-button>
+					</form>
+				</template>
+			</r-modal>
+		</transition>
 	</div>
 </template>
 
@@ -55,7 +125,11 @@
 	import { mapState, mapActions } from "vuex";
 
 	import TheHeader from "@/components/TheHeader.vue";
-	import { login } from "@/api/userApi";
+	import {
+		login,
+		reset_password_request,
+		reset_password,
+	} from "@/api/userApi";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -74,14 +148,36 @@
 					this.user_data.password.length >= 8
 				);
 			},
+
+			isHasQueryParamsForResetPassword() {
+				const keys = Object.keys(this.$route.query);
+				return keys.includes("uid") && keys.includes("token");
+			},
+			isResetPasswordFormValid() {
+				return (
+					this.change_password_data.new_password ===
+						this.change_password_data.new_password_confirm &&
+					this.change_password_data.new_password.length >= 8 &&
+					this.change_password_data.new_password_confirm.length >= 8
+				);
+			},
 		},
 		data: () => ({
+			isChangePasswordRequestModalOpen: false,
+			isChangePasswordModalOpen: false,
+
 			user_data: {
 				email: {
 					value: "",
 					valid: false,
 				},
 				password: "",
+			},
+
+			email_for_password_reset: "",
+			change_password_data: {
+				new_password: "",
+				new_password_confirm: "",
 			},
 		}),
 		methods: {
@@ -114,6 +210,57 @@
 					throw new Error(err);
 				}
 			},
+
+			close_modal() {
+				this.isChangePasswordModalOpen = false;
+				this.isChangePasswordRequestModalOpen = false;
+			},
+
+			async send_password_change_email_request() {
+				try {
+					const response = await reset_password_request(
+						this.email_for_password_reset
+					);
+					if (response.status === 201) {
+						this.toast.success(
+							`Письмо с инструкциями было отправлено на\n${this.email_for_password_reset}\nИзменить пароль можно в личном кабинете`
+						);
+						console.log("password change request sent");
+					}
+				} catch (err) {
+					this.toast.error("Ошибка отправки запроса");
+					throw new Error(err);
+				}
+			},
+			async send_reset_password() {
+				try {
+					const response = await reset_password({
+						uid: this.$route.query.uid,
+						token: this.$route.query.token,
+						password: this.change_password_data.new_password,
+					});
+
+					if (response.status === 201) {
+						console.log("password changed");
+						this.toast.success("Пароль успешно восстановлен");
+						this.close_modal();
+					}
+				} catch (err) {
+					this.toast.error("Ошибка смены пароля");
+					throw new Error(err);
+				}
+			},
+		},
+		mounted() {
+			//* если есть query параметры сброса пароля, то открыть модалку смены пароля
+			if (this.isHasQueryParamsForResetPassword) {
+				this.isChangePasswordRequestModalOpen = false;
+				this.isChangePasswordModalOpen = true;
+			}
+			//* если есть параметр reset_password_request то открыть модалку запроса смены пароля через email
+			if (this.$route.query.reset_password_request === "true") {
+				this.isChangePasswordRequestModalOpen = true;
+			}
 		},
 		setup() {
 			const toast = useToast();
@@ -294,6 +441,36 @@
 				background-color: transparent;
 				font-weight: 500;
 				margin: -1rem 0 1rem 0;
+			}
+		}
+
+		&__modal-form {
+			display: grid;
+			grid-template-columns: 10rem 1fr;
+			align-items: center;
+			grid-gap: 5rem 2rem;
+			padding: 0 2rem 2rem 2rem;
+			min-width: 60rem;
+			@media (max-width: 767px) {
+				min-width: 90vw;
+			}
+			@media (max-width: 540px) {
+				grid-gap: 1rem;
+				grid-template-columns: 1fr;
+			}
+
+			&-title,
+			.r-button {
+				grid-column: 1/3;
+				@media (max-width: 540px) {
+					grid-column: 1/1;
+				}
+			}
+			&-title {
+				text-align: center;
+				@media (max-width: 540px) {
+					margin-bottom: 2rem;
+				}
 			}
 		}
 	}

@@ -31,6 +31,8 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/assets/scss/variables";
+
 	.r-modal {
 		display: flex;
 		align-items: center;
@@ -53,14 +55,15 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
-			background-color: rgba($color: #000, $alpha: 0.5);
+			background-color: rgba($black, 0.5);
 		}
 
 		&__content {
-			width: min-content;
-			max-width: 50vw;
+			width: max-content;
+			max-width: 90vw;
+			/* max-height: 80vh; */
 			border-radius: 1rem;
-			background-color: #fff;
+			background-color: $white;
 			overflow: hidden;
 			z-index: 1;
 		}

@@ -23,7 +23,7 @@
 						</p>
 					</button>
 					<template
-						v-if="documentWidth <= 500 && !isSortPanelVisible"
+						v-if="documentWidth <= 540 && !isSortPanelVisible"
 					>
 						<button
 							class="page-favorites__favorite-panel-btn"
@@ -87,6 +87,7 @@
 						<r-dropdown
 							v-model="show_by_source"
 							showedValue="description"
+							:list="favoriteParsourcesName"
 							selected_item="Выберите источник"
 						></r-dropdown>
 					</div>
@@ -98,7 +99,7 @@
 						<r-date-range-picker></r-date-range-picker>
 					</div>
 
-					<div class="page-favorites__sort-panel-col">
+					<!-- <div class="page-favorites__sort-panel-col">
 						<p class="page-favorites__sort-panel-description">
 							Поиск по типу контента
 						</p>
@@ -107,12 +108,18 @@
 							showedValue="description"
 							selected_item="Выберите тип контента"
 						></r-dropdown>
-					</div>
+					</div> -->
 
 					<r-button
 						class="page-favorites__sort-panel-submit-button"
 						color="bordered"
 						text="Применить"
+					></r-button>
+					<r-button
+						@click="resetFilter"
+						class="page-favorites__sort-panel-reset-button"
+						color="bordered"
+						text="Сбросить"
 					></r-button>
 				</div>
 			</div>
@@ -124,10 +131,10 @@
 			<transition mode="out-in">
 				<div
 					class="page-favorites__list"
-					v-if="isFavoritesLoaded && favorites.length > 0"
+					v-if="isFavoritesLoaded && favoriteParsources.length > 0"
 				>
 					<favorite-card
-						v-for="favorite in favorites"
+						v-for="favorite in favoriteParsources"
 						:key="favorite.id"
 						:parsource="favorite"
 						@update-selected-parsers="updateSelectedParsers"
@@ -149,7 +156,6 @@
 			icon="/img/icon/cabinet/tick-bordered.svg"
 			title="Выбрано"
 			class="page-favorites__right-panel"
-			:class="{ mobile: !isMinimizedRightPanel }"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
 			@close-right-panel="isMinimizedRightPanel = true"
@@ -196,6 +202,25 @@
 				favorites: (state) => state.favorites.favorites,
 				documentWidth: (state) => state.document_width,
 			}),
+			favoriteParsourcesName() {
+				return this.favorites.reduce((prev, current) => {
+					return [
+						...prev,
+						{ id: current.id, description: current.name },
+					];
+				}, []);
+			},
+			favoriteParsources() {
+				if (this.show_by_source) {
+					return [
+						this.favorites.find(
+							(parsource) => parsource.id === this.show_by_source
+						),
+					];
+				} else {
+					return this.favorites;
+				}
+			},
 			selectedParsers() {
 				return this.selectedParsources.reduce(
 					(prev, selectedParsource) => {
@@ -212,7 +237,7 @@
 
 			sortPanelSize: 0,
 
-			show_by_source: "",
+			show_by_source: null,
 			show_by_content: "",
 			selectedParsources: [],
 			totalSelected: 0,
@@ -222,6 +247,9 @@
 			...mapActions(["getFavoriteParsers"]),
 			minimizeRightPanel() {
 				console.log("yes");
+			},
+			resetFilter() {
+				this.show_by_source = null;
 			},
 			updateSelectedParsers(favoriteCardObj) {
 				const { parsourceId, selectedParsers } = favoriteCardObj;
@@ -277,15 +305,15 @@
 	@import "@/assets/scss/variables";
 
 	.page-favorites {
+		position: relative;
 		display: grid;
 		grid-template-columns: 1fr max-content;
 		padding: 0;
 		gap: 3rem;
-		@media (max-width: 1360px) {
-			gap: 1.2rem;
-		}
-		@media (max-width: 500px) {
+
+		@media (max-width: 540px) {
 			gap: 0;
+			grid-template-columns: 1fr;
 		}
 
 		&__main {
@@ -294,14 +322,15 @@
 			width: 100%;
 			height: calc(100vh - 8rem);
 			overflow-y: auto;
-			@media (max-width: 1100px) {
-				padding: 6.4rem 4rem 4rem 4rem;
+			-webkit-overflow-scrolling: touch;
+			@media (max-width: 1440px) {
+				padding: 6.4rem 6rem 4rem 4rem;
 			}
-			@media (max-width: 800px) {
-				padding: 3rem 4rem 4rem 2.1rem;
+			@media (max-width: 767px) {
+				padding: 4rem 6rem 4rem 1.5rem;
 			}
-			@media (max-width: 500px) {
-				padding: 3rem 2rem 3rem 2rem;
+			@media (max-width: 540px) {
+				padding: 3rem 1.5rem;
 			}
 		}
 		&__title {
@@ -316,6 +345,9 @@
 
 		&__sort-panel {
 			margin-bottom: 4rem;
+			@media (max-width: 540px) {
+				margin-bottom: 2rem;
+			}
 			&-header {
 				display: flex;
 				align-items: center;
@@ -360,6 +392,11 @@
 					width: max-content;
 					margin-left: auto;
 				}
+				.page-favorites__sort-panel-reset-button {
+					padding: 1rem 2.8rem;
+					width: max-content;
+					margin-left: auto;
+				}
 				&_tiny {
 					display: grid;
 					grid-template-columns: repeat(2, 1fr);
@@ -367,6 +404,10 @@
 					.page-favorites__sort-panel-submit-button {
 						width: 100%;
 						padding: 1rem 2.8rem;
+					}
+					.page-favorites__sort-panel-reset-button {
+						padding: 1rem 2.8rem;
+						width: 100%;
 					}
 					@media (max-width: 550px) {
 						grid-template-columns: 1fr;
@@ -382,7 +423,7 @@
 			&-description {
 				margin-bottom: 0.5rem;
 				font-size: 1.2rem;
-				color: rgba($black, $alpha: 0.5);
+				color: rgba($black, 0.5);
 			}
 		}
 		&__favorite-panel-btn {
@@ -408,18 +449,6 @@
 		}
 
 		&__right-panel {
-			@media (max-width: 1100px) {
-				position: absolute;
-				top: 0;
-				right: 0;
-				background-color: rgba($color: $white, $alpha: 1);
-			}
-			@media (max-width: 500px) {
-				display: none;
-			}
-			&.mobile {
-				display: flex;
-			}
 			&-counter {
 				font-size: 3.6rem;
 				&-wrapper {

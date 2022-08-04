@@ -10,7 +10,7 @@
 			<div class="rates-popup__rate">
 				<h4 class="rates-popup__subtitle">Вами выбран тариф</h4>
 				<h2 class="rates-popup__rate-name">
-					{{ `«${selectedRate.name}»` }}
+					«{{ selectedRate.name }}»
 				</h2>
 
 				<h5 v-if="selectedRate.price" class="rates-popup__price">
@@ -110,13 +110,24 @@
 							:disabled="!isValidForm"
 						/>
 
-						<transition name="fade" mode="out-in">
+						<transition-group name="fade" mode="out-in">
 							<r-link
 								v-if="formType === 'registration'"
 								text="Нужна помощь?"
 								way="https://telegram.im/@compas_gooru"
 							></r-link>
-						</transition>
+
+							<router-link
+								v-else
+								:to="{
+									name: 'login',
+									query: { reset_password_request: true },
+								}"
+								class="rates-popup__help"
+							>
+								Забыли пароль?
+							</router-link>
+						</transition-group>
 					</div>
 				</form>
 
@@ -220,12 +231,14 @@
 							this.getUserData();
 							this.getUserRate();
 
-							window
-								.open(
-									`${this.baseURL}/api/pay/${this.selectedRate.id}`,
-									"_blank"
-								)
-								.focus();
+							setTimeout(() => {
+								window
+									.open(
+										`${this.baseURL}/api/pay/${this.selectedRate.id}`,
+										"_blank"
+									)
+									.focus();
+							});
 						}
 					} catch (err) {
 						throw new Error(err);
@@ -287,7 +300,7 @@
 				font-weight: 700;
 				text-align: center;
 				color: $primary;
-				background-color: rgba($primary, $alpha: 0.1);
+				background-color: rgba($primary, 0.1);
 				margin-bottom: 4rem;
 				padding: 2rem 4rem;
 			}
@@ -390,7 +403,7 @@
 				}
 				&-caption {
 					font-size: 1.5rem;
-					color: rgba($black, $alpha: 0.7);
+					color: rgba($black, 0.7);
 				}
 				&__submit-button {
 					padding: 1.2rem 3rem !important;
@@ -406,7 +419,7 @@
 				max-width: 42rem;
 				font-size: 1.1rem;
 				line-height: 1.5rem;
-				color: rgba($black, $alpha: 0.7);
+				color: rgba($black, 0.7);
 				&_accent {
 					color: $primary;
 				}
@@ -419,6 +432,10 @@
 			justify-content: space-between;
 			gap: 2rem;
 			grid-column: 1/3;
+		}
+		&__help {
+			font-size: 1.4rem;
+			color: $primary;
 		}
 	}
 </style>

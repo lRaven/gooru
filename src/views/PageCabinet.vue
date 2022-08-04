@@ -144,6 +144,7 @@
 			margin-top: 8rem;
 			background-color: $light-blue;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 
 			@media (max-width: 1023px) {
 				margin-top: 6.4rem;

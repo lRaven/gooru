@@ -105,11 +105,12 @@
 </template>
 
 <script>
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 	import { add_ticket } from "@/api/tickets";
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import TheMessenger from "@/components/Cabinet/Messenger/TheMessenger.vue";
+	import { read_notification } from "@/api/notifications";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -135,6 +136,12 @@
 				},
 				deep: true,
 			},
+			isHasNotifications() {
+				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+				this.appealNotifications.forEach((notification) => {
+					this.clear_notifications(notification);
+				});
+			},
 		},
 		computed: {
 			...mapState({
@@ -144,6 +151,7 @@
 				user: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
 			}),
+			...mapGetters(["appeals_notifications"]),
 
 			appeal_id() {
 				return +this.$route.query.appeal_id;
@@ -173,6 +181,29 @@
 
 				return result;
 			},
+
+			appealNotifications() {
+				const result = this.appeals_notifications.reduce(
+					(acc, current) => {
+						if (+current.url.split("=")[1] === this.appeal_id) {
+							acc.push(current.id);
+						}
+
+						return acc;
+					},
+					[]
+				);
+
+				return result;
+			},
+			isHasNotifications() {
+				const find = this.appeals_notifications.find((el) => {
+					const id = +el.url.split("=")[1];
+					return id === this.appeal_id;
+				});
+
+				return find !== undefined;
+			},
 		},
 		data() {
 			return {
@@ -190,7 +221,7 @@
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getAllParsers", "getAppeal"]),
+			...mapActions(["getAllParsers", "getAppeal", "getNotifications"]),
 
 			page_changed(appeal_id) {
 				this.$router.push({
@@ -239,6 +270,21 @@
 					}
 				}
 			},
+
+			async clear_notifications(notification_id) {
+				try {
+					const response = await read_notification({
+						notification_id: notification_id,
+						read: true,
+						user_id: this.user.id,
+					});
+					if (response.status === 200) {
+						this.getNotifications();
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
 		},
 		created() {
 			this.isMinimizedRightPanel =
@@ -247,6 +293,13 @@
 			this.getAllParsers();
 
 			this.getAppeal(this.appeal_id);
+
+			if (this.isHasNotifications) {
+				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+				this.appealNotifications.forEach((notification) => {
+					this.clear_notifications(notification);
+				});
+			}
 		},
 		setup() {
 			const toast = useToast();
@@ -380,6 +433,7 @@
 			gap: 4rem;
 			flex-direction: column;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			height: calc(100vh - 8rem);
 			@media (max-width: 650px) {
 				gap: 2.5rem;
@@ -391,7 +445,7 @@
 				position: absolute;
 				top: 0;
 				right: 0;
-				background-color: rgba($color: $white, $alpha: 1);
+				background-color: $white;
 			}
 			@media (max-width: 450px) {
 				display: none;
@@ -405,13 +459,13 @@
 					width: 100vw;
 					height: 100%;
 					z-index: 3;
-					background-color: rgba($color: $white, $alpha: 1);
+					background-color: $white;
 					transition: all 0.2s ease, padding 0.2s ease 0.2s;
 				}
 			}
 			&-form {
 				padding: 2rem 0;
-				border-top: 0.05rem solid rgba($black, $alpha: 0.5);
+				border-top: 0.05rem solid rgba($black, 0.5);
 				display: flex;
 				flex-direction: column;
 				gap: 4rem;

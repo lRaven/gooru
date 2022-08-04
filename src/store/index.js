@@ -22,7 +22,6 @@ export default createStore({
 	state: () => ({
 		document_width: null,
 		baseURL: 'http://0.0.0.0:8003',
-		productionBaseUrl: 'https://api-compas-goo.ru/',
 	}),
 
 	getters: { BASEURL_WITHOUT_PROTOCOL(state) { return state.baseURL.split("/")[2] } },

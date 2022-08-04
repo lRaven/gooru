@@ -704,7 +704,7 @@
 		&__username {
 			font-size: 1.4rem;
 			font-weight: 700;
-			color: rgba($black, $alpha: 0.7);
+			color: rgba($black, 0.7);
 			@media (max-width: 1140px) and (min-width: 1024px) {
 				max-width: 14rem;
 				overflow: hidden;

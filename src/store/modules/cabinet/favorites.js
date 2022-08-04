@@ -38,7 +38,7 @@ const mutations = {
 	},
 	CLEAR_FAVORITES: (state) => (state.favorites = []),
 
-	CLEAR_FAVORITES_STATE: (state) => (state.favorites = []),
+	CLEAR_FAVORITES_STATE: (state) => state.favorites = [],
 };
 
 const actions = {
@@ -84,10 +84,9 @@ const actions = {
 					root: true,
 				});
 			}
-			const allParsourcesCopy = JSON.parse(
-				JSON.stringify(context.rootState.parsers.all_parsources)
-			);
-			const favoriteParsources = [];
+			const allParsourcesCopy = JSON.parse(JSON.stringify(context.rootState.parsers.all_parsources));
+			let favoriteParsources = [];
+
 			parsers.forEach((favoriteParser) => {
 				const matchedParsource = allParsourcesCopy.find(
 					(parsource) => parsource.id === favoriteParser.parsource
@@ -95,13 +94,16 @@ const actions = {
 				const duplicatedParsource = favoriteParsources.find(
 					(parsource) => parsource.id === matchedParsource.id
 				);
+
 				if (!duplicatedParsource) {
-					favoriteParsources.push(matchedParsource);
+					if (matchedParsource !== undefined) {
+						favoriteParsources.push(matchedParsource);
+					}
 				}
 			});
+
 			favoriteParsources.forEach((parsource) => {
 				parsource.parsers = [];
-
 				parsers.forEach((parser) => {
 					if (parsource.id === parser.parsource) {
 						parsource.parsers.push(parser);
@@ -143,9 +145,7 @@ const actions = {
 					parser: parserToUpdate.id,
 					user: userId,
 				});
-				const favoriteParsourcesCopy = JSON.parse(
-					JSON.stringify(context.state.favorites)
-				);
+				const favoriteParsourcesCopy = JSON.parse(JSON.stringify(context.state.favorites));
 				const updatedFavoriteParsource = favoriteParsourcesCopy.find(
 					(favoriteParsource) =>
 						favoriteParsource.id === parserToUpdate.parsource
@@ -163,12 +163,7 @@ const actions = {
 					const newFavoriteParsource = parsourcesCopy.find(
 						(parsource) => parsource.id === parserToUpdate.parsource
 					);
-					newFavoriteParsource.parsers = [
-						{
-							...parserToUpdate,
-							favoriteId: newFavoriteParserIds.id,
-						},
-					];
+					newFavoriteParsource.parsers = [{ ...parserToUpdate, favoriteId: newFavoriteParserIds.id }];
 					context.commit("SET_FAVORITES", [
 						...context.state.favorites,
 						newFavoriteParsource,

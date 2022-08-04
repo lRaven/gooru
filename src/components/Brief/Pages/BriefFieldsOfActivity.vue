@@ -190,6 +190,7 @@
 			margin-top: auto;
 			gap: 2.5rem;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			max-width: 66rem;
 			width: 100%;
 			height: max-content;
@@ -208,6 +209,7 @@
 				}
 				&:nth-child(2) {
 					overflow-y: auto;
+					-webkit-overflow-scrolling: touch;
 				}
 			}
 

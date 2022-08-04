@@ -190,7 +190,7 @@
 			<transition mode="out-in">
 				<div class="page-users__list" v-if="isUsersLoaded">
 					<user-card
-						v-for="user in users_list"
+						v-for="user in pagination.cards_list"
 						:key="user.id"
 						:user_me="user_me"
 						:user="user"
@@ -208,13 +208,13 @@
 					:disabled="page >= number_of_pages"
 					color="bordered"
 					text="Показать ещё"
-					@click="page_changed(page + 1)"
+					@click="page_changed(page + 1, true)"
 				></r-button>
 
 				<r-pagination
 					:start_page="page"
 					:count="count"
-					:items_on_page="users_in_page"
+					:items_on_page="pagination.cards_in_page"
 					@page_changed="page_changed"
 				></r-pagination>
 			</div>
@@ -227,27 +227,19 @@
 	import UserCard from "@/components/Cabinet/Users/UserCard.vue";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
 
-	import { sortUsers } from "@/mixins/sortingMixins";
+	import { sortCards, sortUsers } from "@/mixins/sortingMixins";
+	import { paginationMixin } from "@/mixins/paginationMixins";
 
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageUsers",
-		mixins: [sortUsers],
+		mixins: [sortCards, sortUsers, paginationMixin],
 		components: {
 			UserCard,
 			SortButton,
 		},
 		watch: {
-			page() {
-				if (this.$route.path === this.path) {
-					this.getUsers({
-						page_number: this.page,
-						page_size: this.users_in_page,
-					});
-				}
-			},
-
 			"actions.selectAll": {
 				handler() {
 					this.actions.selectAll === true
@@ -301,9 +293,11 @@
 				deep: true,
 			},
 
-			users() {
-				this.users_list = this.users;
-				this.isUsersLoaded = true;
+			cards: {
+				handler() {
+					this.isUsersLoaded = true;
+				},
+				deep: true,
 			},
 		},
 		computed: {
@@ -311,8 +305,8 @@
 				user_me: (state) => state.cabinet.user,
 				userRole: (state) => state.cabinet.user.role,
 
-				users: (state) => state.users.users,
-				users_pagination: (state) => state.users.users_pagination,
+				cards: (state) => state.users.users,
+				pagination_data: (state) => state.users.users_pagination,
 				all_users: (state) => state.users.all_users,
 				users_managers: (state) => state.users.users_managers,
 
@@ -322,24 +316,10 @@
 				document_width: (state) => state.document_width,
 			}),
 			...mapGetters(['user_notifications']),
-			page() {
-				return +this.$route.query.page;
-			},
-			count() {
-				return this.users_pagination.count;
-			},
-
-			number_of_pages() {
-				return Math.ceil(this.count / this.users_in_page);
-			},
 		},
 		data() {
 			return {
 				isUsersLoaded: false,
-
-				path: this.$route.path,
-				users_list: [],
-				users_in_page: 10,
 
 				actions: {
 					selectAll: false,
@@ -355,6 +335,7 @@
 				"SET_TAB",
 				"SELECT_ALL_USERS",
 				"UNSELECT_ALL_USERS",
+				"ADD_USERS",
 			]),
 			...mapActions([
 				"getUsers",
@@ -365,7 +346,34 @@
 				"deleteSelectedUsers",
 			]),
 
-			page_changed(page_number) {
+			async getCards(params) {
+				try {
+					this.getUsers(params);
+				} catch (err) {
+					throw new Error();
+				}
+			},
+			async getNextCards(params) {
+				try {
+					const response = await this.getUsers(params);
+
+					if (response.status === 200) {
+						this.pagination.cards_list.push(
+							...response.data.results
+						);
+						this.ADD_USERS(this.pagination.cards_list);
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
+
+			page_changed(page_number, type) {
+				if (type) {
+					this.pagination.load_next_cards = true;
+				} else {
+					this.pagination.load_next_cards = false;
+				}
 				this.$router.push({
 					name: "users",
 					query: { page: page_number },
@@ -375,9 +383,10 @@
 		created() {
 			this.SET_TAB("users");
 
-			this.getUsers({
-				page_size: this.users_in_page,
+			this.getCards({
+				page_size: this.pagination.cards_in_page,
 				page_number: this.page,
+				nextPage: false,
 			});
 			this.getAllUsers();
 			this.getUsersManagers();
@@ -402,6 +411,7 @@
 		padding: 6.4rem 4rem 4rem 4rem;
 		height: 100%;
 		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
 
 		@media (max-width: 1023px) {
 			padding: 4rem;
@@ -438,7 +448,7 @@
 				}
 				&-description {
 					font-size: 1.2rem;
-					color: rgba($black, $alpha: 0.7);
+					color: rgba($black, 0.7);
 				}
 			}
 		}
@@ -519,7 +529,7 @@
 				&-description {
 					font-size: 1.2rem;
 					font-weight: 500;
-					color: rgba($black, $alpha: 0.5);
+					color: rgba($black, 0.5);
 					margin-bottom: 1rem;
 				}
 

@@ -43,6 +43,7 @@ const getters = {}
 const mutations = {
 	SET_APPEALS: (state, payload) => state.appeals = payload,
 	SET_APPEALS_PAGINATION: (state, payload) => state.appeals_pagination = payload,
+	ADD_APPEALS: (state, payload) => state.appeals = payload,
 	CLEAR_APPEALS: (state) => { state.appeals = []; state.appeals_pagination = {} },
 
 	SET_ALL_APPEALS: (state, payload) => state.all_appeals = payload,
@@ -63,23 +64,26 @@ const actions = {
 	//*get parsources with pagination
 	getAppeals: async (context, args) => {
 		try {
-			const response = await axios.get(`${store.state.baseURL}/users/support/?${args.search ? `search=${args.search}&`: ''}page=${args.page_number}&page_size=${args.page_size}`,
+			const response = await axios.get(`${store.state.baseURL}/users/support/?${args.search ? `search=${args.search}&` : ''}page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } })
 
-			if (response.status === 200) {
-				context.commit('SET_APPEALS', response.data.results);
+			if (!args.nextPage) {
+				if (response.status === 200) {
+					context.commit('SET_APPEALS', response.data.results);
 
-				let pagination_info = {};
+					let pagination_info = {};
 
-				for (const iterator in response.data) {
-					if (iterator !== 'results') {
-						pagination_info[iterator] = response.data[iterator]
+					for (const iterator in response.data) {
+						if (iterator !== 'results') {
+							pagination_info[iterator] = response.data[iterator]
+						}
 					}
+					context.commit('SET_APPEALS_PAGINATION', pagination_info);
+					console.log('Appeals list saved');
 				}
-				context.commit('SET_APPEALS_PAGINATION', pagination_info);
-				console.log('Appeals list saved');
 			}
 
+			return response;
 		}
 		catch (err) { throw new Error(err) }
 	},

@@ -202,6 +202,7 @@
 		gap: 5rem;
 		overflow-x: hidden !important;
 		overflow-y: auto !important;
+		-webkit-overflow-scrolling: touch;
 		padding: 1rem;
 		&__col {
 			display: flex;

@@ -7,8 +7,8 @@
 		<div class="page-parsources__control">
 			<r-checkbox
 				description="Выбрать всё"
-				v-model="selectAll"
-				:checked="selectAll"
+				v-model="actions.selectAll"
+				:checked="actions.selectAll"
 			></r-checkbox>
 			<button class="page-parsources__postpone" type="button">
 				<img src="/img/icon/cabinet/postpone.svg" alt="postpone" />
@@ -19,7 +19,7 @@
 			<button
 				class="page-parsources__remove"
 				type="button"
-				@click="deleteSelected = true"
+				@click="actions.deleteSelected = true"
 			>
 				<img src="/img/icon/cabinet/remove.svg" alt="remove" />
 				<p class="page-parsources__remove-description">
@@ -103,10 +103,12 @@
 			<transition mode="out-in">
 				<div
 					class="page-parsources__list"
-					v-if="isParsourcesLoaded && parsources_list.length > 0"
+					v-if="
+						isParsourcesLoaded && pagination.cards_list.length > 0
+					"
 				>
 					<parsource-card
-						v-for="parsource in parsources_list"
+						v-for="parsource in pagination.cards_list"
 						:key="parsource.id"
 						:parsource="parsource"
 						:isParsourceManagerView="userRole !== 'DefaultUser'"
@@ -122,7 +124,8 @@
 					<p
 						class="page-parsources__empty-text"
 						v-if="
-							parsources_list.length === 0 && isParsourcesLoaded
+							pagination.cards_list.length === 0 &&
+							isParsourcesLoaded
 						"
 					>
 						Парсеров нет
@@ -135,13 +138,13 @@
 					:disabled="page >= number_of_pages"
 					color="bordered"
 					text="Показать ещё"
-					@click="page_changed(page + 1)"
+					@click="page_changed(page + 1, true)"
 				></r-button>
 
 				<r-pagination
 					:start_page="page"
 					:count="count"
-					:items_on_page="parsources_in_page"
+					:items_on_page="pagination.cards_in_page"
 					@page_changed="page_changed"
 				></r-pagination>
 			</div>
@@ -154,38 +157,30 @@
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 
 	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-	import { sortParsources } from "@/mixins/sortingMixins";
+	import { sortCards, sortParsources } from "@/mixins/sortingMixins";
+	import { paginationMixin } from "@/mixins/paginationMixins";
 	import { read_notification } from "@/api/notifications";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageParsources",
-		mixins: [sortParsources],
+		mixins: [sortCards, sortParsources, paginationMixin],
 		components: {
 			SortButton,
 			ParsourceCard,
 		},
 		watch: {
-			page() {
-				if (this.$route.path === this.path) {
-					this.getParsources({
-						page_number: this.page,
-						page_size: this.parsources_in_page,
-					});
-				}
-			},
-
-			selectAll: {
+			"actions.selectAll": {
 				handler() {
-					this.selectAll === true
+					this.actions.selectAll === true
 						? this.SELECT_ALL_PARSOURCES()
 						: this.UNSELECT_ALL_PARSOURCES();
 				},
 				deep: true,
 			},
 
-			async deleteSelected() {
-				if (this.deleteSelected === true) {
+			async "actions.deleteSelected"() {
+				if (this.actions.deleteSelected === true) {
 					try {
 						const response = await this.deleteSelectedParsources();
 
@@ -201,28 +196,27 @@
 							//* получить parsources 1 страницы
 							await this.getParsources({
 								page_number: 1,
-								page_size: this.parsources_in_page,
+								page_size: this.pagination.cards_in_page,
 							});
 
 							setTimeout(() => {
-								this.deleteSelected = false;
+								this.actions.deleteSelected = false;
 							}, 1000);
 						}
 					} catch (err) {
 						this.toast.error("Ошибка удаления парсеров");
 						setTimeout(() => {
-							this.deleteSelected = false;
+							this.actions.deleteSelected = false;
 						}, 1000);
 						throw new Error(err);
 					}
 				}
 			},
 
-			parsources: {
+			cards: {
 				handler: function () {
-					this.parsources_list = this.parsources;
-					if (this.parsources.length === 0) {
-						this.selectAll = false;
+					if (this.cards.length === 0) {
+						this.actions.selectAll = false;
 					}
 					this.isParsourcesLoaded = true;
 				},
@@ -238,9 +232,8 @@
 		},
 		computed: {
 			...mapState({
-				parsources: (state) => state.parsers.parsources,
-				parsources_pagination: (state) =>
-					state.parsers.parsources_pagination,
+				cards: (state) => state.parsers.parsources,
+				pagination_data: (state) => state.parsers.parsources_pagination,
 				userRole: (state) => state.cabinet.user.role,
 				userId: (state) => state.cabinet.user.id,
 
@@ -252,17 +245,6 @@
 				"parsources_notifications",
 				"parsers_notifications",
 			]),
-
-			page() {
-				return +this.$route.query.page;
-			},
-			count() {
-				return this.parsources_pagination.count;
-			},
-
-			number_of_pages() {
-				return Math.ceil(this.count / this.parsources_in_page);
-			},
 
 			parsourcesHasParsersNotifications() {
 				//* получить id парсеров из уведомлений
@@ -292,17 +274,13 @@
 		data() {
 			return {
 				isParsourcesLoaded: false,
-				path: this.$route.path,
-
-				selectAll: false,
-				postponeSelected: false,
-				deleteSelected: false,
-
-				parsources_list: [],
-
-				parsources_in_page: 10,
-
 				isSortDropdownVisible: false,
+
+				actions: {
+					selectAll: false,
+					postponeSelected: false,
+					deleteSelected: false,
+				},
 			};
 		},
 		methods: {
@@ -310,6 +288,7 @@
 				"SET_TAB",
 				"SELECT_ALL_PARSOURCES",
 				"UNSELECT_ALL_PARSOURCES",
+				"ADD_PARSOURCES",
 			]),
 			...mapActions([
 				"getParsources",
@@ -318,7 +297,34 @@
 				"getAllParsers",
 			]),
 
-			page_changed(page_number) {
+			async getCards(params) {
+				try {
+					this.getParsources(params);
+				} catch (err) {
+					throw new Error();
+				}
+			},
+			async getNextCards(params) {
+				try {
+					const response = await this.getParsources(params);
+
+					if (response.status === 200) {
+						this.pagination.cards_list.push(
+							...response.data.results
+						);
+						this.ADD_PARSOURCES(this.pagination.cards_list);
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
+
+			page_changed(page_number, type) {
+				if (type) {
+					this.pagination.load_next_cards = true;
+				} else {
+					this.pagination.load_next_cards = false;
+				}
 				this.$router.push({
 					name: "parsources",
 					query: { page: page_number },
@@ -342,16 +348,19 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
+
 			this.getAllParsers();
 
-			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
-			this.parsources_notifications.forEach((notification) => {
-				this.clear_notifications(notification.id);
-			});
-			this.getParsources({
+			this.getCards({
 				page_number: this.page,
-				page_size: this.parsources_in_page,
+				page_size: this.pagination.cards_in_page,
+				nextPage: false,
 			});
+
+			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+			/* this.parsources_notifications.forEach((notification) => {
+				this.clear_notifications(notification.id);
+			}); */
 		},
 		mounted() {
 			if (this.userRole === "Manager") {
@@ -423,7 +432,7 @@
 
 		&__postpone {
 			&-description {
-				color: rgba($black, $alpha: 0.7);
+				color: rgba($black, 0.7);
 			}
 		}
 		&__remove {

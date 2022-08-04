@@ -79,7 +79,7 @@
 		&__description {
 			max-width: 12rem;
 			font-size: 1.6rem;
-			color: rgba($black, $alpha: 0.7);
+			color: rgba($black, 0.7);
 			line-height: 1.2;
 		}
 

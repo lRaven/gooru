@@ -227,10 +227,10 @@
 					<transition mode="out-in">
 						<div
 							class="page-user__parsers-list"
-							v-if="isParsourcesLoaded && parsources.length > 0"
+							v-if="isParsourcesLoaded && cards.length > 0"
 						>
 							<parsource-card
-								v-for="parsource in parsources_list"
+								v-for="parsource in cards_list"
 								:key="parsource.id"
 								:parsource="parsource"
 								:isCanSelect="false"
@@ -242,10 +242,7 @@
 						<div class="page-user__tabs-tab-empty">
 							<p
 								class="page-user__tabs-tab-text"
-								v-if="
-									parsources.length === 0 &&
-									isParsourcesLoaded
-								"
+								v-if="cards.length === 0 && isParsourcesLoaded"
 							>
 								Парсеров нет
 							</p>
@@ -296,7 +293,7 @@
 	import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
 	import SortButton from "@/components/Cabinet/Parsources/SortButton";
-	import { sortParsourcesUser } from "@/mixins/sortingMixins";
+	import { sortCards, sortParsourcesUser } from "@/mixins/sortingMixins";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard";
 	import {
 		change_user_data,
@@ -309,7 +306,7 @@
 
 	export default {
 		name: "PageUser",
-		mixins: [sortParsourcesUser],
+		mixins: [sortCards, sortParsourcesUser],
 		components: {
 			ParsourceCard,
 			SortButton,
@@ -324,9 +321,9 @@
 				deep: true,
 			},
 
-			parsources: {
+			cards: {
 				handler: function () {
-					this.parsources_list = this.parsources;
+					this.cards_list = this.cards;
 					this.isParsourcesLoaded = true;
 				},
 				deep: true,
@@ -393,7 +390,7 @@
 				return manager || { username: "-" };
 			},
 
-			parsources() {
+			cards() {
 				return this.all_parsources.filter((parsource) => {
 					return parsource.user === this.user.id;
 				});
@@ -423,7 +420,7 @@
 
 				tab: 1,
 
-				parsources_list: [],
+				cards_list: [],
 				isParsourcesLoaded: false,
 				isSortDropdownVisible: false,
 
@@ -526,6 +523,7 @@
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
 		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
 
 		@media (max-width: 1023px) {
 			padding: 4rem;
@@ -553,7 +551,7 @@
 			grid-template-columns: 14rem repeat(3, minmax(19rem, 24rem));
 			grid-gap: 0 1rem;
 			padding: 1rem;
-			background-color: rgba($white, $alpha: 0.5);
+			background-color: rgba($white, 0.5);
 			width: fit-content;
 
 			@media (max-width: 1300px) {
@@ -570,7 +568,7 @@
 			}
 
 			&-description {
-				color: rgba($black, $alpha: 0.5);
+				color: rgba($black, 0.5);
 				margin-bottom: 1.5rem;
 				font-size: 1.2rem;
 				padding-left: 1rem;
@@ -644,7 +642,7 @@
 				display: flex;
 				border-radius: 1rem 1rem 0 0;
 				height: 6rem;
-				background-color: rgba($secondary, $alpha: 0.1);
+				background-color: rgba($secondary, 0.1);
 				overflow: hidden;
 			}
 			&-button {
@@ -678,7 +676,7 @@
 					}
 				}
 				&.current {
-					background-color: rgba($secondary, $alpha: 0.2);
+					background-color: rgba($secondary, 0.2);
 					font-weight: 700;
 					&::after {
 						width: 100%;

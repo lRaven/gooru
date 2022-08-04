@@ -123,6 +123,7 @@
 			gap: 1.5rem;
 			max-width: 63rem;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 		}
 
 		.r-button {

@@ -5,11 +5,12 @@
 	>
 		<div class="page-appeals__main">
 			<h2 class="page-appeals__title">Обращения</h2>
-			<template v-if="documentWidth <= 450">
+			<template v-if="documentWidth <= 540">
 				<div class="page-appeals__controls">
 					<button
 						class="page-appeals__new-appeal-button"
 						@click="isMinimizedRightPanel = false"
+						v-if="user.role === 'DefaultUser'"
 					>
 						<svg
 							width="32"
@@ -38,8 +39,10 @@
 								/>
 							</g>
 						</svg>
+						<p class="page-appeals__controls-text">
+							Новое обращение
+						</p>
 					</button>
-					<p class="page-appeals__controls-text">Новое обращение</p>
 				</div>
 			</template>
 			<transition mode="out-in">
@@ -48,22 +51,26 @@
 
 			<transition mode="out-in">
 				<div
-					class="page-appeals__list shadow"
-					v-if="isAppealsLoaded && appeals.length > 0"
+					class="page-appeals__list page-appeals__list_space shadow"
+					v-if="isAppealsLoaded && pagination.cards_list.length > 0"
 				>
 					<appeals-card
-						v-for="appeal in appeals"
+						v-for="appeal in pagination.cards_list"
 						:key="appeal.id"
 						:appeal="appeal"
 						:parsers="all_parsers"
 						:topics="topics"
 						:messages="all_messages"
+						:appealsHasNotifications="appealsHasNotifications"
 					></appeals-card>
 				</div>
 			</transition>
 
 			<transition mode="out-in">
-				<p class="page-appeals__empty" v-if="appeals.length === 0">
+				<p
+					class="page-appeals__empty"
+					v-if="pagination.cards_list.length === 0"
+				>
 					Обращений нет
 				</p>
 			</transition>
@@ -73,23 +80,23 @@
 					:disabled="page >= number_of_pages"
 					color="bordered"
 					text="Показать ещё"
-					@click="page_changed(page + 1)"
+					@click="page_changed(page + 1, true)"
 				></r-button>
 
 				<r-pagination
 					:start_page="page"
 					:count="count"
-					:items_on_page="appeals_in_page"
+					:items_on_page="pagination.cards_in_page"
 					@page_changed="page_changed"
 				></r-pagination>
 			</div>
 		</div>
+
 		<right-panel
 			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			:closeIcon="documentWidth <= 540 && !isMinimizedRightPanel ? 'cross' : 'arrow' "
 			class="page-appeals__right-panel"
-			:class="{ mobile: !isMinimizedRightPanel }"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
 			@close-right-panel="isMinimizedRightPanel = true"
@@ -154,27 +161,25 @@
 	import { add_ticket } from "@/api/tickets";
 	import { read_notification } from "@/api/notifications";
 
-	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
+	import { paginationMixin } from "@/mixins/paginationMixins";
+
+	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageAppeals",
+		mixins: [paginationMixin],
 		components: {
 			RightPanel,
 			AppealsCard,
 		},
 		watch: {
-			page() {
-				if (this.$route.path === this.path) {
-					this.getAppeals({
-						page_number: this.page,
-						page_size: this.appeals_in_page,
-					});
-				}
-			},
-			appeals() {
-				this.isAppealsLoaded = true;
+			cards: {
+				handler() {
+					this.isAppealsLoaded = true;
+				},
+				deep: true,
 			},
 			new_appeal: {
 				handler() {
@@ -182,44 +187,41 @@
 				},
 				deep: true,
 			},
-
-			appeals_notification() {
-				//* TODO: пока нет функционала прочитать несколько уведомлений за раз, то это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
-				this.appeals_notifications.forEach((notification) => {
-					this.clear_notifications(notification.id);
-				});
-			},
 		},
 		computed: {
 			...mapState({
 				all_parsers: (state) => state.parsers.all_parsers,
 				topics: (state) => state.appeals.topics,
 				user: (state) => state.cabinet.user,
-				appeals: (state) => state.appeals.appeals,
-				appeals_pagination: (state) => state.appeals.appeals_pagination,
+				cards: (state) => state.appeals.appeals,
+				pagination_data: (state) => state.appeals.appeals_pagination,
 				documentWidth: (state) => state.document_width,
 
 				all_messages: (state) => state.messenger.all_messages,
 			}),
 			...mapGetters(["appeals_notifications"]),
-			page() {
-				return +this.$route.query.page;
+
+			appealsHasNotifications() {
+				return this.appeals_notifications.reduce((acc, current) => {
+					if (!acc.includes(+current.url.split("=")[1])) {
+						acc.push(+current.url.split("=")[1]);
+					}
+					return acc;
+				}, []);
 			},
 
-			count() {
-				return this.appeals_pagination.count;
-			},
+			isHasNotifications() {
+				const find = this.appealsHasNotifications.find((el) => {
+					return el === this.appeal.id;
+				});
 
-			number_of_pages() {
-				return Math.ceil(this.count / this.appeals_in_page);
+				return find !== undefined;
 			},
 		},
 		data() {
 			return {
 				isMinimizedRightPanel: false,
-
 				isAppealsLoaded: false,
-				path: this.$route.path,
 
 				new_appeal: {
 					topic: "",
@@ -227,12 +229,10 @@
 					message: "",
 				},
 				isNewAppealValid: false,
-
-				appeals_in_page: 10,
 			};
 		},
 		methods: {
-			...mapMutations(["SET_TAB"]),
+			...mapMutations(["SET_TAB", "ADD_APPEALS"]),
 			...mapActions([
 				"getAllParsers",
 				"getAppeals",
@@ -254,7 +254,7 @@
 						this.resetForm();
 						this.getAppeals({
 							page_number: this.page,
-							page_size: this.appeals_in_page,
+							page_size: this.pagination.cards_in_page,
 						});
 
 						console.log("Ticket created");
@@ -268,7 +268,35 @@
 				}
 			},
 
-			page_changed(page_number) {
+			async getCards(params) {
+				try {
+					this.getAppeals(params);
+				} catch (err) {
+					throw new Error();
+				}
+			},
+			async getNextCards(params) {
+				try {
+					const response = await this.getAppeals(params);
+
+					if (response.status === 200) {
+						this.pagination.cards_list.push(
+							...response.data.results
+						);
+						this.ADD_APPEALS(this.pagination.cards_list);
+					}
+				} catch (err) {
+					throw new Error();
+				}
+			},
+
+			page_changed(page_number, type) {
+				if (type) {
+					this.pagination.load_next_cards = true;
+				} else {
+					this.pagination.load_next_cards = false;
+				}
+
 				this.$router.push({
 					name: "appeals",
 					query: { page: page_number },
@@ -309,14 +337,10 @@
 			this.SET_TAB("appeals");
 			this.isMinimizedRightPanel = this.documentWidth <= 1100;
 
-			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
-			this.appeals_notifications.forEach((notification) => {
-				this.clear_notifications(notification.id);
-			});
-
-			this.getAppeals({
+			this.getCards({
 				page_number: this.page,
-				page_size: this.appeals_in_page,
+				page_size: this.pagination.cards_in_page,
+				nextPage: false,
 			});
 			this.getAllMessages();
 
@@ -338,19 +362,20 @@
 			display: grid;
 			grid-template-columns: 1fr max-content;
 			grid-gap: 2rem;
-			@media (max-width: 450px) {
+			@media (max-width: 540px) {
+				grid-template-columns: 1fr;
 				grid-gap: 0;
 			}
 			.page-appeals__main {
 				padding: 6.4rem 0 4rem 4rem;
-				@media (max-width: 1100px) {
-					padding: 6.4rem 4rem 4rem 4rem;
+				@media (max-width: 1440px) {
+					padding-right: 6rem;
+				}
+				@media (max-width: 767px) {
+					padding: 4rem 6rem 4rem 1.5rem;
 				}
 				@media (max-width: 540px) {
-					padding: 3.2rem 2.5rem 3rem 2.5rem;
-				}
-				@media (max-width: 450px) {
-					padding: 3rem 1.5rem 3rem 1.5rem;
+					padding: 3rem 1.5rem;
 				}
 			}
 		}
@@ -360,6 +385,9 @@
 			gap: 1.6rem;
 		}
 		&__new-appeal-button {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
 			background-color: $light-blue;
 			&-icon {
 				path {
@@ -396,9 +424,16 @@
 			gap: 4rem;
 			flex-direction: column;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			height: calc(100vh - 8rem);
 			position: relative;
-			@media (max-width: 450px) {
+			@media (max-width: 767px) {
+				padding: 4rem 1.5rem;
+			}
+			@media (max-width: 540px) {
+				padding: 3rem 1.5rem;
+			}
+			@media (max-width: 540px) {
 				gap: 1.5rem;
 			}
 		}
@@ -406,10 +441,19 @@
 		&__list {
 			display: flex;
 			flex-direction: column;
-			background-color: $white;
+			background-color: $light-blue;
 			border-radius: 0.6rem;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			box-shadow: $shadow;
+			.appeals-card {
+				&:nth-child(n) {
+					margin: 0 0 0.5rem 0;
+				}
+				&:last-child {
+					margin: 0;
+				}
+			}
 		}
 		&__empty {
 			width: 100%;
@@ -431,31 +475,9 @@
 		}
 
 		&__right-panel {
-			@media (max-width: 1100px) {
-				position: absolute;
-				top: 0;
-				right: 0;
-				background-color: rgba($color: $white, $alpha: 1);
-			}
-			@media (max-width: 450px) {
-				display: none;
-			}
-			&.mobile {
-				@media (max-width: 540px) {
-					display: flex;
-					position: fixed;
-					right: 0;
-					top: 0;
-					width: 100vw;
-					height: 100%;
-					z-index: 3;
-					background-color: rgba($color: $white, $alpha: 1);
-					transition: all 0.2s ease, padding 0.2s ease 0.2s;
-				}
-			}
 			&-form {
 				padding: 2rem 0;
-				border-top: 0.05rem solid rgba($black, $alpha: 0.5);
+				border-top: 0.05rem solid rgba($black, 0.5);
 				display: flex;
 				flex-direction: column;
 				gap: 4rem;

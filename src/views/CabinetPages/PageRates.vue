@@ -81,7 +81,11 @@
 		</transition-group>
 
 		<transition name="fade" mode="out-in">
-			<r-modal :class="{ mobile: documentWidth <= 570 }" v-if="isModalVisible" @close-modal="close_modal">
+			<r-modal
+				:class="{ mobile: documentWidth <= 570 }"
+				v-if="isModalVisible"
+				@close-modal="close_modal"
+			>
 				<template v-slot>
 					<form
 						class="page-rates__create-appeal"
@@ -449,7 +453,7 @@
 				text-align: center;
 				border: 0.1rem solid orange;
 				border-radius: 1rem;
-				background-color: rgba($color: yellow, $alpha: 0.2);
+				background-color: rgba(yellow, 0.2);
 			}
 
 			&-buttons {
@@ -606,7 +610,7 @@
 				margin-top: 2rem;
 				grid-column: 1/3;
 				@media (max-width: 970px) {
-grid-column: 1/2;
+					grid-column: 1/2;
 				}
 			}
 		}
@@ -621,8 +625,8 @@ grid-column: 1/2;
 				&__list-item {
 					font-size: 1.8rem;
 					@media (max-width: 1150px) {
-					font-size: 1.7rem;
-				}
+						font-size: 1.7rem;
+					}
 				}
 			}
 		}

@@ -52,7 +52,6 @@
 </template>
 
 <script>
-	import { mapState } from "vuex";
 	export default {
 		name: "RightPanel",
 		props: {
@@ -72,17 +71,6 @@
 				type: Boolean,
 				default: false,
 			},
-		},
-		data: () => ({
-			texts: false,
-			images: false,
-			videos: false,
-			products: false,
-			description: "",
-			file: "",
-		}),
-		computed: {
-			...mapState({ documentWidth: (state) => state.document_width }),
 		},
 		methods: {
 			handleMinimize() {
@@ -117,39 +105,38 @@
 	.right-panel {
 		display: flex;
 		flex-direction: column;
-		background-color: rgba(255, 255, 255, 0.5);
+		background-color: rgba($white, 0.5);
 		width: 29rem;
 		height: calc(100vh - 8rem);
 		padding: 2rem 1.5rem 1.5rem 1.5rem;
 		transition: all 0.2s ease;
-		&.mobile {
-			.right-panel__minimize {
-				left: -2.7rem;
-				&.cross {
-					left: 0;
-					box-shadow: none;
-				}
-			}
-		}
-		@media (max-width: 425px) {
-			width: 18rem;
-		}
-		&.minimized {
-			width: 6.2rem;
-			@media (max-width: 76.7rem) {
-				width: 3.2rem;
-				padding: 2rem 0 0 0;
-			}
-		}
-		&.brokedocumentflow {
-			z-index: 3;
-			position: absolute;
-			top: 0;
+		@media (max-width: 1440px) {
+			position: fixed;
 			right: 0;
-			background-color: rgba(255, 255, 255, 1);
-			transition: all 0.4s ease;
+			top: 8rem;
+			background-color: $white;
+		}
+		@media (max-width: 1023px) {
+			top: 6.4rem;
+			height: calc(100vh - 6.4rem);
+		}
+		@media (max-width: 540px) {
+			top: 0;
+			display: flex;
+			width: 100vw;
+			height: 100vh;
+			z-index: 3;
+			background-color: $white;
+			transform: translateX(0);
+			transition: all 0.2s ease;
 		}
 
+		&.minimized {
+			width: 6.2rem;
+			@media (max-width: 540px) {
+				transform: translateX(10rem);
+			}
+		}
 		&__minimize {
 			position: relative;
 			left: -2.7rem;
@@ -163,12 +150,10 @@
 			border-radius: 50%;
 			box-shadow: $shadow;
 			margin-bottom: 1rem;
-			@media (max-width: 76.7rem) {
-				left: -1rem;
-				.brokedocumentflow & {
-					left: -2.7rem;
-				}
+			@media (max-width: 540px) {
+				left: 0;
 			}
+
 			&-icon {
 				transition: all 0.2s ease;
 				transform: rotate(-90deg);
@@ -197,6 +182,7 @@
 
 		&__body {
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			overflow-x: hidden;
 			height: 100%;
 

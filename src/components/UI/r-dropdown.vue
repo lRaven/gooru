@@ -176,6 +176,7 @@
 			z-index: 2;
 			max-height: calc(14.6rem);
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 			overflow-x: hidden;
 			&-item {
 				cursor: pointer;
@@ -187,7 +188,7 @@
 				overflow: hidden;
 				transition: all 0.2s ease;
 				&:hover {
-					background-color: rgba($primary, $alpha: 0.15);
+					background-color: rgba($primary, 0.15);
 				}
 			}
 		}

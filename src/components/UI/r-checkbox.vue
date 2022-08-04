@@ -113,14 +113,14 @@
 				height: 1.6rem;
 				border-radius: 0.3rem;
 				background-color: $white;
-				border: 0.1rem solid rgba($black, $alpha: 0.5);
+				border: 0.1rem solid rgba($black, 0.5);
 				transition: all 0.2s ease;
 			}
 		}
 
 		&__description {
 			font-size: 1.2rem;
-			color: rgba($black, $alpha: 0.7);
+			color: rgba($black, 0.7);
 		}
 	}
 </style>

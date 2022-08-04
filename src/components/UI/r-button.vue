@@ -95,8 +95,8 @@
 		}
 		&.bordered {
 			background-color: transparent;
-			outline: 0.1rem solid rgba($black, $alpha: 0.5);
-			color: rgba($black, $alpha: 0.5);
+			outline: 0.1rem solid rgba($black, 0.5);
+			color: rgba($black, 0.5);
 			border-radius: 1rem;
 			&:hover {
 				outline-color: $primary;
@@ -106,8 +106,8 @@
 			&:disabled {
 				&:hover {
 					background-color: transparent;
-					color: rgba($black, $alpha: 0.5);
-					outline-color: rgba($black, $alpha: 0.5);
+					color: rgba($black, 0.5);
+					outline-color: rgba($black, 0.5);
 				}
 			}
 		}

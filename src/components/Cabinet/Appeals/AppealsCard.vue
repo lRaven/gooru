@@ -1,14 +1,12 @@
 <template>
 	<div
 		class="appeals-card"
-		@click="
-			this.$router.push({
-				name: 'appeal',
-				query: { appeal_id: appeal.id },
-			})
-		"
+		:class="{
+			manager: user.role !== 'DefaultUser',
+			has_notifications: isHasNotifications,
+		}"
 	>
-		<template v-if="document_width > 1023">
+		<template v-if="document_width > 1300">
 			<p class="appeals-card__col appeals-card__id">#{{ appeal.id }}</p>
 
 			<div class="appeals-card__col">
@@ -25,6 +23,22 @@
 				</span>
 			</div>
 
+			<router-link
+				:to="{ name: 'user', params: { id: appeal.user.id } }"
+				class="appeals-card__user"
+				:title="appeal.user.username"
+				v-if="user.role !== 'DefaultUser'"
+			>
+				<img
+					:src="appeal.user.avatar"
+					class="appeals-card__user-avatar"
+					alt="user avatar"
+				/>
+				<p class="appeals-card__user-name">
+					{{ appeal.user.username }}
+				</p>
+			</router-link>
+
 			<div class="appeals-card__col appeals-card__topic" :title="topic">
 				{{ topic }}
 			</div>
@@ -36,12 +50,16 @@
 				{{ last_message.text || appeal.message }}
 			</p>
 
-			<p
-				class="appeals-card__col appeals-card__date"
-				:title="appeal.date || '1.1.1970'"
-			>
-				{{ appeal.date || "1.1.1970" }}
-			</p>
+			<r-button
+				color="bordered"
+				text="Развернуть"
+				@click="
+					this.$router.push({
+						name: 'appeal',
+						query: { appeal_id: appeal.id },
+					})
+				"
+			></r-button>
 		</template>
 
 		<template v-else>
@@ -60,12 +78,16 @@
 					</div>
 				</div>
 
-				<p
-					class="appeals-card__col appeals-card__date"
-					:title="appeal.date || '1.1.1970'"
-				>
-					{{ appeal.date || "1.1.1970" }}
-				</p>
+				<r-button
+					color="bordered"
+					text="Развернуть"
+					@click="
+						this.$router.push({
+							name: 'appeal',
+							query: { appeal_id: appeal.id },
+						})
+					"
+				></r-button>
 			</div>
 
 			<div class="appeals-card__row">
@@ -103,6 +125,7 @@
 			topics: Array,
 			parsers: Array,
 			messages: Array,
+			appealsHasNotifications: Array,
 		},
 		computed: {
 			...mapState({
@@ -153,7 +176,16 @@
 
 				return result.length || 0;
 			},
+
+			isHasNotifications() {
+				const find = this.appealsHasNotifications.find((el) => {
+					return el === this.appeal.id;
+				});
+
+				return find !== undefined;
+			},
 		},
+		mounted() {},
 	};
 </script>
 
@@ -161,17 +193,44 @@
 	@import "@/assets/scss/variables";
 
 	.appeals-card {
-		cursor: pointer;
 		display: grid;
-		grid-template-columns: max-content 20rem 16rem 1fr max-content;
+		grid-template-columns: max-content 1fr 20rem 2fr max-content;
 		align-items: center;
 		justify-content: space-between;
 		gap: 3rem;
 		padding: 2rem 3rem;
-		background-color: white;
-		font-weight: 500;
+		background-color: $white;
+		transition: all 0.2s ease;
+		border-radius: 0 0 0.6rem 0.6rem;
 
-		@media (max-width: 1023px) {
+		&:first-child {
+			border-radius: 0.6rem 0.6rem 0 0;
+		}
+		&:last-child {
+			border-radius: 0 0 0.6rem 0.6rem;
+		}
+
+		&.has_notifications {
+			border: 0.1rem solid $red;
+			box-shadow: $shadow;
+			.appeals-card {
+				&__id,
+				&__source,
+				&__user-name,
+				&__message,
+				&__date {
+					font-weight: 600;
+				}
+			}
+		}
+
+		&.manager {
+			@media (min-width: 1300px) {
+				grid-template-columns: max-content repeat(2, 1fr) 20rem 2fr max-content;
+			}
+		}
+
+		@media (max-width: 1300px) {
 			grid-template-columns: 1fr;
 			justify-content: flex-start;
 			align-items: flex-start;
@@ -181,8 +240,8 @@
 			padding: 1rem;
 		}
 
-		+ .appeals-card {
-			border-top: 0.1rem solid rgba($black, $alpha: 0.5);
+		+ .appeals-card:not(.has_notifications) {
+			border-top: 0.1rem solid rgba($black, 0.5);
 		}
 
 		&__col {
@@ -190,7 +249,7 @@
 			align-items: center;
 			gap: 1rem;
 
-			@media (max-width: 1023px) {
+			@media (max-width: 1300px) {
 				&:first-child {
 					display: grid;
 					grid-template-columns: max-content 1fr;
@@ -210,7 +269,7 @@
 
 		&__id {
 			font-size: 1.4rem;
-			color: rgba($black, $alpha: 0.7);
+			color: rgba($black, 0.7);
 		}
 
 		&__source {
@@ -218,12 +277,32 @@
 		}
 
 		&__counter {
-			color: rgba($black, $alpha: 0.5);
+			color: rgba($black, 0.5);
 			font-weight: 300;
 			font-size: 1.4rem;
 		}
 
+		&__user {
+			display: flex;
+			align-items: center;
+			gap: 2rem;
+			&-avatar {
+				width: 4rem;
+				height: 4rem;
+				border-radius: 50%;
+				object-fit: contain;
+			}
+			&-name {
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+				font-size: 1.4rem;
+				color: $black;
+			}
+		}
+
 		&__topic {
+			text-align: center;
 			padding: 0.6rem 2.4rem;
 			background-color: rgba(152, 152, 152, 0.15);
 			border-radius: 4rem;
@@ -246,10 +325,9 @@
 			line-height: 1.2;
 		}
 
-		&__date {
+		.r-button {
+			padding: 1rem 2rem !important;
 			font-size: 1.4rem;
-			font-weight: 400;
-			color: rgba($black, $alpha: 0.7);
 		}
 	}
 </style>

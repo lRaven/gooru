@@ -314,7 +314,6 @@
 							<img src="/img/icon/cabinet/vk.svg" alt="vk" />
 						</ShareNetwork>
 					</li>
-					
 					<li class="parser-content__social-list-item">
 						<ShareNetwork
 							network="telegram"

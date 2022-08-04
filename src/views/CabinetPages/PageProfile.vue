@@ -144,7 +144,7 @@
 					@click="this.$router.push({ name: 'rates' })"
 				></r-button>
 
-				<brief-card></brief-card>
+				<!-- <brief-card class="profile"></brief-card> -->
 			</div>
 		</transition-group>
 	</section>
@@ -158,12 +158,12 @@
 		change_password,
 	} from "@/api/userApi";
 	import RateInfo from "@/components/Rates/RateInfo.vue";
-	import BriefCard from "@/components/Brief/BriefCard.vue";
+	/* import BriefCard from "@/components/Brief/BriefCard.vue"; */
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageProfile",
-		components: { RateInfo, BriefCard },
+		components: { RateInfo, /* BriefCard */ },
 		watch: {
 			user_data: {
 				handler() {
@@ -389,6 +389,7 @@
 		grid-gap: 3rem 10rem;
 		height: 100%;
 		overflow: auto;
+		-webkit-overflow-scrolling: touch;
 		@media (max-width: 1110px) {
 			grid-gap: 3rem 7rem;
 		}
@@ -508,7 +509,7 @@
 			&-input-description {
 				font-size: 1.6rem;
 				line-height: 1.2;
-				color: rgba($black, $alpha: 0.7);
+				color: rgba($black, 0.7);
 			}
 
 			&-avatar {
@@ -562,8 +563,10 @@
 				margin-left: 0;
 			}
 		}
+		
 
 		&__rate {
+
 			&-title {
 				font-weight: 500;
 				color: $primary;

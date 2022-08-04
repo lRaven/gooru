@@ -159,6 +159,7 @@
 			grid-template-rows: repeat(3, max-content);
 			grid-gap: 2.5rem;
 			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
 		}
 		.r-button {
 			width: max-content;

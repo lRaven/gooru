@@ -8,23 +8,24 @@ const getters = {
 	//* TODO: после получения подробной инфы уведомлений - поправить
 	appeals_notifications(state) {
 		return state.notifications.filter((notification) =>
-			notification.message.toLowerCase().includes('тикет')
+			notification.category === 'SupportTicket'
 		) || [];
 	},
 	parsources_notifications(state) {
 		return state.notifications.filter((notification) =>
-			notification.message.toLowerCase().includes('источник')
+		notification.category === 'Parsource'
 		) || [];
 	},
 	parsers_notifications(state) {
 		return state.notifications.filter((notification) =>
-			notification.message.toLowerCase().includes('парсер')
+			notification.category === 'Parser'
 		) || [];
 	},
 	user_notifications(state) {
 		const notificationsAboutUsers = state.notifications.filter( notification => {
-			return notification.message.toLowerCase().includes('пользователь');
+			return notification.category === 'User'
 		}) || [];
+		console.log(notificationsAboutUsers)
 		if (notificationsAboutUsers) {
 			const notificationsMap = new Map();
 			notificationsAboutUsers.forEach( notification => {
