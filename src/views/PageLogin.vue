@@ -24,13 +24,15 @@
 						v-model:Valid="user_data.email.valid"
 						:value="user_data.email.value"
 						input_type="email"
+						:error_message="user_data.email.error_message"
 					></r-input>
 
 					<p class="page-login__form-input-description">Пароль</p>
 					<r-input
-						v-model="user_data.password"
-						:value="user_data.password"
+						v-model="user_data.password.value"
+						:value="user_data.password.value"
 						input_type="password"
+						:error_message="user_data.password.error_message"
 					></r-input>
 
 					<button
@@ -38,7 +40,7 @@
 						type="button"
 						@click="isChangePasswordRequestModalOpen = true"
 					>
-						Забыли пароль
+						Забыли пароль?
 					</button>
 
 					<r-button :disabled="!isValidForm" text="Войти"></r-button>
@@ -123,6 +125,7 @@
 		reset_password_request,
 		reset_password,
 	} from "@/api/userApi";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -138,7 +141,7 @@
 				return (
 					this.user_data.email.value.length > 0 &&
 					this.user_data.email.valid === true &&
-					this.user_data.password.length >= 8
+					this.user_data.password.value.length >= 8
 				);
 			},
 
@@ -163,8 +166,12 @@
 				email: {
 					value: "",
 					valid: false,
+					error_message: null,
 				},
-				password: "",
+				password: {
+					value: "",
+					error_message: null,
+				},
 			},
 
 			email_for_password_reset: "",
@@ -180,7 +187,7 @@
 				try {
 					const response = await login({
 						username: this.user_data.email.value,
-						password: this.user_data.password,
+						password: this.user_data.password.value,
 					});
 					if (response.status === 200) {
 						this.toast.success("Вход выполнен успешно");
@@ -195,6 +202,12 @@
 						this.getRates();
 
 						this.$router.push({ name: "cabinet" });
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
 					}
 				} catch (err) {
 					this.toast.error(
@@ -220,6 +233,12 @@
 						);
 						console.log("password change request sent");
 					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
+					}
 				} catch (err) {
 					this.toast.error("Ошибка отправки запроса");
 					throw new Error(err);
@@ -237,6 +256,12 @@
 						console.log("password changed");
 						this.toast.success("Пароль успешно восстановлен");
 						this.close_modal();
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
 					}
 				} catch (err) {
 					this.toast.error("Ошибка смены пароля");
@@ -341,7 +366,7 @@
 
 		&__modal-form {
 			display: grid;
-			grid-template-columns: 10rem 1fr;
+			grid-template-columns: 12rem 1fr;
 			align-items: center;
 			grid-gap: 5rem 2rem;
 			padding: 0 2rem 2rem 2rem;
@@ -366,6 +391,9 @@
 				@media (max-width: 540px) {
 					margin-bottom: 2rem;
 				}
+			}
+			&-description {
+				font-size: 1.4rem;
 			}
 		}
 	}

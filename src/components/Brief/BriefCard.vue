@@ -29,6 +29,7 @@
 	@import "@/assets/scss/variables";
 	.brief-card {
 		display: flex;
+		justify-content: space-between;
 		padding: 3rem 3rem 3rem 4rem;
 		grid-column: 1/4;
 		border-radius: 2rem;

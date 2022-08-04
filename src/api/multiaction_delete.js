@@ -15,7 +15,7 @@ const multiaction_delete = async (model, ids) => {
 		return response;
 	}
 
-	catch (err) { throw new Error(err) }
+	catch (err) { return err.response }
 }
 
 export { multiaction_delete }

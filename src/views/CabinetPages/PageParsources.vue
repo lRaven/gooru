@@ -159,6 +159,7 @@
 	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 	import { sortCards, sortParsources } from "@/mixins/sortingMixins";
 	import { paginationMixin } from "@/mixins/paginationMixins";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { read_notification } from "@/api/notifications";
 	import { useToast } from "vue-toastification";
 
@@ -202,6 +203,16 @@
 							setTimeout(() => {
 								this.actions.deleteSelected = false;
 							}, 1000);
+						}
+						if (response.status === 400) {
+							const error_list = returnErrorMessages(
+								response.data
+							);
+							error_list.forEach((el) => {
+								this.toast.error(el);
+							});
+						} else {
+							this.toast.error("Ничего не выбрано");
 						}
 					} catch (err) {
 						this.toast.error("Ошибка удаления парсеров");

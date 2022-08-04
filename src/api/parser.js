@@ -10,7 +10,7 @@ const getUserParsources = async () => {
 				headers: { Authorization: `token ${cookie.get("auth_token")}` },
 			}
 		);
-        return userParsource.results;
+		return userParsource.results;
 	} catch (error) {
 		throw new Error(error);
 	}
@@ -26,14 +26,10 @@ const send_new_parsource = async (args) => {
 				description: args.description,
 				parse_fields: args.parse_fields,
 			},
-			{
-				headers: { Authorization: `token ${cookie.get("auth_token")}` },
-			}
+			{ headers: { Authorization: `token ${cookie.get("auth_token")}` }, }
 		);
 		return response;
-	} catch (err) {
-		throw new Error(err);
-	}
+	} catch (err) { return err.response }
 };
 
 const delete_parsource = async (parsource_id) => {
@@ -203,7 +199,7 @@ const deleteFavoriteParser = async ({ id }) => {
 };
 
 export {
-    getUserParsources,
+	getUserParsources,
 	send_new_parsource,
 	delete_parsource,
 	updateParsourceName,

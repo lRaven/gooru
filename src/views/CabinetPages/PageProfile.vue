@@ -157,6 +157,7 @@
 		upload_avatar,
 		change_password,
 	} from "@/api/userApi";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import RateInfo from "@/components/Rates/RateInfo.vue";
 	import BriefCard from "@/components/Brief/BriefCard.vue";
 	import { useToast } from "vue-toastification";
@@ -309,9 +310,16 @@
 					if (response.status === 200) {
 						console.log("User data changed");
 						this.toast.success("Пользовательские данные обновлены");
-						this.isPersonalDataFormDisabled = true;
 						await this.getUserData();
 					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
+						this.isDisabledBtn = false;
+					}
+					this.isPersonalDataFormDisabled = true;
 				} catch (err) {
 					this.isDisabledBtn = false;
 					this.toast.error("Ошибка обновления контактных данных");
@@ -330,6 +338,13 @@
 						console.log("Avatar changed");
 						this.toast.success("Изображение профиля изменено");
 						await this.getUserData();
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
+						this.isDisabledBtn = false;
 					}
 				} catch (err) {
 					this.isDisabledBtn = false;
@@ -351,6 +366,12 @@
 
 						this.resetForm();
 						this.isPasswordsFormDisabled = true;
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
 					}
 				} catch (err) {
 					this.isDisabledBtn = false;

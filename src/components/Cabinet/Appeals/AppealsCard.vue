@@ -125,7 +125,10 @@
 			topics: Array,
 			parsers: Array,
 			messages: Array,
-			appealsHasNotifications: Array,
+			appealsHasNotifications: {
+				value: Array,
+				default: [],
+			},
 		},
 		computed: {
 			...mapState({

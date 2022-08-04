@@ -210,6 +210,8 @@ const actions = {
 		if (ids.length > 0) {
 			const response = await multiaction_delete('parsource', ids);
 			return response;
+		} else {
+			return 'Ничего не выбрано'
 		}
 	},
 }

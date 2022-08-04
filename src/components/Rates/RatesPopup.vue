@@ -155,7 +155,8 @@
 
 <script>
 	import { mapActions, mapState } from "vuex";
-	import { registration, login } from "@/api/userApi";
+	import { registration, login, payRate } from "@/api/userApi";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -210,6 +211,14 @@
 							this.resetForm();
 							this.formType = "login";
 						}
+						if (response.status === 400) {
+							const error_list = returnErrorMessages(
+								response.data
+							);
+							error_list.forEach((el) => {
+								this.toast.error(el);
+							});
+						}
 					} catch (err) {
 						throw new Error(err);
 					}
@@ -231,13 +240,22 @@
 							this.getUserData();
 							this.getUserRate();
 
-							setTimeout(() => {
-								window
-									.open(
-										`${this.baseURL}/api/pay/${this.selectedRate.id}`,
-										"_blank"
-									)
-									.focus();
+							try {
+								await payRate(
+									response.data.auth_token,
+									this.selectedRate.id
+								);
+							} catch (err) {
+								throw new Error(err);
+							}
+						}
+
+						if (response.status === 400) {
+							const error_list = returnErrorMessages(
+								response.data
+							);
+							error_list.forEach((el) => {
+								this.toast.error(el);
 							});
 						}
 					} catch (err) {

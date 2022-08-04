@@ -121,6 +121,7 @@
 <script>
 	import { mapActions, mapMutations, mapState } from "vuex";
 	import { send_new_parsource } from "@/api/parser";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
 	import ParsourceNotification from "@/components/Cabinet/Parsources/ParsourceNotification.vue";
@@ -253,6 +254,12 @@
 							closeOnClick: false,
 						});
 						this.getNotifications();
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания группы парсеров");

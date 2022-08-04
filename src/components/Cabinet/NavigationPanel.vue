@@ -575,7 +575,6 @@
 				if (this.document_width <= 1023) {
 					this.$emit("close_menu");
 				}
-				console.log("some huita");
 
 				this.SET_TAB(tab);
 				switch (pagination) {

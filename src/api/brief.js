@@ -24,7 +24,7 @@ const send_brief = async (brief) => {
 		});
 		return response;
 	}
-	catch (err) { throw new Error(err) }
+	catch (err) { return err.response }
 }
 
 export { send_brief }

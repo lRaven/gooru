@@ -150,6 +150,8 @@
 	import StatsCard from "@/components/Cabinet/Stats/StatsCard.vue";
 	import BriefCard from "@/components/Brief/BriefCard.vue";
 	import { add_ticket } from "@/api/tickets";
+	import { payRate } from "@/api/userApi";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -214,45 +216,12 @@
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getUserRate", "updateRateData", "getAllParsers"]),
-			select_rate(rate_id) {
-				console.log("Rate selected: ", rate_id);
-
-				switch (rate_id) {
-					case 1: {
-						window
-							.open(
-								`${this.baseURL}/api/pay/${rate_id}`,
-								"_blank"
-							)
-							.focus();
-						break;
-					}
-					case 2: {
-						window
-							.open(
-								`${this.baseURL}/api/pay/${rate_id}`,
-								"_blank"
-							)
-							.focus();
-						break;
-					}
-					case 3: {
-						window
-							.open(
-								`${this.baseURL}/api/pay/${rate_id}`,
-								"_blank"
-							)
-							.focus();
-						break;
-					}
-					case 4: {
-						this.initialTopic = "Вопрос по новому заказу";
-						this.new_appeal.topic = this.topics.find(
-							(topic) => topic.description === this.initialTopic
-						).id;
-						this.isModalVisible = true;
-						break;
-					}
+			async select_rate(rate_id) {
+				try {
+					await payRate(this.$cookies.get("auth_token"), rate_id);
+					console.log("Rate selected: ", rate_id);
+				} catch (err) {
+					return err.response;
 				}
 			},
 
@@ -281,6 +250,12 @@
 						this.$router.push({
 							name: "appeals",
 							query: { page: 1 },
+						});
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
 						});
 					}
 				} catch (err) {

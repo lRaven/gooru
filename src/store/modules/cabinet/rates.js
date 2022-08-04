@@ -21,22 +21,18 @@ const serializeRate = (rate) => {
 	};
 };
 
-const state = () => ({
-	rates: [],
-});
+const state = () => ({ rates: [], });
 
 const getters = {};
 
-const mutations = {
-	SET_RATES: (state, payload) => (state.rates = payload),
-};
+const mutations = { SET_RATES: (state, payload) => state.rates = payload, };
 
 const actions = {
 	async getRates(context) {
 		try {
 			const rates = await getRates();
 
-			const ratesWithCheckList = rates.map( rate => {
+			const ratesWithCheckList = rates.map(rate => {
 				return deserializeRate(rate);
 			});
 
@@ -77,6 +73,7 @@ const actions = {
 			});
 
 			context.commit("SET_RATES", updatedRates);
+			return updatedRate
 		} catch (error) {
 			throw new Error(error);
 		}

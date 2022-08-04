@@ -162,7 +162,7 @@
 
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
 	import { paginationMixin } from "@/mixins/paginationMixins";
-
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import { useToast } from "vue-toastification";
 
@@ -260,6 +260,12 @@
 						this.toast.success("Обращение создано");
 
 						this.getNotifications();
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания обращения");

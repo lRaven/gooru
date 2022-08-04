@@ -13,9 +13,7 @@ const registration = async ({ email, password }) => {
 			password,
 		});
 		return response;
-	} catch (error) {
-		throw new Error(error);
-	}
+	} catch (error) { return error.response }
 };
 
 const registration_by_tel = async () => {
@@ -34,9 +32,7 @@ const login = async ({ username, password }) => {
 			password,
 		});
 		return response;
-	} catch (error) {
-		throw new Error(error);
-	}
+	} catch (error) { return error.response }
 };
 
 const logout = async () => {
@@ -104,7 +100,7 @@ const reset_password_request = async (email) => {
 		const response = await axios.post(`${store.state.baseURL}/user/verify/reset_password/`, { email });
 		return response;
 	}
-	catch (err) { throw new Error }
+	catch (err) { return err.response }
 }
 
 const reset_password = async ({ uid, token, password }) => {
@@ -114,11 +110,10 @@ const reset_password = async ({ uid, token, password }) => {
 		);
 		return response;
 	}
-	catch (err) { throw new Error(err) }
+	catch (err) { return err.response }
 }
 
 //* операции по тарифам для конкретного пользователя
-
 const getRates = async () => {
 	try {
 		const { data: rates } = await axios.get(`${baseURL}/tariff`);
@@ -150,29 +145,34 @@ const getUserRate = async ({ id }) => {
 	}
 };
 
+const payRate = async (token, id) => {
+	try {
+		const response = await axios.get(`${baseURL}/api/pay/${id}/`, {
+			headers: {
+				Authorization: `token ${token}`
+			}
+		});
+		return response;
+	}
+	catch (err) { return err.response }
+}
+
 //* user data edit
 const change_password = async ({ new_password, current_password }) => {
 	try {
 		const response = await axios.post(
-			`${baseURL}/auth/users/set_password/`,
-			{
-				new_password,
-				current_password,
-			},
-			{
-				headers: { Authorization: `token ${cookie.get("auth_token")}` },
-			}
+			`${baseURL} / auth / users / set_password / `,
+			{ new_password, current_password, },
+			{ headers: { Authorization: `token ${cookie.get("auth_token")}` }, }
 		);
 		return response;
-	} catch (err) {
-		throw new Error(err);
-	}
+	} catch (err) { return err.response; }
 };
 
 const change_user_data = async (user_id, args) => {
 	try {
 		const response = await axios.patch(
-			`${baseURL}/user/${user_id}/`,
+			`${baseURL} / user / ${user_id} / `,
 			{
 				first_name: args.first_name,
 				last_name: args.last_name,
@@ -183,15 +183,13 @@ const change_user_data = async (user_id, args) => {
 		);
 
 		return response;
-	} catch (err) {
-		throw new Error(err);
-	}
+	} catch (err) { return err.response }
 };
 
 const upload_avatar = async ({ user_id, avatar }) => {
 	try {
 		const response = await axios.patch(
-			`${baseURL}/user/upload/${user_id}/`,
+			`${baseURL} / user / upload / ${user_id} / `,
 			{ avatar },
 			{
 				headers: {
@@ -201,38 +199,24 @@ const upload_avatar = async ({ user_id, avatar }) => {
 			}
 		);
 		return response;
-	} catch (err) {
-		throw new Error(err);
-	}
+	} catch (err) { return err.response }
 };
 
 //* admin requests
-
 const updateRate = async (rateObjToUpdate) => {
 	try {
 		const { data } = await axios.put(
-			`${store.state.baseURL}/tariff/${rateObjToUpdate.id}/`,
-			rateObjToUpdate,
-			{
-				headers: {
-					Authorization: `token ${cookie.get("auth_token")}`,
-				},
-			}
+			`${store.state.baseURL} / tariff / ${rateObjToUpdate.id} / `, rateObjToUpdate,
+			{ headers: { Authorization: `token ${cookie.get("auth_token")}`, }, }
 		);
 		return data;
-	} catch (error) {
-		throw new Error(error);
-	}
+	} catch (error) { return error.response }
 };
 
 const change_manager = async ({ user, manager, user_manager }) => {
 	try {
 		const response = await axios.patch(
-			`${baseURL}/usermanager/${user_manager}/`,
-			{
-				user,
-				manager,
-			},
+			`${baseURL} / usermanager / ${user_manager} / `, { user, manager, },
 			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 		);
 
@@ -244,13 +228,11 @@ const change_manager = async ({ user, manager, user_manager }) => {
 
 const delete_user = async (user_id) => {
 	try {
-		const response = await axios.delete(`${baseURL}/user/${user_id}/`, {
+		const response = await axios.delete(`${baseURL} / user / ${user_id} / `, {
 			headers: { Authorization: `token ${cookie.get("auth_token")}` },
 		});
 		return response;
-	} catch (err) {
-		throw new Error(err);
-	}
+	} catch (err) { return err.response }
 };
 
 export {
@@ -263,6 +245,7 @@ export {
 	getRates,
 	getUserRates,
 	getUserRate,
+	payRate,
 	change_password,
 	change_user_data,
 	upload_avatar,

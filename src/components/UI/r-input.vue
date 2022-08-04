@@ -2,7 +2,10 @@
 	<label class="r-input">
 		<input
 			class="r-input__input"
-			:class="{ transparent: isTransparent }"
+			:class="{
+				transparent: isTransparent,
+				error: error_message !== null,
+			}"
 			:type="input_type_changed"
 			:value="value"
 			:placeholder="placeholder"
@@ -41,6 +44,10 @@
 				@click="if (isDisabled === false) hidePassword();"
 			/>
 		</transition>
+
+		<p class="r-input__error" v-if="error_message !== null">
+			{{ error_message }}
+		</p>
 	</label>
 </template>
 
@@ -48,11 +55,6 @@
 	export default {
 		name: "r-input",
 		props: {
-			placeholder: String,
-			input_type: {
-				value: String,
-				default: "text",
-			},
 			isDisabled: {
 				value: Boolean,
 				default: false,
@@ -61,21 +63,25 @@
 				value: Boolean,
 				default: false,
 			},
-			value: String,
-			placeHolder: {
+
+			input_type: {
 				value: String,
-				default: "",
+				default: "text",
+			},
+			placeholder: String,
+			value: String,
+			error_message: {
+				value: [null, String],
+				default: null,
 			},
 		},
 		computed: {
 			isPasswordHide() {
-				let result;
-
-				this.input_type_changed === "text"
-					? (result = false)
-					: (result = true);
-
-				return result;
+				if (this.input_type_changed === "text") {
+					return false;
+				} else {
+					return true;
+				}
 			},
 		},
 		data() {
@@ -99,6 +105,7 @@
 
 	.r-input {
 		position: relative;
+
 		&__input {
 			font-size: 1.6rem;
 			background-color: $white;
@@ -127,14 +134,22 @@
 				border-color: transparent;
 				background-color: transparent;
 			}
+			&.error {
+				border-color: $red;
+			}
 		}
 		&__icon {
 			cursor: pointer;
 			position: absolute;
 			right: 1rem;
-			top: 50%;
+			top: 2.1rem;
 			transform: translateY(-50%);
 			width: 2rem;
+		}
+		&__error {
+			color: $red;
+			font-size: 1.2rem;
+			margin: 0.5rem 0;
 		}
 	}
 </style>

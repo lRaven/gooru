@@ -228,7 +228,7 @@
 
 	import { sortCards, sortUsers } from "@/mixins/sortingMixins";
 	import { paginationMixin } from "@/mixins/paginationMixins";
-
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -269,11 +269,18 @@
 								page_number: 1,
 								page_size: this.parsources_in_page,
 							});
-
-							setTimeout(() => {
-								this.actions.deleteSelected = false;
-							}, 1000);
 						}
+						if (response.status === 400) {
+							const error_list = returnErrorMessages(
+								response.data
+							);
+							error_list.forEach((el) => {
+								this.toast.error(el);
+							});
+						}
+						setTimeout(() => {
+							this.actions.deleteSelected = false;
+						}, 1000);
 					} catch (err) {
 						this.toast.error("Ошибка удаления пользователей");
 						setTimeout(() => {

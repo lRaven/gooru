@@ -64,6 +64,7 @@
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import { send_new_parsource } from "@/api/parser";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
 	import ParsourceNotification from "@/components/Cabinet/Parsources/ParsourceNotification.vue";
@@ -185,6 +186,12 @@
 						});
 						this.getNotifications();
 					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
+					}
 				} catch (err) {
 					this.toast.error("Ошибка создания парсера");
 					throw new Error(err);
@@ -235,8 +242,8 @@
 				line-height: 3.4rem;
 			}
 			@media (max-width: 450px) {
-			margin-bottom: 2.5rem;
-		}
+				margin-bottom: 2.5rem;
+			}
 		}
 
 		&__form {
@@ -278,7 +285,7 @@
 		}
 		&__input-description {
 			font-size: 1.6rem;
-			color: rgba($black,0.7);
+			color: rgba($black, 0.7);
 		}
 		.r-button {
 			max-width: 25rem;

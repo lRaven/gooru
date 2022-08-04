@@ -21,7 +21,7 @@ const add_ticket = async (args) => {
 		return response;
 	}
 
-	catch (err) { throw new Error(err) }
+	catch (err) { return err.response }
 }
 
 export { add_ticket }

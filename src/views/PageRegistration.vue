@@ -29,15 +29,17 @@
 						v-model:Valid="user_data.email.valid"
 						:value="user_data.email.value"
 						input_type="email"
+						:error_message="user_data.email.error_message"
 					></r-input>
 
 					<p class="page-registration__form-input-description">
 						Пароль
 					</p>
 					<r-input
-						v-model="user_data.password"
-						:value="user_data.password"
+						v-model="user_data.password.value"
+						:value="user_data.password.value"
 						input_type="password"
+						:error_message="user_data.password.error_message"
 					></r-input>
 
 					<div class="page-registration__buttons">
@@ -75,6 +77,7 @@
 
 	import TheHeader from "@/components/TheHeader.vue";
 	import { registration } from "@/api/userApi";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -87,7 +90,7 @@
 				return (
 					this.user_data.email.value.length > 0 &&
 					this.user_data.email.valid &&
-					this.user_data.password.length >= 8
+					this.user_data.password.value.length >= 8
 				);
 			},
 		},
@@ -96,8 +99,12 @@
 				email: {
 					value: "",
 					valid: false,
+					error_message: null,
 				},
-				password: "",
+				password: {
+					value: "",
+					error_message: null,
+				},
 			},
 		}),
 		methods: {
@@ -105,7 +112,7 @@
 				try {
 					const response = await registration({
 						email: this.user_data.email.value,
-						password: this.user_data.password,
+						password: this.user_data.password.value,
 					});
 
 					if (response.status === 201) {
@@ -121,8 +128,14 @@
 						console.log("Redirect to login page");
 						this.$router.push({ name: "login" });
 					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
+					}
 				} catch (err) {
-					this.toast.error("Ошибка создания аккаунта");
+					this.toast.error(err);
 					throw new Error(err);
 				}
 			},

@@ -7,6 +7,7 @@
 <script>
 	import { mapState } from "vuex";
 	import { send_brief } from "@/api/brief";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -52,6 +53,12 @@
 					if (response.status === 201) {
 						this.toast.success("Бриф отправлен");
 						console.log("Brief sent");
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
 					}
 				} catch (err) {
 					this.toast.error("Ошибка отправки брифа");

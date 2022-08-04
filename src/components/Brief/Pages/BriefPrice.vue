@@ -96,6 +96,7 @@
 	import RateCard from "@/components/Rates/RateCard";
 	import rButton from "@/components/Brief/r-button.vue";
 	import { mapMutations, mapState } from "vuex";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { registration } from "@/api/userApi";
 
 	import { useToast } from "vue-toastification";
@@ -176,6 +177,12 @@
 							email: this.user_data.email.value,
 						});
 						this.$emit("moveToNextPage");
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
 					}
 				} catch (err) {
 					this.toast.error(

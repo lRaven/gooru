@@ -110,6 +110,7 @@
 
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
 	import TheMessenger from "@/components/Cabinet/Messenger/TheMessenger.vue";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { read_notification } from "@/api/notifications";
 	import { useToast } from "vue-toastification";
 
@@ -245,6 +246,12 @@
 
 						console.log("Ticket created");
 						this.toast.success("Обращение создано");
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
 					}
 				} catch (err) {
 					this.toast.error("Ошибка создания обращения");

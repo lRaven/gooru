@@ -77,7 +77,7 @@
 	import RateCard from "@/components/Rates/RateCard.vue";
 
 	import { mapState, mapMutations, mapActions } from "vuex";
-
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -104,10 +104,19 @@
 			async submitUpdatedRate() {
 				this.isLoading = true;
 				try {
-					await this.updateRate(this.selectedRate);
-					this.toast.success("Тариф успешно изменен!");
+					const response = await this.updateRate(this.selectedRate);
+
+					if (response.status === 200) {
+						this.toast.success("Тариф успешно изменен!");
+						setTimeout(this.closeModal, 1000);
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
+					}
 					this.isLoading = false;
-					setTimeout(this.closeModal, 1000);
 				} catch (err) {
 					this.isLoading = false;
 					this.toast.error("Не удалось изменить тариф!");
