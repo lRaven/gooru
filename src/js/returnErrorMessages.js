@@ -3,6 +3,7 @@ function returnErrorMessages(data) {
 	const error_messages = {
 		email: 'Почта',
 		username: 'Логин',
+		current_password: 'Пароль',
 		password: 'Пароль',
 		phone_number: 'Телефон',
 		avatar: 'Изображение профиля',

@@ -161,7 +161,7 @@ const payRate = async (token, id) => {
 const change_password = async ({ new_password, current_password }) => {
 	try {
 		const response = await axios.post(
-			`${baseURL} / auth / users / set_password / `,
+			`${baseURL}/auth/users/set_password/`,
 			{ new_password, current_password, },
 			{ headers: { Authorization: `token ${cookie.get("auth_token")}` }, }
 		);
@@ -172,7 +172,7 @@ const change_password = async ({ new_password, current_password }) => {
 const change_user_data = async (user_id, args) => {
 	try {
 		const response = await axios.patch(
-			`${baseURL} / user / ${user_id} / `,
+			`${baseURL}/user/${user_id}/`,
 			{
 				first_name: args.first_name,
 				last_name: args.last_name,
@@ -189,7 +189,7 @@ const change_user_data = async (user_id, args) => {
 const upload_avatar = async ({ user_id, avatar }) => {
 	try {
 		const response = await axios.patch(
-			`${baseURL} / user / upload / ${user_id} / `,
+			`${baseURL}/user/upload/${user_id}/`,
 			{ avatar },
 			{
 				headers: {
@@ -199,7 +199,7 @@ const upload_avatar = async ({ user_id, avatar }) => {
 			}
 		);
 		return response;
-	} catch (err) { return err.response }
+	} catch (err) { console.log(err.response); return err.response }
 };
 
 //* admin requests
