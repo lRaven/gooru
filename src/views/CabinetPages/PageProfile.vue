@@ -406,6 +406,7 @@
 	.page-profile {
 		display: grid;
 		grid-template-columns: max-content 1fr;
+		grid-template-rows: minmax(auto, max-content);
 		padding: 6.4rem 4rem 4rem 4rem;
 		grid-gap: 3rem 10rem;
 		height: 100%;

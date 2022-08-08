@@ -10,7 +10,7 @@
 					<div class="page-parsource__content-header">
 						<div
 							class="page-parsource-details"
-							v-if="documentWidth <= 450"
+							v-if="documentWidth <= 540"
 						>
 							<div class="page-parsource-details__info">
 								<button
@@ -594,29 +594,32 @@
 		padding: 0;
 		height: calc(100vh - 8rem);
 		grid-gap: 2rem;
-		@media screen and (max-width: 515px) {
-			grid-gap: 1.5rem;
+		@media screen and (max-width: 540px) {
+			grid-gap: 0;
 		}
 		@media screen and (max-width: 400px) {
 			grid-gap: 0;
 		}
 
 		&__main {
-			padding: 6.4rem 1rem 4rem 4rem;
+			padding: 6.4rem 4rem 4rem 4rem;
 			display: grid;
 			grid-template-rows: max-content 1fr;
 			grid-gap: 3rem 2rem;
 			overflow: hidden;
+			@media (max-width: 1440px) {
+				padding: 6.4rem 5rem 4rem 4rem;
+			}
 			@media screen and (max-width: 650px) {
-				padding: 4.4rem 1rem 2rem 2.5rem;
+				padding: 4.4rem 5rem 2rem 2.5rem;
 				grid-gap: 2rem;
 			}
-			@media screen and (max-width: 560px) {
-				padding: 4rem 1rem 2rem 2.2rem;
+			@media screen and (max-width: 540px) {
+				padding: 4rem 1.5rem 2rem 2.2rem;
 				grid-gap: 1.7rem;
 			}
 			@media screen and (max-width: 510px) {
-				padding: 3.5rem 1rem 2rem 2rem;
+				padding: 3.5rem 1.5rem 2rem 2rem;
 				grid-gap: 1rem;
 			}
 			@media screen and (max-width: 400px) {
@@ -827,9 +830,7 @@
 		}
 
 		&__right-panel {
-			&.hideRightPanel {
-				display: none;
-			}
+			
 			&-form {
 				margin-bottom: 3rem;
 			}

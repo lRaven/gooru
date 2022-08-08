@@ -250,6 +250,7 @@
 			},
 			resetFilter() {
 				this.show_by_source = null;
+				
 			},
 			updateSelectedParsers(favoriteCardObj) {
 				const { parsourceId, selectedParsers } = favoriteCardObj;

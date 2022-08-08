@@ -1,5 +1,5 @@
 <template>
-	<div class="favorite-card" v-click-away="closeContent" ref="card" >
+	<div class="favorite-card" v-click-away="closeContent" ref="card">
 		<div
 			:class="
 				cardSize >= 652
@@ -107,7 +107,9 @@
 								: openContent()
 						"
 					>
-						<p class="favorite-card__hide-description">{{ isContentVisible ? 'свернуть' : 'развернуть' }}</p>
+						<p class="favorite-card__hide-description">
+							{{ isContentVisible ? "свернуть" : "развернуть" }}
+						</p>
 						<svg
 							width="10"
 							height="6"
@@ -127,14 +129,14 @@
 			</template>
 		</div>
 		<div class="favorite-card__list" v-show="isContentVisible">
-				<favorite-content-item
-					v-for="parser in parsource.parsers"
-					:key="parser.id"
-					:parserProp="parser"
-					@change-selected="handleChangeSelectedParsers"
-					:checked="isAllSelected"
-				></favorite-content-item>
-			</div>
+			<favorite-content-item
+				v-for="parser in parsource.parsers"
+				:key="parser.id"
+				:parserProp="parser"
+				@change-selected="handleChangeSelectedParsers"
+				:checked="isAllSelected"
+			></favorite-content-item>
+		</div>
 	</div>
 </template>
 
@@ -150,7 +152,7 @@
 	export default {
 		name: "FavoriteCard",
 		components: { FavoriteContentItem },
-		props: { parsource: Object,},
+		props: { parsource: Object },
 		emits: ["update-selected-parsers"],
 		data() {
 			return {
@@ -226,6 +228,9 @@
 			justify-content: space-between;
 			background-color: $white;
 			padding: 2rem 1rem;
+			@media (max-width: 900px) {
+				gap: 1rem;
+			}
 			&-tiny {
 				display: flex;
 				flex-direction: column;
@@ -241,17 +246,17 @@
 					padding: 1rem 2.8rem;
 					font-weight: 500;
 					font-size: 1.4rem;
-					@media (max-width: 150rem) {
+					@media (max-width: 1500px) {
 						padding: 0.8rem 2.4rem;
 					}
-					@media (max-width: 136rem) {
+					@media (max-width: 1360px) {
 						padding: 0.8rem 1.7rem;
 					}
 					@media (max-width: 500px) {
 						margin: 0 0 0 auto;
 					}
 				}
-				@media (max-width: 136rem) {
+				@media (max-width: 1360px) {
 					gap: 1rem;
 				}
 				@media (max-width: 500px) {
@@ -261,6 +266,8 @@
 		}
 		&__favorite,
 		&__date {
+			width: fit-content;
+			text-align: center;
 			color: #868686;
 		}
 		&__hide {
