@@ -557,7 +557,7 @@
 			this.isMinimizedRightPanel = this.documentWidth < 1023;
 			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 			this.parsers_notifications.forEach((notification) => {
-				const id = +notification.url.split('/')[2];
+				const id = +notification.url.split("/")[2];
 
 				const bool = this.cards.find((parser) => parser.id === id);
 
@@ -602,11 +602,12 @@
 		}
 
 		&__main {
-			padding: 6.4rem 4rem 4rem 4rem;
 			display: grid;
-			grid-template-rows: max-content 1fr;
+			grid-template-rows: max-content minmax(max-content, 1fr);
+			padding: 6.4rem 4rem 4rem 4rem;
 			grid-gap: 3rem 2rem;
-			overflow: hidden;
+			overflow-x: hidden;
+			overflow-y: auto;
 			@media (max-width: 1440px) {
 				padding: 6.4rem 5rem 4rem 4rem;
 			}
@@ -683,7 +684,7 @@
 
 			&-key {
 				font-size: 1.2rem;
-				color: rgba($black,  0.7);
+				color: rgba($black, 0.7);
 			}
 			&-value {
 				font-size: 1.4rem;
@@ -726,7 +727,6 @@
 			}
 
 			&-main {
-				//overflow: hidden;
 				position: relative;
 				display: grid;
 				grid-template-rows: max-content minmax(0, 1fr);
@@ -798,6 +798,7 @@
 			}
 
 			&-bottom {
+				margin-top: auto;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -829,8 +830,44 @@
 			}
 		}
 
+		&-details {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 8.2rem;
+			@media (max-width: 400px) {
+				padding: 0 1.5rem 0 1.5rem;
+				gap: 6.2rem;
+			}
+			&__info {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+			}
+			&__text-info {
+				max-width: fit-content;
+			}
+			&__button-info {
+				background-color: $light-blue;
+				max-width: fit-content;
+				background-color: $white;
+				@media (max-width: 400px) {
+					background-color: transparent;
+				}
+			}
+			&__text-sort {
+				max-width: fit-content;
+			}
+			&__sort-button {
+				background-color: $light-blue;
+				max-width: fit-content;
+				background-color: $white;
+				@media (max-width: 400px) {
+					background-color: transparent;
+				}
+			}
+		}
+
 		&__right-panel {
-			
 			&-form {
 				margin-bottom: 3rem;
 			}
@@ -886,42 +923,6 @@
 					padding-bottom: 1rem;
 					font-size: 1.2rem;
 				}
-			}
-		}
-	}
-	.page-parsource-details {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 8.2rem;
-		@media (max-width: 400px) {
-			padding: 0 1.5rem 0 1.5rem;
-			gap: 6.2rem;
-		}
-		&__info {
-			display: flex;
-			align-items: center;
-			gap: 1rem;
-		}
-		&__text-info {
-			max-width: fit-content;
-		}
-		&__button-info {
-			background-color: $light-blue;
-			max-width: fit-content;
-			background-color: $white;
-			@media (max-width: 400px) {
-				background-color: transparent;
-			}
-		}
-		&__text-sort {
-			max-width: fit-content;
-		}
-		&__sort-button {
-			background-color: $light-blue;
-			max-width: fit-content;
-			background-color: $white;
-			@media (max-width: 400px) {
-				background-color: transparent;
 			}
 		}
 	}
