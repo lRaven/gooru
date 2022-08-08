@@ -17,10 +17,11 @@ import notifications from '@/store/modules/cabinet/notifications'
 
 //* cabinet | admin data
 import users from '@/store/modules/cabinet/admin/users'
+console.log(process.env);
 export default createStore({
 	state: () => ({
 		document_width: null,
-		baseURL: 'https://api-compas-goo.ru'
+		baseURL: process.env.VUE_APP_BACK_URL,
 	}),
 
 	getters: { BASEURL_WITHOUT_PROTOCOL(state) { return state.baseURL.split("/")[2] } },

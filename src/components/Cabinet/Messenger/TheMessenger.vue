@@ -79,7 +79,7 @@
 
 			createWebSocket(base_url, chat_id, token) {
 				this.chatSocket = new WebSocket(
-					`ws://${base_url}/ws/chat/${chat_id}/?Authorization=token ${token}`
+					`${process.env.VUE_APP_BACK_WS_PROTOCOL}://${base_url}/ws/chat/${chat_id}/?Authorization=token ${token}`
 				);
 			},
 
