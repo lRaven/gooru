@@ -23,7 +23,7 @@
 				class="chat-body__empty"
 				v-if="chat_messages.length === 0 && isMessagesLoaded"
 			>
-				*chat is empty*
+				*ЧАТ ПУСТ*
 			</p>
 		</transition>
 	</div>
@@ -85,8 +85,9 @@
 <style lang="scss" scoped>
 	.chat-body {
 		position: relative;
-		padding: 4rem 4rem 1rem 4rem;
-		display: flex;
+		padding: 1rem 4rem 1rem 4rem;
+		display: grid;
+		grid-template-columns: 1fr;
 		justify-content: center;
 		height: 100%;
 		overflow: hidden;
@@ -112,9 +113,13 @@
 			}
 		}
 
+		&__messages,
 		&__empty {
-			margin-top: auto;
-			margin-bottom: auto;
+			grid-area: 1/1;
+		}
+
+		&__empty {
+			margin: auto;
 		}
 	}
 </style>
