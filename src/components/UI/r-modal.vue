@@ -55,7 +55,7 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
-			background-color: rgba($black, 0.5);
+			background-color: rgba(#000, 0.8);
 		}
 
 		&__content {

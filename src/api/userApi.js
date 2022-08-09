@@ -199,14 +199,14 @@ const upload_avatar = async ({ user_id, avatar }) => {
 			}
 		);
 		return response;
-	} catch (err) { console.log(err.response); return err.response }
+	} catch (err) { return err.response }
 };
 
 //* admin requests
 const updateRate = async (rateObjToUpdate) => {
 	try {
 		const { data } = await axios.put(
-			`${store.state.baseURL} / tariff / ${rateObjToUpdate.id} / `, rateObjToUpdate,
+			`${store.state.baseURL}/tariff/${rateObjToUpdate.id}/`, rateObjToUpdate,
 			{ headers: { Authorization: `token ${cookie.get("auth_token")}`, }, }
 		);
 		return data;
@@ -216,7 +216,7 @@ const updateRate = async (rateObjToUpdate) => {
 const change_manager = async ({ user, manager, user_manager }) => {
 	try {
 		const response = await axios.patch(
-			`${baseURL} / usermanager / ${user_manager} / `, { user, manager, },
+			`${baseURL}/usermanager/${user_manager}/`, { user, manager, },
 			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 		);
 

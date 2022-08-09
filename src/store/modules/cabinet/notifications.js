@@ -13,7 +13,7 @@ const getters = {
 	},
 	parsources_notifications(state) {
 		return state.notifications.filter((notification) =>
-		notification.category === 'Parsource'
+			notification.category === 'Parsource'
 		) || [];
 	},
 	parsers_notifications(state) {
@@ -22,13 +22,12 @@ const getters = {
 		) || [];
 	},
 	user_notifications(state) {
-		const notificationsAboutUsers = state.notifications.filter( notification => {
+		const notificationsAboutUsers = state.notifications.filter(notification => {
 			return notification.category === 'User'
 		}) || [];
-		console.log(notificationsAboutUsers)
 		if (notificationsAboutUsers) {
 			const notificationsMap = new Map();
-			notificationsAboutUsers.forEach( notification => {
+			notificationsAboutUsers.forEach(notification => {
 				const userEmail = notification.message.split(': ');
 				notificationsMap.set(userEmail[1], notification);
 			});

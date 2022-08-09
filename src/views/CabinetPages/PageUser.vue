@@ -499,7 +499,6 @@
 			const readNotification = this.$route.params.notification
 				? JSON.parse(this.$route.params.notification)
 				: "";
-			console.log(readNotification);
 			if (readNotification) {
 				read_notification({
 					read: true,
@@ -513,7 +512,9 @@
 						);
 						this.SET_NOTIFICATIONS(updatedNotifications);
 					})
-					.catch((error) => console.log(error));
+					.catch((err) => {
+						throw new Error(err);
+					});
 			}
 		},
 		setup() {

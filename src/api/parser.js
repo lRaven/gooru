@@ -2,19 +2,10 @@ import axios from "axios";
 import store from "@/store";
 import cookie from "vue-cookies";
 
-const getUserParsources = async () => {
-	try {
-		const { data: userParsource } = await axios.get(
-			`${store.state.baseURL}/parsource/`,
-			{
-				headers: { Authorization: `token ${cookie.get("auth_token")}` },
-			}
-		);
-		return userParsource.results;
-	} catch (error) {
-		throw new Error(error);
-	}
-};
+let baseURL;
+setTimeout(() => {
+	baseURL = store.state.baseURL;
+}, 0);
 
 const send_new_parsource = async (args) => {
 	try {
@@ -63,17 +54,30 @@ const updateParsourceName = async ({ id, name }) => {
 	}
 };
 
-// parser requests
+const updateParsourceImage = async ({ parsource_id, image }) => {
+	try {
+		const response = await axios.patch(
+			`${baseURL}/parsource/uploadscreen/${parsource_id}/`,
+			{ image },
+			{
+				headers: {
+					Authorization: `token ${cookie.get("auth_token")}`,
+					"Content-Type": "multipart/form-data",
+				},
+			}
+		);
+		return response;
+	} catch (err) { throw new Error(err) }
+};
 
+//* parser requests
 const downloadFile = async ({ type }) => {
 	try {
 		const response = await fetch(
 			`${store.state.baseURL}/parser/download/${type}`,
 			{
 				method: "GET",
-				headers: {
-					Authorization: `token ${cookie.get("auth_token")}`,
-				},
+				headers: { Authorization: `token ${cookie.get("auth_token")}`, },
 			}
 		);
 		if (response.ok) {
@@ -199,10 +203,10 @@ const deleteFavoriteParser = async ({ id }) => {
 };
 
 export {
-	getUserParsources,
 	send_new_parsource,
 	delete_parsource,
 	updateParsourceName,
+	updateParsourceImage,
 	downloadFile,
 	getComments,
 	createComment,

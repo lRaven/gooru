@@ -556,8 +556,7 @@
 						() => (this.isDeleteFavoritePopupVisible = false),
 						1000
 					);
-				} catch (error) {
-					console.log(error);
+				} catch (err) {
 					if (this.isFavorited) {
 						this.toast.error(
 							`Не удалось удалить «${this.croppedTitle}» из избранного!`
@@ -567,6 +566,7 @@
 							`Не удалось добавить «${this.croppedTitle}» в избранное!`
 						);
 					}
+					throw new Error(err);
 				}
 			},
 			handleEditClick() {
@@ -748,6 +748,7 @@
 				align-items: center;
 				gap: 1.2rem;
 				width: max-content;
+				color: rgba($black, 0.5);
 			}
 			&.alignicons {
 				align-self: flex-start;

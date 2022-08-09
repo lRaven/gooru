@@ -25,15 +25,15 @@ const mutations = {
 		const parsourceToUpdate = favoritesCopy.find(
 			(parsource) => parsource.id === payload.parsource
 		);
-		
+
 		const updatedParsers = parsourceToUpdate.parsers.map((parser) => {
 			if (parser.id === payload.id) {
 				return payload;
 			}
 			return parser;
 		});
-		parsourceToUpdate.parsers = updatedParsers; 
-		
+		parsourceToUpdate.parsers = updatedParsers;
+
 		state.favorites = favoritesCopy;
 	},
 	CLEAR_FAVORITES: (state) => (state.favorites = []),
@@ -62,7 +62,6 @@ const actions = {
 			const parsersCopy = JSON.parse(
 				JSON.stringify(context.rootState.parsers.all_parsers)
 			);
-			console.log(context.rootState.parsers.all_parsers.length)
 			let favoriteParsers = favoriteParserIds.map((parserIdData) => {
 				const favoriteParser = parsersCopy.find(
 					(parser) => parser.id === parserIdData.parser
@@ -71,9 +70,7 @@ const actions = {
 					return { ...favoriteParser, favoriteId: parserIdData.id };
 				}
 			});
-			console.log(favoriteParsers)
-			favoriteParsers = favoriteParsers.filter( favoriteParser => favoriteParser !== undefined);
-			console.log(favoriteParsers)
+			favoriteParsers = favoriteParsers.filter(favoriteParser => favoriteParser !== undefined);
 			context.dispatch("getFavoriteParsources", favoriteParsers);
 		} catch (err) {
 			throw new Error(err);
@@ -81,7 +78,6 @@ const actions = {
 	},
 
 	getFavoriteParsources: async (context, parsers) => {
-		console.log(parsers)
 		try {
 			if (!context.rootState.parsers.all_parsources.length) {
 				await context.dispatch("getAllParsources", null, {
@@ -103,7 +99,6 @@ const actions = {
 						favoriteParsources.push(matchedParsource);
 					}
 				}
-				console.log(favoriteParsources)
 			});
 
 			favoriteParsources.forEach((parsource) => {
@@ -117,7 +112,6 @@ const actions = {
 			context.commit("SET_FAVORITES", favoriteParsources);
 			console.log("Favorite parsources saved");
 		} catch (err) {
-			console.log(err)
 			throw new Error(err);
 		}
 	},

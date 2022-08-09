@@ -266,7 +266,6 @@
 					},
 					[]
 				);
-				console.log(parsers_id);
 				//* получить список id парсоурсов (уникальные) по id парсеров
 				return this.all_parsers.reduce((arr, current) => {
 					parsers_id.find((id) => {

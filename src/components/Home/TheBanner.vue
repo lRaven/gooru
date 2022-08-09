@@ -29,8 +29,11 @@
 				<h1 class="the-banner__title">
 					<span class="the-banner__title-bold">Поиск</span>
 					<br />
-					и <span class="the-banner__title-bold">систематизация</span
-					><br />
+					и&nbsp;
+					<span class="the-banner__title-bold">
+						систематиза&shy;ция
+					</span>
+					<br />
 					информации
 				</h1>
 				<h3 class="the-banner__subtitle">

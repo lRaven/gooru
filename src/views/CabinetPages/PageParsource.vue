@@ -116,28 +116,27 @@
 							'r-dropdown_mode_mobile': documentWidth <= 400,
 						}"
 					></r-dropdown>
-
 				</div>
 
 				<transition mode="out-in">
-						<r-loader v-if="!isParsersLoaded" />
-					</transition>
+					<r-loader v-if="!isParsersLoaded" />
+				</transition>
 
-					<transition mode="out-in" v-if="isParsersLoaded">
-						<ol
-							class="page-parsource__content-list"
-							v-if="parsers.length"
-						>
-							<parser-content
-								v-for="parser in parsers"
-								:key="parser.id"
-								:parserProp="parser"
-							></parser-content>
-						</ol>
-						<h2 class="page-parsource__empty-message" v-else>
-							{{ emptyMessage }}
-						</h2>
-					</transition>
+				<transition mode="out-in" v-if="isParsersLoaded">
+					<ol
+						class="page-parsource__content-list"
+						v-if="parsers.length"
+					>
+						<parser-content
+							v-for="parser in parsers"
+							:key="parser.id"
+							:parserProp="parser"
+						></parser-content>
+					</ol>
+					<h2 class="page-parsource__empty-message" v-else>
+						{{ emptyMessage }}
+					</h2>
+				</transition>
 			</div>
 
 			<div
@@ -171,13 +170,33 @@
 			<template v-slot>
 				<div class="page-parsource__data">
 					<h5 class="page-parsource__data-title">Текущий источник</h5>
-					<img
-						:src="
-							parsource.screenshot || '/img/icon/empty-image.svg'
-						"
-						alt=""
-						class="page-parsource__image"
-					/>
+					<form class="page-parsource__update-photo">
+						<img
+							:src="
+								changedParsource.screenshot ||
+								'/img/icon/empty-image.svg'
+							"
+							alt=""
+							class="page-parsource__image"
+						/>
+						<label class="page-parsource__image-pick">
+							<input
+								type="file"
+								name=""
+								class="page-parsource__image-pick-input"
+								accept="image/*"
+								@change="change_image($event.target)"
+							/>
+							<button
+								type="button"
+								class="page-parsource__image-pick-btn"
+							>
+								<img src="/img/icon/cabinet/edit.svg" alt="" />
+								Обновить картинку
+							</button>
+						</label>
+					</form>
+
 					<div class="page-parsource__info">
 						<template v-if="userRole !== 'DefaultUser'">
 							<p class="page-parsource__info-key">Пользователь</p>
@@ -242,15 +261,6 @@
 				</div>
 			</template>
 		</right-panel>
-
-		<transition name="fade" mode="out-in">
-			<r-confirm-popup
-				v-if="isConfirmPopupVisible"
-				@action_confirm="action_confirm"
-				@close_popup="close_popup"
-				:text="`Вы уверены что хотите удалить источник ${selected_parsource.name}?`"
-			></r-confirm-popup>
-		</transition>
 	</section>
 </template>
 
@@ -262,11 +272,12 @@
 	import { change_manager } from "@/api/userApi";
 	import { prettyDate } from "@/js/processStrings";
 	import { read_notification } from "@/api/notifications";
-	import { multiaction_delete } from "@/api/multiaction_delete";
+	import { updateParsourceImage } from "@/api/parser";
 
 	import { paginationMixin } from "@/mixins/paginationMixins";
 
 	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+
 	import { useToast } from "vue-toastification";
 
 	export default {
@@ -286,6 +297,7 @@
 			},
 
 			parsource() {
+				this.changedParsource = { ...this.parsource };
 				this.getCards({
 					parsource_name: this.parsource_name,
 					page_number: this.page,
@@ -408,19 +420,17 @@
 				return this.all_users.filter((user) => user.role === "Manager");
 			},
 		},
-		data() {
-			return {
-				isMinimizedRightPanel: false,
-				isConfirmPopupVisible: false,
-				isParsersLoaded: false,
+		data: () => ({
+			isMinimizedRightPanel: false,
+			isParsersLoaded: false,
 
-				selected_manager: "",
+			selected_manager: "",
 
-				selectedListFilter: "newest",
+			selectedListFilter: "newest",
 
-				selected_parsource: {},
-			};
-		},
+			changedParsource: {},
+			new_image: "",
+		}),
 		methods: {
 			...mapMutations(["SET_TAB", "ADD_PARSERS"]),
 			...mapActions([
@@ -431,6 +441,7 @@
 				"getUsersManagers",
 				"getNotifications",
 			]),
+			prettyDate,
 
 			async getCards(params) {
 				try {
@@ -452,8 +463,7 @@
 					this.pagination.cards_list.push(...response);
 					this.ADD_PARSERS(this.pagination.cards_list);
 				} catch (err) {
-					console.log(err)
-					throw new Error();
+					throw new Error(err);
 				}
 			},
 
@@ -469,53 +479,28 @@
 				});
 			},
 
-			filterParsers() {
-				this.getParsers({
-					search: this.filters.description,
-					parsource_name: this.parsource_name,
-					page_number: this.page,
-					page_size: this.pagination.cards_in_page,
+			change_image(target) {
+				//* запись в переменную для отправки на сервер
+				this.new_image = target.files[0];
+
+				//* функционал предпросмотра загруженной аватарки
+				const fileReader = new FileReader();
+				fileReader.addEventListener("load", () => {
+					this.changedParsource.screenshot = fileReader.result;
 				});
+
+				fileReader.readAsDataURL(target.files[0]);
 			},
-
-			async action_confirm() {
-				//*TODO: временно удаление происходит через multiaction_delete передавая id в массиве
+			async send_new_pasource_image() {
 				try {
-					// const response = await delete_parsource(
-					// 	this.selected_parsource.id
-					// );
-					const response = await multiaction_delete("parsource", [
-						this.selected_parsource.id,
-					]);
-
-					// if (response.status === 204) {
-					// 	this.toast.success("Источник удалён");
-					// }
-
-					if (response.status === 200) {
-						this.toast.success("Источник удалён");
-					}
-
-					if (this.parsource.id === this.selected_parsource.id) {
-						this.$router.push({
-							name: "parsources",
-							query: { page: 1 },
-						});
-					} else {
-						this.isConfirmPopupVisible = false;
-						this.getAllParsources();
-					}
+					const response = await updateParsourceImage({
+						parsource_id: this.parsource_id,
+						image: this.new_image,
+					});
+					console.log(response);
 				} catch (err) {
-					this.toast.error("Ошибка удаления источника");
 					throw new Error(err);
 				}
-			},
-			open_confirm_popup(parsource) {
-				this.selected_parsource = parsource;
-				this.isConfirmPopupVisible = true;
-			},
-			close_popup() {
-				this.isConfirmPopupVisible = false;
 			},
 
 			async clear_notifications(notification_id) {
@@ -532,7 +517,6 @@
 					throw new Error();
 				}
 			},
-			prettyDate,
 		},
 		created() {
 			this.SET_TAB("parsers");
@@ -558,6 +542,11 @@
 			) {
 				this.getAllUsers();
 				this.getUsersManagers();
+			}
+		},
+		mounted() {
+			if (this.parsource !== undefined) {
+				this.changedParsource = { ...this.parsource };
 			}
 		},
 		setup() {
@@ -591,8 +580,8 @@
 
 		&__image {
 			width: 100%;
-			margin-bottom: 4rem;
-			max-height: 26rem;
+			margin-bottom: 1rem;
+			max-height: 40rem;
 			object-fit: contain;
 		}
 
@@ -842,6 +831,23 @@
 					padding-bottom: 1rem;
 					font-size: 1.2rem;
 				}
+			}
+		}
+		&__image-pick {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 4rem;
+			&-input {
+				display: none;
+			}
+			&-btn {
+				background-color: transparent;
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				font-size: 1.4rem;
+				color: $primary;
+				font-weight: 500;
 			}
 		}
 	}

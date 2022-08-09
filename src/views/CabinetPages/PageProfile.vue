@@ -21,10 +21,10 @@
 						accept="image/*"
 						@change="change_avatar($event.target)"
 					/>
-					<div type="button" class="page-profile__image-pick-btn">
+					<button type="button" class="page-profile__image-pick-btn">
 						<img src="/img/icon/cabinet/edit.svg" alt="" />
 						Изменить
-					</div>
+					</button>
 				</label>
 			</form>
 
@@ -269,6 +269,7 @@
 				const fileReader = new FileReader();
 				fileReader.addEventListener("load", () => {
 					this.personal_data.avatar = fileReader.result;
+					console.log(this.personal_data.avatar);
 				});
 
 				fileReader.readAsDataURL(target.files[0]);
@@ -349,7 +350,7 @@
 					this.isDisabledBtn = false;
 					this.personal_data.avatar = this.user_data.avatar;
 					this.toast.error(
-						"Данное изображение не доступно, пожалуйста загрузите jpg', '.png', '.svg' максимальный размер 4096px"
+						"Данное изображение не доступно, пожалуйста загрузите '.jpg', '.png', '.svg' максимальный размер 4096px"
 					);
 					throw new Error(err);
 				}
@@ -526,7 +527,7 @@
 				display: none;
 			}
 			&-btn {
-				cursor: pointer;
+				background-color: transparent;
 				font-size: 1.6rem;
 				display: flex;
 				align-items: center;

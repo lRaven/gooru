@@ -595,11 +595,6 @@
 						: ((tab.selected = false), (tab.icon_fill = ""));
 				});
 			},
-			paint_icon() {
-				for (let [key, value] of Object.entries(this.$refs)) {
-					console.log(key, value);
-				}
-			},
 
 			minimizePanel() {
 				this.$refs.arrow.classList.add("minimized");

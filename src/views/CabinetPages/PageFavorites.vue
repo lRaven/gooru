@@ -245,9 +245,7 @@
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getFavoriteParsers"]),
-			minimizeRightPanel() {
-				console.log("yes");
-			},
+
 			resetFilter() {
 				this.show_by_source = null;
 			},
