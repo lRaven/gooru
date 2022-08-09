@@ -291,20 +291,14 @@
 	@import "@/assets/scss/variables";
 
 	.page-rates {
-		padding: 6.4rem 4rem 4rem 4rem;
+		padding: 2rem 4rem 4rem 4rem;
 		height: 100%;
 		overflow: auto;
-		@media (max-width: 1180px) {
-			padding: 4rem 3rem 4rem 3rem;
+		@media (max-width: 1023px) {
+			padding: 4rem;
 		}
-		@media (max-width: 550px) {
-			padding: 3rem 2.5rem 4rem 2.5rem;
-		}
-		@media (max-width: 500px) {
-			padding: 3rem 2rem 3rem 2rem;
-		}
-		@media (max-width: 410px) {
-			padding: 3rem 1.5rem 2rem 1.5rem;
+		@media (max-width: 767px) {
+			padding: 2rem 1.5rem;
 		}
 
 		&__title {

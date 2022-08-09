@@ -298,7 +298,6 @@
 							:url="sharedContentUrl"
 							:title="sharedContentTitle"
 							:description="sharedContentDescription"
-							
 						>
 							<img src="/img/icon/cabinet/ok.svg" alt="ok" />
 						</ShareNetwork>
@@ -309,7 +308,6 @@
 							:url="sharedContentUrl"
 							:title="sharedContentTitle"
 							:description="sharedContentDescription"
-							
 						>
 							<img src="/img/icon/cabinet/vk.svg" alt="vk" />
 						</ShareNetwork>
@@ -461,13 +459,15 @@
 				return find;
 			},
 			sharedContentTitle() {
-				return this.parser.comment.text ? this.parser.comment.text : this.parser.title;
+				return this.parser.comment.text
+					? this.parser.comment.text
+					: this.parser.title;
 			},
 			sharedContentUrl() {
 				return this.parser.url;
 			},
 			sharedContentDescription() {
-				return this.parser.comment.text ? '' : this.parser.article;
+				return this.parser.comment.text ? "" : this.parser.article;
 			},
 			isDisabledCommentButton() {
 				return this.comment.length > 0 ? false : true;
@@ -498,7 +498,11 @@
 
 		methods: {
 			...mapActions(["getFavoriteParsers", "updateFavorites"]),
-			...mapMutations(["SET_UPDATED_ALL_PARSERS", "SET_UPDATED_PARSERS", "SET_UPDATED_FAVORITES"]),
+			...mapMutations([
+				"SET_UPDATED_ALL_PARSERS",
+				"SET_UPDATED_PARSERS",
+				"SET_UPDATED_FAVORITES",
+			]),
 			hideAllExtras() {
 				this.isMessagesOpen = false;
 				this.isShareOpen = false;
@@ -531,11 +535,14 @@
 			async updateFavoriteParser() {
 				try {
 					await this.updateFavorites({
-						parserToUpdate: {...this.parser, favoriteId: this.favoriteId },
+						parserToUpdate: {
+							...this.parser,
+							favoriteId: this.favoriteId,
+						},
 						userId: this.user.id,
 						isFavorite: this.isFavorited,
 					});
-					
+
 					if (this.isFavorited) {
 						this.toast.success(
 							`Парсер «${this.croppedTitle}» добавлен в избранное!`
@@ -590,7 +597,10 @@
 					this.SET_UPDATED_PARSERS(this.parser);
 					this.SET_UPDATED_ALL_PARSERS(this.parser);
 					if (this.isFavorited) {
-						this.SET_UPDATED_FAVORITES({ ...this.parser, favoriteId: this.favoriteId });
+						this.SET_UPDATED_FAVORITES({
+							...this.parser,
+							favoriteId: this.favoriteId,
+						});
 					}
 				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
@@ -604,7 +614,10 @@
 					this.SET_UPDATED_PARSERS(this.parser);
 					this.SET_UPDATED_ALL_PARSERS(this.parser);
 					if (this.isFavorited) {
-						this.SET_UPDATED_FAVORITES({ ...this.parser, favoriteId: this.favoriteId });
+						this.SET_UPDATED_FAVORITES({
+							...this.parser,
+							favoriteId: this.favoriteId,
+						});
 					}
 					this.comment = "";
 				} catch (err) {
@@ -677,11 +690,8 @@
 	.parser-content {
 		list-style: none;
 		border-top: 0.1rem solid #999;
-		padding: 1rem 3rem;
+		padding: 1rem 1.5rem;
 		background-color: $white;
-		@media screen and (max-width: 515px) {
-			padding: 1rem 2rem;
-		}
 		@media screen and (max-width: 400px) {
 			padding: 0.8rem 0.4rem;
 		}

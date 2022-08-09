@@ -322,7 +322,7 @@
 
 				document_width: (state) => state.document_width,
 			}),
-			...mapGetters(['user_notifications']),
+			...mapGetters(["user_notifications"]),
 		},
 		data() {
 			return {
@@ -415,7 +415,7 @@
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
 		position: relative;
-		padding: 6.4rem 4rem 4rem 4rem;
+		padding: 2rem 4rem 4rem 4rem;
 		height: 100%;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
@@ -423,9 +423,8 @@
 		@media (max-width: 1023px) {
 			padding: 4rem;
 		}
-
 		@media (max-width: 767px) {
-			padding: 4rem 1.5rem;
+			padding: 2rem 1.5rem;
 		}
 
 		&__title {

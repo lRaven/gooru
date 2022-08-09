@@ -91,7 +91,7 @@
 			</div>
 
 			<div class="appeals-card__row">
-				<p class="appeals-card__source">
+				<p class="appeals-card__source" v-if="appeal.parser">
 					{{
 						user.role !== "DefaultUser"
 							? `${appeal.user.first_name}
@@ -138,15 +138,14 @@
 
 			source() {
 				let result = "";
-
 				const find = this.parsers.find(
-					(el) => el.id === this.appeal.parser
-				);
-				if (find !== undefined) {
-					result = find.title;
-				}
+						(el) => el.id === this.appeal.parser
+					);
+					if (find !== undefined) {
+						result = find.title;
+					}
 
-				return result;
+					return result ? result : `Парсер ${this.appeal.parser}`;
 			},
 			topic() {
 				let result = "";

@@ -138,7 +138,7 @@
 			.r-dropdown_mode_mobile & {
 				border: none;
 				background: transparent;
-				padding: 0 0 0 1.5rem;
+				padding: 1rem 0;
 				grid-template-columns: fit-content(15.5rem) max-content;
 				gap: 1rem;
 				justify-content: flex-start;

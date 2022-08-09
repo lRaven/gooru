@@ -250,7 +250,6 @@
 			},
 			resetFilter() {
 				this.show_by_source = null;
-				
 			},
 			updateSelectedParsers(favoriteCardObj) {
 				const { parsourceId, selectedParsers } = favoriteCardObj;
@@ -319,29 +318,27 @@
 
 		&__main {
 			position: relative;
-			padding: 6.4rem 1rem 4rem 4rem;
+			padding: 2rem 1rem 4rem 4rem;
 			width: 100%;
 			height: calc(100vh - 8rem);
 			overflow-y: auto;
 			-webkit-overflow-scrolling: touch;
 			@media (max-width: 1440px) {
-				padding: 6.4rem 6rem 4rem 4rem;
+				padding-right: 6rem;
+			}
+			@media (max-width: 1023px) {
+				padding: 4rem 6rem 4rem 4rem;
 			}
 			@media (max-width: 767px) {
-				padding: 4rem 6rem 4rem 1.5rem;
+				padding: 2rem 5rem 2rem 1.5rem;
 			}
 			@media (max-width: 540px) {
-				padding: 3rem 1.5rem;
+				padding: 2rem 1.5rem;
 			}
 		}
 		&__title {
 			margin-bottom: 1.5rem;
 			font-weight: 400;
-			@media (max-width: 800px) {
-				margin-bottom: 2rem;
-				font-size: 3.2rem;
-				line-height: 4.5rem;
-			}
 		}
 
 		&__sort-panel {

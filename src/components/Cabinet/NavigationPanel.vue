@@ -628,7 +628,7 @@
 		);
 		height: 100vh;
 		width: 26rem;
-		padding-top: 8rem;
+		padding-top: 6.4rem;
 		transition: all 0.2s ease;
 
 		@media (max-width: 1023px) {
