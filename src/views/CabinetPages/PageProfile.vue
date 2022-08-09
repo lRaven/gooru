@@ -30,7 +30,7 @@
 
 			<rate-info
 				:rate="rate"
-				v-if="isHasRate && rate.loaded && documentWidth <= 600"
+				v-if="isHasRate && rate.loaded && documentWidth <= 767"
 			></rate-info>
 
 			<form class="page-profile__form page-profile__change-personal-data">
@@ -130,7 +130,7 @@
 			</div>
 			<rate-info
 				:rate="rate"
-				v-else-if="isHasRate && rate.loaded && documentWidth > 600"
+				v-else-if="isHasRate && rate.loaded && documentWidth > 767"
 			></rate-info>
 
 			<div
@@ -159,12 +159,11 @@
 	} from "@/api/userApi";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import RateInfo from "@/components/Rates/RateInfo.vue";
-	/* import BriefCard from "@/components/Brief/BriefCard.vue"; */
 	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageProfile",
-		components: { RateInfo, /* BriefCard */ },
+		components: { RateInfo },
 		watch: {
 			user_data: {
 				handler() {
@@ -407,7 +406,7 @@
 		display: grid;
 		grid-template-columns: max-content 1fr;
 		grid-template-rows: minmax(auto, max-content);
-		padding: 6.4rem 4rem 4rem 4rem;
+		padding: 2rem 4rem 4rem 4rem;
 		grid-gap: 3rem 10rem;
 		height: 100%;
 		overflow: auto;
@@ -415,28 +414,19 @@
 		@media (max-width: 1110px) {
 			grid-gap: 3rem 7rem;
 		}
-		@media (max-width: 780px) {
-			grid-gap: 3rem 5rem;
-		}
-		@media (max-width: 750px) {
-			grid-template-columns: 1fr 1fr;
-		}
-
-		@media (max-width: 600px) {
-			grid-template-columns: 1fr;
-			padding: 6rem 1.5rem 3.5rem 3.5rem;
-			column-gap: 0;
-		}
-		@media (max-width: 425px) {
-			padding: 3rem 1.5rem 3rem 1.5rem;
-		}
-
 		@media (max-width: 1023px) {
 			padding: 4rem;
+			grid-template-columns: 1fr max-content;
+			grid-gap: 3rem;
 		}
-
 		@media (max-width: 767px) {
-			padding: 4rem 1.5rem;
+			grid-gap: 3rem 5rem;
+			grid-template-columns: 1fr;
+			padding: 2rem 1.5rem;
+		}
+		@media (max-width: 727px) {
+			grid-template-columns: 1fr;
+			column-gap: 0;
 		}
 
 		&__title,
@@ -449,32 +439,8 @@
 			grid-template-columns: 52rem;
 			grid-gap: 8rem;
 			column-gap: 25rem;
-			@media (max-width: 1240px) {
-				grid-template-columns: 40rem;
-			}
-			@media (max-width: 1110px) {
-				grid-template-columns: 38rem;
-			}
-			@media (max-width: 1110px) {
-				grid-template-columns: 35rem;
-			}
 			@media (max-width: 1023px) {
-				grid-template-columns: 40rem;
-			}
-			@media (max-width: 860px) {
-				grid-template-columns: 35rem;
-			}
-			@media (max-width: 700px) {
-				grid-template-columns: 30rem;
-			}
-			@media (max-width: 670px) {
-				grid-template-columns: 29rem;
-			}
-			@media (max-width: 600px) {
 				grid-template-columns: 1fr;
-			}
-			@media (max-width: 425px) {
-				grid-gap: 6rem;
 			}
 		}
 
@@ -585,10 +551,8 @@
 				margin-left: 0;
 			}
 		}
-		
 
 		&__rate {
-
 			&-title {
 				font-weight: 500;
 				color: $primary;

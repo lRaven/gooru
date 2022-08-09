@@ -141,13 +141,12 @@
 		&__main {
 			position: relative;
 			display: block;
-			margin-top: 8rem;
+			margin-top: 6.4rem;
 			background-color: $light-blue;
 			overflow-y: auto;
 			-webkit-overflow-scrolling: touch;
 
 			@media (max-width: 1023px) {
-				margin-top: 6.4rem;
 			}
 		}
 	}

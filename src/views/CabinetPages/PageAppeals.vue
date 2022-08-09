@@ -95,7 +95,11 @@
 		<right-panel
 			icon="/img/icon/cabinet/appeals-add.svg"
 			title="Новое обращение"
-			:closeIcon="documentWidth <= 540 && !isMinimizedRightPanel ? 'cross' : 'arrow' "
+			:closeIcon="
+				documentWidth <= 540 && !isMinimizedRightPanel
+					? 'cross'
+					: 'arrow'
+			"
 			class="page-appeals__right-panel"
 			:isMinimized="isMinimizedRightPanel"
 			@open-right-panel="isMinimizedRightPanel = false"
@@ -373,15 +377,18 @@
 				grid-gap: 0;
 			}
 			.page-appeals__main {
-				padding: 6.4rem 0 4rem 4rem;
+				padding: 2rem 0 4rem 4rem;
 				@media (max-width: 1440px) {
 					padding-right: 6rem;
 				}
+				@media (max-width: 1023px) {
+					padding: 4rem 6rem 4rem 4rem;
+				}
 				@media (max-width: 767px) {
-					padding: 4rem 6rem 4rem 1.5rem;
+					padding: 2rem 6rem 2rem 1.5rem;
 				}
 				@media (max-width: 540px) {
-					padding: 3rem 1.5rem;
+					padding: 2rem 1.5rem;
 				}
 			}
 		}
@@ -425,7 +432,7 @@
 		}
 
 		&__main {
-			padding: 6.4rem 4rem 4rem 4rem;
+			padding: 2rem 4rem 4rem 4rem;
 			display: flex;
 			gap: 4rem;
 			flex-direction: column;
@@ -433,11 +440,11 @@
 			-webkit-overflow-scrolling: touch;
 			height: calc(100vh - 8rem);
 			position: relative;
-			@media (max-width: 767px) {
-				padding: 4rem 1.5rem;
+			@media (max-width: 1023px) {
+				padding: 4rem;
 			}
-			@media (max-width: 540px) {
-				padding: 3rem 1.5rem;
+			@media (max-width: 767px) {
+				padding: 2rem 1.5rem;
 			}
 			@media (max-width: 540px) {
 				gap: 1.5rem;

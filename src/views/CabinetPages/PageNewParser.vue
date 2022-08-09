@@ -223,15 +223,12 @@
 	@import "@/assets/scss/variables";
 
 	.page-new-parser {
-		padding: 6.4rem 4rem 4rem 4rem;
-		@media (max-width: 740px) {
-			padding: 5.4rem 3rem 3rem 3rem;
+		padding: 2rem 4rem 4rem 4rem;
+		@media (max-width: 1023px) {
+			padding: 4rem;
 		}
-		@media (max-width: 540px) {
-			padding: 4rem 2rem 2.5rem 2rem;
-		}
-		@media (max-width: 450px) {
-			padding: 3rem 1.5rem 2rem 1.5rem;
+		@media (max-width: 767px) {
+			padding: 2rem 1.5rem;
 		}
 
 		&__title {
@@ -289,7 +286,7 @@
 		}
 		.r-button {
 			max-width: 25rem;
-			@media (max-width: 450px) {
+			@media (max-width: 540px) {
 				width: 100%;
 				max-width: 100%;
 				margin: 2rem 0 0 0;

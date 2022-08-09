@@ -38,8 +38,7 @@
 					:value="url.text"
 					input_type="url"
 					placeholder="https://"
-					class="r-input_area_url"
-					:class="{ 'r-input_area_added-url': index > 0 }"
+					class="r-input__url"
 				></r-input>
 
 				<r-button
@@ -312,9 +311,12 @@
 	@import "@/assets/scss/variables";
 
 	.page-new-group-parser {
-		padding: 6.4rem 4rem 4rem 4rem;
-		@media (max-width: 570px) {
-			padding: 4rem 2rem 2.5rem 2rem;
+		padding: 2rem 4rem 4rem 4rem;
+		@media (max-width: 1023px) {
+			padding: 4rem;
+		}
+		@media (max-width: 767px) {
+			padding: 2rem 1.5rem;
 		}
 		&__title {
 			font-weight: 400;
@@ -333,54 +335,48 @@
 			grid-template-columns: 32rem 1fr 4rem 12rem;
 			grid-gap: 3rem 4rem;
 			align-items: center;
-			@media (max-width: 1300px) {
-				grid-template-columns: 32rem minmax(30rem, 50rem) 4rem;
+			@media (max-width: 1440px) {
+				grid-template-columns: max-content 1fr;
 			}
-			@media (max-width: 1100px) {
-				grid-template-columns: 29rem 1fr 4rem;
+			@media (max-width: 1023px) {
+				grid-gap: 2rem;
 			}
-			@media (max-width: 768px) {
-				grid-template-columns: 1fr;
+			@media (max-width: 767px) {
+				grid-template-columns: 1fr max-content;
 			}
-			@media (max-width: 540px) {
-				grid-gap: 2.5rem;
-			}
-			@media (max-width: 450px) {
-				grid-gap: 1rem;
+
+			.r-dropdown {
+				@media (max-width: 767px) {
+					grid-column: 1/4;
+				}
 			}
 			.r-input {
 				font-size: 1.6rem;
+				grid-column: 2/3;
 				@media (max-width: 768px) {
-					grid-column: 1/3;
+					grid-column: 1/4;
 				}
-				&_area {
-					&_url {
-						@media (max-width: 768px) {
-							grid-column: 1;
-						}
-					}
-					&_added-url {
-						grid-column: 2/3;
-						@media (max-width: 768px) {
-							grid-column: 1;
-						}
+				&__url {
+					@media (max-width: 768px) {
+						grid-column: 1/3;
 					}
 				}
 			}
 			.r-textarea {
 				grid-column: 2/3;
+				height: 14.5rem;
 				font-size: 1.6rem;
 				@media (max-width: 768px) {
-					grid-column: 1/3;
+					grid-column: 1/4;
 				}
-			}
-			.r-textarea {
-				height: 14.5rem;
 			}
 
 			&.manager {
 				.page-new-group-parser__add-url {
 					grid-area: 3/3;
+					@media (max-width: 767px) {
+						grid-area: 6/3;
+					}
 				}
 			}
 		}
@@ -388,13 +384,13 @@
 		&__input-description,
 		&__submit {
 			grid-column: 1/2;
+			@media (max-width: 767px) {
+				grid-column: 1/4;
+			}
 		}
 		&__input-description {
 			font-size: 1.6rem;
 			color: rgba($black, 0.7);
-			@media (max-width: 768px) {
-				grid-column: 1/3;
-			}
 		}
 
 		&__add-url {
@@ -441,11 +437,11 @@
 
 		&__submit {
 			max-width: 25rem;
-			@media (max-width: 450px) {
+			@media (max-width: 540px) {
 				width: 100%;
 				max-width: 100%;
 				margin: 2rem 0 0 0;
-				grid-column: 1/3;
+				grid-column: 1/4;
 			}
 		}
 	}

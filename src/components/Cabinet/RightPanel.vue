@@ -90,25 +90,23 @@
 		flex-direction: column;
 		background-color: rgba($white, 0.5);
 		width: 29rem;
-		height: calc(100vh - 8rem);
+		height: calc(100vh - 6.4rem);
 		padding: 2rem 1.5rem 1.5rem 1.5rem;
 		transition: all 0.2s ease;
 		@media (max-width: 1440px) {
 			position: fixed;
 			right: 0;
-			top: 8rem;
+			top: 0;
 			background-color: $white;
-		}
-		@media (max-width: 1023px) {
-			top: 6.4rem;
-			height: calc(100vh - 6.4rem);
+			padding-top: 8.4rem;
+			height: 100vh;
 		}
 		@media (max-width: 540px) {
 			top: 0;
 			display: flex;
 			width: 100vw;
-			height: 100vh;
 			z-index: 3;
+			padding-top: 2rem;
 			background-color: $white;
 			transform: translateX(0);
 			transition: all 0.2s ease;

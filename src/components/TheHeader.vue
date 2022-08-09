@@ -463,7 +463,7 @@
 		}
 
 		&.bg {
-			background-color: #fff;
+			background-color: $white;
 			box-shadow: $shadow;
 			padding: 2rem 4rem;
 			transition: all 0.5s ease;
@@ -551,6 +551,7 @@
 				display: none;
 			}
 			.r-button {
+				padding: 1rem 1.5rem;
 				&:hover {
 					.r-button__icon {
 						path {
@@ -573,7 +574,7 @@
 		&__logo {
 			color: $primary;
 			font-weight: 700;
-			font-size: 2.4rem;
+			font-size: 2rem;
 			text-transform: uppercase;
 
 			@media (max-width: 540px) {

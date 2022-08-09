@@ -261,12 +261,12 @@
 				//* получить id парсеров из уведомлений
 				const parsers_id = this.parsers_notifications.reduce(
 					(arr, current) => {
-						arr.push(+current.url.split('/')[2]);
+						arr.push(+current.url.split("/")[2]);
 						return arr;
 					},
 					[]
 				);
-				console.log(parsers_id)
+				console.log(parsers_id);
 				//* получить список id парсоурсов (уникальные) по id парсеров
 				return this.all_parsers.reduce((arr, current) => {
 					parsers_id.find((id) => {
@@ -394,17 +394,14 @@
 		position: relative;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
-		padding: 6.4rem 4rem 4rem 4rem;
+		padding: 2rem 4rem 4rem 4rem;
 		min-height: 100%;
 
-		@media (max-width: 1440px) {
-			padding: 6.4rem 2rem 4rem 2rem;
-		}
 		@media (max-width: 1023px) {
 			padding: 4rem;
 		}
 		@media (max-width: 767px) {
-			padding: 4rem 1.5rem;
+			padding: 2rem 1.5rem;
 		}
 
 		&__title {
