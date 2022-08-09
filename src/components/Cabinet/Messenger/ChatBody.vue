@@ -1,10 +1,6 @@
 <template>
 	<div class="chat-body">
-		<transition mode="out-in">
-			<r-loader v-if="!isMessagesLoaded" />
-		</transition>
-
-		<transition mode="out-in">
+		<transition-group mode="out-in">
 			<ul
 				class="chat-body__messages"
 				ref="message_list"
@@ -16,16 +12,17 @@
 					:message="message"
 				></r-message>
 			</ul>
-		</transition>
-
-		<transition mode="out-in">
 			<p
 				class="chat-body__empty"
-				v-if="chat_messages.length === 0 && isMessagesLoaded"
+				v-else-if="chat_messages.length === 0 && isMessagesLoaded"
 			>
 				*ЧАТ ПУСТ*
 			</p>
-		</transition>
+
+			<div class="chat-body__loading" v-else>
+				<r-loader />
+			</div>
+		</transition-group>
 	</div>
 </template>
 
@@ -114,7 +111,8 @@
 		}
 
 		&__messages,
-		&__empty {
+		&__empty,
+		&__loading {
 			grid-area: 1/1;
 		}
 
