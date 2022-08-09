@@ -62,7 +62,7 @@ const actions = {
 			const parsersCopy = JSON.parse(
 				JSON.stringify(context.rootState.parsers.all_parsers)
 			);
-			console.log(favoriteParserIds)
+			console.log(context.rootState.parsers.all_parsers.length)
 			let favoriteParsers = favoriteParserIds.map((parserIdData) => {
 				const favoriteParser = parsersCopy.find(
 					(parser) => parser.id === parserIdData.parser
@@ -71,8 +71,9 @@ const actions = {
 					return { ...favoriteParser, favoriteId: parserIdData.id };
 				}
 			});
+			console.log(favoriteParsers)
 			favoriteParsers = favoriteParsers.filter( favoriteParser => favoriteParser !== undefined);
-			
+			console.log(favoriteParsers)
 			context.dispatch("getFavoriteParsources", favoriteParsers);
 		} catch (err) {
 			throw new Error(err);

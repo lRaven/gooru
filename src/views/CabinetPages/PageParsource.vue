@@ -135,7 +135,7 @@
 							v-if="parsers.length"
 						>
 							<parser-content
-								v-for="parser in pagination.cards_list"
+								v-for="parser in parsers"
 								:key="parser.id"
 								:parserProp="parser"
 							></parser-content>
@@ -386,11 +386,11 @@
 			emptyMessage() {
 				switch (this.selectedListFilter) {
 					case "withComments":
-						return "У вас нет парсеров с комментариями";
+						return "На этой странице нет парсеров с комментариями";
 					case "favorites":
-						return "У вас нет избранных парсеров";
+						return "На этой странице нет избранных парсеров";
 					default:
-						return "У вас нет парсеров!";
+						return "У вас нет парсеров";
 				}
 			},
 
@@ -464,13 +464,10 @@
 						...params,
 					});
 
-					if (response.status === 200) {
-						this.pagination.cards_list.push(
-							...response.data.results
-						);
-						this.ADD_PARSERS(this.pagination.cards_list);
-					}
+					this.pagination.cards_list.push(...response);
+					this.ADD_PARSERS(this.pagination.cards_list);
 				} catch (err) {
+					console.log(err)
 					throw new Error();
 				}
 			},
@@ -557,7 +554,7 @@
 			this.isMinimizedRightPanel = this.documentWidth < 1023;
 			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 			this.parsers_notifications.forEach((notification) => {
-				const id = +notification.url.split('/')[2];
+				const id = +notification.url.split("/")[2];
 
 				const bool = this.cards.find((parser) => parser.id === id);
 
@@ -683,7 +680,7 @@
 
 			&-key {
 				font-size: 1.2rem;
-				color: rgba($black,  0.7);
+				color: rgba($black, 0.7);
 			}
 			&-value {
 				font-size: 1.4rem;
@@ -830,7 +827,6 @@
 		}
 
 		&__right-panel {
-			
 			&-form {
 				margin-bottom: 3rem;
 			}

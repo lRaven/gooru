@@ -175,8 +175,23 @@ const actions = {
 				`${store.state.baseURL}/parser/?${args.search ? `search=${args.search}&` : ''}parsource__name=${args.parsource_name}&page=${args.page_number}&page_size=${args.page_size}`,
 				{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 			);
-
-			if (!args.nextPage) {
+			if(args.nextPage) {
+				const comments = await getComments();
+				const parsersList = response.data.results.map((parser) => {
+					const matchedComment = comments.find(
+						(commentItem) => commentItem.parser === parser.id
+					);
+					if (matchedComment) {
+						return {
+							...parser,
+							comment: { text: matchedComment.comment, id: matchedComment.id },
+						};
+					} else {
+						return { ...parser, comment: { text: "", id: null } };
+					}
+				});
+				return parsersList;
+			}
 				if (response.status === 200) {
 					const comments = await getComments();
 					const parsersList = response.data.results.map((parser) => {
@@ -206,7 +221,6 @@ const actions = {
 
 					console.log('Parser list saved');
 				}
-			}
 
 			return response;
 		}
