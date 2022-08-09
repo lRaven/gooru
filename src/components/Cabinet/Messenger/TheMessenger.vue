@@ -1,5 +1,6 @@
 <template>
 	<div class="the-messenger">
+		<h4 class="the-messenger__title" v-if="title">{{ title }}</h4>
 		<chat-body
 			:ticket_id="ticket_id"
 			:chat_messages="messages"
@@ -16,7 +17,7 @@
 
 	export default {
 		name: "TheMessenger",
-		props: { ticket_id: Number },
+		props: { ticket_id: Number, title: String },
 		components: {
 			ChatBody,
 			ChatSendMessage,
@@ -129,6 +130,11 @@
 		border-radius: 0.8rem 0.8rem 0 0;
 		overflow: hidden;
 		display: grid;
-		grid-template-rows: 1fr max-content;
+		grid-template-rows: max-content 1fr;
+		&__title {
+			text-align: center;
+			padding: 1rem 0;
+			border-bottom: 0.1rem solid $light-gray;
+		}
 	}
 </style>

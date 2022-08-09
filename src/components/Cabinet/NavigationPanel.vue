@@ -658,7 +658,7 @@
 		&__minimize {
 			position: relative;
 			right: -1.2rem;
-			background-color: #fff;
+			background-color: $white;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -667,7 +667,7 @@
 			height: 2.4rem;
 			min-height: 2.4rem;
 			border-radius: 50%;
-			box-shadow: 0 0.4rem 1.2rem rgb(0 0 0 / 8%);
+			box-shadow: $shadow;
 			margin-top: 2rem;
 			z-index: 1;
 			transition: all 0.3s ease;
@@ -686,7 +686,7 @@
 		}
 
 		&__inner {
-			padding: 2rem 3rem 4rem 3rem;
+			padding: 1rem 3rem 3rem 3rem;
 			height: 100%;
 			background: url("/public/img/icon/cabinet/goo.svg") bottom left /
 				90% no-repeat;

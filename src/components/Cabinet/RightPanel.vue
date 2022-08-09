@@ -100,6 +100,7 @@
 			background-color: $white;
 			padding-top: 8.4rem;
 			height: 100vh;
+			box-shadow: $shadow;
 		}
 		@media (max-width: 540px) {
 			top: 0;

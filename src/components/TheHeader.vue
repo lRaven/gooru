@@ -552,6 +552,7 @@
 			}
 			.r-button {
 				padding: 1rem 1.5rem;
+				font-size: 1.4rem;
 				&:hover {
 					.r-button__icon {
 						path {

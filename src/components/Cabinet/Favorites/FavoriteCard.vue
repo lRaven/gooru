@@ -6,6 +6,12 @@
 					? 'favorite-card__header'
 					: 'favorite-card__header-tiny'
 			"
+			@click="
+				this.$router.push({
+					path: `/cabinet/parsource/${parsource.id}`,
+					query: { page: 1 },
+				})
+			"
 		>
 			<template v-if="documentWidth <= 500">
 				<div class="favorite-card__header-col">
@@ -66,6 +72,7 @@
 					<r-checkbox
 						v-model="isAllSelected"
 						@update:modelValue="handleChangeAllParsers"
+						@click.stop
 					></r-checkbox>
 					<h4 class="favorite-card__source" :title="source">
 						{{ source }}
@@ -79,29 +86,9 @@
 					</p>
 				</div>
 				<div class="favorite-card__header-col">
-					<r-button
-						color="bordered"
-						:text="documentWidth > 1360 ? 'Подробнее' : ''"
-						@click="
-							this.$router.push({
-								path: `/cabinet/parsource/${parsource.id}`,
-								query: { page: 1 },
-							})
-						"
-					>
-						<template v-slot:icon>
-							<img
-								src="/img/icon/dot_list.svg"
-								alt="notification"
-								class="parsource-card__notification"
-								v-if="documentWidth <= 1360"
-							/>
-						</template>
-					</r-button>
-
 					<button
 						class="favorite-card__hide"
-						@click="
+						@click.stop="
 							isContentVisible === true
 								? closeContent()
 								: openContent()
@@ -224,6 +211,7 @@
 			margin-top: 2rem;
 		}
 		&__header {
+			cursor: pointer;
 			display: flex;
 			justify-content: space-between;
 			background-color: $white;

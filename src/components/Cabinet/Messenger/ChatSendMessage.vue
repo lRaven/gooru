@@ -42,14 +42,8 @@
 <style lang="scss" scoped>
 	.chat-send-message {
 		padding: 0 4rem 4rem;
-		@media (max-width: 650px) {
-			padding: 0 4rem 2rem 4rem;
-		}
-		@media (max-width: 500px) {
-			padding: 0 2rem 2rem 2rem;
-		}
-		@media (max-width: 450px) {
-			padding: 0 1.5rem;
+		@media (max-width: 767px) {
+			padding: 0 1.5rem 1.5rem 1.5rem;
 		}
 		&__content {
 			display: flex;
