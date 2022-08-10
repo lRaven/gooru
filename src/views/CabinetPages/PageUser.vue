@@ -528,7 +528,7 @@
 	@import "@/assets/scss/variables";
 
 	.page-user {
-		padding: 6.4rem 4rem 4rem 4rem;
+		padding: 2rem 4rem 4rem 4rem;
 		height: 100%;
 		display: grid;
 		grid-template-rows: repeat(2, max-content) 1fr;
@@ -540,7 +540,7 @@
 		}
 
 		@media (max-width: 767px) {
-			padding: 4rem 1.5rem;
+			padding: 2rem 1.5rem;
 		}
 
 		&__title {
