@@ -42,7 +42,7 @@
 						<h4 class="page-parsource__content-found">
 							Найдено
 							<span class="page-parsource__content-found-number">
-								{{ count }}
+								{{ parsers.length }}
 							</span>
 						</h4>
 						<div
