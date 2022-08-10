@@ -368,9 +368,9 @@
 			});
 
 			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
-			/* this.parsources_notifications.forEach((notification) => {
+			this.parsources_notifications.forEach((notification) => {
 				this.clear_notifications(notification.id);
-			}); */
+			});
 		},
 		mounted() {
 			if (this.userRole === "Manager") {

@@ -58,7 +58,7 @@ const updateParsourceImage = async ({ parsource_id, image }) => {
 	try {
 		const response = await axios.patch(
 			`${baseURL}/parsource/uploadscreen/${parsource_id}/`,
-			{ image },
+			{ screenshot: image },
 			{
 				headers: {
 					Authorization: `token ${cookie.get("auth_token")}`,
@@ -67,7 +67,7 @@ const updateParsourceImage = async ({ parsource_id, image }) => {
 			}
 		);
 		return response;
-	} catch (err) { throw new Error(err) }
+	} catch (err) { return err.response }
 };
 
 //* parser requests

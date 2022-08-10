@@ -170,7 +170,11 @@
 			<template v-slot>
 				<div class="page-parsource__data">
 					<h5 class="page-parsource__data-title">Текущий источник</h5>
-					<form class="page-parsource__update-photo">
+
+					<form
+						class="page-parsource__update-photo"
+						@submit.prevent="send_new_pasource_image"
+					>
 						<img
 							:src="
 								changedParsource.screenshot ||
@@ -187,14 +191,16 @@
 								accept="image/*"
 								@change="change_image($event.target)"
 							/>
-							<button
-								type="button"
-								class="page-parsource__image-pick-btn"
-							>
+							<div class="page-parsource__image-pick-btn">
 								<img src="/img/icon/cabinet/edit.svg" alt="" />
 								Обновить картинку
-							</button>
+							</div>
 						</label>
+						<r-button
+							type="submit"
+							text="Сохранить"
+							:disabled="!isImageChanged"
+						></r-button>
 					</form>
 
 					<div class="page-parsource__info">
@@ -273,6 +279,7 @@
 	import { prettyDate } from "@/js/processStrings";
 	import { read_notification } from "@/api/notifications";
 	import { updateParsourceImage } from "@/api/parser";
+	import { returnErrorMessages } from "@/js/returnErrorMessages";
 
 	import { paginationMixin } from "@/mixins/paginationMixins";
 
@@ -419,6 +426,13 @@
 			managers() {
 				return this.all_users.filter((user) => user.role === "Manager");
 			},
+
+			isImageChanged() {
+				return this.parsource.screenshot !==
+					this.changedParsource.screenshot
+					? true
+					: false;
+			},
 		},
 		data: () => ({
 			isMinimizedRightPanel: false,
@@ -497,8 +511,19 @@
 						parsource_id: this.parsource_id,
 						image: this.new_image,
 					});
-					console.log(response);
+					if (response.status === 200) {
+						console.log("parsource image changed");
+						this.toast.success("Картинка обновлена");
+						this.getParsource(this.parsource_id);
+					}
+					if (response.status === 400) {
+						const error_list = returnErrorMessages(response.data);
+						error_list.forEach((el) => {
+							this.toast.error(el);
+						});
+					}
 				} catch (err) {
+					this.toast.error("Ошибка обновления картинки");
 					throw new Error(err);
 				}
 			},
@@ -775,73 +800,23 @@
 			}
 		}
 
-		&__right-panel {
-			&-form {
-				margin-bottom: 3rem;
-			}
-
-			&-parsource {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				gap: 2rem;
-				.r-button {
-					padding: 0;
-					width: 2rem;
-					height: 2rem;
-				}
-			}
-			&-source {
-				width: 100%;
-				padding: 1rem 0;
-				color: $black;
-				font-size: 1.4rem;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
-			&__input {
-				background-color: transparent;
-				font-size: 1.6rem;
-			}
-
-			&__checkboxes {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 1rem;
-			}
-
-			&__textarea {
-				font-size: 1.3rem;
-				width: 100%;
-				height: 5rem;
-				resize: none;
-				max-height: 10rem;
-				background-color: transparent;
-			}
-
-			&-submit {
-				margin-top: 2rem;
+		&__update-photo {
+			margin-bottom: 4rem;
+			.r-button {
 				width: 100%;
 				font-size: 1.4rem;
-				padding-top: 1.5rem;
-				padding-bottom: 1.5rem;
-				@media (max-width: 450px) {
-					padding-top: 1rem;
-					padding-bottom: 1rem;
-					font-size: 1.2rem;
-				}
+				padding: 1rem 2rem;
 			}
 		}
 		&__image-pick {
 			display: flex;
 			justify-content: center;
-			margin-bottom: 4rem;
+			margin-bottom: 1rem;
 			&-input {
 				display: none;
 			}
 			&-btn {
-				background-color: transparent;
+				cursor: pointer;
 				display: flex;
 				align-items: center;
 				gap: 1rem;

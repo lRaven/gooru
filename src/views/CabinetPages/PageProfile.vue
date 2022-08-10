@@ -21,10 +21,10 @@
 						accept="image/*"
 						@change="change_avatar($event.target)"
 					/>
-					<button type="button" class="page-profile__image-pick-btn">
+					<div class="page-profile__image-pick-btn">
 						<img src="/img/icon/cabinet/edit.svg" alt="" />
 						Изменить
-					</button>
+					</div>
 				</label>
 			</form>
 
@@ -527,7 +527,7 @@
 				display: none;
 			}
 			&-btn {
-				background-color: transparent;
+				cursor: pointer;
 				font-size: 1.6rem;
 				display: flex;
 				align-items: center;
