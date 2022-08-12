@@ -94,7 +94,7 @@
 					v-if="isCabinetVersion === true"
 				>
 					<r-button
-						text="Новый парсер"
+						text="Новый источник"
 						@click="this.$router.push({ name: 'new_parser' })"
 					>
 						<template v-slot:icon>
@@ -125,7 +125,7 @@
 					</r-button>
 
 					<r-button
-						text="Новая группа парсеров"
+						text="Новая группа источников"
 						@click="this.$router.push({ name: 'new_group_parser' })"
 					>
 						<template v-slot:icon>

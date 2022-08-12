@@ -19,7 +19,12 @@
 			<div class="parser-content__col">
 				<p
 					class="parser-content__text"
-					:class="{ cropped: isCroppedText }"
+					:class="{
+						cropped: isCroppedText,
+						'parser-content__text_size_small': fontSize === 'smallSize',
+						'parser-content__text_size_medium': fontSize === 'mediumSize',
+						'parser-content__text_size_big': fontSize === 'bigSize',
+					}"
 					ref="textBlock"
 				>
 					{{ parser.article }}
@@ -390,7 +395,10 @@
 
 	export default {
 		name: "ParserContent",
-		props: { parserProp: Object },
+		props: {
+			parserProp: Object,
+			fontSize: { type: String, required: true },
+		},
 		watch: {
 			isMessagesOpen() {
 				if (this.isMessagesOpen === true) {
@@ -767,7 +775,17 @@
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
 			word-break: break-word;
-
+			&_size{
+				&_small {
+					font-size: 1.6rem;
+				}
+				&_medium {
+					font-size: 2rem;
+				}
+				&_big {
+					font-size: 2.8rem;
+				}
+			}
 			&.cropped {
 				display: -webkit-box;
 				text-overflow: ellipsis;

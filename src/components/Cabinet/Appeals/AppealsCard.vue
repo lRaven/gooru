@@ -9,7 +9,7 @@
 		<template v-if="document_width > 1300">
 			<p class="appeals-card__col appeals-card__id">#{{ appeal.id }}</p>
 
-			<div class="appeals-card__col">
+			<div class="appeals-card__col" v-if="appeal.parser">
 				<p class="appeals-card__source">
 					{{
 						user.role !== "DefaultUser"

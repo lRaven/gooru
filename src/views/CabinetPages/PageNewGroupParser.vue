@@ -20,13 +20,13 @@
 			</template>
 
 			<p class="page-new-group-parser__input-description">
-				Название парсера*
+				Название источника*
 			</p>
 			<r-input
 				input_type="text"
 				v-model="new_parsource.name"
 				:value="new_parsource.name"
-				placeholder="Введите название парсера"
+				placeholder="Введите название источника"
 			></r-input>
 
 			<p class="page-new-group-parser__input-description">

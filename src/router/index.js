@@ -129,7 +129,7 @@ const routes = [
 				name: 'new_parser',
 				component: PageNewParser,
 				meta: {
-					title: 'Новый парсер',
+					title: 'Новый источник',
 					requiresAuth: true,
 				},
 			},
@@ -139,7 +139,7 @@ const routes = [
 				name: 'new_group_parser',
 				component: PageNewGroupParser,
 				meta: {
-					title: 'Новая группа парсеров',
+					title: 'Новая группа источников',
 					requiresAuth: true,
 				},
 			},

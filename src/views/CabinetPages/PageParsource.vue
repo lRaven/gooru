@@ -45,6 +45,10 @@
 								{{ parsers.length }}
 							</span>
 						</h4>
+						<font-tool
+							class="page-parsource__content-header-font-tool"
+							@change-font-size="handleChangeFontSize"
+						/>
 						<div
 							class="page-parsource__content-header-sort"
 							v-if="this.documentWidth > 540"
@@ -131,6 +135,7 @@
 							v-for="parser in parsers"
 							:key="parser.id"
 							:parserProp="parser"
+							:fontSize="fontSize"
 						></parser-content>
 					</ol>
 					<h2 class="page-parsource__empty-message" v-else>
@@ -228,19 +233,25 @@
 						</template>
 
 						<p
-							class="page-parsource__info-key"
+							class="page-parsource__info-key page-parsource__info-key_name"
 							v-if="documentWidth > 450"
 						>
 							Источник
 						</p>
-						<a
+						<p
+							class="page-parsource__info-value page-parsource__info-name"
+							:title="parsource_name"
+						>
+							{{ parsource_name }}
+						</p>
+						<!-- <a
 							:href="parsource.data_source"
 							target="_blank"
 							class="page-parsource__info-value page-parsource__info-source"
 							:title="parsource.data_source"
 						>
-							{{ parsource.data_source }}
-						</a>
+							{{ parsource.name }}
+						</a> -->
 
 						<p
 							class="page-parsource__info-key"
@@ -264,6 +275,53 @@
 						</p>
 						<r-status :status="1 || parsource.condition"></r-status>
 					</div>
+					<div class="sources">
+						<h3 class="sources__title">Источники:</h3>
+						<ul class="sources__list">
+							<li
+								class="source"
+								v-for="item in sourcesInParsource(parsource_id)"
+								:key="item.id"
+							>
+								<p class="source__url" :title="item.url">
+									{{ item.url }}
+								</p>
+								<button
+									class="source__remove-button"
+									@click="
+										deleteThisSource(item.url, parsource_id)
+									"
+								>
+									<svg
+										width="15"
+										height="16"
+										viewBox="0 0 15 16"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M12.9722 6.24219C12.9722 6.24219 12.5685 11.2484 12.3344 13.3572C12.2229 14.3643 11.6007 14.9545 10.5817 14.9731C8.64237 15.0081 6.70084 15.0103 4.76228 14.9694C3.78186 14.9493 3.17011 14.3517 3.06085 13.3624C2.82522 11.235 2.42383 6.24219 2.42383 6.24219"
+											stroke="#ff5252"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
+										<path
+											d="M13.9996 3.84236H1.39453"
+											stroke="#ff5252"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
+										<path
+											d="M11.5717 3.84244C10.9882 3.84244 10.4858 3.4299 10.3713 2.85829L10.1907 1.95443C10.0792 1.53743 9.70158 1.24902 9.2712 1.24902H6.12477C5.69439 1.24902 5.31679 1.53743 5.20529 1.95443L5.02467 2.85829C4.9102 3.4299 4.40772 3.84244 3.82422 3.84244"
+											stroke="#ff5252"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
+									</svg>
+								</button>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</template>
 		</right-panel>
@@ -274,6 +332,7 @@
 	import rStatus from "@/components/Cabinet/r-status";
 	import ParserContent from "@/components/Cabinet/Parsource/ParserContent";
 	import RightPanel from "@/components/Cabinet/RightPanel";
+	import FontTool from "@/components/Cabinet/FontTool.vue";
 
 	import { change_manager } from "@/api/userApi";
 	import { prettyDate } from "@/js/processStrings";
@@ -293,6 +352,7 @@
 		components: {
 			rStatus,
 			ParserContent,
+			FontTool,
 
 			RightPanel,
 		},
@@ -376,6 +436,7 @@
 				"parsers_notifications",
 				"parsersWithComments",
 				"favoriteParsers",
+				"sourcesInParsource",
 			]),
 
 			parsers() {
@@ -437,6 +498,7 @@
 		data: () => ({
 			isMinimizedRightPanel: false,
 			isParsersLoaded: false,
+			fontSize: "smallSize",
 
 			selected_manager: "",
 
@@ -454,8 +516,28 @@
 				"getAllUsers",
 				"getUsersManagers",
 				"getNotifications",
+				"deleteParsersWithEqvalDomain",
 			]),
 			prettyDate,
+
+			handleChangeFontSize(size) {
+				this.fontSize = size;
+			},
+
+			async deleteThisSource(sourceUrl) {
+				try {
+					this.isParsersLoaded = false;
+					await this.deleteParsersWithEqvalDomain({
+						domainPartSourceUrl: sourceUrl,
+						parsourceId: this.parsource_id,
+					});
+					this.toast.success("Источники удалены");
+				} catch (error) {
+					console.log(error);
+					this.toast.error("Ошибка удаления, попробуйте позже!");
+				}
+				this.isParsersLoaded = true;
+			},
 
 			async getCards(params) {
 				try {
@@ -545,28 +627,33 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
-			this.isMinimizedRightPanel = this.documentWidth < 1023;
-			//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
-			this.parsers_notifications.forEach((notification) => {
-				const id = +notification.url.split("/")[2];
+			try {
+				this.sourcesInParsource(this.parsource_id);
+				this.isMinimizedRightPanel = this.documentWidth < 1023;
+				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
+				this.parsers_notifications.forEach((notification) => {
+					const id = +notification.url.split("/")[2];
 
-				const bool = this.cards.find((parser) => parser.id === id);
+					const bool = this.cards.find((parser) => parser.id === id);
 
-				if (bool) {
-					console.log("Parsers notifications read");
-					this.clear_notifications(notification.id);
+					if (bool) {
+						console.log("Parsers notifications read");
+						this.clear_notifications(notification.id);
+					}
+				});
+
+				this.getParsource(this.parsource_id);
+				this.getAllParsources();
+
+				if (
+					this.userRole !== "DefaultUser" &&
+					this.userRole !== undefined
+				) {
+					this.getAllUsers();
+					this.getUsersManagers();
 				}
-			});
-
-			this.getParsource(this.parsource_id);
-			this.getAllParsources();
-
-			if (
-				this.userRole !== "DefaultUser" &&
-				this.userRole !== undefined
-			) {
-				this.getAllUsers();
-				this.getUsersManagers();
+			} catch (error) {
+				this.toast.error('Произошла ошибка при загрузке данных');
 			}
 		},
 		mounted() {
@@ -615,6 +702,7 @@
 			grid-template-columns: max-content 1fr;
 			align-items: center;
 			grid-gap: 1rem;
+			margin: 0 0 4rem 0;
 			@media (max-width: 450px) {
 				grid-template-columns: max-content;
 				.r-status {
@@ -625,6 +713,9 @@
 			&-key {
 				font-size: 1.2rem;
 				color: rgba($black, 0.7);
+				&_name {
+					align-self: flex-start;
+				}
 			}
 			&-value {
 				font-size: 1.4rem;
@@ -632,10 +723,12 @@
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
-			&-source {
-				text-decoration: underline;
+			&-name {
 				font-weight: 700;
 				color: $primary;
+				word-wrap: break-word;
+				text-overflow: clip;
+				white-space: normal;
 			}
 
 			&-manager {
@@ -709,6 +802,11 @@
 						order: 1;
 					}
 				}
+				&-font-tool {
+					grid-column: 1/2;
+					grid-row: 2;
+					justify-self: start;
+				}
 			}
 			&-found {
 				font-size: 2.4rem;
@@ -753,6 +851,8 @@
 			font-size: 1.8rem;
 			line-height: 2.9rem;
 			color: rgba($black, 0.7);
+			grid-row: 3;
+			grid-column: 3;
 			@media screen and (max-width: 620px) {
 				font-size: 1.7rem;
 				line-height: 2.7rem;
@@ -823,6 +923,46 @@
 				font-size: 1.4rem;
 				color: $primary;
 				font-weight: 500;
+			}
+		}
+	}
+	.sources {
+		display: flex;
+		flex-direction: column;
+		&__title {
+			font-size: 2.2rem;
+			font-weight: 500;
+			margin: 0 0 2rem 0;
+		}
+		&__list {
+			display: flex;
+			flex-direction: column;
+			height: 20rem;
+			overflow-y: auto;
+		}
+	}
+	.source {
+		display: flex;
+		align-items: center;
+		margin: 0 0 1rem 0;
+		&:last-child {
+			margin: 0;
+		}
+		&__url {
+			font-size: 2rem;
+			margin: 0 1rem 0 0;
+			width: fit-content;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+		&__remove-button {
+			background-color: transparent;
+			width: fit-content;
+			height: fit-content;
+			svg {
+				width: 23px;
+				height: 24px;
 			}
 		}
 	}

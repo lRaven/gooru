@@ -1,6 +1,6 @@
 <template>
 	<section class="page-new-parser">
-		<h2 class="page-new-parser__title">Новый парсер</h2>
+		<h2 class="page-new-parser__title">Новый источник</h2>
 
 		<form class="page-new-parser__form" @submit.prevent="create_parsource">
 			<template v-if="user.role !== 'DefaultUser'">
@@ -15,12 +15,12 @@
 				></r-dropdown>
 			</template>
 
-			<p class="page-new-parser__input-description">Название парсера*</p>
+			<p class="page-new-parser__input-description">Название источника*</p>
 			<r-input
 				input_type="text"
 				v-model="new_parsource.name"
 				:value="new_parsource.name"
-				placeholder="Введите название парсера"
+				placeholder="Введите название источника"
 			></r-input>
 
 			<p class="page-new-parser__input-description">

@@ -71,6 +71,17 @@ const updateParsourceImage = async ({ parsource_id, image }) => {
 };
 
 //* parser requests
+const deleteParser = async (parserId) => {
+	try {
+		await axios.delete(`${process.env.VUE_APP_BACK_URL}/parser/${parserId}/`, {
+			headers: { Authorization: `token ${cookie.get("auth_token")}` }
+		});
+
+	} catch (error) {
+		throw { ...error };
+	}
+}
+
 const downloadFile = async ({ type }) => {
 	try {
 		const response = await fetch(
@@ -207,6 +218,7 @@ export {
 	delete_parsource,
 	updateParsourceName,
 	updateParsourceImage,
+	deleteParser,
 	downloadFile,
 	getComments,
 	createComment,

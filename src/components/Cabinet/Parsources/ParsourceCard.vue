@@ -19,13 +19,6 @@
 				id{{ parsource.user }}
 			</p>
 
-			<p
-				class="parsource-card__col parsource-card__source"
-				:title="source"
-			>
-				{{ source }}
-			</p>
-
 			<div
 				class="parsource-card__col parsource-card__name"
 				v-if="!isParsourceManagerView"
