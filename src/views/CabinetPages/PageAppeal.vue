@@ -171,7 +171,7 @@
 		gap: 1.5rem;
 		overflow-y: auto;
 		-webkit-overflow-scrolling: touch;
-		min-height: calc(100vh - 6.4rem);
+		height: calc(100vh - 6.4rem);
 		@media (max-width: 767px) {
 			padding: 2rem 1.5rem 0 1.5rem;
 		}
