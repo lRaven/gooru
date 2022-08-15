@@ -23,7 +23,6 @@
 				color="radial-gradient(35.39% 35.39% at 50% 50%, #69C5F9 0%, rgba(255, 255, 255, 0) 100%)"
 				class="r-gradient__normal"
 			></r-gradient>
-			<!-- //* -->
 
 			<div class="the-banner__content">
 				<h1 class="the-banner__title">
@@ -387,6 +386,7 @@
 
 		&__content {
 			height: fit-content;
+			width: 85rem;
 		}
 
 		&__title {
