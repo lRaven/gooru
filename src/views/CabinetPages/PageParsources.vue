@@ -305,6 +305,8 @@
 				"deleteSelectedParsources",
 				"getNotifications",
 				"getAllParsers",
+				"getAllParsources",
+				
 			]),
 
 			async getCards(params) {
@@ -358,9 +360,12 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
-
-			this.getAllParsers();
-
+			if (!this.$store.state.parsers.all_parsers.length) {
+				this.getAllParsers();
+			}
+			if(!this.$store.state.parsers.all_parsources.length) {
+				this.getAllParsources();
+			}
 			this.getCards({
 				page_number: this.page,
 				page_size: this.pagination.cards_in_page,

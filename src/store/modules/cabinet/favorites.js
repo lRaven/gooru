@@ -1,13 +1,14 @@
 import {
 	getUserFavoriteParsers,
-	createFavoriteParser,
-	deleteFavoriteParser,
+	/* createFavoriteParser,
+	deleteFavoriteParser, */
+	getComments,
 } from "@/api/parser";
 
 const state = () => ({ favorites: [] });
 
 const getters = {
-	favoriteParsers: (state) => (parsourceId) => {
+	/* favoriteParsers: (state) => (parsourceId) => {
 		const desiredParsource = state.favorites.find(
 			(favoriteParsource) => favoriteParsource.id === parsourceId
 		);
@@ -15,27 +16,12 @@ const getters = {
 			return desiredParsource.parsers;
 		}
 		return [];
-	},
+	}, */
 };
 
 const mutations = {
 	SET_FAVORITES: (state, payload) => (state.favorites = payload),
-	SET_UPDATED_FAVORITES: (state, payload) => {
-		const favoritesCopy = JSON.parse(JSON.stringify(state.favorites));
-		const parsourceToUpdate = favoritesCopy.find(
-			(parsource) => parsource.id === payload.parsource
-		);
-
-		const updatedParsers = parsourceToUpdate.parsers.map((parser) => {
-			if (parser.id === payload.id) {
-				return payload;
-			}
-			return parser;
-		});
-		parsourceToUpdate.parsers = updatedParsers;
-
-		state.favorites = favoritesCopy;
-	},
+	
 	CLEAR_FAVORITES: (state) => (state.favorites = []),
 
 	CLEAR_FAVORITES_STATE: (state) => state.favorites = [],
@@ -44,34 +30,17 @@ const mutations = {
 const actions = {
 	getFavoriteParsers: async (context) => {
 		try {
-			/* в этом запросе нам приходит массив объектов вида
-			{
-				"id": 1,
-				"user": 3,
-				"parser": 1
-			} 
-			id - идентификатор записи в таблице избранного
-			*/
-			const favoriteParserIds = await getUserFavoriteParsers();
-			// ниже мы будем проходить по массиву парсеров и находить там объекты
-			// по совпадающим id, чтобы сформировать
-			//  новый массив избранных парсеров, но уже с данными
-			if (!context.rootState.parsers.all_parsers.length) {
-				await context.dispatch("getAllParsers", null, { root: true });
-			}
-			const parsersCopy = JSON.parse(
-				JSON.stringify(context.rootState.parsers.all_parsers)
-			);
-			let favoriteParsers = favoriteParserIds.map((parserIdData) => {
-				const favoriteParser = parsersCopy.find(
-					(parser) => parser.id === parserIdData.parser
-				);
-				if (favoriteParser) {
-					return { ...favoriteParser, favoriteId: parserIdData.id };
+			const favoriteItems = await getUserFavoriteParsers();
+			const comments = await getComments();
+			console.log(comments)
+			const favoriteParsers = favoriteItems.map( ({ parser, id }) => {
+				const comment = comments.find( comment => comment.parser === parser.id);
+				if (comment) {
+					return { ...parser, favoriteId: id, comment: { text: comment.comment, id: comment.id } };
 				}
+				return { ...parser, favoriteId: id, comment: { text: '', id: null} };
 			});
-			favoriteParsers = favoriteParsers.filter(favoriteParser => favoriteParser !== undefined);
-			context.dispatch("getFavoriteParsources", favoriteParsers);
+			context.commit('SET_FAVORITES', favoriteParsers);
 		} catch (err) {
 			throw new Error(err);
 		}
@@ -115,7 +84,7 @@ const actions = {
 			throw new Error(err);
 		}
 	},
-	updateFavorites: async (
+	/* updateFavorites: async (
 		context,
 		{ parserToUpdate, userId, isFavorite }
 	) => {
@@ -172,7 +141,7 @@ const actions = {
 		} catch (error) {
 			throw new Error(error);
 		}
-	},
+	}, */
 };
 
 export default {

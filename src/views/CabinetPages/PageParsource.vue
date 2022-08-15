@@ -441,7 +441,7 @@
 
 			parsers() {
 				if (this.selectedListFilter === "favorites") {
-					return this.favoriteParsers(this.parsource_id);
+					return this.favoriteParsers;
 				} else if (this.selectedListFilter === "withComments") {
 					return this.parsersWithComments;
 				} else {
@@ -512,6 +512,7 @@
 			...mapActions([
 				"getParsers",
 				"getParsource",
+				"getAllParsers",
 				"getAllParsources",
 				"getAllUsers",
 				"getUsersManagers",
@@ -628,10 +629,14 @@
 		created() {
 			this.SET_TAB("parsers");
 			try {
-				this.sourcesInParsource(this.parsource_id);
+				if (!this.$store.state.parsers.all_parsers.length) {
+					console.log('get all parsers')
+					this.getAllParsers();
+				}
 				this.isMinimizedRightPanel = this.documentWidth < 1023;
 				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 				this.parsers_notifications.forEach((notification) => {
+					
 					const id = +notification.url.split("/")[2];
 
 					const bool = this.cards.find((parser) => parser.id === id);

@@ -181,13 +181,13 @@ const getUserFavoriteParsers = async () => {
 	}
 };
 
-const createFavoriteParser = async ({ user, parser }) => {
+const createFavoriteParser = async (userId, parserId) => {
 	try {
 		const { data } = await axios.post(
 			`${store.state.baseURL}/usersfavorite/`,
 			{
-				user,
-				parser,
+				user: userId,
+				parser: parserId,
 			},
 			{
 				headers: {
@@ -201,7 +201,7 @@ const createFavoriteParser = async ({ user, parser }) => {
 	}
 };
 
-const deleteFavoriteParser = async ({ id }) => {
+const deleteFavoriteParser = async (id) => {
 	try {
 		await axios.delete(`${store.state.baseURL}/usersfavorite/${id}`, {
 			headers: {

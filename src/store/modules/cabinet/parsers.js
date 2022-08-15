@@ -2,7 +2,14 @@ import cookie from "vue-cookies";
 import axios from "axios";
 import store from "@/store";
 import { multiaction_delete } from "@/api/multiaction_delete";
-import { getComments, updateParsourceName, deleteParser } from "@/api/parser";
+import {
+	getComments,
+	updateParsourceName,
+	deleteParser,
+	getUserFavoriteParsers,
+	createFavoriteParser,
+	deleteFavoriteParser,
+} from "@/api/parser";
 
 const state = () => ({
 	parsources: [],
@@ -22,6 +29,20 @@ const getters = {
 				return parser.comment.id !== null;
 			}) || []
 		);
+	},
+	favoriteParsers: (state) => {
+		return (
+			state.parsers.filter((parser) => parser.favoriteId !== null) || []
+		);
+	},
+	favoriteParsources: (state) => {
+		const favoriteParsources = state.all_parsources.filter( parsource => {
+			const matchedParser = state.all_parsers.find( parser => parser.parsource === parsource.id && parser.favoriteId);
+			if (matchedParser) {
+				return parsource;
+			}
+		});
+		return favoriteParsources || [];
 	},
 	sourcesInParsource: (state) => (parsource) => {
 		const allParsersInChoosenParsource = state.all_parsers.filter(
@@ -245,40 +266,66 @@ const actions = {
 			);
 			if (args.nextPage) {
 				const comments = await getComments();
+				const favoriteItems = await getUserFavoriteParsers();
 				const parsersList = response.data.results.map((parser) => {
+					const isFavoriteItem = favoriteItems.find(
+						(item) => item.parser.id === parser.id
+					);
 					const matchedComment = comments.find(
 						(commentItem) => commentItem.parser === parser.id
 					);
 					if (matchedComment) {
 						return {
 							...parser,
+							favoriteId: isFavoriteItem
+								? isFavoriteItem.id
+								: null,
 							comment: {
 								text: matchedComment.comment,
 								id: matchedComment.id,
 							},
 						};
 					} else {
-						return { ...parser, comment: { text: "", id: null } };
+						return {
+							...parser,
+							comment: { text: "", id: null },
+							favoriteId: isFavoriteItem
+								? isFavoriteItem.id
+								: null,
+						};
 					}
 				});
 				return parsersList;
 			}
 			if (response.status === 200) {
 				const comments = await getComments();
+				const favoriteItems = await getUserFavoriteParsers();
 				const parsersList = response.data.results.map((parser) => {
+					const isFavoriteItem = favoriteItems.find(
+						(item) => item.parser.id === parser.id
+					);
 					const matchedComment = comments.find(
 						(commentItem) => commentItem.parser === parser.id
 					);
 					if (matchedComment) {
 						return {
 							...parser,
+							favoriteId: isFavoriteItem
+								? isFavoriteItem.id
+								: null,
 							comment: {
 								text: matchedComment.comment,
 								id: matchedComment.id,
 							},
 						};
 					} else {
-						return { ...parser, comment: { text: "", id: null } };
+						return {
+							...parser,
+							comment: { text: "", id: null },
+							favoriteId: isFavoriteItem
+								? isFavoriteItem.id
+								: null,
+						};
 					}
 				});
 				parsersList.reverse();
@@ -311,23 +358,36 @@ const actions = {
 					},
 				}
 			);
-			console.log(response.data.results.length);
+
 			if (response.status === 200) {
 				const comments = await getComments();
+				const favoriteItems = await getUserFavoriteParsers();
 				const parsersList = response.data.results.map((parser) => {
+					const isFavoriteItem = favoriteItems.find(
+						(item) => item.parser.id === parser.id
+					);
 					const matchedComment = comments.find(
 						(commentItem) => commentItem.parser === parser.id
 					);
 					if (matchedComment) {
 						return {
 							...parser,
+							favoriteId: isFavoriteItem
+								? isFavoriteItem.id
+								: null,
 							comment: {
 								text: matchedComment.comment,
 								id: matchedComment.id,
 							},
 						};
 					} else {
-						return { ...parser, comment: { text: "", id: null } };
+						return {
+							...parser,
+							comment: { text: "", id: null },
+							favoriteId: isFavoriteItem
+								? isFavoriteItem.id
+								: null,
+						};
 					}
 				});
 				parsersList.reverse();
@@ -336,6 +396,36 @@ const actions = {
 			}
 		} catch (err) {
 			throw new Error(err);
+		}
+	},
+
+	updateFavoriteParser: async (
+		context,
+		{ parserToUpdate, userId, favoriteId }
+	) => {
+		if (favoriteId) {
+			await deleteFavoriteParser(favoriteId);
+			context.commit("SET_UPDATED_PARSERS", {
+				...parserToUpdate,
+				favoriteId: null,
+			});
+			context.commit("SET_UPDATED_ALL_PARSERS", {
+				...parserToUpdate,
+				favoriteId: null,
+			});
+		} else {
+			const newFavorite = await createFavoriteParser(
+				userId,
+				parserToUpdate.id
+			);
+			context.commit("SET_UPDATED_PARSERS", {
+				...parserToUpdate,
+				favoriteId: newFavorite.id,
+			});
+			context.commit("SET_UPDATED_ALL_PARSERS", {
+				...parserToUpdate,
+				favoriteId: newFavorite.id,
+			});
 		}
 	},
 

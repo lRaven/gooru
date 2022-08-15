@@ -21,8 +21,10 @@
 					class="parser-content__text"
 					:class="{
 						cropped: isCroppedText,
-						'parser-content__text_size_small': fontSize === 'smallSize',
-						'parser-content__text_size_medium': fontSize === 'mediumSize',
+						'parser-content__text_size_small':
+							fontSize === 'smallSize',
+						'parser-content__text_size_medium':
+							fontSize === 'mediumSize',
 						'parser-content__text_size_big': fontSize === 'bigSize',
 					}"
 					ref="textBlock"
@@ -128,7 +130,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
-					@click.stop="updateFavoriteParser"
+					@click.stop="updateFavoriteState"
 					v-else
 				>
 					<path
@@ -374,7 +376,7 @@
 		<r-confirm-popup
 			v-if="isDeleteFavoritePopupVisible"
 			:text="`Вы действительно хотите удалить «${this.croppedTitle}» из избранного?`"
-			@action_confirm="updateFavoriteParser"
+			@action_confirm="updateFavoriteState"
 			@close_popup="isDeleteFavoritePopupVisible = false"
 		/>
 	</transition>
@@ -436,7 +438,6 @@
 		},
 		computed: {
 			...mapState({
-				favorites: (state) => state.favorites.favorites,
 				user: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
 			}),
@@ -454,17 +455,7 @@
 			},
 
 			isFavorited() {
-				let find = false;
-				this.favorites.forEach((parsource) => {
-					parsource.parsers.forEach((parser) => {
-						if (parser.id === this.parser.id) {
-							find = true;
-							this.favoriteId = parser.favoriteId;
-						}
-					});
-				});
-
-				return find;
+				return this.parserProp.favoriteId;
 			},
 			sharedContentTitle() {
 				return this.parser.comment.text
@@ -497,7 +488,6 @@
 				isTextOverFlow: false,
 
 				parser: JSON.parse(JSON.stringify(this.parserProp)),
-				favoriteId: null,
 
 				comment: this.parserProp.comment.text,
 				downloadFormatFiles: { excel: false, csv: false },
@@ -505,7 +495,7 @@
 		},
 
 		methods: {
-			...mapActions(["getFavoriteParsers", "updateFavorites"]),
+			...mapActions(["getFavoriteParsers", "updateFavoriteParser"]),
 			...mapMutations([
 				"SET_UPDATED_ALL_PARSERS",
 				"SET_UPDATED_PARSERS",
@@ -540,15 +530,12 @@
 			openConfirmPopup() {
 				this.isDeleteFavoritePopupVisible = true;
 			},
-			async updateFavoriteParser() {
+			async updateFavoriteState() {
 				try {
-					await this.updateFavorites({
-						parserToUpdate: {
-							...this.parser,
-							favoriteId: this.favoriteId,
-						},
+					await this.updateFavoriteParser({
+						parserToUpdate: {...this.parser},
 						userId: this.user.id,
-						isFavorite: this.isFavorited,
+						favoriteId: this.isFavorited,
 					});
 
 					if (this.isFavorited) {
@@ -602,14 +589,8 @@
 						this.parser.comment.text = comment;
 						this.isEditComment = false;
 					}
-					this.SET_UPDATED_PARSERS(this.parser);
-					this.SET_UPDATED_ALL_PARSERS(this.parser);
-					if (this.isFavorited) {
-						this.SET_UPDATED_FAVORITES({
-							...this.parser,
-							favoriteId: this.favoriteId,
-						});
-					}
+					this.SET_UPDATED_PARSERS({...this.parser});
+					this.SET_UPDATED_ALL_PARSERS({...this.parser});
 				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
 					throw new Error(err);
@@ -619,14 +600,8 @@
 				try {
 					await deleteComment({ id: this.parser.comment.id });
 					this.parser.comment = { text: "", id: null };
-					this.SET_UPDATED_PARSERS(this.parser);
-					this.SET_UPDATED_ALL_PARSERS(this.parser);
-					if (this.isFavorited) {
-						this.SET_UPDATED_FAVORITES({
-							...this.parser,
-							favoriteId: this.favoriteId,
-						});
-					}
+					this.SET_UPDATED_PARSERS({...this.parser});
+					this.SET_UPDATED_ALL_PARSERS({...this.parser});
 					this.comment = "";
 				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
@@ -682,9 +657,6 @@
 		},
 
 		directives: { ClickAway: directive },
-		created() {
-			this.getFavoriteParsers();
-		},
 		setup() {
 			const toast = useToast();
 			return { toast };
@@ -775,7 +747,7 @@
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
 			word-break: break-word;
-			&_size{
+			&_size {
 				&_small {
 					font-size: 1.6rem;
 				}
