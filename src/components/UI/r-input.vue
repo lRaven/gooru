@@ -8,7 +8,7 @@
 				error: error_message !== null,
 			}"
 			:type="input_type_changed"
-			:value="value"
+			:value="modelValue"
 			:placeholder="placeholder"
 			:disabled="isDisabled"
 			@blur="$emit('blur', $event.target.name)"
@@ -58,8 +58,8 @@
 		name: "r-input",
 		emits: {
 			blur: null,
-			'update:Valid': null,
-			'update:modelValue': null,
+			"update:Valid": null,
+			"update:modelValue": null,
 		},
 		props: {
 			isDisabled: {
@@ -76,7 +76,7 @@
 				default: "text",
 			},
 			placeholder: String,
-			value: String,
+			modelValue: String,
 			error_message: {
 				value: [null, String],
 				default: null,

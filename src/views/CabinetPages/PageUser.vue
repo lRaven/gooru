@@ -18,20 +18,17 @@
 				<r-input
 					:isDisabled="true"
 					:isTransparent="true"
-					:value="`#id${user.id}`"
 					:title="`#id${user.id}`"
 				></r-input>
 				<r-input
 					:isDisabled="isFormDisabled"
 					:isTransparent="isFormDisabled"
-					:value="user_data.phone_number"
 					v-model="user_data.phone_number"
 					:title="user_data.phone_number"
 				></r-input>
 				<r-input
 					:isDisabled="isFormDisabled"
 					:isTransparent="isFormDisabled"
-					:value="user_data.email"
 					v-model="user_data.email"
 					:title="user_data.email"
 				></r-input>

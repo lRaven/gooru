@@ -24,6 +24,6 @@ app.use(VueSocialSharing)
 app.use(Toast, {
 	position: POSITION.BOTTOM_RIGHT,
 	newestOnTop: false,
-});
+})
 
 app.mount('#app')

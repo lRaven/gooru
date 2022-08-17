@@ -4,7 +4,7 @@
 		class="r-textarea"
 		:class="{ bordered: bordered }"
 		:placeholder="placeholder"
-		:value="value"
+		:value="modelValue"
 		@input="this.$emit('update:modelValue', $event.target.value)"
 	></textarea>
 </template>
@@ -13,7 +13,7 @@
 	export default {
 		name: "rTextarea",
 		props: {
-			value: String,
+			modelValue: String,
 			placeholder: {
 				value: String,
 				default: "Placeholder",

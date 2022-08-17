@@ -51,14 +51,12 @@
 					<p class="page-profile__form-input-description">Имя</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
-						:value="personal_data.first_name"
 						v-model="personal_data.first_name"
 					></r-input>
 
 					<p class="page-profile__form-input-description">Фамилия</p>
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
-						:value="personal_data.last_name"
 						v-model="personal_data.last_name"
 					></r-input>
 
@@ -66,7 +64,6 @@
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
 						input_type="tel"
-						:value="personal_data.phone_number"
 						v-model="personal_data.phone_number"
 					></r-input>
 
@@ -74,7 +71,6 @@
 					<r-input
 						:isDisabled="isPersonalDataFormDisabled"
 						input_type="tel"
-						:value="personal_data.email"
 						v-model="personal_data.email"
 					></r-input>
 				</fieldset>
@@ -101,7 +97,6 @@
 					<r-input
 						:isDisabled="isPasswordsFormDisabled"
 						input_type="password"
-						:value="passwords.old_password"
 						v-model="passwords.old_password"
 					></r-input>
 
@@ -111,7 +106,6 @@
 					<r-input
 						:isDisabled="isPasswordsFormDisabled"
 						input_type="password"
-						:value="passwords.password"
 						v-model="passwords.password"
 					></r-input>
 				</fieldset>

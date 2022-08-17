@@ -19,7 +19,6 @@
 			<r-input
 				input_type="text"
 				v-model="new_parsource.name"
-				:value="new_parsource.name"
 				placeholder="Введите название парсера"
 			></r-input>
 
@@ -29,7 +28,6 @@
 			<r-input
 				input_type="url"
 				v-model="new_parsource.url"
-				:value="new_parsource.url"
 				placeholder="https://"
 			></r-input>
 
@@ -39,7 +37,6 @@
 			<r-input
 				input_type="text"
 				v-model="new_parsource.parse_fields"
-				:value="new_parsource.parse_fields"
 				placeholder="Укажите категорию сбора информации "
 			></r-input>
 
@@ -49,7 +46,6 @@
 			<r-textarea
 				placeholder="Введите требования"
 				v-model="new_parsource.description"
-				:value="new_parsource.description"
 			></r-textarea>
 
 			<r-button

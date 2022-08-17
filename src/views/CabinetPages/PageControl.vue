@@ -30,7 +30,6 @@
 									Название тарифа
 								</p>
 								<r-input
-									:value="selectedRate.name"
 									v-model="selectedRate.name"
 									placeholder="Введите название тарифа"
 								/>
@@ -40,7 +39,6 @@
 								</p>
 								<r-input
 									v-if="selectedRate.price !== null"
-									:value="selectedRate.price.toString()"
 									v-model="selectedRate.price"
 									placeholder="Введите стоимость в месяц"
 								/>
@@ -51,7 +49,6 @@
 								<r-input
 									v-for="checkItem in selectedRate.checkList"
 									:key="checkItem.id"
-									:value="checkItem.text"
 									v-model="checkItem.text"
 									placeholder="Введите описание тарифа"
 								/>

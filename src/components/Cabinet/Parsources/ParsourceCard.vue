@@ -72,7 +72,6 @@
 						@keyup.enter="handleSubmitEditName"
 						class="parsource-card__edit-name"
 						v-model="editedParsourceName"
-						:value="editedParsourceName"
 					/>
 					<svg
 						class="parsource-card__close-button"

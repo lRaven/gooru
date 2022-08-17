@@ -54,7 +54,6 @@
 							placeholder="E-mail"
 							v-model="user_data.email.value"
 							v-model:Valid="user_data.email.valid"
-							:value="user_data.email.value"
 						></r-input>
 					</div>
 
@@ -76,7 +75,6 @@
 								class="brief-price__contact-input"
 								placeholder="Введите пароль"
 								v-model="user_data.password"
-								:value="user_data.password"
 							></r-input>
 						</div>
 					</transition>

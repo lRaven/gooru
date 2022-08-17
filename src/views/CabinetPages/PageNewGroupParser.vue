@@ -25,7 +25,6 @@
 			<r-input
 				input_type="text"
 				v-model="new_parsource.name"
-				:value="new_parsource.name"
 				placeholder="Введите название парсера"
 			></r-input>
 
@@ -35,7 +34,6 @@
 			<template v-for="(url, index) in new_parsource.urls" :key="url.id">
 				<r-input
 					v-model="url.text"
-					:value="url.text"
 					input_type="url"
 					placeholder="https://"
 					class="r-input__url"
@@ -94,7 +92,6 @@
 			<r-input
 				input_type="text"
 				v-model="new_parsource.parse_fields"
-				:value="new_parsource.parse_fields"
 				placeholder="Укажите категорию сбора информации"
 			></r-input>
 
@@ -104,7 +101,6 @@
 			<r-textarea
 				placeholder="Введите требования"
 				v-model="new_parsource.description"
-				:value="new_parsource.description"
 			></r-textarea>
 
 			<r-button

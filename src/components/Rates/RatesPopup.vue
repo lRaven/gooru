@@ -83,7 +83,6 @@
 						class="rates-popup__user-credentials-form__input rates-popup__user-credentials-form_area_name-input"
 						v-model="user_data.email.value"
 						v-model:Valid="user_data.email.valid"
-						:value="user_data.email.value"
 						input_type="email"
 					/>
 
@@ -95,7 +94,6 @@
 					<r-input
 						class="rates-popup__user-credentials-form__input rates-popup__user-credentials-form_area_password-input"
 						v-model="user_data.password"
-						:value="user_data.password"
 						input_type="password"
 					/>
 

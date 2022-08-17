@@ -4,7 +4,6 @@
 			<r-textarea
 				placeholder="Написать сообщение..."
 				v-model="message"
-				:value="message"
 				:bordered="false"
 				@keydown.enter.prevent.exact="send_message"
 				@keydown.ctrl.enter.prevent.exact="new_line"

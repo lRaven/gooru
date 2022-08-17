@@ -23,7 +23,6 @@
 						class="page-login__form-input"
 						v-model="user_data.email.value"
 						v-model:Valid="user_data.email.valid"
-						:value="user_data.email.value"
 						input_type="email"
 						:error_message="user_data.email.error_message"
 					></r-input>
@@ -32,7 +31,6 @@
 					<r-input
 						class="page-login__form-input"
 						v-model="user_data.password.value"
-						:value="user_data.password.value"
 						input_type="password"
 						:error_message="user_data.password.error_message"
 					></r-input>
@@ -73,7 +71,6 @@
 							input_type="email"
 							placeholder="Введите email"
 							v-model="email_for_password_reset"
-							:value="email_for_password_reset"
 						></r-input>
 						<r-button text="Отправить"></r-button>
 					</form>
@@ -101,7 +98,6 @@
 							input_type="password"
 							placeholder="Введите новый пароль"
 							v-model="change_password_data.new_password"
-							:value="change_password_data.new_password"
 						></r-input>
 						<p class="page-login__modal-form-description">
 							Подтверждение пароля:
@@ -110,7 +106,6 @@
 							input_type="password"
 							placeholder="Введите его ещё раз"
 							v-model="change_password_data.new_password_confirm"
-							:value="change_password_data.new_password_confirm"
 						></r-input>
 						<r-button
 							text="Отправить"

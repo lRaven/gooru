@@ -28,7 +28,6 @@
 						class="page-registration__form-input"
 						v-model="user_data.email.value"
 						v-model:Valid="user_data.email.valid"
-						:value="user_data.email.value"
 						input_type="email"
 						:error_message="user_data.email.error_message"
 					></r-input>
@@ -41,7 +40,6 @@
 						@blur="markInput"
 						inputName="password"
 						v-model="user_data.password.value"
-						:value="user_data.password.value"
 						input_type="password"
 						:error_message="user_data.password.error_message"
 					></r-input>
@@ -56,7 +54,6 @@
 						@blur="markInput"
 						inputName="reapetedPassword"
 						v-model="user_data.reapetedPassword.value"
-						:value="user_data.reapetedPassword.value"
 						input_type="password"
 					></r-input>
 					<span
