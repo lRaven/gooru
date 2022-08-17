@@ -16,12 +16,28 @@
 					class="the-favorites__right-panel-social"
 					@click.capture="handleClickSharedIcon($event)"
 				>
-					<ShareNetwork
+					<social-share-icon
+						:shareContentList="selectedParsers"
 						network="odnoklassniki"
-						:url="shareContent.url"
-						:title="shareContent.title"
-						:description="shareContent.description"
-						:media="shareContent.image"
+						@complete-sharing="handleCompleteSharing"
+					></social-share-icon>
+
+					<social-share-icon
+						:shareContentList="selectedParsers"
+						network="vk"
+						@complete-sharing="handleCompleteSharing"
+					></social-share-icon>
+
+					<social-share-icon
+						:shareContentList="selectedParsers"
+						network="telegram"
+						@complete-sharing="handleCompleteSharing"
+					></social-share-icon>
+					<!-- <ShareNetwork
+						network="odnoklassniki"
+						:url="sharedContentUrl"
+						:title="sharedContentTitle"
+						:description="sharedContentDescription"
 						@close="callbackCloseSharedIcon"
 					>
 						<img
@@ -33,10 +49,9 @@
 
 					<ShareNetwork
 						network="vk"
-						:url="shareContent.url"
-						:title="shareContent.title"
-						:description="shareContent.description"
-						:media="shareContent.image"
+						:url="sharedContentUrl"
+						:title="sharedContentTitle"
+						:description="sharedContentDescription"
 						@close="callbackCloseSharedIcon"
 					>
 						<img src="/img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
@@ -44,10 +59,9 @@
 
 					<ShareNetwork
 						network="telegram"
-						:url="shareContent.url"
-						:title="shareContent.title"
-						:description="shareContent.description"
-						:media="shareContent.image"
+						:url="sharedContentUrl"
+						:title="sharedContentTitle"
+						:description="sharedContentDescription"
 						@close="callbackCloseSharedIcon"
 					>
 						<img
@@ -55,7 +69,7 @@
 							alt="tg"
 							ref="telegram"
 						/>
-					</ShareNetwork>
+					</ShareNetwork> -->
 				</div>
 				<p class="the-favorites__right-panel-alert-message">
 					{{ alertMessage }}
@@ -111,7 +125,12 @@
 	import { multiaction_delete } from "@/api/multiaction_delete";
 	import { downloadFile } from "@/api/parser";
 
+	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
+
 	export default {
+		emits: {
+			"clean-selected-parser-list": null,
+		},
 		props: {
 			totalSelected: {
 				type: [Number, String],
@@ -120,9 +139,12 @@
 			selectedParsers: {
 				type: Array,
 				default() {
-					return [];
+					return [] || undefined;
 				},
 			},
+		},
+		components: {
+			SocialShareIcon,
 		},
 		data: () => ({
 			confirmRemoveValue: false,
@@ -147,9 +169,24 @@
 		}),
 		computed: {
 			...mapState({
-				favorites: (state) => state.favorites.favorites,
 				documentWidth: (state) => state.document_width,
 			}),
+			sharedContentTitle() {
+				return this.currentParser?.comment.id
+					? this.currentParser.comment.text
+					: this.currentParser?.title;
+			},
+			sharedContentDescription() {
+				return this.currentParser?.comment.id
+					? ""
+					: this.currentParser?.article;
+			},
+			sharedContentUrl() {
+				return this.currentParser?.url;
+			},
+			currentParser() {
+				return this.selectedParsers[this.sharedPointer];
+			},
 			...mapActions(["getFavoriteParsers"]),
 			isDisabledDownloadButton() {
 				return (
@@ -167,7 +204,7 @@
 				if (this.totalSelected && this.alertMessage) {
 					this.alertMessage = "";
 				}
-				if (this.selectedParsers.length) {
+				/* if (this.selectedParsers.length) {
 					const parserId = this.selectedParsers[this.sharedPointer];
 					let currentParser = null;
 					this.favorites.forEach(({ parsers }) => {
@@ -180,10 +217,13 @@
 							this.shareContent.description = currentParser.comment.text ? '' : currentParser.article;
 						}
 					});
-				}
+				} */
 			},
 		},
 		methods: {
+			handleCompleteSharing() {
+				this.$emit("clean-selected-parser-list");
+			},
 			handleClickSharedIcon($event) {
 				if (this.totalSelected === 0) {
 					this.alertMessage = "Необходимо выбрать новость!";
@@ -201,8 +241,13 @@
 						);
 						if (currentParser) {
 							this.shareContent.url = currentParser.url;
-							this.shareContent.title = currentParser.comment.text ? currentParser.comment.text : currentParser.title;
-							this.shareContent.description = currentParser.comment.text ? '' : currentParser.article;
+							this.shareContent.title = currentParser.comment.text
+								? currentParser.comment.text
+								: currentParser.title;
+							this.shareContent.description = currentParser
+								.comment.text
+								? ""
+								: currentParser.article;
 						}
 					});
 
@@ -219,8 +264,13 @@
 						);
 						if (currentParser) {
 							this.shareContent.url = currentParser.url;
-							this.shareContent.title = currentParser.comment.text ? currentParser.comment.text : currentParser.title;
-							this.shareContent.description = currentParser.comment.text ? '' : currentParser.article;
+							this.shareContent.title = currentParser.comment.text
+								? currentParser.comment.text
+								: currentParser.title;
+							this.shareContent.description = currentParser
+								.comment.text
+								? ""
+								: currentParser.article;
 						}
 					});
 					console.log("finish", url);

@@ -10,7 +10,7 @@
 				<r-checkbox
 					:class="{ alignicons: isTextOverFlow }"
 					@update:modelValue="handleChangeSelectItem"
-					:modelValue="isSelected"
+					v-model="isSelected"
 					:checked="checked"
 				></r-checkbox>
 
@@ -527,7 +527,7 @@
 			handleChangeSelectItem(value) {
 				console.log("parser", this.parser.id, value);
 				this.$emit("change-selected", {
-					id: this.parser.id,
+					...this.parser,
 					isSelect: value,
 				});
 				this.isSelected = value;

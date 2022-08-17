@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import PageHome from '@/views/PageHome'
+import PageShare from "@/views/PageShare";
 
 import PageLogin from '@/views/PageLogin'
 import PageRegistration from '@/views/PageRegistration'
@@ -36,6 +37,16 @@ const routes = [
 		path: '/',
 		name: 'home',
 		component: PageHome,
+
+		meta: {
+			title: 'Gooru',
+			requiresAuth: false,
+		}
+	},
+	{
+		path: '/share/:id',
+		name: 'share',
+		component: PageShare,
 
 		meta: {
 			title: 'Gooru',

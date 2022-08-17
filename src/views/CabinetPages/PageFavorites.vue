@@ -129,6 +129,7 @@
 						v-for="favoriteItem in favoriteParsers"
 						:key="favoriteItem.id"
 						:parserProp="favoriteItem"
+						:checked="selectedParsers.includes(favoriteItem.id)"
 						@change-selected="updateSelectedParser"
 					></favorite-content-item>
 				</div>
@@ -155,6 +156,7 @@
 			<the-favorite-right-panel
 				:totalSelected="selectedParsers.length"
 				:selectedParsers="selectedParsers"
+				@clean-selected-parser-list="selectedParsers = []"
 			></the-favorite-right-panel>
 		</right-panel>
 	</section>
@@ -181,8 +183,8 @@
 		watch: {
 			favoriteParsers() {
 				this.isFavoritesLoaded = true;
-				this.selectedParsers = this.selectedParsers.filter( parserId => {
-					const parserOnPage = this.favoriteParsers.find( parser => parser.id === parserId);
+				this.selectedParsers = this.selectedParsers.filter( selectedParser => {
+					const parserOnPage = this.favoriteParsers.find( parser => parser.id === selectedParser.id);
 					if (!parserOnPage) {
 						return false;
 					}
@@ -242,9 +244,9 @@
 			},
 			updateSelectedParser(triggerdParser) {
 				if (triggerdParser.isSelect) {
-					this.selectedParsers.push(triggerdParser.id);
+					this.selectedParsers.push(triggerdParser);
 				} else {
-					this.selectedParsers = this.selectedParsers.filter( parserId => parserId!== triggerdParser.id);
+					this.selectedParsers = this.selectedParsers.filter( parser => parser.id!== triggerdParser.id);
 				}
 			},
 		},

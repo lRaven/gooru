@@ -1,6 +1,6 @@
 <template>
 	<section class="page-new-group-parser">
-		<h2 class="page-new-group-parser__title">Новая группа парсеров</h2>
+		<h2 class="page-new-group-parser__title">Новая группа источников</h2>
 
 		<form
 			class="page-new-group-parser__form"
