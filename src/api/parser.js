@@ -84,6 +84,21 @@ const getParser = async (id) => {
 	}
 };
 
+const editParserData = async ({ id, updatedData }) => {
+	try {
+		const { data:updatedParserData } = await axios.patch(`${process.env.VUE_APP_BACK_URL}/parser/${id}/`, {
+			...updatedData,
+		}, {
+			headers: {
+				Authorization: `token ${cookie.get('auth_token')}`,
+			},
+		});
+		return updatedParserData;
+	} catch (error) {
+		throw {...error};
+	}
+}
+
 const deleteParser = async (parserId) => {
 	try {
 		await axios.delete(`${process.env.VUE_APP_BACK_URL}/parser/${parserId}/`, {
@@ -232,6 +247,7 @@ export {
 	updateParsourceName,
 	updateParsourceImage,
 	getParser,
+	editParserData,
 	deleteParser,
 	downloadFile,
 	getComments,

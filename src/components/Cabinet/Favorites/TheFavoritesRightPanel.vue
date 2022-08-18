@@ -33,43 +33,6 @@
 						network="telegram"
 						@complete-sharing="handleCompleteSharing"
 					></social-share-icon>
-					<!-- <ShareNetwork
-						network="odnoklassniki"
-						:url="sharedContentUrl"
-						:title="sharedContentTitle"
-						:description="sharedContentDescription"
-						@close="callbackCloseSharedIcon"
-					>
-						<img
-							src="/img/icon/cabinet/ok.svg"
-							alt="ok"
-							ref="odnoklassniki"
-						/>
-					</ShareNetwork>
-
-					<ShareNetwork
-						network="vk"
-						:url="sharedContentUrl"
-						:title="sharedContentTitle"
-						:description="sharedContentDescription"
-						@close="callbackCloseSharedIcon"
-					>
-						<img src="/img/icon/cabinet/vk.svg" alt="vk" ref="vk" />
-					</ShareNetwork>
-
-					<ShareNetwork
-						network="telegram"
-						:url="sharedContentUrl"
-						:title="sharedContentTitle"
-						:description="sharedContentDescription"
-						@close="callbackCloseSharedIcon"
-					>
-						<img
-							src="/img/icon/cabinet/tg.svg"
-							alt="tg"
-							ref="telegram"
-						/>
-					</ShareNetwork> -->
 				</div>
 				<p class="the-favorites__right-panel-alert-message">
 					{{ alertMessage }}
@@ -204,20 +167,6 @@
 				if (this.totalSelected && this.alertMessage) {
 					this.alertMessage = "";
 				}
-				/* if (this.selectedParsers.length) {
-					const parserId = this.selectedParsers[this.sharedPointer];
-					let currentParser = null;
-					this.favorites.forEach(({ parsers }) => {
-						currentParser = parsers.find(
-							(parser) => parser.id === parserId
-						);
-						if (currentParser) {
-							this.shareContent.url = currentParser.url;
-							this.shareContent.title = currentParser.comment.text ? currentParser.comment.text : currentParser.title;
-							this.shareContent.description = currentParser.comment.text ? '' : currentParser.article;
-						}
-					});
-				} */
 			},
 		},
 		methods: {

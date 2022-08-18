@@ -244,14 +244,6 @@
 						>
 							{{ parsource_name }}
 						</p>
-						<!-- <a
-							:href="parsource.data_source"
-							target="_blank"
-							class="page-parsource__info-value page-parsource__info-source"
-							:title="parsource.data_source"
-						>
-							{{ parsource.name }}
-						</a> -->
 
 						<p
 							class="page-parsource__info-key"

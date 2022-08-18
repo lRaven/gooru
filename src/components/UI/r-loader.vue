@@ -1,11 +1,11 @@
 <template>
 	<div class="r-loader">
-		<svg class="r-loader__icon" viewBox="25 25 50 50">
+		<svg class="r-loader__icon" :viewBox="`25 25 ${width} ${height}`">
 			<circle
 				class="r-loader__path"
-				cx="50"
-				cy="50"
-				r="20"
+				:cx="width"
+				:cy="height"
+				:r="radius"
 				fill="none"
 				stroke="#5960c7"
 				stroke-width="2"
@@ -17,6 +17,20 @@
 <script>
 	export default {
 		name: "r-loader",
+		props: {
+			width: {
+				type: String,
+				default: "50",
+			},
+			height: {
+				type: String,
+				default: "50",
+			},
+			radius: {
+				type: String,
+				default: "20",
+			}
+		}
 	};
 </script>
 
