@@ -461,6 +461,9 @@
 			fontSize: { type: String, required: true },
 		},
 		watch: {
+			fontSize() {
+				this.setArticleAreaHeigth(this.isArticleEdit);
+			},
 			isMessagesOpen() {
 				if (this.isMessagesOpen === true) {
 					(this.isShareOpen = false), (this.isDownloadOpen = false);
@@ -571,10 +574,13 @@
 				this.setArticleAreaHeigth(this.isArticleEdit);
 			},
 			setArticleAreaHeigth(isArticleEdit) {
-				// при уменьшении шрифта высота блока учитывает те области в которых ранее был текст
+				
 				if (isArticleEdit) {
 					this.$nextTick(() => {
-						console.log('tick')
+						this.$refs.articleTextArea.$el.setAttribute(
+							"style",
+							`height: auto`
+						);
 						const articleHeigth =
 							this.$refs.articleTextArea.$el.scrollHeight + 2;
 						this.$refs.articleTextArea.$el.setAttribute(
@@ -743,9 +749,6 @@
 					throw new Error(err);
 				}
 			},
-		},
-		updated() {
-			this.setArticleAreaHeigth(this.isArticleEdit);
 		},
 
 		directives: { ClickAway: directive },
