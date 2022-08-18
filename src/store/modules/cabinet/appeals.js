@@ -38,7 +38,13 @@ const state = () => ({
 	],
 })
 
-const getters = {}
+const getters = {
+	appealsByType: (state) => (choosenApealTopics) => {
+		console.log(choosenApealTopics, "choosen topics")
+		const appealsWithChoosenTopics = state.appeals.filter( appeal => choosenApealTopics.includes(appeal.topic_type));
+		return appealsWithChoosenTopics || [];
+	}
+}
 
 const mutations = {
 	SET_APPEALS: (state, payload) => state.appeals = payload,
