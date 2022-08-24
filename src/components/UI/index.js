@@ -8,7 +8,6 @@ import rSpoiler from '@/components/UI/r-spoiler';
 import rTextarea from '@/components/UI/r-textarea';
 import rInput from '@/components/UI/r-input';
 
-
 import rConfirmPopup from '@/components/UI/r-confirm-popup';
 import rModal from '@/components/UI/r-modal';
 

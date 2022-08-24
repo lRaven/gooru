@@ -1,4 +1,4 @@
-# gooru
+# Parsing service «Gooru»
 
 ## Project setup
 

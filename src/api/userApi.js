@@ -188,7 +188,7 @@ const change_user_data = async (user_id, args) => {
 
 const upload_avatar = async ({ user_id, avatar }) => {
 	try {
-		const response = await axios.patch(
+		const response = await axios.put(
 			`${baseURL}/user/upload/${user_id}/`,
 			{ avatar },
 			{
