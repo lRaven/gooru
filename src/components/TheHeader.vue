@@ -205,6 +205,9 @@
 						<li class="the-header__link" @click="scroll('#about')">
 							О компании
 						</li>
+						<li class="the-header__link" @click="this.$router.push({ name: 'blog' })">
+							Блог
+						</li>
 					</ul>
 				</nav>
 

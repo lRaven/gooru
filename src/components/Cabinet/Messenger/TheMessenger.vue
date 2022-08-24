@@ -13,19 +13,16 @@
 <script>
 	import ChatBody from "@/components/Cabinet/Messenger/ChatBody.vue";
 	import ChatSendMessage from "@/components/Cabinet/Messenger/ChatSendMessage.vue";
-	import { mapState, mapGetters, mapActions } from "vuex";
+	import { mapState, mapGetters, mapMutations } from "vuex";
 
 	export default {
 		name: "TheMessenger",
-		props: { ticket_id: Number, title: String },
+		props: { ticket_id: Number, title: String, messages: Array },
 		components: {
 			ChatBody,
 			ChatSendMessage,
 		},
 		watch: {
-			chat_messages() {
-				this.messages = this.chat_messages;
-			},
 			isSendMessage() {
 				if (this.isSendMessage === true) {
 					setTimeout(() => {
@@ -43,7 +40,6 @@
 						this.$route.query.appeal_id,
 						this.$cookies.get("auth_token")
 					);
-					this.getChatMessages(this.$route.query.appeal_id);
 					this.get_message();
 				}
 			},
@@ -52,21 +48,18 @@
 			...mapGetters(["BASEURL_WITHOUT_PROTOCOL"]),
 			...mapState({
 				user: (state) => state.cabinet.user,
-				chat_messages: (state) => state.messenger.chat_messages,
 			}),
 		},
 		data() {
 			return {
 				chatSocket: null,
 				path: this.$route.path,
-
-				messages: [],
+		
 				isSendMessage: false,
 			};
 		},
 		methods: {
-			...mapActions(["getChatMessages"]),
-
+			...mapMutations(["SET_APPEALS_MESSAGES"]),
 			send_message(message) {
 				this.chatSocket.send(
 					JSON.stringify({
@@ -91,8 +84,7 @@
 					if (message.sender.id === this.user.id) {
 						this.isSendMessage = true;
 					}
-
-					this.messages.push(JSON.parse(m.data));
+					this.SET_APPEALS_MESSAGES({ currentAppeal: +this.$route.query.appeal_id, messages: [...this.messages, JSON.parse(m.data)] }); 
 				});
 			},
 
@@ -109,7 +101,6 @@
 				this.$route.query.appeal_id,
 				this.$cookies.get("auth_token")
 			);
-			this.getChatMessages(this.$route.query.appeal_id);
 
 			this.get_message();
 		},
@@ -130,7 +121,7 @@
 		border-radius: 0.8rem 0.8rem 0 0;
 		overflow: hidden;
 		display: grid;
-		grid-template-rows: max-content 1fr;
+		grid-template-rows: max-content 1fr max-content;
 		&__title {
 			text-align: center;
 			padding: 1rem 0;

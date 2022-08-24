@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 
 import brief from '@/store/modules/brief'
+import blog from '@/store/modules/blog';
 
 //* cabinet 
 import cabinet from '@/store/modules/cabinet/cabinet'
@@ -43,6 +44,7 @@ export default createStore({
 
 	modules: {
 		brief,
+		blog,
 
 		cabinet,
 		navigation_panel,

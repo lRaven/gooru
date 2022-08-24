@@ -68,7 +68,8 @@
     border-radius: 4rem;
     background-color: rgba($color: $gray, $alpha: 0.15);
     color: $black;
-    font-weight: 500;
+		font-weight: 500;
+		
     &:hover {
       cursor: pointer;
       transform: scale(1.02);
@@ -77,6 +78,9 @@
 		&.active {
 			background-color: $primary;
 			color: $white;
+		}
+		&__description {
+			font-size: 1.4rem;
 		}
     &__sort-params {
       margin: 0 2rem 2rem 0;

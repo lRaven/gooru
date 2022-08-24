@@ -22,15 +22,16 @@
 			</button>
 			<h2 class="page-appeal__title">
 				<span v-if="documentWidth > 540">Обращение</span>
-				<span>#{{ appeal.id }}</span>
+				<span>#{{ appeal?.id }}</span>
 				<span v-if="appeal_source">{{ appeal_source }}</span>
 				<span>{{ appeal_topic }}</span>
 			</h2>
 		</div>
 
 		<the-messenger
-			:ticket_id="appeal.id"
-			:title="appeal.message"
+			:ticket_id="appeal?.id"
+			:title="appeal?.message"
+			:messages="appeal?.messages ? appeal.messages : []"
 		></the-messenger>
 	</section>
 </template>
@@ -59,13 +60,17 @@
 		},
 		computed: {
 			...mapState({
-				appeal: (state) => state.appeals.appeal,
+				/* appeal: (state) => state.appeals.appeals ? state.appeals.appeals[0] : {}, */
 				all_parsers: (state) => state.parsers.all_parsers,
 				topics: (state) => state.appeals.topics,
 				user: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
 			}),
-			...mapGetters(["appeals_notifications"]),
+			...mapGetters(["appeals_notifications", "appealById"]),
+
+			appeal() {
+				return this.appealById(this.appeal_id);
+			},
 
 			appeal_id() {
 				return +this.$route.query.appeal_id;
@@ -75,7 +80,7 @@
 				let result = "";
 
 				const find = this.all_parsers.find(
-					(el) => el.id === this.appeal.id
+					(el) => el.id === this.appeal?.id
 				);
 				if (find !== undefined) {
 					result = find.title;
@@ -87,7 +92,7 @@
 				let result = "";
 
 				const find = this.topics.find(
-					(el) => el.id === this.appeal.topic_type
+					(el) => el.id === this.appeal?.topic_type
 				);
 				if (find !== undefined) {
 					result = find.description;
@@ -143,6 +148,7 @@
 				}
 			},
 		},
+		
 		created() {
 			this.SET_TAB("appeals");
 			this.getAppeal(this.appeal_id);
