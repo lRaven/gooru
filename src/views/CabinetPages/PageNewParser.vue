@@ -17,6 +17,7 @@
 
 			<p class="page-new-parser__input-description">Название источника*</p>
 			<r-input
+				:spellCheck="false"
 				input_type="text"
 				v-model="new_parsource.name"
 				:value="new_parsource.name"
@@ -27,6 +28,7 @@
 				URL страницы с данными*
 			</p>
 			<r-input
+				:spellCheck="false"
 				input_type="url"
 				v-model="new_parsource.url"
 				:value="new_parsource.url"

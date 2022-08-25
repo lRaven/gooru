@@ -23,6 +23,7 @@
 				Название источника*
 			</p>
 			<r-input
+				:spellCheck="false"
 				input_type="text"
 				v-model="new_parsource.name"
 				:value="new_parsource.name"
@@ -34,6 +35,7 @@
 			</p>
 			<template v-for="(url, index) in new_parsource.urls" :key="url.id">
 				<r-input
+					:spellCheck="false"
 					v-model="url.text"
 					:value="url.text"
 					input_type="url"
