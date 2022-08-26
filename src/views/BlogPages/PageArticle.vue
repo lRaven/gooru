@@ -2,7 +2,7 @@
 	<section class="page-article">
 		<template v-if="isArticleLoaded && !isArticleNotFound">
 			<the-article @vnodeMounted="updateDocumentTitle" class="page-article__article" :article="article" ref="article"/>
-			<feedback-card :likes="article.likes" @open-appeal-popup="handleOpenNewAppeal" @new-order="handleNewOrder"/>
+			<feedback-card class="page-article__feedback-card" :likes="article.likes" @open-appeal-popup="handleOpenNewAppeal" @new-order="handleNewOrder"/>
 		</template>
 		<r-loader v-else-if="!isArticleLoaded" />
 		<div class="not-found" v-else>
@@ -71,8 +71,18 @@
 <style lang="scss" scoped>
 	.page-article {
 		padding: 0;
+		@media (min-width: 1600px) {
+    display: flex;
+		flex-direction: column;
+		align-items: center;
+  }
 		&__article {
 			margin: 0 0 5rem 0;
+		}
+		&__feedback-card {
+			max-width: 1200px;
+			width: 100%;
+			justify-content: start;
 		}
 	}
 </style>
