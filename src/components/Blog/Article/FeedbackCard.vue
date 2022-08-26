@@ -15,7 +15,7 @@
 					/>
 				</svg>
 			</button>
-			<p class="like__counter">{{ likes }}</p>
+			<p class="like__counter">{{ likes || 128 }}</p>
 		</div>
 		<r-button @click="handleClickNewAppeal" class="ask-button" text="Задать вопрос"></r-button>
 		<r-button @click="handleClickNewOrder" class="order-button" text="Заказать"></r-button>
@@ -29,12 +29,7 @@
 			'open-appeal-popup': null,
 			'new-order': null,
 		},
-		props: {},
-		computed: {
-			likes() {
-				return this.likes || this.$route.params.id;
-			},
-		},
+		props: { likes: { type: Number, required: true } },
 		methods: {
 			handleClickNewAppeal() {
 				this.$emit('open-appeal-popup');

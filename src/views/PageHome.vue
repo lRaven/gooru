@@ -27,6 +27,8 @@
 
 	import TheFooter from "@/components/TheFooter";
 
+	import { scroll } from "@/js/scrollToLink";
+
 	export default {
 		name: "PageHome",
 		components: {
@@ -42,5 +44,17 @@
 
 			TheFooter,
 		},
+		methods: {
+			scroll,
+		},
+		beforeRouteEnter(to, from, next) {
+			if (from.name === 'blog-article' && to.params.anchor) {
+				next( (vm) => {
+					vm.scroll(to.params.anchor)
+				});
+			} else {
+				next();
+			}
+		}
 	};
 </script>

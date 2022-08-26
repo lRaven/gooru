@@ -75,6 +75,7 @@
 				this.chatSocket = new WebSocket(
 					`${process.env.VUE_APP_BACK_WS_PROTOCOL}://${base_url}/ws/chat/${chat_id}/?Authorization=token ${token}`
 				);
+
 			},
 
 			get_message() {
@@ -84,11 +85,13 @@
 					if (message.sender.id === this.user.id) {
 						this.isSendMessage = true;
 					}
-					this.SET_APPEALS_MESSAGES({ currentAppeal: +this.$route.query.appeal_id, messages: [...this.messages, JSON.parse(m.data)] }); 
+					console.log('get', message)
+					this.SET_APPEALS_MESSAGES({ currentAppeal: +this.$route.query.appeal_id, messages: [...this.messages, message] }); 
 				});
 			},
 
 			remove_get_message() {
+				console.log('chat remove')
 				this.chatSocket.removeEventListener(
 					"message",
 					this.get_message
@@ -105,6 +108,7 @@
 			this.get_message();
 		},
 		beforeUnmount() {
+			console.log('unmount')
 			this.remove_get_message();
 			this.chatSocket.close();
 		},

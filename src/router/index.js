@@ -92,37 +92,6 @@ const routes = [
 			}
 		]
 	},
-	/* {
-		path: "/blog",
-		name: "blog",
-		component: PageBlog,
-		
-		meta: {
-			title: "Блог",
-			requiresAuth: false,
-		},
-		children: [
-			{
-				path: "/:pathMatch(.*)*",
-				name: "blog-entry",
-				component: PageBlog,
-				beforeEnter: (to, from, next) => {
-					if (!store.state.navigation_panel.blogTabs.length) {
-						store.dispatch("setTargetRoute", to.path);
-						store.dispatch("getBlogNavigation");
-						console.log(from);
-						next({ name: "blog" });
-					} else {
-						next();
-					}
-				},
-				meta: {
-					title: "Gooru",
-				},
-			},
-		],
-	}, */
-
 	{
 		path: "/cabinet",
 		name: "cabinet",

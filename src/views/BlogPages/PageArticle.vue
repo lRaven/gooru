@@ -1,8 +1,8 @@
 <template>
 	<section class="page-article">
 		<template v-if="isArticleLoaded && !isArticleNotFound">
-			<the-article class="page-article__article" :article="article" ref="article"/>
-			<feedback-card @open-appeal-popup="handleOpenNewAppeal" @new-order="handleNewOrder"/>
+			<the-article @vnodeMounted="updateDocumentTitle" class="page-article__article" :article="article" ref="article"/>
+			<feedback-card :likes="article.likes" @open-appeal-popup="handleOpenNewAppeal" @new-order="handleNewOrder"/>
 		</template>
 		<r-loader v-else-if="!isArticleLoaded" />
 		<div class="not-found" v-else>
@@ -29,6 +29,11 @@
 			TheArticle,
 			FeedbackCard,
 		},
+		watch: {
+			isArticleNotFound() {
+				document.title = '404';
+			},
+		},
 		computed: {
 			...mapState({
 				articles: (state) => state.blog.articles,
@@ -49,9 +54,16 @@
 			},
 		},
 		methods: {
+			updateDocumentTitle() {
+				console.log('article mounted')
+				document.title = this.article.title;
+			},
 			backToAll() {
 				this.$router.push({ name: "blog" });
 			},
+			handleNewOrder() {
+				this.$router.push({ name: 'home', params: { anchor: '#rates' } });
+			}
 		},
 	};
 </script>
