@@ -1,7 +1,8 @@
 <template>
 	<div class="page-blog theme-container">
 		<the-header />
-		<navigation-panel />
+		<!-- <navigation-panel /> -->
+		<navigation-panel-r  @navigate-to="handleNavigate" :tabs="blogTabs" :tabIcons="tabIcons" :currentTab="currentTab"/>
 		<main class="page-blog__main">
 			<router-view
 				v-if="isBlogTabsLoaded && !isNotFoundBlogTab"
@@ -22,7 +23,9 @@
 
 <script>
 	import TheHeader from "@/components/TheHeader.vue";
-	import NavigationPanel from "@/components/Cabinet/NavigationPanel.vue";
+	import NavigationPanelR from "@/components/NavigationPanelR.vue";
+
+	import ProfileIcon from "@/assets/icons/ProfileIcon.vue";
 
 	import { mapState, mapActions, mapMutations } from "vuex";
 	import { getTabs } from "@/api/blog";
@@ -36,7 +39,7 @@
 	};
 
 	export default {
-		components: { TheHeader, NavigationPanel },
+		components: { TheHeader, NavigationPanelR, ProfileIcon },
 		data() {
 			return {
 				isBlogTabsLoaded: false,
@@ -48,6 +51,16 @@
 				blogTabs: (state) => state.navigation_panel.blogTabs,
 				articles: (state) => state.blog.articles,
 			}),
+			tabIcons() {
+				return [ProfileIcon, ProfileIcon];
+			},
+			currentTab() {
+				const currentRouteParam = this.$route.params.id;
+				if (currentRouteParam === 'all') {
+					return this.blogTabs.find( tab => tab.params.id === currentRouteParam);
+				}
+				return this.blogTabs.find( tab => tab.params.id === +currentRouteParam);
+			}
 		},
 		methods: {
 			...mapActions(["getBlogNavigation", "getArticles"]),
@@ -59,6 +72,10 @@
 			backToAll() {
 				this.isNotFoundBlogTab = false;
 				this.$router.push({ name: "blog" });
+			},
+			handleNavigate(tabName) {
+				const params = tabName.params ? tabName.params : {};
+				this.$router.push({ name: tabName.name, params });
 			},
 			validPath,
 		},
@@ -81,9 +98,9 @@
 										...prev,
 										{
 											id: id,
-											tab: topic,
-											selected: false,
-											icon_fill: "",
+											text: topic,
+											name: 'blog-articles',
+											params: { id },
 										},
 									];
 								},
@@ -95,7 +112,7 @@
 								});
 							} else {
 								next((vm) => {
-									(vm) => vm.setBlogTabs(tabs);
+									vm.setBlogTabs(tabs);
 									vm.isNotFoundBlogTab = true;
 									vm.isBlogTabsLoaded = true;
 								});
@@ -114,7 +131,12 @@
 				getTabs().then((topics) => {
 					const tabs = topics.reduce(
 						(prev, { id, topic }) => {
-							return [ ...prev, { id: id, tab: topic, selected: false, icon_fill: "", }, ];
+							return [ ...prev, {
+											id: id,
+											text: topic,
+											name: 'blog-articles',
+											params: { id },
+										}, ];
 						},
 						[...store.state.navigation_panel.blogTabs]
 					);
