@@ -223,6 +223,7 @@
 		
 		&__main-image {
 			width: 100%;
+			min-height: 300px;
 			border-radius: 1rem;
 			margin-bottom: 3rem;
 		}

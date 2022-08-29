@@ -32,6 +32,7 @@
 		props: { likes: { type: Number, required: true } },
 		methods: {
 			handleClickNewAppeal() {
+				console.log('open')
 				this.$emit('open-appeal-popup');
 			},
 			handleClickNewOrder() {

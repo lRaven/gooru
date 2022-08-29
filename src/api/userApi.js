@@ -113,14 +113,6 @@ const reset_password = async ({ uid, token, password }) => {
 	catch (err) { return err.response }
 };
 
-/* const userData = async (id) => {
-	try {
-		const { data } = await axios.get(`${process.env.VUE_APP_BACK_URL}/user`)
-	} catch (error) {
-		throw {...error}
-	}
-};*/
-
 //* операции по тарифам для конкретного пользователя
 const getRates = async () => {
 	try {

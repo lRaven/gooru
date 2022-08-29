@@ -1,15 +1,15 @@
 <template>
 	<div
 		class="navigation-item"
-		:class="{ 'navigation-item_active': isActive }"
+		:class="{ 'navigation-item_active': isActive, 'navigation-item_minimize': isMinimized }"
 		@click="handleClick"
 	>
 		<component
 			:is="icon"
 			class="navigation-item__icon"
-			:class="{ 'navigation-item__icon_active': isActive }"
+			:class="{ 'navigation-item__icon_active': isActive, }"
 		/>
-		<p class="navigation-item__text">{{ text }}</p>
+		<p v-if="!isMinimized" class="navigation-item__text">{{ text }}</p>
 		<span
 			v-if="notificationCount"
 			class="navigation-item__notification-counter"
@@ -29,6 +29,7 @@
 			text: { type: String, required: true },
 			icon: { type: Object, required: true },
 			notificationCount: { type: Number, default: 0 },
+			isMinimized: { type: Boolean, required: true },
 			isActive: { type: Boolean, required: true },
 		},
 		methods: {
@@ -54,6 +55,11 @@
 
 		&_active {
 			background-color: rgba(255, 255, 255, 0.3);
+		}
+		&_minimize {
+			width: fit-content;
+			padding: 1rem;
+			border-radius: 50%;
 		}
 		&:hover {
 			cursor: pointer;

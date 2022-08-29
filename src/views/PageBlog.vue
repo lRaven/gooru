@@ -2,7 +2,15 @@
 	<div class="page-blog theme-container">
 		<the-header />
 		<!-- <navigation-panel /> -->
-		<navigation-panel-r  @navigate-to="handleNavigate" :tabs="blogTabs" :tabIcons="tabIcons" :currentTab="currentTab"/>
+		<navigation-panel-r 
+		:tabs="blogTabs" 
+		:tabIcons="tabIcons" 
+		:currentTab="currentTab"
+		:isMenuMinimized="isMenuMinimize"
+		@navigate-to="handleNavigate"
+		@open-menu="handleOpenMenu"
+		@close-menu="handleCloseMenu"
+		/>
 		<main class="page-blog__main">
 			<router-view
 				v-if="isBlogTabsLoaded && !isNotFoundBlogTab"
@@ -44,6 +52,7 @@
 			return {
 				isBlogTabsLoaded: false,
 				isNotFoundBlogTab: false,
+				isMenuMinimize: false,
 			};
 		},
 		computed: {
@@ -76,6 +85,12 @@
 			handleNavigate(tabName) {
 				const params = tabName.params ? tabName.params : {};
 				this.$router.push({ name: tabName.name, params });
+			},
+			handleOpenMenu() {
+				this.isMenuMinimize = false;
+			},
+			handleCloseMenu() {
+				this.isMenuMinimize = true;
 			},
 			validPath,
 		},
@@ -156,6 +171,7 @@
 		grid-template-columns: max-content 1fr;
 		height: 100vh;
 		overflow: hidden;
+		background-color: $light-blue;
 		&__main {
 			margin-top: 8.3rem;
 			padding: 2rem 4rem;

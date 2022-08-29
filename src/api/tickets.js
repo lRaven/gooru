@@ -1,19 +1,15 @@
 import axios from 'axios';
 import cookie from 'vue-cookies';
 
-const add_ticket = async (args) => {
+const add_ticket = async (ticketData) => {
 	try {
+		const isAuthUser = cookie.get("auth_token");
 		const response =
 			await axios.post(`${process.env.VUE_APP_BACK_URL}/users/support/`,
 				{
-					name: args.name,
-					phone_number: args.phone_number,
-					email: args.email,
-					message: args.message,
-					topic_type: args.topic_type,
-					parser: args.parser
+					...ticketData,
 				},
-				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
+				{ headers: isAuthUser ? {Authorization: `token ${cookie.get('auth_token')}`} : '' });
 
 		return response;
 	}
