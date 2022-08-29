@@ -1,7 +1,6 @@
 import { getTabs } from "@/api/blog";
 
-const state = () => ({ tab: "appeals", blogTabs: [{ id: 0, tab: "Все" , selected: false,
-icon_fill: ""}] });
+const state = () => ({ tab: "appeals", blogTabs: [{ id: 0, text: "Все" , name: 'blog-articles', params: { id: 'all' } }] });
 
 const getters = {};
 

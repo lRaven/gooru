@@ -11,7 +11,8 @@
 <script>
 	import ArticleCard from "@/components/Blog/ArticleCard.vue";
 
-	import { mapState } from "vuex";
+	import { mapGetters } from "vuex";
+	import store from "@/store";
 
 	export default {
 		name: "PageArticles",
@@ -19,9 +20,14 @@
 			ArticleCard,
 		},
 		computed: {
-			...mapState({
-				articles: (state) => state.blog.articles,
-			})
+			...mapGetters(["getArticlesByTopic"]),
+			articles() {
+				const currentParam = this.$route.params.id;
+				if (currentParam === 'all') {
+					return store.state.blog.articles;
+				}
+				return this.getArticlesByTopic(+currentParam);
+			},
 		}
 	};
 </script>
