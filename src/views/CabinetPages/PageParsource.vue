@@ -36,6 +36,11 @@
 							<p class="page-parsource-details__text-info">
 								Подробнее
 							</p>
+							<font-tool
+							class="page-parsource__content-header-font-tool"
+							@change-font-size="handleChangeFontSize"
+							v-if="this.documentWidth <= 540"
+						/>
 						</div>
 					</div>
 					<div class="page-parsource__content-header-row">
@@ -48,6 +53,7 @@
 						<font-tool
 							class="page-parsource__content-header-font-tool"
 							@change-font-size="handleChangeFontSize"
+							v-if="this.documentWidth > 540"
 						/>
 						<div
 							class="page-parsource__content-header-sort"
@@ -622,13 +628,12 @@
 			this.SET_TAB("parsers");
 			try {
 				if (!this.$store.state.parsers.all_parsers.length) {
-					console.log('get all parsers')
+					console.log("get all parsers");
 					this.getAllParsers();
 				}
 				this.isMinimizedRightPanel = this.documentWidth < 1023;
 				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 				this.parsers_notifications.forEach((notification) => {
-					
 					const id = +notification.url.split("/")[2];
 
 					const bool = this.cards.find((parser) => parser.id === id);
@@ -650,7 +655,7 @@
 					this.getUsersManagers();
 				}
 			} catch (error) {
-				this.toast.error('Произошла ошибка при загрузке данных');
+				this.toast.error("Произошла ошибка при загрузке данных");
 			}
 		},
 		mounted() {
@@ -776,12 +781,16 @@
 				padding: 1.5rem;
 				&-row {
 					display: grid;
+					grid-template-columns: repeat(3, -webkit-max-content);
 					grid-template-columns: repeat(3, max-content);
 					align-items: center;
-					grid-gap: 2rem;
 					justify-content: space-between;
+
 					@media (max-width: 1540px) {
 						grid-template-columns: repeat(2, max-content);
+					}
+					@media (max-width: 1024px) {
+						grid-gap: 0.5rem 0;
 					}
 					@media (max-width: 540px) {
 						display: flex;
@@ -793,7 +802,7 @@
 					display: flex;
 					align-items: center;
 					gap: 2rem;
-
+					grid-row: 3/4;
 					@media (max-width: 1540px) {
 						grid-column: 1/3;
 						order: 1;
@@ -803,6 +812,9 @@
 					grid-column: 1/2;
 					grid-row: 2;
 					justify-self: start;
+					@media (max-width: 540px) {
+						margin: 0 0 0 auto;
+					}
 				}
 			}
 			&-found {
@@ -850,6 +862,11 @@
 			color: rgba($black, 0.7);
 			grid-row: 3;
 			grid-column: 3;
+			@media screen and (max-width: 800px) {
+				grid-row: 1;
+				grid-column: 2/3;
+				justify-self: end;
+			}
 			@media screen and (max-width: 620px) {
 				font-size: 1.7rem;
 				line-height: 2.7rem;

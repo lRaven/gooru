@@ -865,6 +865,10 @@
 				gap: 1.2rem;
 				width: max-content;
 				color: rgba($black, 0.5);
+				@media (max-width: 390px) {
+					grid-column: 1/2;
+					margin: 1rem 0 0 0;
+				}
 			}
 			&.alignicons {
 				align-self: flex-start;
