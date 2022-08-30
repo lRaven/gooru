@@ -3,7 +3,8 @@
     <h3 class="digest-card__title">«Гуру-дайджест»: только лучшие<br/> статьи - в вашем ящике</h3>
     <img class="digest-card__logo" src="/img/icon/logo.png" alt="Лого Компас"/>
     <form class="digest-form digest-form__digest-card" @submit.prevent="handleSubmit">
-      <r-input v-model="email" :value="email" :spellCheck="false" placeholder="E-mail"/>
+      <!-- <r-input v-model="email" :value="email" :spellCheck="false" placeholder="E-mail"/> -->
+      <input class="digest-form__input" v-model="email" placeholder="E-mail"/>
       <r-button :disabled="isButtonDisable" text="Подписаться" />
     </form>
   </div>
@@ -52,13 +53,15 @@ export default {
   display: flex;
   align-items: center;
 
-  .r-input input.r-input__input {
-    padding: 2rem 4rem 2rem 1rem !important;
+  &__input {
+    font-size: 1.6rem;
+    font-weight: 600;
+    padding: 2rem 4rem 2rem 1rem;
     border-radius: 0;
   }
 
   .r-button {
-    padding: 1rem 2rem;
+    padding: 1.9rem 3rem;
     margin: 0 0 0 2rem;
     border-radius: 0;
   }

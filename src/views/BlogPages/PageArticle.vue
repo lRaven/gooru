@@ -1,6 +1,7 @@
 <template>
 	<section class="page-article">
 		<template v-if="isArticleLoaded && !isArticleNotFound">
+			<button class="page-article__back-button" @click="goBack">Назад</button>
 			<the-article
 				@vnodeMounted="updateDocumentTitle"
 				class="page-article__article"
@@ -182,6 +183,9 @@
 			backToAll() {
 				this.$router.push({ name: "blog" });
 			},
+			goBack() {
+				this.$router.back();
+			},
 			handleNewOrder() {
 				this.$router.push({
 					name: "home",
@@ -226,11 +230,10 @@
 
 <style lang="scss" scoped>
 	.page-article {
+		display: grid;
 		padding: 0;
 		@media (min-width: 1600px) {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
+			justify-content: center;
 		}
 		&__article {
 			margin: 0 0 5rem 0;
@@ -239,6 +242,7 @@
 			max-width: 1200px;
 			width: 100%;
 			justify-content: start;
+			margin: 4rem 0 0 0;
 		}
 	}
 	.new-appeal-form {
