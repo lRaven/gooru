@@ -25,15 +25,16 @@
 		</button>
 		<navigation-item-r
 			class="navigation-panel__navigation-item"
-			v-for="(tab, currentTabIndex) in tabs"
+			v-for="(tab) in tabs"
 			:key="tab.id"
 			:id="tab.id"
 			:text="tab.text"
-			:icon="tabIcons[currentTabIndex]"
+			:icon="tabIcons[tab.text]"
 			:isActive="tab.id === currentTab?.id"
 			:isMinimized="isMenuMinimized"
 			@setTab="handleSetTab"
 		/>
+		<slot name="social-media"></slot>
 	</nav>
 </template>
 
@@ -49,18 +50,13 @@
 		},
 		props: {
 			tabs: { type: Array, required: true },
-			tabIcons: { type: Array, required: true },
+			tabIcons: { type: Object, required: true },
 			currentTab: { type: Object, required: true },
 			isMenuMinimized: { type: Boolean, required: true },
 		},
 		components: {
 			NavigationItemR,
 		},
-		/* data() {
-			return {
-				currentTab: this.initialTab,
-			};
-		}, */
 		methods: {
 			handleSetTab(tabId) {
 				console.log(tabId);
@@ -86,7 +82,7 @@
 		align-items: center;
 		position: relative;
 		margin-top: 83px;
-		padding: 1rem 4rem 3rem 4rem;
+		padding: 1rem 3rem 3rem 3rem;
 		background: linear-gradient(
 			350.85deg,
 			#542f7d -40.69%,

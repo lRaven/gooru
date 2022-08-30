@@ -7,7 +7,7 @@
 		<component
 			:is="icon"
 			class="navigation-item__icon"
-			:class="{ 'navigation-item__icon_active': isActive, }"
+			:class="{ 'navigation-item__icon_active': isActive, 'navigation-item__icon_minimize': isMinimized}"
 		/>
 		<p v-if="!isMinimized" class="navigation-item__text">{{ text }}</p>
 		<span
@@ -40,11 +40,10 @@
 	};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 	.navigation-item {
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
 		width: 100%;
 		position: relative;
@@ -72,9 +71,9 @@
 		&__text {
 			font-weight: 600;
 			color: $white;
-			margin: 0 1.7rem 0 0;
 		}
-		&__icon {
+		.icon::v-deep.navigation-item__icon {
+			margin: 0 1.5rem 0 0;
 			path {
 				fill-opacity: 0.5;
 			}
@@ -83,7 +82,11 @@
 					fill-opacity: 1;
 				}
 			}
+			&_minimize {
+				margin: 0;
+			}
 		}
+		
 		&__notification-counter {
 			font-size: 1.4rem;
 			font-weight: 600;

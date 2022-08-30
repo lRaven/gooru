@@ -2,15 +2,20 @@
 	<div class="page-blog theme-container">
 		<the-header />
 		<!-- <navigation-panel /> -->
-		<navigation-panel-r 
-		:tabs="blogTabs" 
-		:tabIcons="tabIcons" 
-		:currentTab="currentTab"
-		:isMenuMinimized="isMenuMinimize"
-		@navigate-to="handleNavigate"
-		@open-menu="handleOpenMenu"
-		@close-menu="handleCloseMenu"
-		/>
+		<navigation-panel-r
+			:tabs="blogTabs"
+			:tabIcons="tabIcons"
+			:currentTab="currentTab"
+			:isMenuMinimized="isMenuMinimize"
+			@navigate-to="handleNavigate"
+			@open-menu="handleOpenMenu"
+			@close-menu="handleCloseMenu">
+			<template #social-media>
+				<div class="social-media">
+					
+				</div>
+			</template>
+			</navigation-panel-r>
 		<main class="page-blog__main">
 			<router-view
 				v-if="isBlogTabsLoaded && !isNotFoundBlogTab"
@@ -33,7 +38,10 @@
 	import TheHeader from "@/components/TheHeader.vue";
 	import NavigationPanelR from "@/components/NavigationPanelR.vue";
 
-	import ProfileIcon from "@/assets/icons/ProfileIcon.vue";
+	import InfinityIcon from "@/assets/icons/InfinityIcon.vue";
+	import ParsingIcon from "@/assets/icons/ParsingIcon.vue";
+	import TechnologyIcon from "@/assets/icons/TechnologyIcon.vue";
+	import FileIcon from "@/assets/icons/FileIcon.vue";
 
 	import { mapState, mapActions, mapMutations } from "vuex";
 	import { getTabs } from "@/api/blog";
@@ -47,7 +55,14 @@
 	};
 
 	export default {
-		components: { TheHeader, NavigationPanelR, ProfileIcon },
+		components: {
+			TheHeader,
+			NavigationPanelR,
+			ParsingIcon,
+			TechnologyIcon,
+			InfinityIcon,
+			FileIcon,
+		},
 		data() {
 			return {
 				isBlogTabsLoaded: false,
@@ -61,15 +76,37 @@
 				articles: (state) => state.blog.articles,
 			}),
 			tabIcons() {
-				return [ProfileIcon, ProfileIcon];
+				const iconObject = {};
+				this.blogTabs.forEach((tab) => {
+					
+					switch (tab.text) {
+						case "Все":
+							iconObject[tab.text] = InfinityIcon;
+							break;
+						case "Парсинг":
+							iconObject[tab.text] = ParsingIcon;
+							break;
+						case "Технологии":
+							iconObject[tab.text] = TechnologyIcon;
+							break;
+						default:
+							iconObject[tab.text] = FileIcon;
+							break;
+					}
+				});
+				return iconObject;
 			},
 			currentTab() {
 				const currentRouteParam = this.$route.params.id;
-				if (currentRouteParam === 'all') {
-					return this.blogTabs.find( tab => tab.params.id === currentRouteParam);
+				if (currentRouteParam === "all") {
+					return this.blogTabs.find(
+						(tab) => tab.params.id === currentRouteParam
+					);
 				}
-				return this.blogTabs.find( tab => tab.params.id === +currentRouteParam);
-			}
+				return this.blogTabs.find(
+					(tab) => tab.params.id === +currentRouteParam
+				);
+			},
 		},
 		methods: {
 			...mapActions(["getBlogNavigation", "getArticles"]),
@@ -114,7 +151,7 @@
 										{
 											id: id,
 											text: topic,
-											name: 'blog-articles',
+											name: "blog-articles",
 											params: { id },
 										},
 									];
@@ -146,12 +183,15 @@
 				getTabs().then((topics) => {
 					const tabs = topics.reduce(
 						(prev, { id, topic }) => {
-							return [ ...prev, {
-											id: id,
-											text: topic,
-											name: 'blog-articles',
-											params: { id },
-										}, ];
+							return [
+								...prev,
+								{
+									id: id,
+									text: topic,
+									name: "blog-articles",
+									params: { id },
+								},
+							];
 						},
 						[...store.state.navigation_panel.blogTabs]
 					);
