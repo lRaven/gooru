@@ -462,13 +462,13 @@
 			},
 			expandArticle() {
 				this.isCroppedText = false;
-				setTimeout(() => {
+				this.$nextTick(() => {
 					if (this.$refs.textBlock.offsetHeight > 60) {
 						this.textBlockHeight =
 							this.$refs.textBlock.offsetHeight;
 						this.isTextOverFlow = true;
 					}
-				}, 100);
+				});
 			},
 
 			minimizeArticle() {
@@ -660,6 +660,7 @@
 			}
 		}
 		& .alignicons {
+			margin: 1rem 0 0 0;
 			align-self: flex-start;
 		}
 
