@@ -259,15 +259,12 @@
 
 			parsourcesHasParsersNotifications() {
 				//* получить id парсеров из уведомлений
-				const parsers_id = this.parsers_notifications.reduce(
-					(arr, current) => {
+				const parsers_id = this.parsers_notifications.reduce((arr, current) => {
 						arr.push(+current.url.split("/")[2]);
 						return arr;
-					},
-					[]
-				);
+						},[]);
 				//* получить список id парсоурсов (уникальные) по id парсеров
-				return this.all_parsers.reduce((arr, current) => {
+				const result = this.all_parsers.reduce((arr, current) => {
 					parsers_id.find((id) => {
 						if (
 							id === current.id &&
@@ -276,9 +273,9 @@
 							arr.push(current.parsource);
 						}
 					});
-
 					return arr;
 				}, []);
+				return result;
 			},
 		},
 		data() {
