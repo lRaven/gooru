@@ -37,10 +37,10 @@
 								Подробнее
 							</p>
 							<font-tool
-							class="page-parsource__content-header-font-tool"
-							@change-font-size="handleChangeFontSize"
-							v-if="this.documentWidth <= 540"
-						/>
+								class="page-parsource__content-header-font-tool"
+								@change-font-size="handleChangeFontSize"
+								v-if="this.documentWidth <= 540"
+							/>
 						</div>
 					</div>
 					<div class="page-parsource__content-header-row">
@@ -287,7 +287,10 @@
 								<button
 									class="source__remove-button"
 									@click="
-										deleteThisSource(item.url, parsource_id)
+										handleConfirmSourceDelete(
+											item.url,
+											parsource_id
+										)
 									"
 								>
 									<svg
@@ -323,6 +326,13 @@
 				</div>
 			</template>
 		</right-panel>
+		<r-confirm-popup
+				v-if="isConfirmDeleteSourcePopupOpen"
+				:text="`Вы действительно хотите удалить источник «${parsourceToDelete.url}»?`"
+				@action_confirm="deleteThisSource(parsourceToDelete.url)"
+				@close_popup="isConfirmDeleteSourcePopupOpen = false"
+			>
+			</r-confirm-popup>
 	</section>
 </template>
 
@@ -496,11 +506,13 @@
 		data: () => ({
 			isMinimizedRightPanel: false,
 			isParsersLoaded: false,
+			isConfirmDeleteSourcePopupOpen: false,
 			fontSize: "smallSize",
 
 			selected_manager: "",
 
 			selectedListFilter: "newest",
+			parsourceToDelete: null,
 
 			changedParsource: {},
 			new_image: "",
@@ -521,6 +533,10 @@
 
 			handleChangeFontSize(size) {
 				this.fontSize = size;
+			},
+			handleConfirmSourceDelete(sourceUrl, parsource_id) {
+				this.parsourceToDelete = { url: sourceUrl, parsource_id };
+				this.isConfirmDeleteSourcePopupOpen = true;
 			},
 
 			async deleteThisSource(sourceUrl) {
@@ -733,8 +749,6 @@
 				white-space: normal;
 			}
 
-			&-manager {
-			}
 			&-status {
 				width: max-content;
 			}

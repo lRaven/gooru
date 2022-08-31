@@ -211,6 +211,7 @@
 			if (this.articles.length === 0) {
 				this.getArticles();
 			}
+			this.isMenuMinimize = this.documentWidth <=1023;
 		},
 		beforeRouteEnter(to, from, next) {
 			// TODO: написать мидлвары для разрешения перехода по всем путям дочерних компонентов
@@ -305,7 +306,7 @@
 		margin: 20rem 0 0 0;
 		display: flex;
 		width: 100%;
-		justify-content: space-between;
+		justify-content: space-evenly;
 		gap: 1.5rem;
 		padding: 1.5rem;
 		border-radius: 1rem;

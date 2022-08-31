@@ -126,7 +126,8 @@
 						@update-selected-parsers="updateSelectedParsers"
 					></favorite-card> -->
 					<favorite-content-item
-						v-for="favoriteItem in favoriteParsers"
+						v-for="(favoriteItem, index) in favoriteParsers"
+						:class="{ 'border-top-none': index === 0 ? true : false }"
 						:key="favoriteItem.id"
 						:parserProp="favoriteItem"
 						:checked="selectedParsers.includes(favoriteItem.id)"

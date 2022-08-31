@@ -207,11 +207,8 @@
 		}
 		.r-button {
 			font-size: 1.8rem;
-			width: 80%;
+			width: 100%;
 			padding: 1.5rem 2rem;
-			@media (max-width: 768px) {
-				width: 100%;
-			}
 		}
 	}
 	.share-list {
@@ -230,11 +227,8 @@
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		grid-gap: 1rem 1.5rem;
-		width: 80%;
+		width: 100%;
 
-		@media (max-width: 768px) {
-			width: 100%;
-		}
 		&__title {
 			grid-column: 1/-1;
 			font-size: 2.8rem;

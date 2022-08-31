@@ -328,13 +328,13 @@
 				color="bordered"
 			></r-button>
 		</div>
+		<r-confirm-popup
+			v-if="isDeleteFavoritePopupVisible"
+			:text="`Вы действительно хотите удалить «${croppedTitle}» из избранного?`"
+			@action_confirm="deleteFavoriteParser"
+			@close_popup="isDeleteFavoritePopupVisible = false"
+		/>
 	</li>
-	<r-confirm-popup
-		v-if="isDeleteFavoritePopupVisible"
-		:text="`Вы действительно хотите удалить «${croppedTitle}» из избранного?`"
-		@action_confirm="deleteFavoriteParser"
-		@close_popup="isDeleteFavoritePopupVisible = false"
-	/>
 </template>
 
 <script>
@@ -619,7 +619,9 @@
 		border-top: 0.1rem solid #999;
 		padding: 1rem 3rem 1rem 1rem;
 		background-color: $white;
-
+		&.border-top-none {
+			border-top: none;
+		}
 		&__grid {
 			display: grid;
 			grid-template-columns: 1fr max-content;
