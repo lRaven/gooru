@@ -111,7 +111,7 @@ const reset_password = async ({ uid, token, password }) => {
 		return response;
 	}
 	catch (err) { return err.response }
-}
+};
 
 //* операции по тарифам для конкретного пользователя
 const getRates = async () => {

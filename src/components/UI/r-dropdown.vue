@@ -85,7 +85,7 @@
 				default: "description",
 			},
 		},
-		data: () => ({ isContentVisible: false }),
+		data: () => ({ isContentVisible: false, }),
 		methods: {
 			selectValue(sendValue, text) {
 				this.$refs.selected.textContent = text;

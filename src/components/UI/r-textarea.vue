@@ -1,6 +1,7 @@
 <template>
 	<textarea
 		name=""
+		:spellcheck="spellCheck"
 		class="r-textarea"
 		:class="{ bordered: bordered }"
 		:placeholder="placeholder"
@@ -18,6 +19,7 @@
 				value: String,
 				default: "Placeholder",
 			},
+			spellCheck: { type: Boolean, default: true },
 			bordered: {
 				value: Boolean,
 				default: true,

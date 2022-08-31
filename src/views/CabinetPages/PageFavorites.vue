@@ -9,8 +9,9 @@
 						class="page-favorites__sort-panel-btn"
 						type="button"
 						@click="
-							if (isSortPanelVisible === false)
-								isSortPanelVisible = true;
+							isSortPanelVisible === false
+								? (isSortPanelVisible = true)
+								: (isSortPanelVisible = false)
 						"
 					>
 						<img
@@ -54,21 +55,6 @@
 							</p>
 						</button>
 					</template>
-
-					<button
-						class="page-favorites__sort-panel-btn"
-						v-if="isSortPanelVisible === true"
-						@click="isSortPanelVisible = false"
-					>
-						<p class="page-favorites__sort-panel-btn-description">
-							Свернуть параметры
-						</p>
-						<img
-							src="/img/icon/cabinet/arrow-double.svg"
-							alt=""
-							class="page-favorites__sort-panel-btn-icon"
-						/>
-					</button>
 				</div>
 
 				<div
@@ -96,7 +82,7 @@
 						<p class="page-favorites__sort-panel-description">
 							Поиск по дате
 						</p>
-						<r-date-range-picker></r-date-range-picker>
+						<r-date-range-picker :isDisabled="true"></r-date-range-picker>
 					</div>
 
 					<!-- <div class="page-favorites__sort-panel-col">
@@ -125,27 +111,35 @@
 			</div>
 
 			<transition mode="out-in">
-				<r-loader v-if="!isFavoritesLoaded" />
+				<r-loader v-if="!isParsersLoaded" />
 			</transition>
 
 			<transition mode="out-in">
 				<div
 					class="page-favorites__list"
-					v-if="isFavoritesLoaded && favoriteParsources.length > 0"
+					v-if="isParsersLoaded && favoriteParsources.length > 0"
 				>
-					<favorite-card
+					<!-- <favorite-card
 						v-for="favorite in favoriteParsources"
 						:key="favorite.id"
 						:parsource="favorite"
 						@update-selected-parsers="updateSelectedParsers"
-					></favorite-card>
+					></favorite-card> -->
+					<favorite-content-item
+						v-for="(favoriteItem, index) in favoriteParsers"
+						:class="{ 'border-top-none': index === 0 ? true : false }"
+						:key="favoriteItem.id"
+						:parserProp="favoriteItem"
+						:checked="selectedParsers.includes(favoriteItem.id)"
+						@change-selected="updateSelectedParser"
+					></favorite-content-item>
 				</div>
 			</transition>
 
 			<transition mode="out-in">
 				<p
 					class="page-favorites__empty"
-					v-if="favorites.length === 0 && isFavoritesLoaded"
+					v-if="favoriteParsers.length === 0 && isParsersLoaded"
 				>
 					Список избранного пуст
 				</p>
@@ -161,18 +155,19 @@
 			@close-right-panel="isMinimizedRightPanel = true"
 		>
 			<the-favorite-right-panel
-				:totalSelected="totalSelected"
+				:totalSelected="selectedParsers.length"
 				:selectedParsers="selectedParsers"
+				@clean-selected-parser-list="selectedParsers = []"
 			></the-favorite-right-panel>
 		</right-panel>
 	</section>
 </template>
 
 <script>
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 
 	import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
-	import FavoriteCard from "@/components/Cabinet/Favorites/FavoriteCard";
+	import FavoriteContentItem from "@/components/Cabinet/Favorites/FavoriteContentItem.vue";
 	import TheFavoriteRightPanel from "@/components/Cabinet/Favorites/TheFavoritesRightPanel.vue";
 
 	import RightPanel from "@/components/Cabinet/RightPanel";
@@ -181,14 +176,21 @@
 		name: "PageFavorites",
 		components: {
 			rDateRangePicker,
-			FavoriteCard,
 
 			RightPanel,
 			TheFavoriteRightPanel,
+			FavoriteContentItem,
 		},
 		watch: {
-			favorites() {
-				this.isFavoritesLoaded = true;
+			favoriteParsers() {
+				this.isParsersLoaded = true;
+				this.selectedParsers = this.selectedParsers.filter( selectedParser => {
+					const parserOnPage = this.favoriteParsers.find( parser => parser.id === selectedParser.id);
+					if (!parserOnPage) {
+						return false;
+					}
+					return true;
+				})
 			},
 			documentWidth() {
 				if (this.documentWidth <= 1100) {
@@ -199,99 +201,68 @@
 		},
 		computed: {
 			...mapState({
-				favorites: (state) => state.favorites.favorites,
+				parsers: (state) => state.parsers.all_parsers,
 				documentWidth: (state) => state.document_width,
 			}),
+			...mapGetters(["favoriteParsources"]),
+			favoriteParsers() {
+				if (this.show_by_source) {
+					return this.parsers.filter(
+						(parser) => parser.favoriteId !== null && parser.parsource === this.show_by_source
+					);
+				} else {
+					return this.parsers.filter(
+						(parser) => parser.favoriteId !== null
+					);
+				}
+			},
 			favoriteParsourcesName() {
-				return this.favorites.reduce((prev, current) => {
+				return this.favoriteParsources.reduce((prev, current) => {
 					return [
 						...prev,
 						{ id: current.id, description: current.name },
 					];
 				}, []);
 			},
-			favoriteParsources() {
-				if (this.show_by_source) {
-					return [
-						this.favorites.find(
-							(parsource) => parsource.id === this.show_by_source
-						),
-					];
-				} else {
-					return this.favorites;
-				}
-			},
-			selectedParsers() {
-				return this.selectedParsources.reduce(
-					(prev, selectedParsource) => {
-						return [...prev, ...selectedParsource.selectedParsers];
-					},
-					[]
-				);
-			},
 		},
 		data: () => ({
 			isMinimizedRightPanel: false,
-			isFavoritesLoaded: false,
+			isParsersLoaded: false,
 			isSortPanelVisible: false,
 
 			sortPanelSize: 0,
 
 			show_by_source: null,
 			show_by_content: "",
-			selectedParsources: [],
-			totalSelected: 0,
+			selectedParsers: [],
 		}),
 		methods: {
 			...mapMutations(["SET_TAB"]),
-			...mapActions(["getFavoriteParsers"]),
+			...mapActions(["getAllParsers", "getAllParsources"]),
 
 			resetFilter() {
 				this.show_by_source = null;
 			},
-			updateSelectedParsers(favoriteCardObj) {
-				const { parsourceId, selectedParsers } = favoriteCardObj;
-
-				const matchedIndex = this.selectedParsources.findIndex(
-					(selectedParsource) => {
-						return selectedParsource.parsourceId === parsourceId;
-					}
-				);
-
-				if (matchedIndex !== -1) {
-					this.selectedParsources[matchedIndex].selectedParsers =
-						selectedParsers;
+			updateSelectedParser(triggerdParser) {
+				if (triggerdParser.isSelect) {
+					this.selectedParsers.push(triggerdParser);
 				} else {
-					this.selectedParsources.push(favoriteCardObj);
+					this.selectedParsers = this.selectedParsers.filter( parser => parser.id!== triggerdParser.id);
 				}
-				if (!selectedParsers.length) {
-					this.selectedParsources = this.selectedParsources.filter(
-						(selectedParsource) => {
-							return (
-								selectedParsource.parsourceId !== parsourceId
-							);
-						}
-					);
-				}
-
-				this.updateTotalSelectedParsers();
-			},
-
-			updateTotalSelectedParsers() {
-				this.totalSelected = this.selectedParsources.reduce(
-					(prev, selectedParsourcesItem) => {
-						return (
-							prev + selectedParsourcesItem.selectedParsers.length
-						);
-					},
-					0
-				);
 			},
 		},
 		created() {
 			this.isMinimizedRightPanel = this.documentWidth <= 1100;
 			this.SET_TAB("favorites");
-			this.getFavoriteParsers();
+			if (!this.$store.state.parsers.all_parsers.length) {
+				this.getAllParsers();
+			}
+			if (!this.$store.state.parsers.all_parsources.length) {
+				this.getAllParsources();
+			}
+			if (this.parsers.length) {
+				this.isParsersLoaded = true;
+			}
 		},
 		mounted() {
 			this.sortPanelSize = this.$refs.sortPanel.offsetWidth;

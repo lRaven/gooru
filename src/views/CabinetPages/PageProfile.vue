@@ -50,12 +50,14 @@
 				<fieldset class="page-profile__form-body">
 					<p class="page-profile__form-input-description">Имя</p>
 					<r-input
+						:spellCheck="false"
 						:isDisabled="isPersonalDataFormDisabled"
 						v-model="personal_data.first_name"
 					></r-input>
 
 					<p class="page-profile__form-input-description">Фамилия</p>
 					<r-input
+						:spellCheck="false"
 						:isDisabled="isPersonalDataFormDisabled"
 						v-model="personal_data.last_name"
 					></r-input>
@@ -69,6 +71,7 @@
 
 					<p class="page-profile__form-input-description">E-mail</p>
 					<r-input
+						:spellCheck="false"
 						:isDisabled="isPersonalDataFormDisabled"
 						input_type="tel"
 						v-model="personal_data.email"
@@ -95,6 +98,7 @@
 						Старый пароль
 					</p>
 					<r-input
+						:spellCheck="false"
 						:isDisabled="isPasswordsFormDisabled"
 						input_type="password"
 						v-model="passwords.old_password"
@@ -104,6 +108,7 @@
 						Новый пароль
 					</p>
 					<r-input
+						:spellCheck="false"
 						:isDisabled="isPasswordsFormDisabled"
 						input_type="password"
 						v-model="passwords.password"

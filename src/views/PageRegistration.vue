@@ -25,6 +25,7 @@
 						E-mail
 					</p>
 					<r-input
+						:spellCheck="false"
 						class="page-registration__form-input"
 						v-model="user_data.email.value"
 						v-model:Valid="user_data.email.valid"
@@ -36,6 +37,7 @@
 						Пароль
 					</p>
 					<r-input
+						:spellCheck="false"
 						class="page-registration__form-input"
 						@blur="markInput"
 						inputName="password"
@@ -50,6 +52,7 @@
 						Подтверждение пароля
 					</p>
 					<r-input
+						:spellCheck="false"
 						class="page-registration__form-input"
 						@blur="markInput"
 						inputName="reapetedPassword"

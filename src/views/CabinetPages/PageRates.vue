@@ -122,7 +122,8 @@
 							</p>
 							<r-textarea
 								v-model="new_appeal.message"
-								placeholder="Текстовое описание требований для поиска"
+								:value="new_appeal.message"
+								placeholder="Текстовое описание обращения"
 							></r-textarea>
 
 							<r-button

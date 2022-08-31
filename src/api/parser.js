@@ -71,6 +71,45 @@ const updateParsourceImage = async ({ parsource_id, image }) => {
 };
 
 //* parser requests
+const getParser = async (id) => {
+	try {
+		const { data:parserData } = await axios.get(`${process.env.VUE_APP_BACK_URL}/parser/${id}`, {
+			headers: {
+				Authorization: `token ${cookie.get("auth_token")}`
+			}
+		});
+		return parserData;
+	} catch (error) {
+		throw {...error};
+	}
+};
+
+const editParserData = async ({ id, updatedData }) => {
+	try {
+		const { data:updatedParserData } = await axios.patch(`${process.env.VUE_APP_BACK_URL}/parser/${id}/`, {
+			...updatedData,
+		}, {
+			headers: {
+				Authorization: `token ${cookie.get('auth_token')}`,
+			},
+		});
+		return updatedParserData;
+	} catch (error) {
+		throw {...error};
+	}
+}
+
+const deleteParser = async (parserId) => {
+	try {
+		await axios.delete(`${process.env.VUE_APP_BACK_URL}/parser/${parserId}/`, {
+			headers: { Authorization: `token ${cookie.get("auth_token")}` }
+		});
+
+	} catch (error) {
+		throw { ...error };
+	}
+}
+
 const downloadFile = async ({ type }) => {
 	try {
 		const response = await fetch(
@@ -170,13 +209,13 @@ const getUserFavoriteParsers = async () => {
 	}
 };
 
-const createFavoriteParser = async ({ user, parser }) => {
+const createFavoriteParser = async (userId, parserId) => {
 	try {
 		const { data } = await axios.post(
 			`${store.state.baseURL}/usersfavorite/`,
 			{
-				user,
-				parser,
+				user: userId,
+				parser: parserId,
 			},
 			{
 				headers: {
@@ -190,7 +229,7 @@ const createFavoriteParser = async ({ user, parser }) => {
 	}
 };
 
-const deleteFavoriteParser = async ({ id }) => {
+const deleteFavoriteParser = async (id) => {
 	try {
 		await axios.delete(`${store.state.baseURL}/usersfavorite/${id}`, {
 			headers: {
@@ -207,6 +246,9 @@ export {
 	delete_parsource,
 	updateParsourceName,
 	updateParsourceImage,
+	getParser,
+	editParserData,
+	deleteParser,
 	downloadFile,
 	getComments,
 	createComment,

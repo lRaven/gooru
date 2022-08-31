@@ -20,6 +20,9 @@
 <script>
 	export default {
 		name: "r-modal",
+		emits: {
+			'close-modal': null
+		},
 		props: {},
 		data: () => ({ isModalContentVisible: false }),
 		mounted() {

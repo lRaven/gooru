@@ -20,6 +20,7 @@
 
 					<p class="page-login__form-input-description">E-mail</p>
 					<r-input
+						:spellCheck="false"
 						class="page-login__form-input"
 						v-model="user_data.email.value"
 						v-model:Valid="user_data.email.valid"
@@ -29,6 +30,7 @@
 
 					<p class="page-login__form-input-description">Пароль</p>
 					<r-input
+						:spellCheck="false"
 						class="page-login__form-input"
 						v-model="user_data.password.value"
 						input_type="password"

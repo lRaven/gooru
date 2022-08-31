@@ -48,21 +48,22 @@
 			<transition mode="out-in">
 				<r-loader v-if="!isAppealsLoaded" />
 			</transition>
-
+			<sort-pannel
+				class="page-appeals__sort-pannel"
+				:params="topics"
+				@sort-params-changed="sortAppeals"
+			/>
 			<transition mode="out-in">
-				<div
-					class="page-appeals__list page-appeals__list_space shadow"
-					v-if="isAppealsLoaded && pagination.cards_list.length > 0"
-				>
-					<appeals-card
-						v-for="appeal in pagination.cards_list"
-						:key="appeal.id"
-						:appeal="appeal"
-						:parsers="all_parsers"
-						:topics="topics"
-						:messages="all_messages"
-						:appealsHasNotifications="appealsHasNotifications"
-					></appeals-card>
+				<div v-if="isAppealsLoaded && appeals.length > 0" class="page-appeals__list page-appeals__list_space shadow">
+						<appeals-card
+							v-for="appeal in appeals"
+							:key="appeal.id"
+							:appeal="appeal"
+							:parsers="all_parsers"
+							:topics="topics"
+							:messages="all_messages"
+							:appealsHasNotifications="appealsHasNotifications"
+						></appeals-card>
 				</div>
 			</transition>
 
@@ -72,6 +73,12 @@
 					v-if="pagination.cards_list.length === 0"
 				>
 					Обращений нет
+				</p>
+				<p
+					class="page-appeals__empty-search"
+					v-else-if="isAppealsLoaded && appeals.length === 0"
+				>
+					Ничего не найдено
 				</p>
 			</transition>
 
@@ -165,6 +172,7 @@
 	import { read_notification } from "@/api/notifications";
 
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
+	import SortPannel from "@/components/Cabinet/Appeals/SortPannel.vue";
 	import { paginationMixin } from "@/mixins/paginationMixins";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";
@@ -176,6 +184,7 @@
 		components: {
 			RightPanel,
 			AppealsCard,
+			SortPannel,
 		},
 		watch: {
 			cards: {
@@ -202,7 +211,15 @@
 
 				all_messages: (state) => state.messenger.all_messages,
 			}),
-			...mapGetters(["appeals_notifications"]),
+			...mapGetters(["appeals_notifications", "appealsByType"]),
+
+			appeals() {
+				if (this.sortParams.length) {
+					return this.appealsByType(this.sortParams);
+				} else {
+					return this.cards;
+				}
+			},
 
 			appealsHasNotifications() {
 				return this.appeals_notifications.reduce((acc, current) => {
@@ -231,6 +248,7 @@
 					parser: "",
 					message: "",
 				},
+				sortParams: [],
 				isNewAppealValid: false,
 			};
 		},
@@ -242,6 +260,10 @@
 				"getAllMessages",
 				"getNotifications",
 			]),
+
+			sortAppeals(sortedParams) {
+				this.sortParams = sortedParams;
+			},
 
 			async create_ticket() {
 				try {
@@ -416,6 +438,16 @@
 
 		&__title {
 			font-weight: 400;
+		}
+		&__sort-pannel {
+			box-shadow: $shadow;
+		}
+		&__empty-search {
+			color: rgba($black, $alpha: 0.7);
+			margin: 0 auto;
+			padding: 2rem;
+			font-size: 2rem;
+			font-weight: 500;
 		}
 
 		.r-input {

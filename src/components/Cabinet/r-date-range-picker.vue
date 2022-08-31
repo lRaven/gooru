@@ -5,6 +5,7 @@
 		:clearable="false"
 		:format="format"
 		:enableTimePicker="false"
+		:disabled="isDisabled"
 		locale="ru"
 		cancelText="Закрыть"
 		selectText="Выбрать"
@@ -29,6 +30,12 @@
 	export default {
 		name: "rDateRangePicker",
 		components: { Datepicker },
+		props: {
+			isDisabled: {
+				type: Boolean,
+				default: false,
+			},
+		},
 		emits: {
 			'update:modelValue': null
 		},

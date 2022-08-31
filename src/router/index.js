@@ -1,177 +1,226 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import PageHome from '@/views/PageHome'
+import { createRouter, createWebHistory } from "vue-router";
 
-import PageLogin from '@/views/PageLogin'
-import PageRegistration from '@/views/PageRegistration'
+import PageHome from "@/views/PageHome";
+import PageShare from "@/views/PageShare";
 
-//* cabinet 
-import PageCabinet from '@/views/PageCabinet'
+import PageLogin from "@/views/PageLogin";
+import PageRegistration from "@/views/PageRegistration";
 
-import PageRates from '@/views/CabinetPages/PageRates'
-import PageAppeals from '@/views/CabinetPages/PageAppeals'
-import PageAppeal from '@/views/CabinetPages/PageAppeal'
+// Blog
+import PageBlog from "@/views/PageBlog.vue";
+import PageArticle from "@/views/BlogPages/PageArticle.vue";
+import PageArticles from "@/views/BlogPages/PageArticles.vue";
 
-import PageParsources from '@/views/CabinetPages/PageParsources'
-import PageParsource from '@/views/CabinetPages/PageParsource'
+//* cabinet
+import PageCabinet from "@/views/PageCabinet";
 
-import PageFavorites from '@/views/CabinetPages/PageFavorites'
+import PageRates from "@/views/CabinetPages/PageRates";
+import PageAppeals from "@/views/CabinetPages/PageAppeals";
+import PageAppeal from "@/views/CabinetPages/PageAppeal";
 
-import PageProfile from '@/views/CabinetPages/PageProfile'
+import PageParsources from "@/views/CabinetPages/PageParsources";
+import PageParsource from "@/views/CabinetPages/PageParsource";
 
-import PageNewParser from '@/views/CabinetPages/PageNewParser'
-import PageNewGroupParser from '@/views/CabinetPages/PageNewGroupParser'
+import PageFavorites from "@/views/CabinetPages/PageFavorites";
+
+import PageProfile from "@/views/CabinetPages/PageProfile";
+
+import PageNewParser from "@/views/CabinetPages/PageNewParser";
+import PageNewGroupParser from "@/views/CabinetPages/PageNewGroupParser";
 
 //* admin pages
-import PageUsers from '@/views/CabinetPages/PageUsers'
-import PageUser from '@/views/CabinetPages/PageUser'
-import PageControl from '@/views/CabinetPages/PageControl';
+import PageUsers from "@/views/CabinetPages/PageUsers";
+import PageUser from "@/views/CabinetPages/PageUser";
+import PageControl from "@/views/CabinetPages/PageControl";
 //*
 
-import PageBrief from '@/views/PageBrief'
+import PageBrief from "@/views/PageBrief";
 
-import PageNotFound from '@/views/PageNotFound'
+import PageNotFound from "@/views/PageNotFound";
+
+
 
 const routes = [
 	{
-		path: '/',
-		name: 'home',
+		path: "/",
+		name: "home",
 		component: PageHome,
 
 		meta: {
-			title: 'Gooru',
+			title: "Gooru",
 			requiresAuth: false,
-		}
+		},
 	},
-
 	{
-		path: '/cabinet',
-		name: 'cabinet',
+		path: "/share/:id",
+		name: "share",
+		component: PageShare,
+
+		meta: {
+			title: "Gooru",
+			requiresAuth: false,
+		},
+	},
+	{
+		path: "/blog",
+		name: "blog",
+		component: PageBlog,
+		redirect: () => '/blog/all',
+
+		meta: {
+			title: "Блог",
+			requiresAuth: false,
+		},
+		children: [
+			{
+				path: ':id',
+				name: 'blog-articles',
+				component: PageArticles,
+				meta: {
+					title: 'Статьи',
+					requiresAuth: false,
+				}
+			},
+			{
+				path: 'article/:articleId',
+				name: 'blog-article',
+				component: PageArticle,
+				meta: {
+					title: 'Статья',
+					requiresAuth: false,
+				}
+			}
+		]
+	},
+	{
+		path: "/cabinet",
+		name: "cabinet",
 
 		component: PageCabinet,
 
 		meta: {
-			title: 'Личный кабинет',
+			title: "Личный кабинет",
 		},
 		children: [
-			//* тарифы 
+			//* тарифы
 			{
-				path: 'rates',
-				name: 'rates',
+				path: "rates",
+				name: "rates",
 				component: PageRates,
 				meta: {
-					title: 'Тарифы',
+					title: "Тарифы",
 					requiresAuth: true,
 				},
 			},
-			//* обращения 
+			//* обращения
 			{
-				path: 'appeals',
-				name: 'appeals',
+				path: "appeals",
+				name: "appeals",
 				component: PageAppeals,
 				meta: {
-					title: 'Обращения',
+					title: "Обращения",
 					requiresAuth: true,
 				},
 			},
 			//* обращение/чат
 			{
-				path: 'appeal',
-				name: 'appeal',
+				path: "appeal",
+				name: "appeal",
 				component: PageAppeal,
 				meta: {
-					title: 'Обращение',
+					title: "Обращение",
 					requiresAuth: true,
 				},
 			},
 			//* parsources
 			{
-				path: 'parsources',
-				name: 'parsources',
+				path: "parsources",
+				name: "parsources",
 				component: PageParsources,
 				meta: {
-					title: 'Мои парсеры',
+					title: "Мои парсеры",
 					requiresAuth: true,
 				},
 			},
-			//* parsource 
+			//* parsource
 			{
-				path: 'parsource/:id',
-				name: 'parsource',
+				path: "parsource/:id",
+				name: "parsource",
 				component: PageParsource,
 				meta: {
-					title: 'Парсер',
+					title: "Парсер",
 					requiresAuth: true,
 				},
 			},
-			//* избранное 
+			//* избранное
 			{
-				path: 'favorites',
-				name: 'favorites',
+				path: "favorites",
+				name: "favorites",
 				component: PageFavorites,
 				meta: {
-					title: 'Избранное',
+					title: "Избранное",
 					requiresAuth: true,
 				},
 			},
 			//* профиль
 			{
-				path: 'profile',
-				name: 'profile',
+				path: "profile",
+				name: "profile",
 				component: PageProfile,
 				meta: {
-					title: 'Мой профиль',
+					title: "Мой профиль",
 					requiresAuth: true,
 				},
 			},
 			//* новый парсер
 			{
-				path: 'new_parser',
-				name: 'new_parser',
+				path: "new_parser",
+				name: "new_parser",
 				component: PageNewParser,
 				meta: {
-					title: 'Новый парсер',
+					title: "Новый источник",
 					requiresAuth: true,
 				},
 			},
 			//* новый парсер (группа url'ов)
 			{
-				path: 'new_group_parser',
-				name: 'new_group_parser',
+				path: "new_group_parser",
+				name: "new_group_parser",
 				component: PageNewGroupParser,
 				meta: {
-					title: 'Новая группа парсеров',
+					title: "Новая группа источников",
 					requiresAuth: true,
 				},
 			},
 
-			//* admin 
+			//* admin
 			//* юзеры
 			{
-				path: 'control',
-				name: 'control',
+				path: "control",
+				name: "control",
 				component: PageControl,
 				meta: {
-					title: 'Управление',
+					title: "Управление",
 					requiresAuth: true,
 				},
 			},
 			{
-				path: 'users',
-				name: 'users',
+				path: "users",
+				name: "users",
 				component: PageUsers,
 				meta: {
-					title: 'Пользователи',
+					title: "Пользователи",
 					requiresAuth: true,
 					isNotForDefaultUser: true,
 				},
 			},
 			//* страница юзера
 			{
-				path: 'user/:id',
-				name: 'user',
+				path: "user/:id",
+				name: "user",
 				component: PageUser,
 				meta: {
-					title: 'Пользователь',
+					title: "Пользователь",
 					requiresAuth: true,
 					isNotForDefaultUser: true,
 				},
@@ -180,61 +229,62 @@ const routes = [
 	},
 
 	{
-		path: '/login',
-		name: 'login',
+		path: "/login",
+		name: "login",
 		component: PageLogin,
 		meta: {
-			title: 'Авторизация',
+			title: "Авторизация",
 			requiresAuth: false,
 		},
-
 	},
 	{
-		path: '/registration',
-		name: 'registration',
+		path: "/registration",
+		name: "registration",
 		component: PageRegistration,
 		meta: {
-			title: 'Регистрация',
+			title: "Регистрация",
 			requiresAuth: false,
 		},
 	},
 
 	{
-		path: '/brief',
-		name: 'brief',
+		path: "/brief",
+		name: "brief",
 		component: PageBrief,
 		meta: {
-			title: 'Бриф',
+			title: "Бриф",
 			requiresAuth: false,
-		}
+		},
 	},
 
 	{
-		path: '/:pathMatch(.*)*',
-		name: '404',
+		path: "/:pathMatch(.*)*",
+		name: "404",
 		component: PageNotFound,
 
 		meta: {
-			title: '404',
-		}
+			title: "404",
+		},
 	},
-]
+];
 
 const router = createRouter({
 	history: createWebHistory(),
-	routes
-})
+	routes,
+});
 
 router.beforeEach((to) => {
 	if (to.meta.requiresAuth === true) {
-		if (localStorage.getItem('userAuth') !== 'yes') {
-			return { name: 'login' }
-		} else if (to.meta.isNotForDefaultUser && localStorage.getItem('role') === 'DefaultUser') {
-			//* если user.role === DefaultUser, а страница не доступна для DefaultUser, то редирект на дефолтную страницу 
-			return { name: 'cabinet' }
-		}
-		else return true
+		if (localStorage.getItem("userAuth") !== "yes") {
+			return { name: "login" };
+		} else if (
+			to.meta.isNotForDefaultUser &&
+			localStorage.getItem("role") === "DefaultUser"
+		) {
+			//* если user.role === DefaultUser, а страница не доступна для DefaultUser, то редирект на дефолтную страницу
+			return { name: "cabinet" };
+		} else return true;
 	}
-})
+});
 
-export default router
+export default router;

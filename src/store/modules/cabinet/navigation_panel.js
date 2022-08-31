@@ -1,14 +1,29 @@
-const state = () => ({ tab: 'appeals' })
+import { getTabs } from "@/api/blog";
 
-const getters = {}
+const state = () => ({ tab: "appeals", blogTabs: [{ id: 0, text: "Все" , name: 'blog-articles', params: { id: 'all' } }] });
 
-const mutations = { SET_TAB: (state, payload) => state.tab = payload }
+const getters = {};
 
-const actions = {}
+const mutations = {
+	SET_TAB: (state, payload) => (state.tab = payload),
+	SET_BLOG_TABS: (state, payload) => (state.blogTabs = payload),
+};
+
+const actions = {
+	getBlogNavigation: async (context) => {
+		try {
+			const topics = await getTabs();
+			context.commit("SET_BLOG_TABS", topics);
+		} catch (error) {
+			console.log(error);
+			throw { ...error };
+		}
+	},
+};
 
 export default {
 	state,
 	getters,
 	mutations,
 	actions,
-}
+};

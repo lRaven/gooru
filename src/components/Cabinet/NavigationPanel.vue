@@ -82,7 +82,7 @@
 			<div class="navigation-panel__create">
 				<r-button
 					color="bordered"
-					text="Новый парсер"
+					text="Новый источник"
 					@click="
 						this.$emit('close_menu');
 						this.$router.push({ name: 'new_parser' });
@@ -116,7 +116,7 @@
 				</r-button>
 				<r-button
 					color="bordered"
-					text="Новая группа парсеров"
+					text="Новая группа источников"
 					@click="
 						this.$emit('close_menu');
 						this.$router.push({ name: 'new_group_parser' });

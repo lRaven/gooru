@@ -1,11 +1,10 @@
 <template>
 	<li class="parser-content" v-click-away="stateReset">
 		<div
-			:class="
-				documentWidth > 490
-					? 'parser-content__row'
-					: 'parser-content__grid'
-			"
+			:class="{
+				'parser-content__row': documentWidth > 490,
+				'parser-content__grid': documentWidth <= 490,
+			}"
 			@click="
 				isCroppedText === true ? expandArticle() : minimizeArticle()
 			"
@@ -16,14 +15,53 @@
 				class="parser-content__image"
 				v-if="parser.img"
 			/>
-			<div class="parser-content__col">
+			<div
+				class="parser-content__col"
+				:class="{ 'edit-mode': isArticleEdit }"
+			>
 				<p
 					class="parser-content__text"
-					:class="{ cropped: isCroppedText }"
-					ref="textBlock"
+					:class="{
+						cropped: isCroppedText,
+						'parser-content__text_size_small':
+							fontSize === 'smallSize',
+						'parser-content__text_size_medium':
+							fontSize === 'mediumSize',
+						'parser-content__text_size_big': fontSize === 'bigSize',
+					}"
+					@dblclick="editArticle"
+					v-if="!isArticleEdit"
 				>
 					{{ parser.article }}
 				</p>
+				<template v-else>
+					<r-textarea
+						class="parser-content__edit-article-area"
+						:class="{
+							'parser-content__edit-article-area_size_small':
+								fontSize === 'smallSize',
+							'parser-content__edit-article-area_size_medium':
+								fontSize === 'mediumSize',
+							'parser-content__edit-article-area_size_big':
+								fontSize === 'bigSize',
+						}"
+						placeholder="Текст статьи"
+						ref="articleTextArea"
+						:value="editedArticleText"
+						v-model="editedArticleText"
+					></r-textarea>
+					<button
+						@click="updateArticle"
+						class="parser-content__edit-article-button"
+						:class="{ white: isAwaitArticleUpdate }"
+					>
+						<r-loader v-if="isAwaitArticleUpdate" radius="15" />
+						<p :class="{ hidden: isAwaitArticleUpdate }">
+							Сохранить
+						</p>
+					</button>
+				</template>
+
 				<a
 					v-if="documentWidth > 490"
 					:href="parser.url"
@@ -43,10 +81,37 @@
 			>
 				Ссылка на ресурс
 			</a>
-			<div
-				class="parser-content__col"
-				:class="{ alignicons: isTextOverFlow }"
-			>
+			<div class="parser-content__col">
+				<svg
+					class="parser-content__icon parser-content__icon_type_stroke-path"
+					:class="{ selected: isArticleEdit }"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+					@click="editArticle"
+				>
+					<path
+						d="M20.9991 10.0457V20.3159C20.9991 21.5221 20.0985 22.4998 18.9876 22.4998H3.5115C2.4006 22.4998 1.5 21.5221 1.5 20.3159V4.81178C1.5 3.60563 2.4006 2.62793 3.5115 2.62793H13.9528"
+						stroke="#989898"
+						stroke-miterlimit="10"
+						stroke-linecap="round"
+					/>
+					<path
+						d="M21.8333 4.5408L13.4576 13.1538C13.0311 13.5937 11.7549 13.98 10.5407 14.4252C10.0262 14.6139 9.53041 14.1336 9.70291 13.6134C10.1049 12.4006 10.4559 11.0982 10.8822 10.6582L19.2579 2.04525C19.947 1.3341 21.0822 1.31625 21.7934 2.0055C22.5045 2.6946 22.5224 3.82965 21.8333 4.5408Z"
+						stroke="#989898"
+						stroke-miterlimit="10"
+						stroke-linecap="round"
+					/>
+					<path
+						d="M17.8301 3.51855L20.4054 6.0141"
+						stroke="#989898"
+						stroke-miterlimit="10"
+						stroke-linecap="round"
+					/>
+				</svg>
+
 				<svg
 					width="20"
 					height="17"
@@ -123,7 +188,7 @@
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
 					class="parser-content__icon"
-					@click.stop="updateFavoriteParser"
+					@click.stop="updateFavoriteState"
 					v-else
 				>
 					<path
@@ -369,7 +434,7 @@
 		<r-confirm-popup
 			v-if="isDeleteFavoritePopupVisible"
 			:text="`Вы действительно хотите удалить «${this.croppedTitle}» из избранного?`"
-			@action_confirm="updateFavoriteParser"
+			@action_confirm="updateFavoriteState"
 			@close_popup="isDeleteFavoritePopupVisible = false"
 		/>
 	</transition>
@@ -382,6 +447,7 @@
 	import { mapState, mapActions, mapMutations } from "vuex";
 
 	import {
+		editParserData,
 		createComment,
 		updateComment,
 		deleteComment,
@@ -390,8 +456,14 @@
 
 	export default {
 		name: "ParserContent",
-		props: { parserProp: Object },
+		props: {
+			parserProp: Object,
+			fontSize: { type: String, required: true },
+		},
 		watch: {
+			fontSize() {
+				this.setArticleAreaHeigth(this.isArticleEdit);
+			},
 			isMessagesOpen() {
 				if (this.isMessagesOpen === true) {
 					(this.isShareOpen = false), (this.isDownloadOpen = false);
@@ -417,21 +489,17 @@
 					this.$refs.download.classList.remove("selected");
 				}
 			},
-			textBlockHeight() {
-				if (
-					this.textBlockHeight + 25 >
-					document.documentElement.scrollHeight
-				) {
-					this.hasScrollForTextBlock = true;
-				}
-			},
 		},
 		computed: {
 			...mapState({
-				favorites: (state) => state.favorites.favorites,
 				user: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
 			}),
+			adaptiveClass() {
+				return this.documentWidth > 490
+					? "parser-content__row"
+					: "parser-content__grid";
+			},
 
 			croppedTitle() {
 				if (this.parser.title.length > 20) {
@@ -446,17 +514,7 @@
 			},
 
 			isFavorited() {
-				let find = false;
-				this.favorites.forEach((parsource) => {
-					parsource.parsers.forEach((parser) => {
-						if (parser.id === this.parser.id) {
-							find = true;
-							this.favoriteId = parser.favoriteId;
-						}
-					});
-				});
-
-				return find;
+				return this.parserProp.favoriteId;
 			},
 			sharedContentTitle() {
 				return this.parser.comment.text
@@ -484,20 +542,23 @@
 				isShareOpen: false,
 				isDownloadOpen: false,
 				isEditComment: false,
+				isArticleEdit: false,
+				isAwaitArticleUpdate: false,
 				isCroppedText: true,
 				isDeleteFavoritePopupVisible: false,
-				isTextOverFlow: false,
+
+				textAreaContentHeigth: "",
 
 				parser: JSON.parse(JSON.stringify(this.parserProp)),
-				favoriteId: null,
 
 				comment: this.parserProp.comment.text,
+				editedArticleText: this.parserProp.article,
 				downloadFormatFiles: { excel: false, csv: false },
 			};
 		},
 
 		methods: {
-			...mapActions(["getFavoriteParsers", "updateFavorites"]),
+			...mapActions(["getFavoriteParsers", "updateFavoriteParser"]),
 			...mapMutations([
 				"SET_UPDATED_ALL_PARSERS",
 				"SET_UPDATED_PARSERS",
@@ -508,21 +569,53 @@
 				this.isShareOpen = false;
 				this.isDownloadOpen = false;
 			},
-
+			editArticle() {
+				this.isArticleEdit = !this.isArticleEdit;
+				this.setArticleAreaHeigth(this.isArticleEdit);
+			},
+			setArticleAreaHeigth(isArticleEdit) {
+				
+				if (isArticleEdit) {
+					this.$nextTick(() => {
+						this.$refs.articleTextArea.$el.setAttribute(
+							"style",
+							`height: auto`
+						);
+						const articleHeigth =
+							this.$refs.articleTextArea.$el.scrollHeight + 2;
+						this.$refs.articleTextArea.$el.setAttribute(
+							"style",
+							`height: ${articleHeigth}px`
+						);
+					});
+				} else {
+					this.$refs.articleTextArea?.$el.removeAttribute("style");
+				}
+			},
+			async updateArticle() {
+				try {
+					this.isAwaitArticleUpdate = true;
+					const { id } = this.parser;
+					const article = this.editedArticleText;
+					const updatedParserData = await editParserData({
+						id,
+						updatedData: { article },
+					});
+					this.parser.article = updatedParserData.article;
+					this.SET_UPDATED_PARSERS({ ...this.parser });
+					this.SET_UPDATED_ALL_PARSERS({ ...this.parser });
+					this.isArticleEdit = false;
+				} catch (error) {
+					console.log(error);
+				}
+				this.isAwaitArticleUpdate = false;
+			},
 			expandArticle() {
 				this.isCroppedText = false;
-				setTimeout(() => {
-					if (this.$refs.textBlock.offsetHeight > 60) {
-						this.textBlockHeight =
-							this.$refs.textBlock.offsetHeight;
-						this.isTextOverFlow = true;
-					}
-				}, 100);
 			},
 
 			minimizeArticle() {
 				this.isCroppedText = true;
-				this.isTextOverFlow = false;
 			},
 
 			stateReset() {
@@ -532,15 +625,12 @@
 			openConfirmPopup() {
 				this.isDeleteFavoritePopupVisible = true;
 			},
-			async updateFavoriteParser() {
+			async updateFavoriteState() {
 				try {
-					await this.updateFavorites({
-						parserToUpdate: {
-							...this.parser,
-							favoriteId: this.favoriteId,
-						},
+					await this.updateFavoriteParser({
+						parserToUpdate: { ...this.parser },
 						userId: this.user.id,
-						isFavorite: this.isFavorited,
+						favoriteId: this.isFavorited,
 					});
 
 					if (this.isFavorited) {
@@ -594,14 +684,8 @@
 						this.parser.comment.text = comment;
 						this.isEditComment = false;
 					}
-					this.SET_UPDATED_PARSERS(this.parser);
-					this.SET_UPDATED_ALL_PARSERS(this.parser);
-					if (this.isFavorited) {
-						this.SET_UPDATED_FAVORITES({
-							...this.parser,
-							favoriteId: this.favoriteId,
-						});
-					}
+					this.SET_UPDATED_PARSERS({ ...this.parser });
+					this.SET_UPDATED_ALL_PARSERS({ ...this.parser });
 				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
 					throw new Error(err);
@@ -611,14 +695,8 @@
 				try {
 					await deleteComment({ id: this.parser.comment.id });
 					this.parser.comment = { text: "", id: null };
-					this.SET_UPDATED_PARSERS(this.parser);
-					this.SET_UPDATED_ALL_PARSERS(this.parser);
-					if (this.isFavorited) {
-						this.SET_UPDATED_FAVORITES({
-							...this.parser,
-							favoriteId: this.favoriteId,
-						});
-					}
+					this.SET_UPDATED_PARSERS({ ...this.parser });
+					this.SET_UPDATED_ALL_PARSERS({ ...this.parser });
 					this.comment = "";
 				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
@@ -674,9 +752,6 @@
 		},
 
 		directives: { ClickAway: directive },
-		created() {
-			this.getFavoriteParsers();
-		},
 		setup() {
 			const toast = useToast();
 			return { toast };
@@ -695,6 +770,30 @@
 		@media screen and (max-width: 400px) {
 			padding: 0.8rem 0.4rem;
 		}
+		&__edit-article-button {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 1rem;
+			font-size: 1.6rem;
+			font-weight: 500;
+			padding: 1rem 2.5rem;
+			margin: 2rem 0;
+			border-radius: 0.5rem;
+			background-color: $primary;
+			color: $white;
+			min-width: max-content;
+			height: max-content;
+			transition: all 0.2s ease;
+			& p.hidden {
+				visibility: hidden;
+			}
+			&.white {
+				background-color: $white;
+			}
+		}
+
 		&__row {
 			display: flex;
 			justify-content: space-between;
@@ -703,7 +802,7 @@
 			}
 			&:first-child {
 				cursor: pointer;
-				align-items: center;
+				align-items: flex-start;
 				gap: 1rem;
 			}
 			&:last-child {
@@ -738,6 +837,23 @@
 		&__col {
 			&:first-child {
 				max-width: 90%;
+				&.edit-mode {
+					width: 80%;
+					.r-textarea {
+						height: auto;
+						&.parser-content__edit-article-area {
+							&_size_small {
+								font-size: 1.4rem
+							}
+							&_size_medium {
+								font-size: 2rem
+							}
+							&_size_big {
+								font-size: 2.4rem
+							}
+						}
+					}
+				}
 				overflow: hidden;
 				@media (max-width: 490px) {
 					grid-column: 1/3;
@@ -749,6 +865,10 @@
 				gap: 1.2rem;
 				width: max-content;
 				color: rgba($black, 0.5);
+				@media (max-width: 390px) {
+					grid-column: 1/2;
+					margin: 1rem 0 0 0;
+				}
 			}
 			&.alignicons {
 				align-self: flex-start;
@@ -767,7 +887,17 @@
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
 			word-break: break-word;
-
+			&_size {
+				&_small {
+					font-size: 1.6rem;
+				}
+				&_medium {
+					font-size: 2rem;
+				}
+				&_big {
+					font-size: 2.8rem;
+				}
+			}
 			&.cropped {
 				display: -webkit-box;
 				text-overflow: ellipsis;
@@ -790,7 +920,6 @@
 
 		&__icon {
 			cursor: pointer;
-
 			&.selected {
 				path {
 					fill: $primary;
@@ -803,6 +932,23 @@
 			&:hover {
 				path {
 					fill: $primary;
+				}
+			}
+			&_type_stroke-path {
+				path {
+					fill: none;
+				}
+				&.selected {
+					path {
+						stroke: $primary;
+						fill: none;
+					}
+				}
+				&:hover {
+					path {
+						stroke: $primary;
+						fill: none;
+					}
 				}
 			}
 		}

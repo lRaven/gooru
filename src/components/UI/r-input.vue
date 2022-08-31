@@ -1,6 +1,7 @@
 <template>
 	<label class="r-input">
 		<input
+			:spellcheck="spellCheck"
 			class="r-input__input"
 			:name="inputName"
 			:class="{
@@ -70,6 +71,7 @@
 				value: Boolean,
 				default: false,
 			},
+			spellCheck: { type: Boolean, default: true },
 
 			input_type: {
 				value: String,

@@ -44,8 +44,7 @@ const actions = {
 			const response = await axios
 				.get(`${store.state.baseURL}/supportchat/`, {
 					headers: { Authorization: `token ${cookie.get("auth_token")}`, },
-				})
-
+				});
 			if (response.status === 200) {
 				context.commit('SET_ALL_MESSAGES', response.data);
 				console.log('All messages saved');

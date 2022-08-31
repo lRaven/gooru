@@ -10,7 +10,7 @@
 				<r-checkbox
 					:class="{ alignicons: isTextOverFlow }"
 					@update:modelValue="handleChangeSelectItem"
-					:modelValue="isSelected"
+					v-model="isSelected"
 					:checked="checked"
 				></r-checkbox>
 
@@ -264,7 +264,6 @@
 							:url="sharedContentUrl"
 							:title="sharedContentTitle"
 							:description="sharedContentDescription"
-							
 						>
 							<img src="/img/icon/cabinet/ok.svg" alt="ok" />
 						</ShareNetwork>
@@ -275,7 +274,6 @@
 							:url="sharedContentUrl"
 							:title="sharedContentTitle"
 							:description="sharedContentDescription"
-							
 						>
 							<img src="/img/icon/cabinet/vk.svg" alt="vk" />
 						</ShareNetwork>
@@ -286,7 +284,6 @@
 							:url="sharedContentUrl"
 							:title="sharedContentTitle"
 							:description="sharedContentDescription"
-							
 						>
 							<img src="/img/icon/cabinet/tg.svg" alt="tg" />
 						</ShareNetwork>
@@ -331,13 +328,13 @@
 				color="bordered"
 			></r-button>
 		</div>
+		<r-confirm-popup
+			v-if="isDeleteFavoritePopupVisible"
+			:text="`Вы действительно хотите удалить «${croppedTitle}» из избранного?`"
+			@action_confirm="deleteFavoriteParser"
+			@close_popup="isDeleteFavoritePopupVisible = false"
+		/>
 	</li>
-	<r-confirm-popup
-		v-if="isDeleteFavoritePopupVisible"
-		:text="`Вы действительно хотите удалить «${croppedTitle}» из избранного?`"
-		@action_confirm="deleteFavoriteParser"
-		@close_popup="isDeleteFavoritePopupVisible = false"
-	/>
 </template>
 
 <script>
@@ -346,7 +343,12 @@
 	import { directive } from "vue3-click-away";
 	import { mapState, mapActions, mapMutations } from "vuex";
 
-	import { downloadFile, createComment, updateComment, deleteComment } from "@/api/parser";
+	import {
+		downloadFile,
+		createComment,
+		updateComment,
+		deleteComment,
+	} from "@/api/parser";
 
 	export default {
 		name: "FavoriteContentItem",
@@ -378,7 +380,6 @@
 		},
 		computed: {
 			...mapState({
-				favorites: (state) => state.favorites.favorites,
 				user: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
 			}),
@@ -395,27 +396,19 @@
 				}
 			},
 			sharedContentTitle() {
-				return this.parser.comment.text ? this.parser.comment.text : this.parser.title;
+				return this.parser.comment.text
+					? this.parser.comment.text
+					: this.parser.title;
 			},
 			sharedContentUrl() {
 				return this.parser.url;
 			},
 			sharedContentDescription() {
-				return this.parser.comment.text ? '' : this.parser.article;
+				return this.parser.comment.text ? "" : this.parser.article;
 			},
 
 			isFavorited() {
-				let find = false;
-				this.favorites.forEach((parsource) => {
-					parsource.parsers.forEach((parser) => {
-						if (parser.id === this.parser.id) {
-							find = true;
-							this.favoriteId = parser.favoriteId;
-						}
-					});
-				});
-
-				return find;
+				return this.parser.favoriteId;
 			},
 			isDisabledCommentButton() {
 				return this.comment.length > 0 ? false : true;
@@ -428,7 +421,7 @@
 		},
 		data() {
 			return {
-				parser: this.parserProp,
+				parser: JSON.parse(JSON.stringify(this.parserProp)),
 				isShareOpen: false,
 				isDownloadOpen: false,
 				isCommentOpen: false,
@@ -440,7 +433,6 @@
 				comment: this.parserProp.comment.text,
 				isEditComment: false,
 
-				favoriteId: 0,
 				downloadFormatFiles: { excel: false, csv: false },
 
 				shareContent: {
@@ -456,8 +448,12 @@
 			};
 		},
 		methods: {
-			...mapActions(["updateFavorites"]),
-			...mapMutations(["SET_UPDATED_PARSERS", "SET_UPDATED_ALL_PARSERS", "SET_UPDATED_FAVORITES"]),
+			...mapActions(["updateFavoriteParser"]),
+			...mapMutations([
+				"SET_UPDATED_PARSERS",
+				"SET_UPDATED_ALL_PARSERS",
+				"SET_UPDATED_FAVORITES",
+			]),
 
 			hideAllExtras() {
 				this.isMessagesOpen = false;
@@ -466,13 +462,13 @@
 			},
 			expandArticle() {
 				this.isCroppedText = false;
-				setTimeout(() => {
+				this.$nextTick(() => {
 					if (this.$refs.textBlock.offsetHeight > 60) {
 						this.textBlockHeight =
 							this.$refs.textBlock.offsetHeight;
 						this.isTextOverFlow = true;
 					}
-				}, 100);
+				});
 			},
 
 			minimizeArticle() {
@@ -511,8 +507,6 @@
 					}
 					this.SET_UPDATED_PARSERS(this.parser);
 					this.SET_UPDATED_ALL_PARSERS(this.parser);
-					this.SET_UPDATED_FAVORITES({ ...this.parser, favoriteId: this.favoriteId });
-					
 				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
 					throw new Error(err);
@@ -524,7 +518,6 @@
 					this.parser.comment = { text: "", id: null };
 					this.SET_UPDATED_PARSERS(this.parser);
 					this.SET_UPDATED_ALL_PARSERS(this.parser);
-					this.SET_UPDATED_FAVORITES({ ...this.parser, favoriteId: this.favoriteId });
 					this.comment = "";
 				} catch (err) {
 					this.toast.error("Что-то пошло не так!");
@@ -534,7 +527,7 @@
 			handleChangeSelectItem(value) {
 				console.log("parser", this.parser.id, value);
 				this.$emit("change-selected", {
-					id: this.parser.id,
+					...this.parser,
 					isSelect: value,
 				});
 				this.isSelected = value;
@@ -544,13 +537,12 @@
 			},
 			async deleteFavoriteParser() {
 				try {
-					await this.updateFavorites({
+					await this.updateFavoriteParser({
 						parserToUpdate: {
 							...this.parser,
-							favoriteId: this.favoriteId,
 						},
 						userId: this.user.id,
-						isFavorite: true,
+						favoriteId: this.isFavorited,
 					});
 					this.toast.success(
 						`Парсер «${this.croppedTitle}» удален из избранного!`
@@ -627,7 +619,9 @@
 		border-top: 0.1rem solid #999;
 		padding: 1rem 3rem 1rem 1rem;
 		background-color: $white;
-
+		&.border-top-none {
+			border-top: none;
+		}
 		&__grid {
 			display: grid;
 			grid-template-columns: 1fr max-content;
@@ -668,6 +662,7 @@
 			}
 		}
 		& .alignicons {
+			margin: 1rem 0 0 0;
 			align-self: flex-start;
 		}
 

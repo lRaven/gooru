@@ -1,6 +1,6 @@
 <template>
 	<section class="page-new-group-parser">
-		<h2 class="page-new-group-parser__title">Новая группа парсеров</h2>
+		<h2 class="page-new-group-parser__title">Новая группа источников</h2>
 
 		<form
 			class="page-new-group-parser__form"
@@ -20,12 +20,14 @@
 			</template>
 
 			<p class="page-new-group-parser__input-description">
-				Название парсера*
+				Название источника*
 			</p>
 			<r-input
+				:spellCheck="false"
 				input_type="text"
 				v-model="new_parsource.name"
-				placeholder="Введите название парсера"
+				:value="new_parsource.name"
+				placeholder="Введите название источника"
 			></r-input>
 
 			<p class="page-new-group-parser__input-description">
@@ -33,6 +35,7 @@
 			</p>
 			<template v-for="(url, index) in new_parsource.urls" :key="url.id">
 				<r-input
+					:spellCheck="false"
 					v-model="url.text"
 					input_type="url"
 					placeholder="https://"

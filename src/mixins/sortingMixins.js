@@ -75,44 +75,44 @@ export const sortParsources = {
 			},
 		],
 		sortUser: [
-			{
+			/* {
 				id: 1,
 				key: "data_source",
 				description: "Источник",
 				direction: "descending",
-			},
+			}, */
 			{
-				id: 2,
+				id: 1,
 				key: "name",
 				description: "Название",
 				direction: "descending",
 			},
 			{
-				id: 3,
+				id: 2,
 				key: "date",
 				description: "Дата",
 				direction: "descending",
 			},
 			{
-				id: 4,
+				id: 3,
 				key: "condition",
 				description: "Статус",
 				direction: "descending",
 			},
 			{
-				id: 5,
+				id: 4,
 				key: "find",
 				description: "Найдено",
 				direction: "descending",
 			},
 			{
-				id: 6,
+				id: 5,
 				key: "favorite",
 				description: "В избранном",
 				direction: "descending",
 			},
 			{
-				id: 7,
+				id: 6,
 				key: "lost_time",
 				description: "Время парсинга",
 				direction: "descending",
@@ -120,86 +120,86 @@ export const sortParsources = {
 		],
 
 		sortUserDropdown: [
-			{
+			/* {
 				id: 1,
 				key: "data_source",
 				description: "по источнику (по-возрастанию)",
 				direction: "ascending",
-			},
-			{
-				id: 2,
+			}, */
+			/* {
+				id: 1,
 				key: "data_source",
 				description: "по источнику (по-убыванию)",
 				direction: "descending",
-			},
+			}, */
 			{
-				id: 3,
+				id: 1,
 				key: "name",
 				description: "по названию (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 4,
+				id: 2,
 				key: "name",
 				description: "по названию (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 5,
+				id: 3,
 				key: "date",
 				description: "по дате (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 6,
+				id: 4,
 				key: "date",
 				description: "по дате (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 7,
+				id: 5,
 				key: "condition",
 				description: "по статусу (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 8,
+				id: 6,
 				key: "condition",
 				description: "по статусу (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 9,
+				id: 7,
 				key: "find",
 				description: "по числу найденных (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 10,
+				id: 8,
 				key: "find",
 				description: "по числу найденных (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 11,
+				id: 9,
 				key: "favorite",
 				description: "по числу в избранном (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 12,
+				id: 10,
 				key: "favorite",
 				description: "по числу в избранном (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 13,
+				id: 11,
 				key: "lost_time",
 				description: "по времени парсинга (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 14,
+				id: 12,
 				key: "lost_time",
 				description: "по времени парсинга (по-убыванию)",
 				direction: "descending",
@@ -361,44 +361,44 @@ export const sortParsources = {
 export const sortParsourcesUser = {
 	data: () => ({
 		sortUser: [
-			{
+	/* 		{
 				id: 1,
 				key: "data_source",
 				description: "Источник",
 				direction: "descending",
-			},
+			}, */
 			{
-				id: 2,
+				id: 1,
 				key: "name",
 				description: "Название",
 				direction: "descending",
 			},
 			{
-				id: 3,
+				id: 2,
 				key: "date",
 				description: "Дата",
 				direction: "descending",
 			},
 			{
-				id: 4,
+				id: 3,
 				key: "condition",
 				description: "Статус",
 				direction: "descending",
 			},
 			{
-				id: 5,
+				id: 4,
 				key: "find",
 				description: "Найдено",
 				direction: "descending",
 			},
 			{
-				id: 6,
+				id: 5,
 				key: "favorite",
 				description: "В избранном",
 				direction: "descending",
 			},
 			{
-				id: 7,
+				id: 6,
 				key: "lost_time",
 				description: "Время парсинга",
 				direction: "descending",
@@ -406,86 +406,86 @@ export const sortParsourcesUser = {
 		],
 
 		sortUserDropdown: [
-			{
+			/* {
 				id: 1,
 				key: "data_source",
 				description: "по источнику (по-возрастанию)",
 				direction: "ascending",
-			},
-			{
+			}, */
+			/* {
 				id: 2,
 				key: "data_source",
 				description: "по источнику (по-убыванию)",
 				direction: "descending",
-			},
+			}, */
 			{
-				id: 3,
+				id: 1,
 				key: "name",
 				description: "по названию (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 4,
+				id: 2,
 				key: "name",
 				description: "по названию (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 5,
+				id: 3,
 				key: "date",
 				description: "по дате (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 6,
+				id: 4,
 				key: "date",
 				description: "по дате (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 7,
+				id: 5,
 				key: "condition",
 				description: "по статусу (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 8,
+				id: 6,
 				key: "condition",
 				description: "по статусу (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 9,
+				id: 7,
 				key: "find",
 				description: "по найденным (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 10,
+				id: 8,
 				key: "find",
 				description: "по найденным (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 11,
+				id: 9,
 				key: "favorite",
 				description: "по числу в избранном (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 12,
+				id: 10,
 				key: "favorite",
 				description: "по числу в избранном (по-убыванию)",
 				direction: "descending",
 			},
 			{
-				id: 13,
+				id: 11,
 				key: "lost_time",
 				description: "по времени парсинга (по-возрастанию)",
 				direction: "ascending",
 			},
 			{
-				id: 14,
+				id: 12,
 				key: "lost_time",
 				description: "по времени парсинга (по-убыванию)",
 				direction: "descending",

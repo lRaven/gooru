@@ -1,27 +1,33 @@
 import axios from 'axios';
-import store from '@/store';
 import cookie from 'vue-cookies';
 
-const baseURL = store.state.baseURL;
-
-const add_ticket = async (args) => {
+const add_ticket = async (ticketData) => {
 	try {
+		const isAuthUser = cookie.get("auth_token");
 		const response =
-			await axios.post(`${baseURL}/users/support/`,
+			await axios.post(`${process.env.VUE_APP_BACK_URL}/users/support/`,
 				{
-					name: args.name,
-					phone_number: args.phone_number,
-					email: args.email,
-					message: args.message,
-					topic_type: args.topic_type,
-					parser: args.parser
+					...ticketData,
 				},
-				{ headers: { Authorization: `token ${cookie.get('auth_token')}` } });
+				{ headers: isAuthUser ? {Authorization: `token ${cookie.get('auth_token')}`} : '' });
 
 		return response;
 	}
 
 	catch (err) { return err.response }
+};
+
+const getTicketMessages = async (ticketId) => {
+	try {
+		const { data: messages } = await axios.get(`${process.env.VUE_APP_BACK_URL}/supportchat/?ticket__id=${ticketId}`, {
+			headers: {
+				Authorization: `token ${cookie.get('auth_token')}`,
+			},
+		});
+		return messages;
+	} catch (error) {
+		throw {...error};
+	}
 }
 
-export { add_ticket }
+export { add_ticket, getTicketMessages }
