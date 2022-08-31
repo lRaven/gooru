@@ -12,10 +12,11 @@
 			<h2 class="share-popup__title">Поделиться в {{ networkName }}</h2>
 			<ul
 				class="share-list share-popup__share-list"
-				v-for="(shareItem, index) in shareContentList"
-				:key="shareItem.id"
+				
 			>
-				<li class="share-list-item share-list__share-list-item">
+				<li class="share-list-item share-list__share-list-item"
+				v-for="(shareItem, index) in shareContentList"
+				:key="shareItem.id">
 					<h3 class="share-list-item__title">
 						{{ shareItem.title }}
 					</h3>
@@ -28,7 +29,7 @@
 					<r-textarea
 						class="share-list-item__comment-area"
 						v-if="network === 'telegram'"
-						placeholder="Комментарий"
+						placeholder="Комментарий..."
 						v-model="userComments[index]"
 						:value="userComments[index]"
 					></r-textarea>
@@ -46,7 +47,7 @@
 						символов
 					</p>
 					<r-checkbox
-						v-if="this.network === 'telegram'"
+						v-if="this.network === 'telegram' && shareContentList[index].comment.id"
 						description="Добавить комментарий парсера с Gooru"
 						:disabled="hasComment(index)"
 						v-model="parserComments[index]"
@@ -59,7 +60,7 @@
 						class="gooru-comment"
 					>
 						<h4 class="gooru-comment__title">
-							Ваш комментарий к парсеру в Gooru
+							Ваш комментарий к парсеру в Gooru:
 						</h4>
 						<p class="gooru-comment__text">
 							{{ shareContentList[index].comment.text }}
@@ -191,6 +192,10 @@
 		padding: 0 3rem 3rem 3rem;
 		max-height: 70vh;
 		overflow-y: auto;
+		@media (max-width: 450px) {
+			padding: 0 1rem 2rem 1rem;
+		}
+
 		&__title {
 			text-align: center;
 			margin-bottom: 3rem;
@@ -202,8 +207,11 @@
 		}
 		.r-button {
 			font-size: 1.8rem;
-			width: 100%;
+			width: 80%;
 			padding: 1.5rem 2rem;
+			@media (max-width: 768px) {
+				width: 100%;
+			}
 		}
 	}
 	.share-list {
@@ -222,16 +230,26 @@
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		grid-gap: 1rem 1.5rem;
+		width: 80%;
+
+		@media (max-width: 768px) {
+			width: 100%;
+		}
 		&__title {
 			grid-column: 1/-1;
 			font-size: 2.8rem;
 			margin-bottom: 1.5rem;
 			font-weight: 600;
 			color: $gray;
+			@media (max-width: 500px) {
+				font-size: 2rem;
+			}
 		}
 		&__link {
-			grid-column: 1/2;
+			grid-column: 1/3;
 			font-size: 1.8rem;
+			height: fit-content;
+			align-self: center;
 		}
 		&__comment-area {
 			grid-column: 1/-1;
@@ -243,21 +261,34 @@
 			color: $red;
 		}
 		.r-button {
-			width: 60%;
 			padding: 1.5rem 2rem;
 			justify-self: end;
+			width: 30%;
+			grid-column: 1/3;
+			@media (max-width: 450px) {
+				padding: 1rem 2rem;
+			}
+		}
+		.r-input{
+			grid-column: 1/-1;
+		}
+		.r-checkbox {
+			grid-column: 1/-1;
 		}
 	}
 	.gooru-comment {
 		width: 100%;
-		&__title {
-		}
+		grid-column: 1/-1;
 		&__text {
 			display: -webkit-box;
 			text-overflow: ellipsis;
 			-webkit-line-clamp: 2;
 			-webkit-box-orient: vertical;
 			overflow: hidden;
+			@media (max-width: 500px) {
+				font-size: 1.8rem;
+			}
+			
 		}
 	}
 	.social-icon {
@@ -272,7 +303,6 @@
 			height: 35px;
 			border-radius: 50%;
 			&_background-color_white {
-				
 				background-color: $white;
 			}
 		}

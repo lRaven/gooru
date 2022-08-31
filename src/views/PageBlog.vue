@@ -1,6 +1,6 @@
 <template>
 	<div class="page-blog theme-container">
-		<the-header />
+		<the-header :isMenuMinimized="isMenuMinimize" @open_menu="handleOpenMenu" @close_menu="handleCloseMenu" />
 		<!-- <navigation-panel /> -->
 		<navigation-panel-r
 			:tabs="blogTabs"
@@ -37,20 +37,19 @@
 							class="social-icon_background-color_white"
 							network="odnoklassniki"
 							:shareContentList="sharedArticle"
-							@click.capture="handleCheckShareContentList"
 						/>
 						<social-share-icon
 							network="vk"
 							:shareContentList="sharedArticle"
-							@click.capture="handleCheckShareContentList"
 						/>
 						<social-share-icon
 							network="telegram"
 							:shareContentList="sharedArticle"
-							@click.capture="handleCheckShareContentList"
 						/>
 					</template>
-					<span v-if="isError" class="social-media__empty-error">Необходимо просматривать статью!</span>
+					<span v-if="isError" class="social-media__empty-error"
+						>Необходимо просматривать статью!</span
+					>
 				</div>
 			</template>
 		</navigation-panel-r>
@@ -110,10 +109,18 @@
 				isMenuMinimize: false,
 			};
 		},
+		watch: {
+			documentWidth() {
+				if (this.documentWidth <= 1023) {
+					this.isMenuMinimize = true;
+				}
+			},
+		},
 		computed: {
 			...mapState({
 				blogTabs: (state) => state.navigation_panel.blogTabs,
 				articles: (state) => state.blog.articles,
+				documentWidth: (state) => state.document_width,
 			}),
 			tabIcons() {
 				const iconObject = {};
@@ -137,7 +144,6 @@
 			},
 			currentTab() {
 				const currentRouteParams = this.$route.params;
-				console.log(currentRouteParams)
 				if (currentRouteParams?.id) {
 					if (currentRouteParams.id === "all") {
 						return this.blogTabs.find(
@@ -147,8 +153,11 @@
 					return this.blogTabs.find(
 						(tab) => tab.params.id === +currentRouteParams.id
 					);
-				}  else if (currentRouteParams?.articleId) {
-					const matchedArticle = this.articles?.find( article => article.id === +currentRouteParams.articleId);
+				} else if (currentRouteParams?.articleId) {
+					const matchedArticle = this.articles?.find(
+						(article) =>
+							article.id === +currentRouteParams.articleId
+					);
 					return this.blogTabs.find(
 						(tab) => tab.params.id === matchedArticle?.topic
 					);
@@ -158,13 +167,22 @@
 			},
 			sharedArticle() {
 				const currentRouteParams = this.$route.params;
-				const matchedArticle = this.articles?.find( article => article.id === +currentRouteParams.articleId);
-				if (matchedArticle){
+				const matchedArticle = this.articles?.find(
+					(article) => article.id === +currentRouteParams.articleId
+				);
+				if (matchedArticle) {
 					const { title, id } = matchedArticle;
-					return [{ title, id, url: window.location, comment: { text: '', id: null } }];
+					return [
+						{
+							title,
+							id,
+							url: window.location,
+							comment: { text: "", id: null },
+						},
+					];
 				}
 				return [];
-			}
+			},
 		},
 		methods: {
 			...mapActions(["getBlogNavigation", "getArticles"]),
@@ -298,7 +316,7 @@
 			background-color: transparent;
 			border-radius: 50%;
 			width: fit-content;
-			
+
 			&:hover {
 				background-color: rgba($white, 0.3);
 				cursor: pointer;

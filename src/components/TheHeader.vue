@@ -205,7 +205,10 @@
 						<li class="the-header__link" @click="scroll('#about')">
 							О компании
 						</li>
-						<li class="the-header__link" @click="this.$router.push({ name: 'blog' })">
+						<li
+							class="the-header__link"
+							@click="this.$router.push({ name: 'blog' })"
+						>
 							Блог
 						</li>
 					</ul>
@@ -464,6 +467,9 @@
 		@media (max-width: 767px) {
 			padding: 1.5rem;
 		}
+		@media (max-width: 400px) {
+			padding: 2rem;
+		}
 
 		&.bg {
 			background-color: $white;
@@ -501,29 +507,28 @@
 						display: none;
 					}
 				}
-				&__burger {
-					@media (max-width: 1023px) {
-						background-color: transparent;
-						display: flex;
-						flex-direction: column;
-						justify-content: space-between;
-						gap: 0.6rem;
-						height: 2rem;
-						width: 2.7rem;
-						color: $gray;
-						z-index: 4;
-					}
-					&-line {
-						&:nth-child(3) {
-							transform: scaleX(0.7) translateX(-0.48rem);
-						}
-					}
-				}
 			}
 		}
 
 		&__burger {
 			display: none;
+
+			@media (max-width: 1023px) {
+				background-color: transparent;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				gap: 0.6rem;
+				height: 2rem;
+				width: 2.7rem;
+				color: $gray;
+				z-index: 4;
+			}
+			&-line {
+				&:nth-child(3) {
+					transform: scaleX(0.7) translateX(-0.48rem);
+				}
+			}
 		}
 
 		&__container {
@@ -533,6 +538,12 @@
 		}
 
 		&__col {
+			display: flex;
+			align-items: center;
+			gap: 2rem;
+			@media (max-width: 400px) {
+				gap: 1.2rem;
+			}
 			&:last-child {
 				display: flex;
 				align-items: center;
@@ -634,7 +645,8 @@
 			gap: 1rem;
 			.r-button {
 				padding: 1.2rem 3rem;
-				&__icon {
+				@media (max-width: 540px) {
+					padding: 1rem 2rem;
 				}
 			}
 		}
