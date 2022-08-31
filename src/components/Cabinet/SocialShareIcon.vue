@@ -2,6 +2,7 @@
 	<div class="social-icon" @click.stop="openPopup">
 		<img
 			class="social-icon__image"
+			:class="{ 'social-icon__image_background-color_white': true }"
 			:src="currentSocialIcon"
 			:alt="`${network} logo`"
 		/>
@@ -265,10 +266,15 @@
 			opacity: 0.8;
 			cursor: pointer;
 		}
+
 		&__image {
 			width: 35px;
 			height: 35px;
 			border-radius: 50%;
+			&_background-color_white {
+				
+				background-color: $white;
+			}
 		}
 	}
 </style>
