@@ -11,7 +11,15 @@
 			@open-menu="handleOpenMenu"
 			@close-menu="handleCloseMenu">
 			<template #social-media>
-				<div class="social-media">
+				<div class="social-media" :class="{ 'social-media_minimize': isMenuMinimize}" @click="handleOpenMenu">
+					<template v-if="isMenuMinimize">
+						<technology-icon />
+					</template>
+					<template v-else>
+						<social-share-icon network="odnoklassniki" :shareContentList="[]"/>
+						<social-share-icon network="vk" :shareContentList="[]"/>
+						<social-share-icon network="telegram" :shareContentList="[]"/>
+					</template>
 					
 				</div>
 			</template>
@@ -37,6 +45,7 @@
 <script>
 	import TheHeader from "@/components/TheHeader.vue";
 	import NavigationPanelR from "@/components/NavigationPanelR.vue";
+	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
 
 	import InfinityIcon from "@/assets/icons/InfinityIcon.vue";
 	import ParsingIcon from "@/assets/icons/ParsingIcon.vue";
@@ -58,6 +67,7 @@
 		components: {
 			TheHeader,
 			NavigationPanelR,
+			SocialShareIcon,
 			ParsingIcon,
 			TechnologyIcon,
 			InfinityIcon,
@@ -224,5 +234,23 @@
 	}
 	.navigation-panel {
 		padding-top: 8.3rem;
+	}
+	.social-media {
+		margin: 20rem 0 0 0;
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		gap: 1.5rem;
+		padding: 1.5rem;
+		border-radius: 1rem;
+		background-color: rgba($white, 0.5);
+		&_minimize {
+			background-color: rgba($white, 0.3);
+			border-radius: 50%;
+			width: fit-content;
+			&:hover{
+				cursor: pointer;
+			}
+		}
 	}
 </style>

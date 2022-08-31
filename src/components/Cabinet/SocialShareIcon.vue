@@ -1,7 +1,7 @@
 <template>
 	<div class="social-icon" @click.stop="openPopup">
 		<img
-			class="social-icon__img"
+			class="social-icon__image"
 			:src="currentSocialIcon"
 			:alt="`${network} logo`"
 		/>
@@ -52,7 +52,7 @@
 					></r-checkbox>
 					<div
 						v-else-if="
-							shareContentList[index].comment.text &&
+							shareContentList[index]?.comment.text &&
 							this.network !== 'telegram'
 						"
 						class="gooru-comment"
@@ -138,7 +138,7 @@
 					case "telegram":
 						return "/img/icon/cabinet/tg.svg";
 					case "vk":
-						return "/img/icon/cabinet/vk.svg";
+						return "/img/icon/cabinet/VK_Compact_Logo.svg";
 					case "odnoklassniki":
 						return "/img/icon/cabinet/ok.svg";
 					default:
@@ -257,6 +257,18 @@
 			-webkit-line-clamp: 2;
 			-webkit-box-orient: vertical;
 			overflow: hidden;
+		}
+	}
+	.social-icon {
+		transition: all 0.2 ease;
+		&:hover {
+			opacity: 0.8;
+			cursor: pointer;
+		}
+		&__image {
+			width: 35px;
+			height: 35px;
+			border-radius: 50%;
 		}
 	}
 </style>

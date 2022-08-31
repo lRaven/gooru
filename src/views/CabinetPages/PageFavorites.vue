@@ -111,13 +111,13 @@
 			</div>
 
 			<transition mode="out-in">
-				<r-loader v-if="!isFavoritesLoaded" />
+				<r-loader v-if="!isParsersLoaded" />
 			</transition>
 
 			<transition mode="out-in">
 				<div
 					class="page-favorites__list"
-					v-if="isFavoritesLoaded && favoriteParsources.length > 0"
+					v-if="isParsersLoaded && favoriteParsources.length > 0"
 				>
 					<!-- <favorite-card
 						v-for="favorite in favoriteParsources"
@@ -138,7 +138,7 @@
 			<transition mode="out-in">
 				<p
 					class="page-favorites__empty"
-					v-if="favoriteParsers.length === 0 && isFavoritesLoaded"
+					v-if="favoriteParsers.length === 0 && isParsersLoaded"
 				>
 					Список избранного пуст
 				</p>
@@ -182,7 +182,7 @@
 		},
 		watch: {
 			favoriteParsers() {
-				this.isFavoritesLoaded = true;
+				this.isParsersLoaded = true;
 				this.selectedParsers = this.selectedParsers.filter( selectedParser => {
 					const parserOnPage = this.favoriteParsers.find( parser => parser.id === selectedParser.id);
 					if (!parserOnPage) {
@@ -226,7 +226,7 @@
 		},
 		data: () => ({
 			isMinimizedRightPanel: false,
-			isFavoritesLoaded: false,
+			isParsersLoaded: false,
 			isSortPanelVisible: false,
 
 			sortPanelSize: 0,
@@ -259,8 +259,8 @@
 			if (!this.$store.state.parsers.all_parsources.length) {
 				this.getAllParsources();
 			}
-			if (this.favoriteParsers.length) {
-				this.isFavoritesLoaded = true;
+			if (this.parsers.length) {
+				this.isParsersLoaded = true;
 			}
 		},
 		mounted() {
