@@ -229,6 +229,7 @@
 </script>
 
 <style lang="scss" scoped>
+
 	.page-article {
 		display: grid;
 		padding: 0;

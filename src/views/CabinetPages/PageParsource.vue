@@ -273,6 +273,20 @@
 						</p>
 						<r-status :status="1 || parsource.condition"></r-status>
 					</div>
+					<div
+						class="download-parsers page-parsource__download-parsers"
+					>
+						<r-button
+							class="download-parsers__button"
+							text="Скачать в Exсel"
+							@click="handleDownload"
+							:disabled="isDownloadParsersButtonDisabled"
+						></r-button>
+						<r-date-range-picker
+							v-model="dateForDownloadParsers"
+							:range="false"
+						/>
+					</div>
 					<div class="sources">
 						<h3 class="sources__title">Источники:</h3>
 						<ul class="sources__list">
@@ -327,12 +341,12 @@
 			</template>
 		</right-panel>
 		<r-confirm-popup
-				v-if="isConfirmDeleteSourcePopupOpen"
-				:text="`Вы действительно хотите удалить источник «${parsourceToDelete.url}»?`"
-				@action_confirm="deleteThisSource(parsourceToDelete.url)"
-				@close_popup="isConfirmDeleteSourcePopupOpen = false"
-			>
-			</r-confirm-popup>
+			v-if="isConfirmDeleteSourcePopupOpen"
+			:text="`Вы действительно хотите удалить источник «${parsourceToDelete.url}»?`"
+			@action_confirm="deleteThisSource(parsourceToDelete.url)"
+			@close_popup="isConfirmDeleteSourcePopupOpen = false"
+		>
+		</r-confirm-popup>
 	</section>
 </template>
 
@@ -341,11 +355,12 @@
 	import ParserContent from "@/components/Cabinet/Parsource/ParserContent";
 	import RightPanel from "@/components/Cabinet/RightPanel";
 	import FontTool from "@/components/Cabinet/FontTool.vue";
+	import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
 
 	import { change_manager } from "@/api/userApi";
 	import { prettyDate } from "@/js/processStrings";
 	import { read_notification } from "@/api/notifications";
-	import { updateParsourceImage } from "@/api/parser";
+	import { updateParsourceImage, downloadParsers } from "@/api/parser";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 
 	import { paginationMixin } from "@/mixins/paginationMixins";
@@ -361,6 +376,7 @@
 			rStatus,
 			ParserContent,
 			FontTool,
+			rDateRangePicker,
 
 			RightPanel,
 		},
@@ -456,6 +472,9 @@
 					return this.$store.state.parsers.parsers;
 				}
 			},
+			isDownloadParsersButtonDisabled() {
+				return this.dateForDownloadParsers.length === 0;
+			},
 			emptyMessage() {
 				switch (this.selectedListFilter) {
 					case "withComments":
@@ -514,6 +533,8 @@
 			selectedListFilter: "newest",
 			parsourceToDelete: null,
 
+			dateForDownloadParsers: "",
+
 			changedParsource: {},
 			new_image: "",
 		}),
@@ -552,6 +573,33 @@
 					this.toast.error("Ошибка удаления, попробуйте позже!");
 				}
 				this.isParsersLoaded = true;
+			},
+
+			async handleDownload() {
+				try {
+					const blobData = await downloadParsers(
+						{
+							parsourceId: this.parsource_id,
+							date: this.dateForDownloadParsers,
+						},
+						"excel"
+					);
+					const downloadUrl = window.URL.createObjectURL(blobData);
+					const linkForDownload = document.createElement("a");
+					linkForDownload.href = downloadUrl;
+					const currentParsourceName = this.parsource.name;
+					const prettyDateForDownload = this.dateForDownloadParsers
+					.split("-")
+					.reverse()
+					.join(".");
+					linkForDownload.download = `${currentParsourceName}AllData_${prettyDateForDownload}.xlsx`;
+					document.body.appendChild(linkForDownload);
+					linkForDownload.click();
+					linkForDownload.remove();
+					this.dateForDownloadParsers = "";
+				} catch (error) {
+					this.toast.error('Ошибка при загрузке данных');
+				}
 			},
 
 			async getCards(params) {
@@ -954,6 +1002,16 @@
 			}
 		}
 	}
+	.download-parsers {
+		display: flex;
+		flex-direction: column;
+		.r-button::v-deep.download-parsers__button {
+			width: 100%;
+			padding: 1rem 2rem;
+			font-size: 1.4rem;
+			margin: 0 0 2rem 0;
+		}
+	}
 	.sources {
 		display: flex;
 		flex-direction: column;
@@ -1012,6 +1070,9 @@
 					}
 				}
 			}
+		}
+		&__download-parsers {
+			margin: 0 0 4rem 0;
 		}
 	}
 </style>

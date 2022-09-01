@@ -328,6 +328,8 @@
 		}
 
 		.r-button {
+			width: fit-content;
+			justify-self: end;
 			padding: 1rem 2rem !important;
 			font-size: 1.4rem;
 		}

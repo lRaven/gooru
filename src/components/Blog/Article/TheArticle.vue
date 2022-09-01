@@ -633,15 +633,31 @@
 			min-height: 300px;
 			border-radius: 1rem;
 			margin-bottom: 3rem;
+			@media (max-width: 500px) {
+				object-fit: cover;
+			}
 		}
 		&__title {
 			font-size: 5.4rem;
 			font-weight: 600;
 			margin-bottom: 5rem;
+			@media (max-width: 768px) {
+				font-size: 4.4rem;
+			}
+			@media (max-width: 600px) {
+				font-size: 3.8rem;
+			}
+			@media (max-width: 425px) {
+				font-size: 3.2rem;
+				margin-bottom: 3.8rem;
+			}
 		}
 		&__subtitle {
 			font-size: 3rem;
 			margin-bottom: 5rem;
+			@media (max-width: 600px) {
+				font-size: 2.8rem;
+			}
 		}
 		&__section {
 			margin-bottom: 4rem;
@@ -658,6 +674,9 @@
 
 		position: relative;
 		padding: 4.6rem 9rem;
+		@media (max-width: 500px) {
+			padding: 3rem 6rem;
+		}
 
 		&__text {
 			font-size: 3rem;
@@ -672,11 +691,20 @@
 				top: 0;
 				left: 50%;
 				transform: translateX(-50%);
+				@media (max-width: 500px) {
+					font-size: 7rem;
+				}
+			}
+			@media (max-width: 550px) {
+				font-size: 2.7rem;
 			}
 		}
 		&__cite {
 			font-size: 2.2rem;
 			text-align: center;
+			@media (max-width: 500px) {
+				font-size: 2rem;
+			}
 		}
 	}
 	.acent-block {
@@ -686,6 +714,9 @@
 		padding: 2rem 0;
 		border-top: 0.3rem solid $primary;
 		border-bottom: 0.3rem solid $primary;
+		@media (max-width: 600px) {
+			font-size: 2.4rem;
+		}
 	}
 	.section {
 		padding: 0;
@@ -694,6 +725,13 @@
 			font-size: 4rem;
 			font-weight: 600;
 			margin-bottom: 5rem;
+			@media (max-width: 768px) {
+				font-size: 3.8rem;
+			}
+			@media (max-width: 425px) {
+				font-size: 2.8rem;
+				margin-bottom: 3rem;
+			}
 		}
 		&__subtitle {
 			font-size: 3.6rem;
@@ -704,6 +742,9 @@
 			font-size: 2.4rem;
 			line-height: 1.5;
 			margin-bottom: 3rem;
+			@media (max-width: 600px) {
+				font-size: 2.2rem;
+			}
 			&:last-child {
 				margin-bottom: 0;
 			}
@@ -747,6 +788,9 @@
 			font-size: 3rem;
 			font-weight: 500;
 			margin-bottom: 3rem;
+			@media (max-width: 600px) {
+				font-size: 2.6rem;
+			}
 		}
 		&__text {
 			font-size: 2.4rem;

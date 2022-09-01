@@ -17,10 +17,12 @@ const send_new_parsource = async (args) => {
 				description: args.description,
 				parse_fields: args.parse_fields,
 			},
-			{ headers: { Authorization: `token ${cookie.get("auth_token")}` }, }
+			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 		);
 		return response;
-	} catch (err) { return err.response }
+	} catch (err) {
+		return err.response;
+	}
 };
 
 const delete_parsource = async (parsource_id) => {
@@ -67,48 +69,59 @@ const updateParsourceImage = async ({ parsource_id, image }) => {
 			}
 		);
 		return response;
-	} catch (err) { return err.response }
+	} catch (err) {
+		return err.response;
+	}
 };
 
 //* parser requests
 const getParser = async (id) => {
 	try {
-		const { data:parserData } = await axios.get(`${process.env.VUE_APP_BACK_URL}/parser/${id}`, {
-			headers: {
-				Authorization: `token ${cookie.get("auth_token")}`
+		const { data: parserData } = await axios.get(
+			`${process.env.VUE_APP_BACK_URL}/parser/${id}`,
+			{
+				headers: {
+					Authorization: `token ${cookie.get("auth_token")}`,
+				},
 			}
-		});
+		);
 		return parserData;
 	} catch (error) {
-		throw {...error};
+		throw { ...error };
 	}
 };
 
 const editParserData = async ({ id, updatedData }) => {
 	try {
-		const { data:updatedParserData } = await axios.patch(`${process.env.VUE_APP_BACK_URL}/parser/${id}/`, {
-			...updatedData,
-		}, {
-			headers: {
-				Authorization: `token ${cookie.get('auth_token')}`,
+		const { data: updatedParserData } = await axios.patch(
+			`${process.env.VUE_APP_BACK_URL}/parser/${id}/`,
+			{
+				...updatedData,
 			},
-		});
+			{
+				headers: {
+					Authorization: `token ${cookie.get("auth_token")}`,
+				},
+			}
+		);
 		return updatedParserData;
-	} catch (error) {
-		throw {...error};
-	}
-}
-
-const deleteParser = async (parserId) => {
-	try {
-		await axios.delete(`${process.env.VUE_APP_BACK_URL}/parser/${parserId}/`, {
-			headers: { Authorization: `token ${cookie.get("auth_token")}` }
-		});
-
 	} catch (error) {
 		throw { ...error };
 	}
-}
+};
+
+const deleteParser = async (parserId) => {
+	try {
+		await axios.delete(
+			`${process.env.VUE_APP_BACK_URL}/parser/${parserId}/`,
+			{
+				headers: { Authorization: `token ${cookie.get("auth_token")}` },
+			}
+		);
+	} catch (error) {
+		throw { ...error };
+	}
+};
 
 const downloadFile = async ({ type }) => {
 	try {
@@ -116,7 +129,38 @@ const downloadFile = async ({ type }) => {
 			`${store.state.baseURL}/parser/download/${type}`,
 			{
 				method: "GET",
-				headers: { Authorization: `token ${cookie.get("auth_token")}`, },
+				headers: { Authorization: `token ${cookie.get("auth_token")}` },
+			}
+		);
+		if (response.ok) {
+			const fileData = await response.blob();
+			return fileData;
+		}
+		const { detail } = await response.json();
+		return Promise.reject({ message: detail, status: response.status });
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
+const downloadParsers = async ({ parsourceId, parserIds, date }, type = 'excel') => {
+	const requestObject = {};
+	if (parsourceId) {
+		requestObject.parsource = parsourceId;
+	}
+	if (parserIds?.length) {
+		requestObject.parser_ids = parserIds;
+	}
+	if (date) {
+		requestObject.create__gte = date;
+	}
+	try {
+		const response = await fetch(
+			`${process.env.VUE_APP_BACK_URL}/parser/download/${type}/select/`,
+			{
+				method: "POST",
+				headers: { Authorization: `token ${cookie.get("auth_token")}`, 'content-type': 'application/json' },
+				body: JSON.stringify(requestObject),
 			}
 		);
 		if (response.ok) {
@@ -250,6 +294,7 @@ export {
 	editParserData,
 	deleteParser,
 	downloadFile,
+	downloadParsers,
 	getComments,
 	createComment,
 	getUserFavoriteParsers,

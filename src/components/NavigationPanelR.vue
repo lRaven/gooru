@@ -104,6 +104,7 @@
 		height: 100%;
 		width: 27.5rem;
 		transition: all 0.2s ease;
+		z-index: 3;
 		@media (max-width: 1023px) {
 			position: fixed;
 			top: 0;

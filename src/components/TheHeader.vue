@@ -467,8 +467,11 @@
 		@media (max-width: 767px) {
 			padding: 1.5rem;
 		}
-		@media (max-width: 400px) {
+		@media (max-width: 425px) {
 			padding: 2rem;
+		}
+		@media (max-width: 375px) {
+			padding: 2rem 1rem;
 		}
 
 		&.bg {
@@ -497,6 +500,12 @@
 
 					@media (max-width: 1140px) {
 						grid-template-columns: min-content max-content;
+					}
+					@media (max-width: 425px) {
+						padding: 2rem;
+					}
+					@media (max-width: 375px) {
+						padding: 1rem;
 					}
 				}
 				&__col {
@@ -660,6 +669,9 @@
 				align-items: center;
 				gap: 2rem;
 				height: 100%;
+				@media (max-width: 425px) {
+					gap: 1rem;
+				}
 			}
 
 			&-arrow {
@@ -717,6 +729,10 @@
 			width: 4.4rem;
 			border-radius: 50%;
 			object-fit: cover;
+			@media (max-width: 375px) {
+				height: 3.4rem;
+				width: 3.4rem;
+			}
 		}
 		&__username {
 			font-size: 1.4rem;

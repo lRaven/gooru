@@ -85,17 +85,6 @@
 						<r-date-range-picker :isDisabled="true"></r-date-range-picker>
 					</div>
 
-					<!-- <div class="page-favorites__sort-panel-col">
-						<p class="page-favorites__sort-panel-description">
-							Поиск по типу контента
-						</p>
-						<r-dropdown
-							v-model="show_by_content"
-							showedValue="description"
-							selected_item="Выберите тип контента"
-						></r-dropdown>
-					</div> -->
-
 					<r-button
 						class="page-favorites__sort-panel-submit-button"
 						color="bordered"

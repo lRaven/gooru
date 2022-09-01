@@ -1,7 +1,8 @@
 <template>
 	<Datepicker
 		v-model="date"
-		range
+		:range="range"
+		:modelType="modelType"
 		:clearable="false"
 		:format="format"
 		:enableTimePicker="false"
@@ -35,38 +36,51 @@
 				type: Boolean,
 				default: false,
 			},
+			range: { type: Boolean, default: true },
+			modelType: { type: String, default: "yyyy-MM-dd" },
 		},
 		emits: {
-			'update:modelValue': null
+			"update:modelValue": null,
 		},
 		watch: {
 			date() {
-				this.$emit('update:modelValue', this.date);
-			}
+				this.$emit("update:modelValue", this.date);
+			},
 		},
-		setup() {
+		setup(props) {
 			const date = ref(new Date());
 
 			const format = (date) => {
 				//* формат диапазона дат
-				const startDateDay = date[0].getDate();
-				const startDateMonth = date[0].getMonth() + 1;
-				const startDateYear = date[0].getFullYear();
+				if (props.range) {
+					const startDateDay = date.getDate();
+					const startDateMonth = date.getMonth() + 1;
+					const startDateYear = date.getFullYear();
 
-				const endDateDay = date[1].getDate();
-				const endDateMonth = date[1].getMonth() + 1;
-				const endDateYear = date[1].getFullYear();
+					const endDateDay = date.getDate();
+					const endDateMonth = date.getMonth() + 1;
+					const endDateYear = date.getFullYear();
 
-				return `${startDateDay}.${startDateMonth}.${startDateYear} - ${endDateDay}.${endDateMonth}.${endDateYear}`;
+					return `${startDateDay}.${startDateMonth}.${startDateYear} - ${endDateDay}.${endDateMonth}.${endDateYear}`;
+				} else {
+					const startDateDay = date.getDate();
+					const startDateMonth = date.getMonth() + 1;
+					const startDateYear = date.getFullYear();
+					return `${startDateDay}.${startDateMonth}.${startDateYear}`;
+				}
 			};
 
 			onMounted(() => {
 				//* дефолтный диапазон дат
-				const startDate = new Date();
-				const endDate = new Date(
-					new Date().setDate(startDate.getDate() + 7)
-				);
-				date.value = [startDate, endDate];
+				if (props.range) {
+					const startDate = new Date();
+					const endDate = new Date(
+						new Date().setDate(startDate.getDate() + 7)
+					);
+					date.value = [startDate, endDate];
+				} else {
+					date.value = "";
+				}
 			});
 			return {
 				date,

@@ -120,7 +120,6 @@
 			...mapState({
 				documentWidth: (state) => state.document_width,
 			}),
-			...mapActions(["getFavoriteParsers"]),
 			isDisabledDownloadButton() {
 				return (
 					!Object.values(this.downloadFormatFiles).find(
@@ -140,6 +139,7 @@
 			},
 		},
 		methods: {
+			...mapActions(["getParsers"]),
 			handleClickSharedIcon($event) {
 				if (this.totalSelected === 0) {
 					this.alertMessage = "Необходимо выбрать новость!";
@@ -193,7 +193,7 @@
 				const ids = this.selectedParsers.map( parser => parser.id);
 				try {
 					await multiaction_delete("favorites", ids);
-					await this.getFavoriteParsers();
+					
 					this.confirmRemoveValue = false;
 				} catch (err) {
 					throw new Error(err);

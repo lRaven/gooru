@@ -1,6 +1,10 @@
 <template>
 	<div class="page-blog theme-container">
-		<the-header :isMenuMinimized="isMenuMinimize" @open_menu="handleOpenMenu" @close_menu="handleCloseMenu" />
+		<the-header
+			:isMenuMinimized="isMenuMinimize"
+			@open_menu="handleOpenMenu"
+			@close_menu="handleCloseMenu"
+		/>
 		<!-- <navigation-panel /> -->
 		<navigation-panel-r
 			:tabs="blogTabs"
@@ -83,7 +87,7 @@
 
 	import { mapState, mapActions, mapMutations } from "vuex";
 	import { getTabs } from "@/api/blog";
-	import { hashString }  from "@/js/utils";
+	import { hashString } from "@/js/utils";
 	import store from "@/store";
 
 	const validPath = (blogTabs, supposeBlogSection) => {
@@ -199,6 +203,7 @@
 			handleNavigate(tabName) {
 				const params = tabName.params ? tabName.params : {};
 				this.$router.push({ name: tabName.name, params });
+				this.isMenuMinimize = true;
 			},
 			handleOpenMenu() {
 				this.isMenuMinimize = false;
@@ -207,16 +212,16 @@
 				this.isMenuMinimize = true;
 			},
 			validPath,
-			hashString
+			hashString,
 		},
 		created() {
 			if (this.articles.length === 0) {
 				this.getArticles();
 			}
-			this.hashString('SHA-256', 'jaja')
-			.then(data => data.charAt())
-			.catch(error => console.log(error));
-			this.isMenuMinimize = this.documentWidth <=1023;
+			this.hashString("SHA-256", "jaja")
+				.then((data) => data.charAt())
+				.catch((error) => console.log(error));
+			this.isMenuMinimize = this.documentWidth <= 1023;
 		},
 		beforeRouteEnter(to, from, next) {
 			// TODO: написать мидлвары для разрешения перехода по всем путям дочерних компонентов
@@ -296,9 +301,15 @@
 		background-color: $light-blue;
 		&__main {
 			max-width: 100vw;
-			margin-top: 8.3rem;
+			margin: 84px 0 0 0;
 			padding: 2rem 4rem;
 			overflow-y: auto;
+			@media (max-width: 600px) {
+				padding: 1.5rem 0rem;
+			}
+			@media (max-width: 450px) {
+				padding: 1.5rem 0;
+			}
 		}
 	}
 	.the-header {
