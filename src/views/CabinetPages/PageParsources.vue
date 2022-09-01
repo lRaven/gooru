@@ -357,6 +357,7 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
+			
 			if (!this.$store.state.parsers.all_parsers.length) {
 				this.getAllParsers();
 			}

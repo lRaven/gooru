@@ -78,11 +78,11 @@
 			return { isMenuMinimized: false, currentTab: null };
 		},
 		watch: {
-			documentWidth() {
+			/* documentWidth() {
 				if (this.documentWidth <= 1023) {
 					this.isMenuMinimize = true;
 				}
-			},
+			}, */
 		},
 		computed: {
 			...mapState({
@@ -131,7 +131,6 @@
 				this.isMenuMinimized = false;
 			},
 			handleCloseMenu() {
-				console.log('close')
 				this.isMenuMinimized = true;
 			},
 		},
@@ -157,6 +156,9 @@
 		@media (max-width: 1023px) {
 			display: flex;
 			z-index: 3;
+		}
+		@media (max-width: 767px) {
+			margin: 74px 0 0 0;
 		}
 	}
 </style>

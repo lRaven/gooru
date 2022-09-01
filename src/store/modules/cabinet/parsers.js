@@ -358,7 +358,6 @@ const actions = {
 					},
 				}
 			);
-
 			if (response.status === 200) {
 				const comments = await getComments();
 				const favoriteItems = await getUserFavoriteParsers();

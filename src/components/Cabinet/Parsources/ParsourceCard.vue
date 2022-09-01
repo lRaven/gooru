@@ -106,10 +106,10 @@
 
 			<p
 				class="parsource-card__col parsource-card__favorite"
-				:title="parsource.favorite || 0"
+				:title="favoritesCount || 0"
 				v-if="!isParsourceManagerView"
 			>
-				{{ parsource.favorite || 0 }}
+				{{ favoritesCount || 0 }}
 			</p>
 
 			<p
@@ -232,7 +232,7 @@
 <script>
 	import rStatus from "@/components/Cabinet/r-status";
 
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 	import { directive } from "vue3-click-away";
 	import { useToast } from "vue-toastification";
 
@@ -270,8 +270,23 @@
 			},
 		},
 		computed: {
-			...mapState(["document_width"]),
-
+			...mapState({
+				document_width: (state) => state.document_width,
+				allParsers: (state) => state.parsers.all_parsers,
+			}),
+			...mapGetters(["favoriteParsources",]),
+			favoritesCount() {
+				const isItFavoriteParser = this.favoriteParsources.find( parsource => parsource.id === this.parsource.id);
+				if (isItFavoriteParser) {
+					const totalCount = this.allParsers.reduce( (prev, currentParser) => {
+						return currentParser.parsource === this.parsource.id && currentParser.favoriteId ? ++prev : prev;
+					}, 0);
+					return totalCount;
+				}
+				return 0;
+				
+				
+			},
 			isHasNotifications() {
 				return this.parsourcesHasParsersNotifications.find(
 					(el) => el === this.parsource.id

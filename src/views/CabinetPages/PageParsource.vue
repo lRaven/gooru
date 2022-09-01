@@ -592,7 +592,7 @@
 					.split("-")
 					.reverse()
 					.join(".");
-					linkForDownload.download = `${currentParsourceName}AllData_${prettyDateForDownload}.xlsx`;
+					linkForDownload.download = `${currentParsourceName}_AllData_${prettyDateForDownload}.xlsx`;
 					document.body.appendChild(linkForDownload);
 					linkForDownload.click();
 					linkForDownload.remove();
