@@ -209,6 +209,9 @@
 			font-size: 1.8rem;
 			width: 100%;
 			padding: 1.5rem 2rem;
+			@media (max-width: 450px) {
+				padding: 1rem 2rem;
+			}
 		}
 	}
 	.share-list {
@@ -216,6 +219,7 @@
 		flex-direction: column;
 		align-items: center;
 		max-width: 100%;
+		width: 100%;
 		&__share-list-item {
 			margin: 0 0 2rem 0;
 			&:last-child {

@@ -358,34 +358,22 @@
 				</p>
 				<ul class="parser-content__social-list">
 					<li class="parser-content__social-list-item">
-						<ShareNetwork
-							network="odnoklassniki"
-							:url="sharedContentUrl"
-							:title="sharedContentTitle"
-							:description="sharedContentDescription"
-						>
-							<img src="/img/icon/cabinet/ok.svg" alt="ok" />
-						</ShareNetwork>
+						<social-share-icon
+						:shareContentList="[parserProp]"
+						network="odnoklassniki"
+					></social-share-icon>
 					</li>
 					<li class="parser-content__social-list-item">
-						<ShareNetwork
-							network="vk"
-							:url="sharedContentUrl"
-							:title="sharedContentTitle"
-							:description="sharedContentDescription"
-						>
-							<img src="/img/icon/cabinet/vk.svg" alt="vk" />
-						</ShareNetwork>
+						<social-share-icon
+						:shareContentList="[parserProp]"
+						network="vk"
+					></social-share-icon>
 					</li>
 					<li class="parser-content__social-list-item">
-						<ShareNetwork
-							network="telegram"
-							:url="sharedContentUrl"
-							:title="sharedContentTitle"
-							:description="sharedContentDescription"
-						>
-							<img src="/img/icon/cabinet/tg.svg" alt="tg" />
-						</ShareNetwork>
+						<social-share-icon
+						:shareContentList="[parserProp]"
+						network="telegram"
+					></social-share-icon>
 					</li>
 				</ul>
 			</div>
@@ -441,10 +429,12 @@
 </template>
 
 <script>
-	import { useToast } from "vue-toastification";
+	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
+	
 
 	import { directive } from "vue3-click-away";
 	import { mapState, mapActions, mapMutations } from "vuex";
+	import { useToast } from "vue-toastification";
 
 	import {
 		editParserData,
@@ -459,6 +449,9 @@
 		props: {
 			parserProp: Object,
 			fontSize: { type: String, required: true },
+		},
+		components: {
+			SocialShareIcon,
 		},
 		watch: {
 			fontSize() {
@@ -1035,8 +1028,8 @@
 				gap: 1rem;
 				&-item {
 					cursor: pointer;
-					width: 3.2rem;
-					height: 3.2rem;
+					width: 3.5rem;
+					height: 3.5rem;
 					border: 0.1rem solid transparent;
 					border-radius: 50%;
 					overflow: hidden;

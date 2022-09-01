@@ -258,36 +258,20 @@
 					Поделиться в социальных сетях:
 				</p>
 				<ul class="favorite-content-item__social-list">
-					<li class="favorite-content-item__social-list-item">
-						<ShareNetwork
-							network="odnoklassniki"
-							:url="sharedContentUrl"
-							:title="sharedContentTitle"
-							:description="sharedContentDescription"
-						>
-							<img src="/img/icon/cabinet/ok.svg" alt="ok" />
-						</ShareNetwork>
-					</li>
-					<li class="favorite-content-item__social-list-item">
-						<ShareNetwork
-							network="vk"
-							:url="sharedContentUrl"
-							:title="sharedContentTitle"
-							:description="sharedContentDescription"
-						>
-							<img src="/img/icon/cabinet/vk.svg" alt="vk" />
-						</ShareNetwork>
-					</li>
-					<li class="favorite-content-item__social-list-item">
-						<ShareNetwork
-							network="telegram"
-							:url="sharedContentUrl"
-							:title="sharedContentTitle"
-							:description="sharedContentDescription"
-						>
-							<img src="/img/icon/cabinet/tg.svg" alt="tg" />
-						</ShareNetwork>
-					</li>
+						<social-share-icon
+						:shareContentList="[parserProp]"
+						network="odnoklassniki"
+					></social-share-icon>
+
+					<social-share-icon
+						:shareContentList="[parserProp]"
+						network="vk"
+					></social-share-icon>
+
+					<social-share-icon
+						:shareContentList="[parserProp]"
+						network="telegram"
+					></social-share-icon>
 				</ul>
 			</div>
 		</div>
@@ -338,10 +322,11 @@
 </template>
 
 <script>
-	import { useToast } from "vue-toastification";
+	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
 
 	import { directive } from "vue3-click-away";
 	import { mapState, mapActions, mapMutations } from "vuex";
+	import { useToast } from "vue-toastification";
 
 	import {
 		downloadFile,
@@ -352,6 +337,9 @@
 
 	export default {
 		name: "FavoriteContentItem",
+		emits: {
+			"change-selected": null,
+		},
 		props: {
 			parserProp: Object,
 			checked: {
@@ -359,7 +347,9 @@
 				default: false,
 			},
 		},
-		emits: ["change-selected"],
+		components: {
+			SocialShareIcon,
+		},
 		watch: {
 			isShareOpen() {
 				if (this.isShareOpen === true) {

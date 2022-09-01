@@ -82,6 +82,9 @@
 		@media (min-width: 1500px) {
 			max-width: 1500px;
 		}
+		@media (max-width: 800px) {
+			grid-gap: 1.5rem 3rem;
+		}
 
 		&__title {
 			font-weight: 500;
@@ -111,6 +114,7 @@
 		}
 		&__image {
 			width: 100%;
+			max-width: 1100px;
 			transition: all 0.3s linear;
 			&:hover {
 				transform: scale(1.15);
@@ -119,6 +123,7 @@
 		}
 		&__author-img {
 			width: 100%;
+			max-width: 370px;
 			border-radius: 50%;
 		}
 		&__author-name {

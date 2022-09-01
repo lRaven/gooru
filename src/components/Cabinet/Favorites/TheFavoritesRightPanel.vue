@@ -19,19 +19,16 @@
 					<social-share-icon
 						:shareContentList="selectedParsers"
 						network="odnoklassniki"
-						@complete-sharing="handleCompleteSharing"
 					></social-share-icon>
 
 					<social-share-icon
 						:shareContentList="selectedParsers"
 						network="vk"
-						@complete-sharing="handleCompleteSharing"
 					></social-share-icon>
 
 					<social-share-icon
 						:shareContentList="selectedParsers"
 						network="telegram"
-						@complete-sharing="handleCompleteSharing"
 					></social-share-icon>
 				</div>
 				<p class="the-favorites__right-panel-alert-message">
@@ -117,39 +114,12 @@
 				csv: false,
 				json: false,
 			},
-			shareContent: {
-				url: window.location.href,
-				title: "",
-				description: "",
-
-				// *fb only
-				quote: "",
-				//*fb, twtr only
-				hashtags: "",
-			},
-			sharedPointer: 0,
 			alertMessage: "",
 		}),
 		computed: {
 			...mapState({
 				documentWidth: (state) => state.document_width,
 			}),
-			sharedContentTitle() {
-				return this.currentParser?.comment.id
-					? this.currentParser.comment.text
-					: this.currentParser?.title;
-			},
-			sharedContentDescription() {
-				return this.currentParser?.comment.id
-					? ""
-					: this.currentParser?.article;
-			},
-			sharedContentUrl() {
-				return this.currentParser?.url;
-			},
-			currentParser() {
-				return this.selectedParsers[this.sharedPointer];
-			},
 			...mapActions(["getFavoriteParsers"]),
 			isDisabledDownloadButton() {
 				return (
@@ -170,59 +140,10 @@
 			},
 		},
 		methods: {
-			handleCompleteSharing() {
-				this.$emit("clean-selected-parser-list");
-			},
 			handleClickSharedIcon($event) {
 				if (this.totalSelected === 0) {
 					this.alertMessage = "Необходимо выбрать новость!";
 					$event.stopPropagation();
-				}
-			},
-			callbackCloseSharedIcon(networkName, url) {
-				this.sharedPointer += 1;
-				if (this.sharedPointer < this.selectedParsers.length) {
-					const parserId = this.selectedParsers[this.sharedPointer];
-					let currentParser = null;
-					this.favorites.forEach(({ parsers }) => {
-						currentParser = parsers.find(
-							(parser) => parser.id === parserId
-						);
-						if (currentParser) {
-							this.shareContent.url = currentParser.url;
-							this.shareContent.title = currentParser.comment.text
-								? currentParser.comment.text
-								: currentParser.title;
-							this.shareContent.description = currentParser
-								.comment.text
-								? ""
-								: currentParser.article;
-						}
-					});
-
-					setTimeout(() => {
-						this.$refs[`${networkName}`].click();
-					}, 0);
-				} else {
-					this.sharedPointer = 0;
-					const parserId = this.selectedParsers[this.sharedPointer];
-					let currentParser = null;
-					this.favorites.forEach(({ parsers }) => {
-						currentParser = parsers.find(
-							(parser) => parser.id === parserId
-						);
-						if (currentParser) {
-							this.shareContent.url = currentParser.url;
-							this.shareContent.title = currentParser.comment.text
-								? currentParser.comment.text
-								: currentParser.title;
-							this.shareContent.description = currentParser
-								.comment.text
-								? ""
-								: currentParser.article;
-						}
-					});
-					console.log("finish", url);
 				}
 			},
 			async handleClickDownload() {
@@ -269,12 +190,9 @@
 				}
 			},
 			async handleClickRemoveButton() {
+				const ids = this.selectedParsers.map( parser => parser.id);
 				try {
-					await multiaction_delete({
-						model: "favorites",
-						ids: this.selectedParsers,
-					});
-
+					await multiaction_delete("favorites", ids);
 					await this.getFavoriteParsers();
 					this.confirmRemoveValue = false;
 				} catch (err) {

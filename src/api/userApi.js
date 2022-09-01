@@ -113,6 +113,17 @@ const reset_password = async ({ uid, token, password }) => {
 	catch (err) { return err.response }
 };
 
+const subscribeToDigest = async (email) => {
+	try{
+		await axios.post(`${process.env.VUE_APP_BACK_URL}/send-mail/`, {
+			email,
+		});
+
+	} catch(error) {
+		throw {...error};
+	}
+};
+
 //* операции по тарифам для конкретного пользователя
 const getRates = async () => {
 	try {
@@ -242,6 +253,7 @@ export {
 	logout,
 	reset_password_request,
 	reset_password,
+	subscribeToDigest,
 	getRates,
 	getUserRates,
 	getUserRate,
