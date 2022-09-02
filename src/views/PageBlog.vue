@@ -107,6 +107,20 @@
 			InfinityIcon,
 			FileIcon,
 		},
+		provide: {
+			async shareParser(index) {
+				const { shareUrl } = this.shareContentList[index];
+				try {
+					window.open(
+						this.currentShareLink(index, shareUrl),
+						"_blank"
+					);
+				} catch (error) {
+					this.toast.error("Произошла ошибка!");
+					console.log(error);
+				}
+			},
+		},
 		data() {
 			return {
 				isBlogTabsLoaded: false,
@@ -177,12 +191,14 @@
 				);
 				if (matchedArticle) {
 					const { title, id } = matchedArticle;
+					const shareUrl = `${process.env.VUE_APP_FRONTEND_URL}${this.$route.fullPath}`;
 					return [
 						{
 							title,
 							id,
 							url: window.location,
 							comment: { text: "", id: null },
+							shareUrl,
 						},
 					];
 				}
@@ -260,7 +276,7 @@
 							}
 						})
 						.catch((error) => {
-							console.error("smth went wrong", error);
+							next(error);
 						});
 				} else {
 					next((vm) => {

@@ -207,7 +207,7 @@
 						</li>
 						<li
 							class="the-header__link"
-							@click="this.$router.push({ name: 'blog' })"
+							@click="handleOpenBlog"
 						>
 							Блог
 						</li>
@@ -344,6 +344,8 @@
 </template>
 
 <script>
+	import { useToast } from "vue-toastification";
+
 	import { scroll } from "@/js/scrollToLink";
 	import { mapState, mapMutations, mapActions } from "vuex";
 	import { logout } from "@/api/userApi";
@@ -400,7 +402,14 @@
 		},
 		methods: {
 			scroll,
-
+			handleOpenBlog() {
+				this.$router.push({ name: 'blog' })
+				.catch(() => {
+					this.toast.error('Ошибка, попробуйте позднее');
+				});
+				
+				
+			},
 			paintHeaderWhenPageScrolled() {
 				this.$refs.header.classList.add("bg");
 			},
@@ -444,6 +453,10 @@
 		},
 
 		directives: { ClickAway: directive },
+		setup() {
+			const toast = useToast();
+			return { toast };
+		},
 	};
 </script>
 

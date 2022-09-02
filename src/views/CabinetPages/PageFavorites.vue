@@ -144,16 +144,29 @@
 
 	import FavoriteContentItem from "@/components/Cabinet/Favorites/FavoriteContentItem.vue";
 	import TheFavoriteRightPanel from "@/components/Cabinet/Favorites/TheFavoritesRightPanel.vue";
-
 	import RightPanel from "@/components/Cabinet/RightPanel";
+
+		import { editParserData } from "@/api/parser";
 
 	export default {
 		name: "PageFavorites",
 		components: {
-
 			RightPanel,
 			TheFavoriteRightPanel,
 			FavoriteContentItem,
+		},
+		provide: {
+			async shareParser(index) {
+				const { share_url, id } = this.shareContentList[index];
+				try {
+					await editParserData({ id, updatedData: { is_public: true, } });
+					const shareLink = `${process.env.VUE_APP_FRONTEND_URL}/share/${share_url}`;
+					window.open(this.currentShareLink(index, shareLink), "_blank");
+				} catch (error) {
+					this.toast.error('Произошла ошибка!');
+					console.log(error);
+				}
+			},
 		},
 		watch: {
 			favoriteParsers() {
