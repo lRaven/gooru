@@ -115,8 +115,6 @@
 					this.toast.error('Произошла ошибка!');
 					console.log(error);
 				}
-				
-
 			},
 		},
 		components: {

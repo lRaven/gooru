@@ -75,16 +75,9 @@ const updateParsourceImage = async ({ parsource_id, image }) => {
 };
 
 //* parser requests
-const getParser = async (id) => {
+const getSharedParser = async (id) => {
 	try {
-		const { data: parserData } = await axios.get(
-			`${process.env.VUE_APP_BACK_URL}/parser/${id}`,
-			{
-				headers: {
-					Authorization: `token ${cookie.get("auth_token")}`,
-				},
-			}
-		);
+		const { data: parserData } = await axios.get(`${process.env.VUE_APP_BACK_URL}/public-parser/${id}`);
 		return parserData;
 	} catch (error) {
 		throw { ...error };
@@ -290,7 +283,7 @@ export {
 	delete_parsource,
 	updateParsourceName,
 	updateParsourceImage,
-	getParser,
+	getSharedParser,
 	editParserData,
 	deleteParser,
 	downloadFile,
