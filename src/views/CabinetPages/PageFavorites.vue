@@ -78,13 +78,6 @@
 						></r-dropdown>
 					</div>
 
-					<div class="page-favorites__sort-panel-col">
-						<p class="page-favorites__sort-panel-description">
-							Поиск по дате
-						</p>
-						<r-date-range-picker :isDisabled="true"></r-date-range-picker>
-					</div>
-
 					<r-button
 						class="page-favorites__sort-panel-submit-button"
 						color="bordered"
@@ -108,12 +101,6 @@
 					class="page-favorites__list"
 					v-if="isParsersLoaded && favoriteParsources.length > 0"
 				>
-					<!-- <favorite-card
-						v-for="favorite in favoriteParsources"
-						:key="favorite.id"
-						:parsource="favorite"
-						@update-selected-parsers="updateSelectedParsers"
-					></favorite-card> -->
 					<favorite-content-item
 						v-for="(favoriteItem, index) in favoriteParsers"
 						:class="{ 'border-top-none': index === 0 ? true : false }"
@@ -155,7 +142,6 @@
 <script>
 	import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 
-	import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
 	import FavoriteContentItem from "@/components/Cabinet/Favorites/FavoriteContentItem.vue";
 	import TheFavoriteRightPanel from "@/components/Cabinet/Favorites/TheFavoritesRightPanel.vue";
 
@@ -164,7 +150,6 @@
 	export default {
 		name: "PageFavorites",
 		components: {
-			rDateRangePicker,
 
 			RightPanel,
 			TheFavoriteRightPanel,
@@ -333,12 +318,9 @@
 				}
 			}
 
-			&-close {
-			}
-
 			&-body {
 				display: grid;
-				grid-template-columns: repeat(3, 1fr) 18rem;
+				grid-template-columns: 30rem max-content max-content;
 				grid-gap: 3rem;
 				align-items: flex-end;
 				padding: 2rem;
@@ -347,11 +329,21 @@
 					padding: 1rem 2.8rem;
 					width: max-content;
 					margin-left: auto;
+					@media (max-width: 550px) {
+						grid-column: 1/3;
+					}
 				}
 				.page-favorites__sort-panel-reset-button {
 					padding: 1rem 2.8rem;
 					width: max-content;
 					margin-left: auto;
+					@media (max-width: 1090px) {
+						margin: 0;
+						grid-column: 2/3;
+					}
+					@media (max-width: 550px) {
+						grid-column: 1/3;
+					}
 				}
 				&_tiny {
 					display: grid;
@@ -360,19 +352,22 @@
 					.page-favorites__sort-panel-submit-button {
 						width: 100%;
 						padding: 1rem 2.8rem;
+						
 					}
 					.page-favorites__sort-panel-reset-button {
 						padding: 1rem 2.8rem;
 						width: 100%;
 					}
-					@media (max-width: 550px) {
-						grid-template-columns: 1fr;
-					}
-				}
-				@media (max-width: 1740px) {
+					@media (max-width: 1740px) {
 					grid-gap: 2rem;
 					padding: 1.7rem;
 				}
+					@media (max-width: 550px) {
+						grid-template-columns: 1fr;
+						grid-gap: 2rem 0;
+					}
+				}
+				
 			}
 			&-col {
 			}

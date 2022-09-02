@@ -1,7 +1,6 @@
 <template>
 	<button class="r-button" :class="color" type="button">
 		<p class="r-button__description">{{ description }}</p>
-
 		<svg
 			width="17"
 			height="13"
@@ -34,6 +33,7 @@
 				value: String,
 				default: "normal",
 			},
+			isLoading: { type: Boolean, default: false, },
 		},
 	};
 </script>

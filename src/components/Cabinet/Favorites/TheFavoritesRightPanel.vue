@@ -108,6 +108,7 @@
 		},
 		data: () => ({
 			confirmRemoveValue: false,
+			isRemoveFavoritesLoading: false,
 			model: null,
 			downloadFormatFiles: {
 				xls: false,
@@ -129,9 +130,6 @@
 			},
 		},
 		watch: {
-			// вообще, тут очень плохой код написан, но пусть пока так, хоть работает
-			// после тестирования буду рефачить
-			// тут очень сильно требуется рефакторинг
 			totalSelected() {
 				if (this.totalSelected && this.alertMessage) {
 					this.alertMessage = "";
@@ -139,7 +137,7 @@
 			},
 		},
 		methods: {
-			...mapActions(["getParsers"]),
+			...mapActions(["getParsers", "getAllParsers"]),
 			handleClickSharedIcon($event) {
 				if (this.totalSelected === 0) {
 					this.alertMessage = "Необходимо выбрать новость!";
@@ -190,10 +188,10 @@
 				}
 			},
 			async handleClickRemoveButton() {
-				const ids = this.selectedParsers.map( parser => parser.id);
+				const ids = this.selectedParsers.map( parser => parser.favoriteId);
 				try {
 					await multiaction_delete("favorites", ids);
-					
+					await this.getAllParsers();
 					this.confirmRemoveValue = false;
 				} catch (err) {
 					throw new Error(err);

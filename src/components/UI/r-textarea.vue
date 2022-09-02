@@ -40,7 +40,7 @@
 		font-weight: 500;
 		background-color: $white;
 		&.bordered {
-			border: 0.1rem solid rgba(50, 50, 50, 0.1);
+			border: 0.1rem solid rgba(50, 50, 50, 0.2);
 			border-radius: 0.6rem;
 		}
 
