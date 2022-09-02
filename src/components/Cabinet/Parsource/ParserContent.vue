@@ -5,9 +5,6 @@
 				'parser-content__row': documentWidth > 490,
 				'parser-content__grid': documentWidth <= 490,
 			}"
-			@click="
-				isCroppedText === true ? expandArticle() : minimizeArticle()
-			"
 		>
 			<img
 				:src="parser.img"
@@ -29,8 +26,11 @@
 							fontSize === 'mediumSize',
 						'parser-content__text_size_big': fontSize === 'bigSize',
 					}"
-					@dblclick="editArticle"
 					v-if="!isArticleEdit"
+					@click="
+				isCroppedText === true ? expandArticle() : minimizeArticle()
+			"
+					@dblclick="editArticle"
 				>
 					{{ parser.article }}
 				</p>

@@ -83,11 +83,12 @@
 	import { mapState, mapActions } from "vuex";
 
 	import { multiaction_delete } from "@/api/multiaction_delete";
-	import { downloadFile } from "@/api/parser";
+	import { downloadFile, editParserData } from "@/api/parser";
 
 	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
 
 	export default {
+		name: 'TheFavoritesRightPanel',
 		emits: {
 			"clean-selected-parser-list": null,
 		},
@@ -101,6 +102,21 @@
 				default() {
 					return [] || undefined;
 				},
+			},
+		},
+		provide: {
+			async shareParser(index) {
+				const { share_url, id } = this.shareContentList[index];
+				try {
+					await editParserData({ id, updatedData: { is_public: true, } });
+					const shareLink = `${process.env.VUE_APP_FRONTEND_URL}/share/${share_url}`;
+					window.open(this.currentShareLink(index, shareLink), "_blank");
+				} catch (error) {
+					this.toast.error('Произошла ошибка!');
+					console.log(error);
+				}
+				
+
 			},
 		},
 		components: {

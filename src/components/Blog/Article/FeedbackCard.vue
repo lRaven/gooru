@@ -17,8 +17,16 @@
 			</button>
 			<p class="like__counter">{{ likes || 128 }}</p>
 		</div>
-		<r-button @click="handleClickNewAppeal" class="ask-button" text="Задать вопрос"></r-button>
-		<r-button @click="handleClickNewOrder" class="order-button" text="Заказать"></r-button>
+		<r-button
+			class="ask-button"
+			text="Задать вопрос"
+			@click="handleClickNewAppeal"
+		></r-button>
+		<r-button
+			class="order-button"
+			text="Заказать"
+			@click="handleClickNewOrder"
+		></r-button>
 	</div>
 </template>
 
@@ -26,19 +34,19 @@
 	export default {
 		name: "FeedbackCard",
 		emits: {
-			'open-appeal-popup': null,
-			'new-order': null,
+			"open-appeal-popup": null,
+			"new-order": null,
 		},
 		props: { likes: { type: Number, required: true } },
 		methods: {
 			handleClickNewAppeal() {
-				console.log('open')
-				this.$emit('open-appeal-popup');
+				console.log("open");
+				this.$emit("open-appeal-popup");
 			},
 			handleClickNewOrder() {
-				this.$emit('new-order');
+				this.$emit("new-order");
 			},
-		}
+		},
 	};
 </script>
 
@@ -54,17 +62,34 @@
 			width: 30%;
 			padding: 1rem;
 		}
+		@media (max-width: 450px) {
+			grid-gap: 2rem 3rem;
+			
+			.r-button {
+				width: 100%;
+				font-size: 1.5rem;
+			}
+			.order-button {
+				grid-column: 2/3;
+			}
+			.ask-button {
+				grid-column: 2/3;
+				grid-row: 2/3;
+			}
+		}
 	}
 	.like {
 		display: flex;
 		align-items: center;
 		&__button {
 			margin: 0 1rem 0 0;
-      background-color: transparent;
-      
+			background-color: transparent;
 		}
 		&__counter {
 			font-size: 2rem;
+			@media (max-width: 450px) {
+				font-size: 1.5rem;
+			}
 		}
 	}
 </style>

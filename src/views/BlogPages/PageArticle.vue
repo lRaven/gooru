@@ -244,6 +244,9 @@
 			width: 100%;
 			justify-content: start;
 			margin: 4rem 0 0 0;
+			@media (max-width: 450px) {
+				justify-content: space-evenly;
+			}
 		}
 	}
 	.new-appeal-form {

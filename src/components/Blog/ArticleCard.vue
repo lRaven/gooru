@@ -78,7 +78,6 @@
 		grid-auto-flow: column;
 		grid-gap: 2rem 4rem;
 		border-radius: 1rem;
-		padding: 0 1rem 0 0;
 		@media (min-width: 1500px) {
 			max-width: 1500px;
 		}

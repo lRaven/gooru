@@ -79,6 +79,7 @@
 </template>
 
 <script>
+	import { useToast } from "vue-toastification";
 	export default {
 		name: "SocialShareIcon",
 		emits: {
@@ -94,26 +95,13 @@
 				required: true,
 			},
 		},
+		inject: ['shareParser'],
 		data() {
 			return {
 				isPopupOpen: false,
 				userComments: [],
 				parserComments: [],
 			};
-		},
-		methods: {
-			openPopup() {
-				this.isPopupOpen = true;
-			},
-			closePopup() {
-				this.isPopupOpen = false;
-			},
-			share(index) {
-				window.open(this.currentShareLink(index), "_blank");
-			},
-			completeSharing() {
-				this.closePopup();
-			},
 		},
 		computed: {
 			networkName() {
@@ -148,14 +136,14 @@
 				}
 			},
 			currentShareLink() {
-				return function (index) {
+				return function (index, parserLink) {
 					switch (this.network) {
 						case "telegram":
-							return `https://t.me/share/url?url=${this.shareContentList[index].url}&text=${this.userComments[index]}`;
+							return `https://t.me/share/url?url=${parserLink}&text=${this.userComments[index]}`;
 						case "vk":
-							return `https://vk.com/share.php?url=${this.shareContentList[index].url}&title=${this.userComments[index]}`;
+							return `https://vk.com/share.php?url=${parserLink}&title=${this.userComments[index]}`;
 						case "odnoklassniki":
-							return `https://connect.ok.ru/offer?url=${this.shareContentList[index].url}&title=${this.userComments[index]}`;
+							return `https://connect.ok.ru/offer?url=${parserLink}&title=${this.userComments[index]}`;
 						default:
 							return "/img/icon/cabinet/share.svg";
 					}
@@ -176,9 +164,28 @@
 				};
 			},
 		},
+		methods: {
+			openPopup() {
+				this.isPopupOpen = true;
+			},
+			closePopup() {
+				this.isPopupOpen = false;
+			},
+			share(index) {
+				this.shareParser(index);
+				
+			},
+			completeSharing() {
+				this.closePopup();
+			},
+		},
 		beforeUpdate() {
 			this.userComments = this.shareContentList.map(() => "");
 			this.parserComments = this.shareContentList.map(() => false);
+		},
+		setup() {
+			const toast = useToast();
+			return { toast };
 		},
 	};
 </script>

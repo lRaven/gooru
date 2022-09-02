@@ -1,6 +1,6 @@
 <template>
 	<article class="article">
-		<template v-if="article.id === 1">
+		<template v-if="visibleArticle === 0">
 			<img
 				v-if="article.image"
 				class="article__main-image"
@@ -185,7 +185,7 @@
 			</section>
 		</template>
 
-		<template v-if="article.id === 2">
+		<template v-if="visibleArticle === 1">
 			<img
 				v-if="article.image"
 				class="article__main-image"
@@ -618,6 +618,17 @@
 				required: true,
 			},
 		},
+		computed: {
+			visibleArticle() {
+				if (this.article.title.toLowerCase().includes('Что такое парсинг и где он применяется?')) {
+					return 0;
+				}
+				if (this.article.title.toLowerCase().includes('как зарождается искусственный')) {
+					return 1;
+				}
+				return 0;
+			}
+		}
 	};
 </script>
 
@@ -627,6 +638,9 @@
 		display: flex;
 		flex-direction: column;
 		max-width: 1200px;
+		@media (max-width: 500px) {
+			padding: 1rem;
+		}
 
 		&__main-image {
 			width: 100%;
@@ -648,7 +662,15 @@
 				font-size: 3.8rem;
 			}
 			@media (max-width: 425px) {
+				max-width: 100%;
+				width: fit-content;
 				font-size: 3.2rem;
+				margin-bottom: 3.8rem;
+			}
+			@media (max-width: 390px) {
+				max-width: 100%;
+				width: fit-content;
+				font-size: 3rem;
 				margin-bottom: 3.8rem;
 			}
 		}
@@ -657,6 +679,10 @@
 			margin-bottom: 5rem;
 			@media (max-width: 600px) {
 				font-size: 2.8rem;
+			}
+			@media (max-width: 390px) {
+				font-size: 2.5rem;
+				margin-bottom: 3.8rem;
 			}
 		}
 		&__section {
@@ -677,6 +703,9 @@
 		@media (max-width: 500px) {
 			padding: 3rem 6rem;
 		}
+		@media (max-width: 450px) {
+			padding: 2rem 3rem;
+		}
 
 		&__text {
 			font-size: 3rem;
@@ -694,9 +723,15 @@
 				@media (max-width: 500px) {
 					font-size: 7rem;
 				}
+				@media (max-width: 450px) {
+					font-size: 5rem;
+				}
 			}
 			@media (max-width: 550px) {
 				font-size: 2.7rem;
+			}
+			@media (max-width: 450px) {
+				font-size: 2.2rem;
 			}
 		}
 		&__cite {
@@ -704,6 +739,9 @@
 			text-align: center;
 			@media (max-width: 500px) {
 				font-size: 2rem;
+			}
+			@media (max-width: 450px) {
+				font-size: 1.8rem;
 			}
 		}
 	}
@@ -716,6 +754,9 @@
 		border-bottom: 0.3rem solid $primary;
 		@media (max-width: 600px) {
 			font-size: 2.4rem;
+		}
+		@media (max-width: 450px) {
+			font-size: 1.8rem;
 		}
 	}
 	.section {
@@ -732,11 +773,19 @@
 				font-size: 2.8rem;
 				margin-bottom: 3rem;
 			}
+			@media (max-width: 390px) {
+				font-size: 2.4rem;
+				margin-bottom: 2.8rem;
+			}
 		}
 		&__subtitle {
 			font-size: 3.6rem;
 			font-weight: 500;
 			margin-bottom: 3.8rem;
+			@media (max-width: 390px) {
+				font-size: 2.2rem;
+				margin-bottom: 2.3rem;
+			}
 		}
 		&__text {
 			font-size: 2.4rem;
@@ -744,6 +793,10 @@
 			margin-bottom: 3rem;
 			@media (max-width: 600px) {
 				font-size: 2.2rem;
+			}
+			@media (max-width: 390px) {
+				font-size: 2rem;
+				margin-bottom: 2.8rem;
 			}
 			&:last-child {
 				margin-bottom: 0;
@@ -791,11 +844,19 @@
 			@media (max-width: 600px) {
 				font-size: 2.6rem;
 			}
+			@media (max-width: 390px) {
+				font-size: 2rem;
+				margin-bottom: 2.3rem;
+			}
 		}
 		&__text {
 			font-size: 2.4rem;
 			line-height: 1.5;
 			margin-bottom: 3.5rem;
+			@media (max-width: 390px) {
+				font-size: 1.9rem;
+				margin-bottom: 2rem;
+			}
 			&_style_italic {
 				font-style: italic;
 			}
@@ -808,11 +869,22 @@
 		&__title {
 			font-weight: 500;
 			margin-bottom: 2.5rem;
+			@media (max-width: 450px) {
+				font-size: 2.5rem;
+			}
+			@media (max-width: 390px) {
+				font-size: 2.2rem;
+				margin-bottom: 2rem;
+			}
 		}
 		&__text {
 			font-size: 2.4rem;
 			line-height: 1.5;
 			margin-bottom: 2rem;
+			@media (max-width: 390px) {
+				font-size: 1.8rem;
+				margin-bottom: 1.5rem;
+			}
 			&:last-child {
 				margin: 0;
 			}

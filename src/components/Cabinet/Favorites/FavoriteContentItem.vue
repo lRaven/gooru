@@ -1,10 +1,10 @@
 <template>
 	<li class="favorite-content-item" v-click-away="stateReset">
 		<div
-			class="favorite-content-item__row"
-			@click="
-				isCroppedText === true ? expandArticle() : minimizeArticle()
-			"
+			:class="{
+				'favorite-content-item__row': documentWidth > 490,
+				'favorite-content-item__grid': documentWidth <= 490,
+			}"
 		>
 			<div class="favorite-content-item__col">
 				<r-checkbox
@@ -19,6 +19,9 @@
 					class="favorite-content-item__text"
 					:class="{ cropped: isCroppedText }"
 					ref="textBlock"
+					@click="
+				isCroppedText === true ? expandArticle() : minimizeArticle()
+			"
 				>
 					{{ parser.article }}
 				</p>
@@ -258,7 +261,7 @@
 					Поделиться в социальных сетях:
 				</p>
 				<ul class="favorite-content-item__social-list">
-						<social-share-icon
+					<social-share-icon
 						:shareContentList="[parserProp]"
 						network="odnoklassniki"
 					></social-share-icon>

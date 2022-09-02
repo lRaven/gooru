@@ -96,6 +96,9 @@
 			@media (max-width: 500px) {
 				font-size: 2.3rem;
 			}
+			@media (max-width: 450px) {
+				font-size: 2rem;
+			}
 		}
 		&__logo {
 			width: 150px;
