@@ -1,6 +1,6 @@
 <template>
 	<div class="page-share theme-container">
-		<the-header />
+		<the-header class="bg"/>
     <section class="meta-info">
 				<button class="meta-info__source"></button>
 				<div class="social-share">
@@ -13,7 +13,7 @@
 								shareUrl: currentShareUrl,
 							},
 						]"
-					></social-share-icon>
+					/>
 					<social-share-icon
 						network="vk"
 						:shareContentList="[
@@ -23,7 +23,7 @@
 								shareUrl: currentShareUrl,
 							},
 						]"
-					></social-share-icon>
+					/>
 					<social-share-icon
 						network="telegram"
 						:shareContentList="[
@@ -33,8 +33,9 @@
 								shareUrl: currentShareUrl,
 							},
 						]"
-					></social-share-icon>
+					/>
 				</div>
+        <img class="meta-info__gooru-image" src="/img/icon/cabinet/goo.svg" />
 			</section>
 		<main class="page-share__content">
 			<section class="author" v-if="isAuthorDataLoaded">
@@ -125,8 +126,8 @@
       grid-gap: 0 5rem;
       max-width: 100vw;
       overflow-y: auto;
-      margin: 12.4rem 0 0 0;
-      padding: 3rem 0 0 3rem;
+      margin: 8.3rem 0 0 0;
+      padding: 3rem 1rem 0 3rem;
     }
   }
 	.author {
@@ -163,15 +164,25 @@
     }
   }
   .meta-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 20rem;
     height: 100%;
-    margin: 12.4rem 0 0 0;
+    margin: 8.3rem 0 0 0;
     padding: 3rem 1rem 0 1rem;
     background: linear-gradient(
 			350.85deg,
 			#542f7d -40.69%,
 			#338dd0 109.26%
 		);
+    &__gooru-image {
+      width: 19rem;
+			margin: auto 0 8rem 0;
+			@media (max-width: 1023px) {
+				display: none;
+			}
+		}
   }
   .social-share {
     display: flex;

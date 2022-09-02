@@ -5,8 +5,8 @@
 			@open_menu="handleOpenMenu"
 			@close_menu="handleCloseMenu"
 		/>
-		<!-- <navigation-panel /> -->
 		<navigation-panel-r
+			class="page-blog__navigation-panel"
 			:tabs="blogTabs"
 			:tabIcons="tabIcons"
 			:currentTab="currentTab"
@@ -203,7 +203,9 @@
 			handleNavigate(tabName) {
 				const params = tabName.params ? tabName.params : {};
 				this.$router.push({ name: tabName.name, params });
-				this.isMenuMinimize = true;
+				if (this.documentWidth <= 1023) {
+					this.isMenuMinimize = true;
+				}
 			},
 			handleOpenMenu() {
 				this.isMenuMinimize = false;
@@ -311,14 +313,17 @@
 				padding: 1.5rem 0;
 			}
 		}
+		&__navigation-panel {
+			@media (max-width: 1023px) {
+				padding: 4rem 1.5rem 1.5rem 1.5rem;
+			}
+		}
 	}
 	.the-header {
 		padding: 2rem 4rem;
 		background-color: $white;
 	}
-	.navigation-panel {
-		padding-top: 8.3rem;
-	}
+	
 	.social-media {
 		margin: 20rem 0 0 0;
 		display: flex;

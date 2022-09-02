@@ -154,6 +154,7 @@
 		display: none;
 		padding: 7rem 0 0 0;
 		@media (max-width: 1023px) {
+			padding: 4rem 1.5rem 1.5rem 1.5rem;
 			display: flex;
 			z-index: 3;
 		}

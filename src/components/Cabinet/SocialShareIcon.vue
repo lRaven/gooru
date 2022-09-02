@@ -173,7 +173,6 @@
 			},
 			share(index) {
 				this.shareParser(index);
-				
 			},
 			completeSharing() {
 				this.closePopup();
