@@ -73,7 +73,7 @@
 					></r-button>
 				</li>
 			</ul>
-			<r-button @click.stop="completeSharing" text="Готово"></r-button>
+			<r-button v-if="shareContentList.length > 1" @click.stop="completeSharing" text="Готово"></r-button>
 		</div>
 	</r-modal>
 </template>

@@ -7,6 +7,9 @@
 		:placeholder="placeholder"
 		:value="modelValue"
 		@input="this.$emit('update:modelValue', $event.target.value)"
+		@focus="handleSetFocusedStyle"
+		@blur="handleUnsetFocusedStyle"
+		ref="textarea"
 	></textarea>
 </template>
 
@@ -25,6 +28,16 @@
 				default: true,
 			},
 		},
+		methods: {
+			handleSetFocusedStyle() {
+				this.$refs.textarea.classList.add('r-textarea_focused');
+				console.log('set')
+			},
+			handleUnsetFocusedStyle() {
+				this.$refs.textarea.classList.remove('r-textarea_focused');
+				console.log('unset')
+			}
+		}
 	};
 </script>
 
@@ -42,6 +55,9 @@
 		&.bordered {
 			border: 0.1rem solid rgba(50, 50, 50, 0.2);
 			border-radius: 0.6rem;
+		}
+		&_focused{
+			border: 0.1rem solid rgba($primary, 1) !important;
 		}
 
 		&::placeholder {
