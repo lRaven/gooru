@@ -288,7 +288,8 @@
 					});
 				}
 			} else {
-				getTabs().then((topics) => {
+				if (store.state.navigation_panel.blogTabs.length === 1) {
+					getTabs().then((topics) => {
 					const tabs = topics.reduce(
 						(prev, { id, topic }) => {
 							return [
@@ -307,6 +308,11 @@
 						vm.setBlogTabs(tabs);
 					});
 				});
+				} else {
+					next((vm) => {
+					vm.setBlogTabs(store.state.navigation_panel.blogTabs);
+				});
+				}
 			}
 		},
 	};
