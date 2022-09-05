@@ -1,7 +1,9 @@
 <template>
 	<div class="page-blog theme-container">
 		<the-header
+			class="bg"
 			:isMenuMinimized="isMenuMinimize"
+			:isBlogVersion="true"
 			@open_menu="handleOpenMenu"
 			@close_menu="handleCloseMenu"
 		/>

@@ -133,7 +133,7 @@
 			this.isMenuMinimized = this.documentWidth <= 1023;
 		},
 		beforeRouteEnter(to, from, next) {
-			if (from.name === "blog-article" && to.params.anchor) {
+			if ((from.name === "blog-article" || from.name === "blog-articles") && to.params.anchor) {
 				next((vm) => {
 					vm.scroll(to.params.anchor);
 				});

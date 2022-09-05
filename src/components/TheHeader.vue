@@ -191,7 +191,29 @@
 					</r-button>
 				</div>
 
-				<nav class="the-header__nav" v-if="isCabinetVersion === false">
+				<nav class="the-header__nav" v-if="isBlogVersion === true">
+					<ul class="the-header__links">
+						<li class="the-header__link" @click="handleRedirectToHome('#rates')">
+							Тарифы
+						</li>
+						<li
+							class="the-header__link"
+							@click="handleRedirectToHome('#how-it-works')"
+						>
+							Как это работает
+						</li>
+						<li class="the-header__link" @click="handleRedirectToHome('#about')">
+							О компании
+						</li>
+						<li
+							class="the-header__link"
+							@click="handleOpenBlog"
+						>
+							Блог
+						</li>
+					</ul>
+				</nav>
+				<nav class="the-header__nav" v-else-if="isCabinetVersion === false">
 					<ul class="the-header__links">
 						<li class="the-header__link" @click="scroll('#rates')">
 							Тарифы
@@ -213,6 +235,7 @@
 						</li>
 					</ul>
 				</nav>
+				
 
 				<div class="the-header__buttons" v-if="user_auth === false">
 					<r-button
@@ -359,6 +382,7 @@
 				value: Boolean,
 				default: false,
 			},
+			isBlogVersion: { type: Boolean, default: false, },
 			isClear: {
 				value: Boolean,
 				default: false,
@@ -402,6 +426,9 @@
 		},
 		methods: {
 			scroll,
+			handleRedirectToHome(anchor) {
+				this.$router.push({ name: 'home', params: { anchor } });
+			},
 			handleOpenBlog() {
 				this.$router.push({ name: 'blog' })
 				.catch(() => {
@@ -495,6 +522,9 @@
 
 			@media (max-width: 767px) {
 				padding: 1.5rem;
+			}
+			@media (max-width: 450px) {
+				padding: 1rem;
 			}
 		}
 

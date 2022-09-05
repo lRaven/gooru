@@ -73,7 +73,7 @@
 	@import "@/assets/scss/variables";
 	.article-card {
 		display: grid;
-		grid-template-columns: 1fr 3fr;
+		grid-template-columns: max-content 3fr;
 		grid-template-rows: max-content;
 		grid-auto-flow: column;
 		grid-gap: 2rem 4rem;
@@ -148,15 +148,16 @@
 			}
 		}
 		&__author-img {
-			width: 100%;
-			max-width: 370px;
+			width: 150px;
+			height: 150px;
 			border-radius: 50%;
 			@media (max-width: 700px) {
 				display: none;
 			}
 		}
 		&__author-name {
-			text-align: center;
+			width: fit-content;
+			justify-self: center;
 			grid-row: 2/3;
 			@media (max-width: 700px) {
 				display: none;

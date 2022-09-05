@@ -41,20 +41,21 @@
 								:value="appeal.name"
 							/>
 							<label class="new-appeal-form__label"
-								>Ваш номер телефона</label
+								>Как с вами связаться?</label
 							>
-							<r-input
-								class="new-appeal-form__input"
-								v-model="appeal.phoneNumber"
-								:value="appeal.phoneNumber"
-							/>
+							<r-dropdown 
+								selected_item="Email"
+								showedValue="description"
+								:list="contactWays"
+								v-model="currentContactWay" />
 							<label class="new-appeal-form__label"
-								>Ваш почтовый адрес</label
+								>Ваш {{ currentContactWay === 'email' ? 'почтовый адрес' : 'телефон' }}</label
 							>
 							<r-input
 								class="new-appeal-form__input"
-								v-model="appeal.email"
-								:value="appeal.email"
+								v-model="appeal[currentContactWay]"
+								:value="appeal[currentContactWay]"
+								:placeholder="currentContactWay === 'email' ? 'example@mail.ru' : '79000010010'"
 							/>
 						</template>
 						<label class="new-appeal-form__label"
@@ -105,6 +106,8 @@
 		data() {
 			return {
 				isNewAppealOpen: false,
+				contactWays: [{ id: 'email', description: 'Email' }, { id: 'phoneNumber', description: 'Телефон' }],
+				currentContactWay: 'email',
 				appeal: {
 					name: "",
 					phoneNumber: "",
@@ -161,23 +164,30 @@
 				return this.articles.length !== 0 && this.article === null;
 			},
 			isAppealSubmitButtonDisabled() {
-				return Object.values(this.appeal).reduce(
-					(prev, currentValue) => {
-						if (typeof currentValue === "string") {
-							return currentValue.length === 0 || prev;
-						} else if (typeof currentValue === "object") {
+				const allFormState = Object.keys(this.appeal).reduce( (prev, currentKey) => {
+					if (currentKey === 'email' || currentKey === 'phoneNumber') {
+						return false || prev;
+					}
+					if (typeof this.appeal[currentKey] === "string") {
+							return this.appeal[currentKey].length === 0 || prev;
+						} else if (typeof this.appeal[currentKey] === "object") {
 							return true;
 						} else {
 							return false || prev;
 						}
-					},
-					false
-				);
+				}, false)
+				if (this.appeal.email.length >= 7 && this.appeal.phoneNumber.length >= 0) {
+					return false || allFormState;
+				} else if (this.appeal.phoneNumber.length === 11 && this.appeal.email.length >=0) {
+					return false || allFormState;
+				} else {
+					return allFormState;
+				}
 			},
 		},
 		methods: {
 			updateDocumentTitle() {
-				console.log("article mounted");
+				
 				document.title = this.article.title;
 			},
 			backToAll() {
@@ -196,6 +206,8 @@
 				this.isNewAppealOpen = !this.isNewAppealOpen;
 			},
 			async handleSubmitNewAppeal() {
+				this.appeal.phoneNumber.length === 11 ? '' : this.appeal.phoneNumber = '77777777777';
+				this.appeal.email.length !== 0 ? '' : this.appeal.email = 'none@mail.ru';
 				try {
 					await add_ticket({
 						phone_number: this.appeal.phoneNumber,

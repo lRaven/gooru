@@ -96,6 +96,8 @@
 
 	import { getSharedParser } from "@/api/parser";
 
+	import { mapState } from 'vuex';
+
 	export default {
 		name: "PageShare",
 		components: {
@@ -128,12 +130,14 @@
 			};
 		},
 		computed: {
+			...mapState({
+				documentWidth: (state) => state.document_width,
+			}),
 			authorAvatar() {
 				return `${process.env.VUE_APP_BACK_URL}${this.content.user.avatar}`;
 			},
 			paragraphs() {
 				const array = [];
-				console.log("par");
 				const numberOfParagraphs = this.content.article.length / 280;
 				if (numberOfParagraphs === 0) {
 					return [this.content.article];
@@ -147,13 +151,7 @@
 						paragraphNumer * 280,
 						(paragraphNumer + 1) * 280
 					);
-					console.log(chunk);
-					array.push(
-						this.content.article.slice(
-							paragraphNumer * 280,
-							(paragraphNumer + 1) * 280
-						)
-					);
+					array.push(chunk);
 				}
 				return array;
 			},
@@ -167,6 +165,7 @@
 			},
 		},
 		async created() {
+			this.isBarMinimized = this.documentWidth <= 1023;
 			try {
 				this.content = await getSharedParser(this.$route.params.id);
 				this.isContentDataLoaded = true;

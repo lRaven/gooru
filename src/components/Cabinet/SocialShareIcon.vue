@@ -12,7 +12,6 @@
 			<h2 class="share-popup__title">Поделиться в {{ networkName }}</h2>
 			<ul
 				class="share-list share-popup__share-list"
-				
 			>
 				<li class="share-list-item share-list__share-list-item"
 				v-for="(shareItem, index) in shareContentList"
@@ -210,6 +209,9 @@
 		}
 		&__share-list {
 			margin: 0 0 3rem 0;
+			&:last-child {
+				margin: 0;
+			}
 		}
 		.r-button {
 			font-size: 1.8rem;
