@@ -13,6 +13,7 @@
 			:placeholder="placeholder"
 			:disabled="isDisabled"
 			@blur="$emit('blur', $event.target.name)"
+			@focus="$emit('focus', $event.target.name)"
 			@input="
 				this.$emit('update:modelValue', $event.target.value);
 				this.$emit('update:Valid', $event.target.checkValidity());
@@ -59,6 +60,7 @@
 		name: "r-input",
 		emits: {
 			blur: null,
+			focus: null,
 			"update:Valid": null,
 			"update:modelValue": null,
 		},

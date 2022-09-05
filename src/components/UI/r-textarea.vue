@@ -16,6 +16,10 @@
 <script>
 	export default {
 		name: "rTextarea",
+		emits: {
+			focus: null,
+			blur: null,
+		},
 		props: {
 			modelValue: String,
 			placeholder: {
@@ -30,12 +34,12 @@
 		},
 		methods: {
 			handleSetFocusedStyle() {
+				this.$emit('focus');
 				this.$refs.textarea.classList.add('r-textarea_focused');
-				console.log('set')
 			},
 			handleUnsetFocusedStyle() {
+				this.$emit('blur');
 				this.$refs.textarea.classList.remove('r-textarea_focused');
-				console.log('unset')
 			}
 		}
 	};

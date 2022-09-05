@@ -94,7 +94,6 @@
 
 	import { mapState, mapActions, mapMutations } from "vuex";
 	import { getTabs } from "@/api/blog";
-	import { hashString } from "@/js/utils";
 	import store from "@/store";
 
 	const validPath = (blogTabs, supposeBlogSection) => {
@@ -238,15 +237,11 @@
 				this.isMenuMinimize = true;
 			},
 			validPath,
-			hashString,
 		},
 		created() {
 			if (this.articles.length === 0) {
 				this.getArticles();
 			}
-			this.hashString("SHA-256", "jaja")
-				.then((data) => data.charAt())
-				.catch((error) => console.log(error));
 			this.isMenuMinimize = this.documentWidth <= 1023;
 		},
 		beforeRouteEnter(to, from, next) {

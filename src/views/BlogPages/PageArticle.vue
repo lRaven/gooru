@@ -1,7 +1,9 @@
 <template>
 	<section class="page-article">
 		<template v-if="isArticleLoaded && !isArticleNotFound">
-			<button class="page-article__back-button" @click="goBack">Назад</button>
+			<button class="page-article__back-button" @click="goBack">
+				Назад
+			</button>
 			<the-article
 				@vnodeMounted="updateDocumentTitle"
 				class="page-article__article"
@@ -35,28 +37,89 @@
 							<label class="new-appeal-form__label"
 								>Ваше имя</label
 							>
-							<r-input
-								class="new-appeal-form__input"
-								v-model="appeal.name"
-								:value="appeal.name"
-							/>
+							<validate-input
+								:newValue="appeal.name"
+								:rules="{ minLength: 2 }"
+							>
+								<template
+									#field="{
+										handleBlur,
+										handleFocus,
+										isOnFocus,
+										isEdited,
+										isInvalid,
+									}"
+								>
+									<r-input
+										class="new-appeal-form__input"
+										v-model="appeal.name"
+										:value="appeal.name"
+										@blur="handleBlur"
+										@focus="handleFocus"
+									/>
+									<p
+										v-if="
+											isEdited && !isOnFocus && isInvalid
+										"
+										class="new-appeal-form__input_error-message"
+									>
+										Имя не может быть меньше 2-х символов
+									</p>
+								</template>
+							</validate-input>
+
 							<label class="new-appeal-form__label"
 								>Как с вами связаться?</label
 							>
-							<r-dropdown 
+							<r-dropdown
 								selected_item="Email"
 								showedValue="description"
 								:list="contactWays"
-								v-model="currentContactWay" />
-							<label class="new-appeal-form__label"
-								>Ваш {{ currentContactWay === 'email' ? 'почтовый адрес' : 'телефон' }}</label
-							>
-							<r-input
-								class="new-appeal-form__input"
-								v-model="appeal[currentContactWay]"
-								:value="appeal[currentContactWay]"
-								:placeholder="currentContactWay === 'email' ? 'example@mail.ru' : '79000010010'"
+								v-model="currentContactWay"
 							/>
+							<label class="new-appeal-form__label"
+								>Ваш
+								{{
+									currentContactWay === "email"
+										? "почтовый адрес"
+										: "телефон"
+								}}</label
+							>
+							<validate-input
+								:newValue="appeal[currentContactWay]"
+								:rules="contactFieldValidationRules"
+							>
+								<template
+									#field="{
+										handleBlur,
+										handleFocus,
+										isOnFocus,
+										isEdited,
+										isInvalid,
+									}"
+								>
+									<r-input
+										class="new-appeal-form__input"
+										v-model="appeal[currentContactWay]"
+										:value="appeal[currentContactWay]"
+										:placeholder="
+											currentContactWay === 'email'
+												? 'example@mail.ru'
+												: '79000010010'
+										"
+										@blur="handleBlur"
+										@focus="handleFocus"
+									/>
+									<p
+										v-if="
+											isEdited && !isOnFocus && isInvalid
+										"
+										class="new-appeal-form__input_error-message"
+									>
+										{{ contactFieldErrorText }}
+									</p>
+								</template>
+							</validate-input>
 						</template>
 						<label class="new-appeal-form__label"
 							>Тема обращения</label
@@ -71,12 +134,41 @@
 							class="new-appeal-form__label new-appeal-form__label_align_start"
 							>Текст обращения</label
 						>
-						<r-textarea
-							class="new-appeal-form__input"
-							placeholder="Обращение..."
-							v-model="appeal.message"
-							:value="appeal.message"
-						/>
+						<validate-input
+							:newValue="appeal.message"
+							:rules="{ minLength: 1, maxLength: 1500 }"
+						>
+							<template
+								#field="{
+									handleBlur,
+									handleFocus,
+									isOnFocus,
+									isEdited,
+									errors,
+								}"
+							>
+								<r-textarea
+									class="new-appeal-form__input"
+									placeholder="Обращение..."
+									v-model="appeal.message"
+									:value="appeal.message"
+									@blur="handleBlur"
+									@focus="handleFocus"
+								/>
+								<p 
+									v-if="isEdited && !isOnFocus && errors['minLength']"
+									class="new-appeal-form__input_error-message"
+									>
+									Длина обращения должна быть не меньше 1 символа
+									</p>
+									<p 
+									v-else-if="isEdited && !isOnFocus && errors['maxLength']"
+									class="new-appeal-form__input_error-message"
+									>
+									Длина обращения должна быть не больше 1500 символов
+									</p>
+							</template>
+						</validate-input>
 						<r-button
 							:disabled="isAppealSubmitButtonDisabled"
 							text="Отправить"
@@ -92,6 +184,9 @@
 	import TheArticle from "@/components/Blog/Article/TheArticle.vue";
 	import FeedbackCard from "@/components/Blog/Article/FeedbackCard.vue";
 
+	// helpers
+	import ValidateInput from "@/components/helpers/ValidateInput.vue";
+
 	import { mapState } from "vuex";
 	import { useToast } from "vue-toastification";
 	import { add_ticket } from "@/api/tickets";
@@ -102,12 +197,16 @@
 		components: {
 			TheArticle,
 			FeedbackCard,
+			ValidateInput,
 		},
 		data() {
 			return {
 				isNewAppealOpen: false,
-				contactWays: [{ id: 'email', description: 'Email' }, { id: 'phoneNumber', description: 'Телефон' }],
-				currentContactWay: 'email',
+				contactWays: [
+					{ id: "email", description: "Email" },
+					{ id: "phoneNumber", description: "Телефон" },
+				],
+				currentContactWay: "email",
 				appeal: {
 					name: "",
 					phoneNumber: "",
@@ -115,6 +214,7 @@
 					message: "",
 					topic: null,
 				},
+				formValidationState: null,
 			};
 		},
 		watch: {
@@ -164,33 +264,70 @@
 				return this.articles.length !== 0 && this.article === null;
 			},
 			isAppealSubmitButtonDisabled() {
-				const allFormState = Object.keys(this.appeal).reduce( (prev, currentKey) => {
-					if (currentKey === 'email' || currentKey === 'phoneNumber') {
-						return false || prev;
-					}
-					if (typeof this.appeal[currentKey] === "string") {
+				if (this.formValidationState) {
+					console.log(this.formValidationState, 'formValidationState');
+					return false
+				} else {
+					return true;
+				}
+				/* const allFormState = Object.keys(this.appeal).reduce(
+					(prev, currentKey) => {
+						if (
+							currentKey === "email" ||
+							currentKey === "phoneNumber"
+						) {
+							return false || prev;
+						}
+						if (typeof this.appeal[currentKey] === "string") {
 							return this.appeal[currentKey].length === 0 || prev;
-						} else if (typeof this.appeal[currentKey] === "object") {
+						} else if (
+							typeof this.appeal[currentKey] === "object"
+						) {
 							return true;
 						} else {
 							return false || prev;
 						}
+<<<<<<< Updated upstream
 				}, false)
 				if (this.isAuth) {
 					return allFormState;
 				}
 				if (this.appeal.email.length >= 7 && this.appeal.phoneNumber.length >= 0) {
+=======
+					},
+					false
+				);
+				if (this.isAuth) {
+					return allFormState;
+				}
+				if (
+					this.appeal.email.length >= 7 &&
+					this.appeal.phoneNumber.length >= 0
+				) {
+>>>>>>> Stashed changes
 					return false || allFormState;
-				} else if (this.appeal.phoneNumber.length === 11 && this.appeal.email.length >=0) {
+				} else if (
+					this.appeal.phoneNumber.length === 11 &&
+					this.appeal.email.length >= 0
+				) {
 					return false || allFormState;
 				} else {
 					return allFormState;
-				}
+				} */
+			},
+			contactFieldValidationRules() {
+				return this.contactWays === "email"
+					? { minLength: 7 }
+					: { regExp: /^[7|8]\d{10}/ };
+			},
+			contactFieldErrorText() {
+				return this.contactWays === "email"
+					? "Неправильный формат электронной почты"
+					: "Неправильный формат номера";
 			},
 		},
 		methods: {
 			updateDocumentTitle() {
-				
 				document.title = this.article.title;
 			},
 			backToAll() {
@@ -208,9 +345,20 @@
 			handleChangeAppealPopupState() {
 				this.isNewAppealOpen = !this.isNewAppealOpen;
 			},
+			handleChange(updatedValue) {
+				if (this.formValidationState) {
+					this.formValidationState = {...this.formValidationState, ...updatedValue};
+				} else {
+					this.formValidationState = {...updatedValue};
+				}
+			},
 			async handleSubmitNewAppeal() {
-				this.appeal.phoneNumber.length === 11 ? '' : this.appeal.phoneNumber = '77777777777';
-				this.appeal.email.length !== 0 ? '' : this.appeal.email = 'none@mail.ru';
+				this.appeal.phoneNumber.length === 11
+					? ""
+					: (this.appeal.phoneNumber = "77777777777");
+				this.appeal.email.length !== 0
+					? ""
+					: (this.appeal.email = "none@mail.ru");
 				try {
 					await add_ticket({
 						phone_number: this.appeal.phoneNumber,
@@ -244,7 +392,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+	@import "@/assets/scss/variables";
 	.page-article {
 		display: grid;
 		padding: 0;
@@ -286,6 +434,10 @@
 			&_align_start {
 				align-self: flex-start;
 			}
+		}
+		&__input_error-message {
+			color: $red;
+			grid-column: 2/3;
 		}
 		.r-textarea {
 			font-size: 1.8rem;
