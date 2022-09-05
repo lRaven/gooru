@@ -19,6 +19,7 @@
 		emits: {
 			focus: null,
 			blur: null,
+			'update:modelValue': null,
 		},
 		props: {
 			modelValue: String,
