@@ -668,6 +668,9 @@
 			cursor: pointer;
 			font-size: 1.6rem;
 			padding: 1.2rem 3rem;
+			@media (max-width: 1100px) {
+				font-size: 1.5rem;
+			}
 
 			&::after {
 				content: "";

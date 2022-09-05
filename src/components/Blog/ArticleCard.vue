@@ -1,27 +1,18 @@
 <template>
 	<div class="article-card">
-		<img
-			v-if="article.author_avatar"
-			class="article-card__author-img"
-			:src="authorAvatar"
-			alt="Фото автора"
-		/>
-		<h3 class="article-card__author-name">{{ article.author_name }}</h3>
-		<div class="article-card__content">
-			<div v-if="article.image" class="article-card__image-wrapper">
-				<img
-					class="article-card__image"
-					:src="article.image"
-					alt="Изображение связанное со статьей"
-				/>
-			</div>
-			<h2 class="article-card__title">{{ article.title }}</h2>
-			<p class="article-card__preview">{{ articlePreview }}</p>
-			<r-button
-				@click="handleViewButton(article.id)"
-				text="Читать"
-			></r-button>
+		<div v-if="article.image" class="article-card__image-wrapper">
+			<img
+				class="article-card__image"
+				:src="article.image"
+				alt="Изображение связанное со статьей"
+			/>
 		</div>
+		<h2 class="article-card__title">{{ article.title }}</h2>
+		<p class="article-card__preview">{{ articlePreview }}</p>
+		<r-button
+			@click="handleViewButton(article.id)"
+			text="Читать"
+		></r-button>
 	</div>
 </template>
 
@@ -72,21 +63,13 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 	.article-card {
-		display: grid;
-		grid-template-columns: max-content 3fr;
-		grid-template-rows: max-content;
-		grid-auto-flow: column;
-		grid-gap: 2rem 4rem;
+		display: flex;
+		flex-direction: column;
 		border-radius: 1rem;
-		@media (min-width: 1500px) {
-			max-width: 1500px;
-		}
-		@media (max-width: 800px) {
-			grid-gap: 1.5rem 3rem;
-		}
+		max-width: 1200px;
 		@media (max-width: 550px) {
-				padding: 0;
-			}
+			padding: 0;
+		}
 
 		&__title {
 			font-weight: 500;
@@ -109,26 +92,18 @@
 				margin-bottom: 1.8rem;
 			}
 		}
-
-		&__content {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			grid-row: 1/4;
-
-			.r-button {
-				width: 30%;
-				align-self: flex-end;
-				padding: 1.5rem;
-				@media (max-width: 550px) {
+		.r-button {
+			width: 25%;
+			align-self: flex-end;
+			padding: 1.5rem;
+			@media (max-width: 550px) {
 				padding: 1rem;
-			}
-			}
-			@media (max-width: 700px) {
-				grid-column: 1/-1;
+				width: 30%;
 			}
 		}
+
 		&__image-wrapper {
+			max-width: 1200px;
 			overflow: hidden;
 			margin-bottom: 3rem;
 			border-radius: 1rem;
@@ -141,7 +116,6 @@
 		}
 		&__image {
 			width: 100%;
-			max-width: 1100px;
 			transition: all 0.3s linear;
 			&:hover {
 				transform: scale(1.15);

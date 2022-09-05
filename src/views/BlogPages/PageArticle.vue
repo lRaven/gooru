@@ -176,6 +176,9 @@
 							return false || prev;
 						}
 				}, false)
+				if (this.isAuth) {
+					return allFormState;
+				}
 				if (this.appeal.email.length >= 7 && this.appeal.phoneNumber.length >= 0) {
 					return false || allFormState;
 				} else if (this.appeal.phoneNumber.length === 11 && this.appeal.email.length >=0) {

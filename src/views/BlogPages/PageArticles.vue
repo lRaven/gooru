@@ -37,6 +37,7 @@
     display: grid;
     grid-gap: 5rem 0;
     padding: 0;
+		justify-content: center;
 		@media (max-width: 600px) {
 			padding: 0 1rem;
 		}
