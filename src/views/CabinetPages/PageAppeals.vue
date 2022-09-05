@@ -50,8 +50,10 @@
 			</transition>
 			<filter-pannel
 				class="page-appeals__filter-panel"
+				:class="{ 'page-appeals__filter-panel_closed': isFilterPanelClosed }"
 				:params="topics"
 				@filter-params-changed="sortAppeals"
+				@change-panel-visibility="handleChangeFilterPanelStyles"
 			>
 				<template #visibleManageButton="{ changePanelVisibility }">
 					<button class="filter-panel__visibility-button" @click="changePanelVisibility">
@@ -274,6 +276,7 @@
 		data() {
 			return {
 				isMinimizedRightPanel: false,
+				isFilterPanelClosed: true,
 				isAppealsLoaded: false,
 
 				new_appeal: {
@@ -296,6 +299,9 @@
 
 			sortAppeals(sortedParams) {
 				this.sortParams = sortedParams;
+			},
+			handleChangeFilterPanelStyles(isPanelOpen) {
+				this.isFilterPanelClosed = !isPanelOpen;
 			},
 
 			async create_ticket() {
@@ -474,6 +480,9 @@
 		}
 		&__filter-panel {
 			box-shadow: $shadow;
+			&_closed {
+				box-shadow: none;
+			}
 		}
 		&__empty-search {
 			color: rgba($black, $alpha: 0.7);
@@ -574,8 +583,8 @@
 			background-color: transparent;
 			border: none;
 			color: $primary;
-			font-size: 1.2rem;
-			font-weight: 500;
+			font-size: 1.4rem;
+			font-weight: 600;
 		}
 	}
 </style>

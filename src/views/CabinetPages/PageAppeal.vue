@@ -60,7 +60,6 @@
 		},
 		computed: {
 			...mapState({
-				/* appeal: (state) => state.appeals.appeals ? state.appeals.appeals[0] : {}, */
 				all_parsers: (state) => state.parsers.all_parsers,
 				topics: (state) => state.appeals.topics,
 				user: (state) => state.cabinet.user,

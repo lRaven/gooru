@@ -28,6 +28,7 @@
 		name: "FilterPanel",
 		emits: {
 			"filter-params-changed": null,
+			"change-panel-visibility": null,
 		},
 		props: {
 			params: {
@@ -58,9 +59,7 @@
 				this.isPanelOpen
 					? (this.isPanelOpen = false)
 					: (this.isPanelOpen = true);
-				this.isPanelOpen
-					? (this.text = "Закрой меня")
-					: (this.text = "Открой меня");
+				this.$emit('change-panel-visibility', this.isPanelOpen);
 			},
 		},
 		mounted() {
