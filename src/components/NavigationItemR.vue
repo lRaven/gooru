@@ -1,13 +1,19 @@
 <template>
 	<div
 		class="navigation-item"
-		:class="{ 'navigation-item_active': isActive, 'navigation-item_minimize': isMinimized }"
+		:class="{
+			'navigation-item_active': isActive,
+			'navigation-item_minimize': isMinimized,
+		}"
 		@click="handleClick"
 	>
 		<component
 			:is="icon"
 			class="navigation-item__icon"
-			:class="{ 'navigation-item__icon_active': isActive, 'navigation-item__icon_minimize': isMinimized}"
+			:class="{
+				'navigation-item__icon_active': isActive,
+				'navigation-item__icon_minimize': isMinimized,
+			}"
 		/>
 		<p v-if="!isMinimized" class="navigation-item__text">{{ text }}</p>
 		<span
@@ -52,6 +58,10 @@
 		padding: 0.8rem 1.4rem 0.8rem 4rem;
 		transition: all 0.2s ease;
 
+		@media (max-width: 450px) {
+			padding: 0.8rem 1rem 0.8rem 1rem;
+		}
+
 		&_active {
 			background-color: rgba(255, 255, 255, 0.3);
 		}
@@ -86,7 +96,7 @@
 				margin: 0;
 			}
 		}
-		
+
 		&__notification-counter {
 			font-size: 1.4rem;
 			font-weight: 600;

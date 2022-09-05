@@ -5,17 +5,21 @@
 			@open_menu="handleOpenMenu"
 			@close_menu="handleCloseMenu"
 		/>
-		<navigation-panel-r
-			class="page-blog__navigation-panel"
-			:tabs="blogTabs"
-			:tabIcons="tabIcons"
-			:currentTab="currentTab"
-			:isMenuMinimized="isMenuMinimize"
-			@navigate-to="handleNavigate"
-			@open-menu="handleOpenMenu"
-			@close-menu="handleCloseMenu"
+		<side-bar
+			class="page-blog__sidebar-panel"
+			:isSideBarMinimized="isMenuMinimize"
+			@close-bar="handleCloseMenu"
+			@open-bar="handleOpenMenu"
 		>
-			<template v-if="sharedArticle.length" #social-media>
+			<navigation-panel-r
+				:tabs="blogTabs"
+				:tabIcons="tabIcons"
+				:currentTab="currentTab"
+				:isMenuMinimized="isMenuMinimize"
+				@navigate-to="handleNavigate"
+			>
+			</navigation-panel-r>
+			<template v-if="sharedArticle.length">
 				<div
 					class="social-media"
 					:class="{ 'social-media_minimize': isMenuMinimize }"
@@ -56,7 +60,7 @@
 					>
 				</div>
 			</template>
-		</navigation-panel-r>
+		</side-bar>
 		<main class="page-blog__main">
 			<router-view
 				v-if="isBlogTabsLoaded && !isNotFoundBlogTab"
@@ -77,6 +81,7 @@
 
 <script>
 	import TheHeader from "@/components/TheHeader.vue";
+	import SideBar from "@/components/SideBar.vue";
 	import NavigationPanelR from "@/components/NavigationPanelR.vue";
 	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
 
@@ -101,6 +106,7 @@
 		components: {
 			TheHeader,
 			NavigationPanelR,
+			SideBar,
 			SocialShareIcon,
 			ParsingIcon,
 			TechnologyIcon,
@@ -329,9 +335,15 @@
 				padding: 1.5rem 0;
 			}
 		}
-		&__navigation-panel {
+		&__sidebar-panel {
 			@media (max-width: 1023px) {
 				padding: 4rem 1.5rem 1.5rem 1.5rem;
+			}
+			@media (max-width: 560px) {
+				padding: 2rem 1.5rem 1.5rem 1.5rem;
+			}
+			@media (max-width: 450px) {
+				padding: 1.5rem 1.5rem 1.5rem 1.5rem;
 			}
 		}
 	}
@@ -339,7 +351,7 @@
 		padding: 2rem 4rem;
 		background-color: $white;
 	}
-	
+
 	.social-media {
 		margin: 20rem 0 0 0;
 		display: flex;

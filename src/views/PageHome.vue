@@ -2,18 +2,18 @@
 	<div class="page-home theme-container">
 		<the-header
 			:isMenuMinimized="isMenuMinimized"
-			@open_menu="handleOpenMenu"
-			@close_menu="handleCloseMenu"
+			@open_menu="handleOpenBar"
+			@close_menu="handleCloseBar"
 		/>
-		<navigation-panel-r
-			:tabs="$options.navBarDataHome"
-			:tabIcons="tabIcons"
-			:isMenuMinimized="isMenuMinimized"
-			:currentTab="currentTab"
-			@navigate-to="handleNavigate"
-			@close-menu="handleCloseMenu"
-			class="page-home__navigation-panel"
-		/>
+		<side-bar class="page-home__sidebar-panel" :isSideBarMinimized="isMenuMinimized" @close-bar="handleCloseBar">
+			<navigation-panel-r
+				:tabs="$options.navBarDataHome"
+				:tabIcons="tabIcons"
+				:isMenuMinimized="isMenuMinimized"
+				:currentTab="currentTab"
+				@navigate-to="handleNavigate"
+			/>
+		</side-bar>
 
 		<main class="main">
 			<the-banner />
@@ -30,6 +30,7 @@
 
 <script>
 	import TheHeader from "@/components/TheHeader";
+	import SideBar from "@/components/SideBar.vue";
 	import NavigationPanelR from "@/components/NavigationPanelR.vue";
 
 	import TheBanner from "@/components/Home/TheBanner";
@@ -46,7 +47,7 @@
 	import RatesIcon from "@/assets/icons/Home/NavigationPanel/RatesIcon.vue";
 	import BlogIcon from "@/assets/icons/Home/NavigationPanel/BlogIcon.vue";
 	import DefaultIcon from "@/assets/icons/Home/NavigationPanel/DefaultIcon.vue";
-	import HowItWorks from "@/assets/icons/Home/NavigationPanel/HowItWorks.vue"
+	import HowItWorks from "@/assets/icons/Home/NavigationPanel/HowItWorks.vue";
 
 	import { scroll } from "@/js/scrollToLink";
 	import { navBarDataHome } from "@/js/navigationPanelData";
@@ -57,6 +58,7 @@
 		navBarDataHome,
 		components: {
 			TheHeader,
+			SideBar,
 			NavigationPanelR,
 
 			TheBanner,
@@ -72,17 +74,10 @@
 			RatesIcon /* eslint-disable */,
 			BlogIcon /* eslint-disable */,
 			DefaultIcon /* eslint-disable */,
-			HowItWorks,/* eslint-disable */
+			HowItWorks /* eslint-disable */,
 		},
 		data() {
 			return { isMenuMinimized: false, currentTab: null };
-		},
-		watch: {
-			/* documentWidth() {
-				if (this.documentWidth <= 1023) {
-					this.isMenuMinimize = true;
-				}
-			}, */
 		},
 		computed: {
 			...mapState({
@@ -127,10 +122,10 @@
 					this.$router.push({ name: tab.name });
 				}
 			},
-			handleOpenMenu() {
+			handleOpenBar() {
 				this.isMenuMinimized = false;
 			},
-			handleCloseMenu() {
+			handleCloseBar() {
 				this.isMenuMinimized = true;
 			},
 		},
@@ -150,7 +145,7 @@
 </script>
 
 <style lang="scss" scoped>
-	.page-home__navigation-panel {
+	.page-home__sidebar-panel {
 		display: none;
 		padding: 7rem 0 0 0;
 		@media (max-width: 1023px) {
@@ -158,8 +153,11 @@
 			display: flex;
 			z-index: 3;
 		}
-		@media (max-width: 767px) {
-			margin: 74px 0 0 0;
+		@media (max-width: 560px) {
+			padding: 2rem 1.5rem 1.5rem 1.5rem;
+		}
+		@media (max-width: 450px) {
+			padding: 1.5rem 1.5rem 1.5rem 1.5rem;
 		}
 	}
 </style>
