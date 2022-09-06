@@ -41,9 +41,9 @@
 			<div class="appeals-card__message-info">
 				<p
 					class="appeals-card__message"
-					:title="lastChatMessge || appeal.message"
+					:title="lastChatMessage || appeal.message"
 				>
-					{{ lastChatMessge || appeal.message }}
+					{{ lastChatMessage || appeal.message }}
 				</p>
 				<span
 					class="appeals-card__last-message-time"
@@ -78,9 +78,9 @@
 			<div class="appeals-card__message-info">
 				<p
 					class="appeals-card__message"
-					:title="lastChatMessge || appeal.message"
+					:title="lastChatMessage || appeal.message"
 				>
-					{{ lastChatMessge || appeal.message }}
+					{{ lastChatMessage || appeal.message }}
 				</p>
 				<span
 					class="appeals-card__last-message-time"
@@ -143,7 +143,7 @@
 
 				return result;
 			},
-			lastChatMessge() {
+			lastChatMessage() {
 				const messagesCount = this.appeal.messages.length;
 				if (messagesCount) {
 					return this.appeal.messages[messagesCount - 1].text;
@@ -188,6 +188,7 @@
 					return "!";
 				}
 			},
+			
 		},
 		methods: {
 			handleOpenAppeal() {
@@ -195,11 +196,6 @@
 					name: "appeal",
 					query: { appeal_id: this.appeal.id },
 				});
-			},
-			handleOpenByClick() {
-				if (this.document_width <= 768) {
-					this.handleOpenAppeal();
-				}
 			},
 		},
 	};
@@ -241,9 +237,11 @@
 		}
 
 		&.manager {
-
 			@media (min-width: 1300px) {
-				grid-template-columns: max-content repeat(2, minmax(auto, max-content)) 1fr;
+				grid-template-columns: max-content repeat(
+						2,
+						minmax(auto, max-content)
+					) 1fr;
 			}
 			@media (max-width: 450px) {
 				.appeals-card__row {
