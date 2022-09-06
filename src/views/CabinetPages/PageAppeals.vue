@@ -111,8 +111,7 @@
 						:appeal="appeal"
 						:parsers="all_parsers"
 						:topics="topics"
-						:messages="all_messages"
-						:appealsHasNotifications="appealsHasNotifications"
+						:notifications="appealNotifications(appeal.id)"
 					></appeals-card>
 				</div>
 			</transition>
@@ -253,6 +252,20 @@
 					return this.appealsByType(this.sortParams);
 				} else {
 					return this.cards;
+				}
+			},
+
+			appealNotifications() {
+				return function (appealId) {
+					const notifications  = this.appeals_notifications.reduce( (previosList, currentNotification) => {
+						const [, notificationAppealId] = currentNotification.url.split('appeal_id=');
+
+						if (+notificationAppealId === appealId) {
+							return [...previosList, currentNotification];
+						}
+						return previosList;
+					}, []);
+					return notifications;
 				}
 			},
 

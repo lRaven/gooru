@@ -42,7 +42,7 @@ const mutations = { SET_NOTIFICATIONS: (state, payload) => (state.notifications 
 const actions = {
 	getNotifications: async (context) => {
 		try {
-			const response = await axios.get(`${store.state.baseURL}/notify/`,
+			const response = await axios.get(`${store.state.baseURL}/notify/?page_size=${1e6}`,
 				{ headers: { Authorization: `token ${cookie.get("auth_token")}`, } }
 			);
 

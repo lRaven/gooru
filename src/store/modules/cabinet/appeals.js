@@ -103,10 +103,10 @@ const actions = {
 				return getTicketMessages(appeal.id);
 			});
 			const messages = await Promise.all(messagesQueue);
-			console.log(messages);
 			response.data.results.forEach((appeal) => {
 				const matchedChat = messages.find((chat) => {
-					return chat[0]?.ticket === appeal.id;
+					const firstChatMessage = chat[0];
+					return firstChatMessage?.ticket === appeal.id;
 				});
 				if (matchedChat) {
 					appeal.messages = matchedChat;
@@ -114,6 +114,7 @@ const actions = {
 					appeal.messages = [];
 				}
 			});
+			
 			if (!args.nextPage) {
 				if (response.status === 200) {
 					context.commit("SET_APPEALS", response.data.results);

@@ -3,12 +3,11 @@
 		class="appeals-card"
 		:class="{
 			manager: user.role !== 'DefaultUser',
-			has_notifications: isHasNotifications,
+			has_notifications: unreadMessagesCounter,
 		}"
+		@click="handleOpenAppeal"
 	>
 		<template v-if="document_width > 1300">
-			<p class="appeals-card__col appeals-card__id">#{{ appeal.id }}</p>
-
 			<div class="appeals-card__col" v-if="appeal.parser">
 				<p class="appeals-card__source">
 					{{
@@ -18,9 +17,6 @@
 							: source
 					}}
 				</p>
-				<span class="appeals-card__counter">
-					{{ messages_counter > 0 ? messages_counter : "" }}
-				</span>
 			</div>
 
 			<router-link
@@ -39,57 +35,31 @@
 				</p>
 			</router-link>
 
-			<div class="appeals-card__col appeals-card__topic" :title="topic">
+			<div class="appeals-card__topic" :title="topic">
 				{{ topic }}
 			</div>
-
-			<p
-				class="appeals-card__message"
-				:title="last_message.text || appeal.message"
-			>
-				{{ last_message.text || appeal.message }}
-			</p>
-
-			<r-button
-				color="bordered"
-				text="Развернуть"
-				@click="
-					this.$router.push({
-						name: 'appeal',
-						query: { appeal_id: appeal.id },
-					})
-				"
-			></r-button>
+			<div class="appeals-card__message-info">
+				<p
+					class="appeals-card__message"
+					:title="lastChatMessge || appeal.message"
+				>
+					{{ lastChatMessge || appeal.message }}
+				</p>
+				<span
+					class="appeals-card__last-message-time"
+					:title="lastMessageTime || appeal.message"
+				>
+					{{ lastMessageTime }}
+				</span>
+				<span
+					class="appeals-card__unread-messages-counter"
+					v-if="unreadMessagesCounter"
+					>{{ unreadMessagesCounter }}</span
+				>
+			</div>
 		</template>
 
 		<template v-else>
-			<div class="appeals-card__row">
-				<div class="appeals-card__col">
-					<p class="appeals-card__col appeals-card__id">
-						#{{ appeal.id }}
-					</p>
-
-					<div
-						class="appeals-card__col appeals-card__topic"
-						:title="topic"
-						v-if="document_width > 425"
-					>
-						{{ topic }}
-					</div>
-				</div>
-
-				<r-button
-					color="bordered"
-					text="Развернуть"
-					@click="
-						this.$router.push({
-							name: 'appeal',
-							query: { appeal_id: appeal.id },
-						})
-					"
-				></r-button>
-			</div>
-
 			<div class="appeals-card__row">
 				<p class="appeals-card__source" v-if="appeal.parser">
 					{{
@@ -99,22 +69,37 @@
 							: source
 					}}
 				</p>
-				<span class="appeals-card__counter">
-					{{ messages_counter > 0 ? messages_counter : "" }}
-				</span>
+				<div class="appeals-card__col">
+					<div class="appeals-card__topic" :title="topic">
+						{{ topic }}
+					</div>
+				</div>
 			</div>
-
-			<p
-				class="appeals-card__message"
-				:title="last_message.text || appeal.message"
-			>
-				{{ last_message.text || appeal.message }}
-			</p>
+			<div class="appeals-card__message-info">
+				<p
+					class="appeals-card__message"
+					:title="lastChatMessge || appeal.message"
+				>
+					{{ lastChatMessge || appeal.message }}
+				</p>
+				<span
+					class="appeals-card__last-message-time"
+					:title="lastMessageTime || appeal.message"
+				>
+					{{ lastMessageTime }}
+				</span>
+				<span
+					class="appeals-card__unread-messages-counter"
+					v-if="unreadMessagesCounter"
+					>{{ unreadMessagesCounter }}</span
+				>
+			</div>
 		</template>
 	</div>
 </template>
 
 <script>
+	import { prettyDate } from "@/js/processStrings";
 	import { mapState } from "vuex";
 
 	export default {
@@ -125,8 +110,7 @@
 			topics: Array,
 			parsers: Array,
 			messages: Array,
-			appealsHasNotifications: {
-				value: Array,
+			notifications: {
 				default: [],
 			},
 		},
@@ -139,13 +123,13 @@
 			source() {
 				let result = "";
 				const find = this.parsers.find(
-						(el) => el.id === this.appeal.parser
-					);
-					if (find !== undefined) {
-						result = find.title;
-					}
+					(el) => el.id === this.appeal.parser
+				);
+				if (find !== undefined) {
+					result = find.title;
+				}
 
-					return result ? result : `Парсер ${this.appeal.parser}`;
+				return result ? result : `Парсер ${this.appeal.parser}`;
 			},
 			topic() {
 				let result = "";
@@ -159,35 +143,65 @@
 
 				return result;
 			},
-
-			last_message() {
-				let result;
-
-				const find = this.messages.filter(
-					(el) => el.ticket === this.appeal.id
-				);
-				result = find.slice(-1)[0];
-
-				return result || {};
+			lastChatMessge() {
+				const messagesCount = this.appeal.messages.length;
+				if (messagesCount) {
+					return this.appeal.messages[messagesCount - 1].text;
+				}
+				return "";
 			},
 
-			messages_counter() {
-				const result = this.messages.filter(
-					(el) => el.ticket === this.appeal.id
-				);
-
-				return result.length || 0;
+			lastMessageTime() {
+				const messagesCount = this.appeal.messages.length;
+				if (messagesCount) {
+					const [date, timeStringUTC] =
+						this.appeal.messages[
+							messagesCount - 1
+						].created_at.split("T");
+					const [, , messageDay] = date.split("-");
+					const [hour, minutes] = timeStringUTC.split(":");
+					const today = new Date().getDate();
+					if (today > Number(messageDay)) {
+						return `${prettyDate(date)} ${hour}:${minutes}`;
+					}
+					return `${hour}:${minutes}`;
+				}
+				return "";
 			},
-
-			isHasNotifications() {
-				const find = this.appealsHasNotifications.find((el) => {
-					return el === this.appeal.id;
-				});
-
-				return find !== undefined;
+			unreadMessagesCounter() {
+				const messagesCount = this.appeal.messages.length;
+				if (messagesCount) {
+					const newMessageCount = this.notifications.reduce(
+						(previosCount, currentNotification) => {
+							const isItNewMessageNotification =
+								currentNotification.message
+									.toLowerCase()
+									.includes("вам пришло новое сообщение");
+							return isItNewMessageNotification
+								? previosCount + 1
+								: previosCount;
+						},
+						0
+					);
+					return newMessageCount;
+				} else {
+					return "!";
+				}
 			},
 		},
-		mounted() {},
+		methods: {
+			handleOpenAppeal() {
+				this.$router.push({
+					name: "appeal",
+					query: { appeal_id: this.appeal.id },
+				});
+			},
+			handleOpenByClick() {
+				if (this.document_width <= 768) {
+					this.handleOpenAppeal();
+				}
+			},
+		},
 	};
 </script>
 
@@ -196,7 +210,7 @@
 
 	.appeals-card {
 		display: grid;
-		grid-template-columns: max-content 1fr 20rem 2fr max-content;
+		grid-template-columns: repeat(2, minmax(auto, max-content)) 1fr;
 		align-items: center;
 		justify-content: space-between;
 		gap: 3rem;
@@ -204,6 +218,7 @@
 		background-color: $white;
 		transition: all 0.2s ease;
 		border-radius: 0 0 0.6rem 0.6rem;
+		cursor: pointer;
 
 		&:first-child {
 			border-radius: 0.6rem 0.6rem 0 0;
@@ -213,7 +228,6 @@
 		}
 
 		&.has_notifications {
-			border: 0.1rem solid $red;
 			box-shadow: $shadow;
 			.appeals-card {
 				&__id,
@@ -227,8 +241,14 @@
 		}
 
 		&.manager {
+
 			@media (min-width: 1300px) {
-				grid-template-columns: max-content repeat(2, 1fr) 20rem 2fr max-content;
+				grid-template-columns: max-content repeat(2, minmax(auto, max-content)) 1fr;
+			}
+			@media (max-width: 450px) {
+				.appeals-card__row {
+					display: grid;
+				}
 			}
 		}
 
@@ -236,7 +256,7 @@
 			grid-template-columns: 1fr;
 			justify-content: flex-start;
 			align-items: flex-start;
-			gap: 1rem;
+			gap: 2rem;
 		}
 		@media (max-width: 767px) {
 			padding: 1rem;
@@ -264,8 +284,10 @@
 			display: flex;
 			align-items: center;
 			gap: 2rem;
-			&:first-child {
-				justify-content: space-between;
+			justify-content: space-between;
+
+			@media (max-width: 400px) {
+				gap: 1rem;
 			}
 		}
 
@@ -314,6 +336,24 @@
 			overflow: hidden;
 			display: block;
 			font-weight: 600;
+			@media (max-width: 400px) {
+				font-size: 1.2rem;
+				padding: 0.6rem 1.5rem;
+			}
+		}
+		&__message-info {
+			display: grid;
+			grid-template-columns: 1fr minmax(auto, max-content) minmax(
+					3rem,
+					max-content
+				);
+			align-items: center;
+			grid-gap: 0 2rem;
+
+			@media (max-width: 768px) {
+				grid-template-columns: 1fr minmax(3rem, max-content);
+				grid-gap: 1rem 0;
+			}
 		}
 
 		&__message {
@@ -325,6 +365,30 @@
 			font-size: 1.4rem;
 			font-weight: 400;
 			line-height: 1.2;
+			max-width: 100%;
+			@media (max-width: 1300px) {
+				grid-row: 1/3;
+				align-self: center;
+				max-width: 80%;
+			}
+		}
+		&__last-message-time {
+			font-size: 1.5rem;
+			font-weight: 300;
+			line-height: 1.2;
+			@media (max-width: 768px) {
+				justify-self: end;
+				font-size: 1.4rem;
+			}
+		}
+		&__unread-messages-counter {
+			font-size: 1.6rem;
+			font-weight: 600;
+			text-align: center;
+			padding: 0.8rem 0.5rem;
+			color: $white;
+			background-color: $primary;
+			border-radius: 50%;
 		}
 
 		.r-button {
@@ -332,6 +396,9 @@
 			justify-self: end;
 			padding: 1rem 2rem !important;
 			font-size: 1.4rem;
+			@media (max-width: 768px) {
+				display: none;
+			}
 		}
 	}
 </style>
