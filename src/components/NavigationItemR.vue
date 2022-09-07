@@ -82,21 +82,21 @@
 			font-weight: 600;
 			color: $white;
 		}
-		.icon::v-deep.navigation-item__icon {
+		:deep(.icon.navigation-item__icon) {
 			margin: 0 1.5rem 0 0;
 			path {
 				fill-opacity: 0.5;
 			}
-			&_active {
-				path {
-					fill-opacity: 1;
-				}
-			}
-			&_minimize {
-				margin: 0;
+		}
+		:deep(.icon.navigation-item__icon_active) {
+			path {
+				fill-opacity: 1;
 			}
 		}
-
+		:deep(.icon.navigation-item__icon_minimize) {
+			margin: 0;
+		}
+		
 		&__notification-counter {
 			font-size: 1.4rem;
 			font-weight: 600;

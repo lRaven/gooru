@@ -3,7 +3,7 @@
 		name=""
 		:spellcheck="spellCheck"
 		class="r-textarea"
-		:class="{ bordered: bordered }"
+		:class="{ 'r-textarea_bordered': bordered }"
 		:placeholder="placeholder"
 		:value="modelValue"
 		@input="this.$emit('update:modelValue', $event.target.value)"
@@ -36,6 +36,7 @@
 		methods: {
 			handleSetFocusedStyle() {
 				this.$emit('focus');
+				console.log('focus')
 				this.$refs.textarea.classList.add('r-textarea_focused');
 			},
 			handleUnsetFocusedStyle() {
@@ -57,7 +58,8 @@
 		font-size: 1.3rem;
 		font-weight: 500;
 		background-color: $white;
-		&.bordered {
+
+		&_bordered {
 			border: 0.1rem solid rgba(50, 50, 50, 0.2);
 			border-radius: 0.6rem;
 		}

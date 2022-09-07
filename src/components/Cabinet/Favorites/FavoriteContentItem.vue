@@ -20,8 +20,10 @@
 					:class="{ cropped: isCroppedText }"
 					ref="textBlock"
 					@click="
-				isCroppedText === true ? expandArticle() : minimizeArticle()
-			"
+						isCroppedText === true
+							? expandArticle()
+							: minimizeArticle()
+					"
 				>
 					{{ parser.article }}
 				</p>
@@ -223,7 +225,7 @@
 				</div>
 			</div>
 			<template v-else>
-				<textarea
+				<r-textarea
 					class="favorite-content-item__textarea"
 					:placeholder="
 						parser.comment.text
@@ -231,7 +233,8 @@
 							: 'Написать комментарий...'
 					"
 					v-model="comment"
-				></textarea>
+				/>
+
 				<p
 					class="favorite-content-item__control-edit-button favorite-content-item__control-edit-button_text favorite-content-item__control-edit-button_align_end"
 					v-if="parser.comment.text"
@@ -782,20 +785,8 @@
 				}
 			}
 		}
-
-		&__textarea {
-			width: 100%;
+		:deep(.favorite-content-item__textarea.r-textarea) {
 			height: 7rem;
-			border: 0.1rem solid #d5d5d5;
-			resize: none;
-			border-radius: 0.6rem;
-			padding: 1rem;
-			font-size: 1.2rem;
-			color: $black;
-			&::placeholder {
-				user-select: none;
-				color: $black;
-			}
 		}
 
 		&__social {

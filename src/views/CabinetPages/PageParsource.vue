@@ -1018,7 +1018,7 @@
 	.download-parsers {
 		display: flex;
 		flex-direction: column;
-		.r-button::v-deep.download-parsers__button {
+		:deep(.r-button.download-parsers__button) {
 			width: 100%;
 			padding: 1rem 2rem;
 			font-size: 1.4rem;
