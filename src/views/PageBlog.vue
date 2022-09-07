@@ -199,7 +199,6 @@
 				if (matchedArticle) {
 					const { title, id } = matchedArticle;
 					const shareUrl = `${process.env.VUE_APP_FRONTEND_URL}${this.$route.fullPath}`;
-					console.log({ title, id, url: window.location, comment: { text: "", id: null }, shareUrl, });
 					return [{ title, id, url: window.location, comment: { text: "", id: null }, shareUrl, },];
 				}
 				return [];
