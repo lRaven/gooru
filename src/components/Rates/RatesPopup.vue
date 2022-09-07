@@ -304,6 +304,12 @@
 				contain no-repeat;
 			top: 2.2rem;
 			right: 2.2rem;
+			@media (max-width: 500px) {
+				width: 2rem;
+				height: 2rem;
+				top: 1.5rem;
+				right: 1.5rem;
+			}
 		}
 
 		&__rate {
@@ -311,6 +317,12 @@
 			flex-direction: column;
 			background-color: $light-blue;
 			padding: 5rem 0;
+			@media (max-width: 1024px) {
+				padding: 4rem 0;
+			}
+			@media (max-width: 870px) {
+				display: none;
+			}
 			&-name {
 				font-size: 3.2rem;
 				font-weight: 700;
@@ -319,6 +331,10 @@
 				background-color: rgba($primary, 0.1);
 				margin-bottom: 4rem;
 				padding: 2rem 4rem;
+				@media (max-width: 1024px) {
+					font-size: 3rem;
+					padding: 2rem 2rem;
+				}
 			}
 		}
 
@@ -336,6 +352,9 @@
 			font-size: 3.2rem;
 			font-weight: 600;
 			margin-left: 1.5rem;
+			@media (max-width: 1024px) {
+				font-size: 3rem;
+			}
 		}
 		&__month {
 			font-size: 1.6rem;
@@ -373,20 +392,55 @@
 		&__contain,
 		&__checklist {
 			padding: 0 4rem;
+			@media (max-width: 1024px) {
+				padding: 0 2rem;
+			}
 		}
 
 		&__user-credentials {
 			background-color: $white;
 			padding: 5rem 4rem;
+			@media (max-width: 1024px) {
+				padding: 4rem 2.5rem;
+			}
+			@media (max-width: 870px) {
+				width: 65vw;
+			}
+			@media (max-width: 767px) {
+				width: 70vw;
+			}
+			@media (max-width: 600px) {
+				width: 80vw;
+			}
+			@media (max-width: 500px) {
+				width: 90vw;
+				padding: 2rem 2.5rem;
+			}
 
 			&-caption {
 				font-weight: 700;
 				line-height: 3.4rem;
 				margin-bottom: 4rem;
+				@media (max-width: 680px) {
+					margin-bottom: 3rem;
+				}
+				@media (max-width: 500px) {
+					line-height: 2.4rem;
+					margin-bottom: 2.5rem;
+				}
+				@media (max-width: 450px) {
+					margin-bottom: 2rem;
+				}
+				@media (max-width: 390px) {
+					font-size: 1.8rem;
+				}
 			}
 			&-controls {
 				display: flex;
 				margin-bottom: 3rem;
+				@media (max-width: 680px) {
+					margin-bottom: 2rem;
+				}
 			}
 			&-control {
 				font-size: 2rem;
@@ -396,10 +450,16 @@
 				&:first-child {
 					border-right: 0.1rem solid $gray;
 					padding: 1rem 3rem 1rem 0;
+					@media (max-width: 450px) {
+						padding: 0.5rem 1.5rem 0.5rem 0;
+					}
 				}
 
 				&:last-child {
 					padding: 1rem 0 1rem 3rem;
+					@media (max-width: 450px) {
+						padding: 0.5rem 0 0.5rem 1.5rem;
+					}
 				}
 
 				&_active {
@@ -413,9 +473,19 @@
 				align-items: center;
 				grid-gap: 2rem;
 				margin-bottom: 2rem;
+				@media (max-width: 680px) {
+					grid-gap: 1.5rem;
+				}
+				@media (max-width: 500px) {
+					grid-gap: 1rem 0;
+					margin-bottom: 1.5rem;
+				}
 
 				&__input {
 					grid-column: 2/3;
+					@media (max-width: 600px) {
+						grid-column: 1/3;
+					}
 				}
 				&-caption {
 					font-size: 1.5rem;
@@ -448,6 +518,21 @@
 			justify-content: space-between;
 			gap: 2rem;
 			grid-column: 1/3;
+			@media (max-width: 900px) {
+				display: grid;
+				justify-content: stretch;
+			}
+			@media (max-width: 870px) {
+				display: flex;
+				justify-content: space-between;
+			}
+			@media (max-width: 680px) {
+				display: grid;
+				justify-content: stretch;
+			}
+			@media (max-width: 680px) {
+				gap: 1.5rem;
+			}
 		}
 		&__help {
 			font-size: 1.4rem;
