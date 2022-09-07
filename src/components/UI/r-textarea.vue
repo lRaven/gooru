@@ -62,7 +62,7 @@
 			border-radius: 0.6rem;
 		}
 		&_focused{
-			border: 0.1rem solid rgba($primary, 1) !important;
+			border: 0.1rem solid rgba($primary, 1);
 		}
 
 		&::placeholder {
