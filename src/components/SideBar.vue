@@ -1,8 +1,5 @@
 <template>
-	<div
-		class="side-bar"
-		:class="{ 'side-bar_minimize': isSideBarMinimized }"
-	>
+	<div class="side-bar" :class="{ 'side-bar_minimize': isSideBarMinimized }">
 		<div class="side-bar__controls">
 			<button
 				class="side-bar__roll-up"
@@ -39,7 +36,9 @@
 					/>
 				</svg>
 			</button>
-			<a class="side-bar__logo" href="/"><strong>COMPAS</strong> PARSING</a>
+			<a class="side-bar__logo" href="/"
+				><strong>COMPAS</strong> PARSING</a
+			>
 		</div>
 		<slot></slot>
 		<img
@@ -107,8 +106,9 @@
 			width: 8rem;
 			padding: 1rem;
 			@media (max-width: 1023px) {
+				
 				position: absolute;
-				transform: translateX(-20rem);
+				transform: translateX(-100vw);
 			}
 		}
 		&__controls {
@@ -118,15 +118,15 @@
 			width: 100%;
 			margin: 0 0 4rem 0;
 			padding: 0 4rem;
-      @media (max-width: 768px) {
-        padding: 0 3rem;
-      }
-      @media (max-width: 660px) {
-        padding: 0 1.5rem;
-      }
-      @media (max-width: 560px) {
-        padding: 0;
-      }
+			@media (max-width: 768px) {
+				padding: 0 3rem;
+			}
+			@media (max-width: 660px) {
+				padding: 0 1.5rem;
+			}
+			@media (max-width: 560px) {
+				padding: 0;
+			}
 		}
 		&__logo {
 			visibility: hidden;

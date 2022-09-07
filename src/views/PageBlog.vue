@@ -231,9 +231,11 @@
 				}
 			},
 			handleOpenMenu() {
+				console.log('open')
 				this.isMenuMinimize = false;
 			},
 			handleCloseMenu() {
+				console.log('close')
 				this.isMenuMinimize = true;
 			},
 			validPath,
