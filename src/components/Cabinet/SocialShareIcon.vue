@@ -98,8 +98,8 @@
 		data() {
 			return {
 				isPopupOpen: false,
-				userComments: [],
-				parserComments: [],
+				userComments: [""],
+				parserComments: [false],
 			};
 		},
 		computed: {
@@ -116,7 +116,7 @@
 				}
 			},
 			hasComment() {
-				return function (index) {
+				return (index) => {
 					return this.shareContentList[index].comment.text
 						? false
 						: true;
@@ -135,7 +135,7 @@
 				}
 			},
 			currentShareLink() {
-				return function (index, parserLink) {
+				return (index, parserLink) => {
 					switch (this.network) {
 						case "telegram":
 							return `https://t.me/share/url?url=${parserLink}&text=${this.userComments[index]}`;
@@ -149,11 +149,8 @@
 				};
 			},
 			isTooLongСontent() {
-				return function (indexInShareContent) {
-					const parserCommentLength =
-						(this.parserComments[indexInShareContent] || 0) &&
-						this.shareContentList[indexInShareContent].comment.text
-							.length;
+				return  (indexInShareContent) => {
+					const parserCommentLength = (this.parserComments[indexInShareContent] || 0) && this.shareContentList[indexInShareContent].comment.text.length;
 					return this.userComments[indexInShareContent]?.length +
 						parserCommentLength +
 						this.shareContentList[indexInShareContent].url.length >

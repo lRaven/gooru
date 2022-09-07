@@ -300,7 +300,7 @@
 			position: absolute;
 			width: 2.5rem;
 			height: 2.5rem;
-			background: $white url("/public/img/icon/popupCross.svg") center /
+			background: $white url("@/../public/img/icon/popupCross.svg") center /
 				contain no-repeat;
 			top: 2.2rem;
 			right: 2.2rem;

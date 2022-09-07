@@ -21,7 +21,7 @@
 		/>
 		<transition mode="out-in">
 			<img
-				src="/img/icon/cabinet/eye-closed.svg"
+				src="@/../public/img/icon/cabinet/eye-closed.svg"
 				alt="open-password"
 				v-if="input_type === 'password' && isPasswordHide === true"
 				class="r-input__icon"
