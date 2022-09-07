@@ -382,6 +382,8 @@
 		&__unread-messages-counter {
 			font-size: 1.6rem;
 			font-weight: 600;
+			min-width: 3rem;
+			justify-self: end;
 			text-align: center;
 			padding: 0.8rem 0.5rem;
 			color: $white;
