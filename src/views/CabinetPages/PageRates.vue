@@ -214,9 +214,11 @@
 			...mapActions(["getUserRate", "updateRateData", "getAllParsers"]),
 			async select_rate(rate_id) {
 				try {
-					await payRate(this.$cookies.get("auth_token"), rate_id);
-					console.log("Rate selected: ", rate_id);
+					const redirectUrl = await payRate(this.$cookies.get("auth_token"), rate_id);
+					await this.getUserRate();
+					window.open(redirectUrl, '_blank');
 				} catch (err) {
+					
 					return err.response;
 				}
 			},

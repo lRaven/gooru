@@ -163,7 +163,7 @@ const payRate = async (token, id) => {
 				Authorization: `token ${token}`
 			}
 		});
-		return response;
+		return response.data.redirect_url;
 	}
 	catch (err) { return err.response }
 }
