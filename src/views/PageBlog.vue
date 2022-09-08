@@ -57,9 +57,6 @@
 							:shareContentList="sharedArticle"
 						/>
 					</template>
-					<span v-if="isError" class="social-media__empty-error"
-						>Необходимо просматривать статью!</span
-					>
 				</div>
 			</template>
 		</side-bar>
@@ -325,10 +322,17 @@
 			margin: 84px 0 0 0;
 			padding: 2rem 4rem;
 			overflow-y: auto;
+			@media (max-width: 767px) {
+				margin: 73px 0 0 0;
+			}
 			@media (max-width: 600px) {
 				padding: 1.5rem 0rem;
 			}
+			@media (max-width: 540px) {
+				margin: 68px 0 0 0;
+			}
 			@media (max-width: 450px) {
+				margin: 58px 0 0 0;
 				padding: 1.5rem 0;
 			}
 		}

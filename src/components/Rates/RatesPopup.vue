@@ -300,7 +300,7 @@
 			position: absolute;
 			width: 2.5rem;
 			height: 2.5rem;
-			background: $white url("@/../public/img/icon/popupCross.svg") center /
+			background: transparent url("@/../public/img/icon/popupCross.svg") center /
 				contain no-repeat;
 			top: 2.2rem;
 			right: 2.2rem;
@@ -430,9 +430,12 @@
 				}
 				@media (max-width: 450px) {
 					margin-bottom: 2rem;
+					letter-spacing: -0.05rem;
 				}
 				@media (max-width: 390px) {
+					max-width: 95%;
 					font-size: 1.8rem;
+					letter-spacing: -0.1rem;
 				}
 			}
 			&-controls {

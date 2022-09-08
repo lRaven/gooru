@@ -77,7 +77,7 @@
 			HowItWorks /* eslint-disable */,
 		},
 		data() {
-			return { isMenuMinimized: false, currentTab: null };
+			return { isMenuMinimized: true, currentTab: null };
 		},
 		computed: {
 			...mapState({
@@ -128,9 +128,6 @@
 			handleCloseBar() {
 				this.isMenuMinimized = true;
 			},
-		},
-		created() {
-			this.isMenuMinimized = this.documentWidth <= 1023;
 		},
 		beforeRouteEnter(to, from, next) {
 			if ((from.name === "blog-article" || from.name === "blog-articles") && to.params.anchor) {

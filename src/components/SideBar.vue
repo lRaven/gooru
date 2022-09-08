@@ -100,7 +100,7 @@
 			margin-top: 0;
 			padding: 1.5rem;
 			width: 100vw;
-			height: 100%;
+			height: 100vh;
 		}
 		&_minimize {
 			width: 8rem;

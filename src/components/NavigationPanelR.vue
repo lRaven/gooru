@@ -27,7 +27,7 @@
 		},
 		props: {
 			tabs: { type: Array, required: true },
-			tabIcons: { type: Object, required: true },
+			tabIcons: { type: [Object], required: true },
 			currentTab: { type: Object, required: true },
 			isMenuMinimized: { type: Boolean, required: true },
 		},
