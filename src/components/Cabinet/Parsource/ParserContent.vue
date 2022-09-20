@@ -703,7 +703,7 @@
 						if (this.downloadFormatFiles[key] === true) {
 							downloadFilesQueue.push(
 								downloadFile({
-									type: key === "excel" ? "xls" : key,
+									type: key,
 								})
 							);
 						}

@@ -560,7 +560,7 @@
 						if (this.downloadFormatFiles[key] === true) {
 							downloadFilesQueue.push(
 								downloadFile({
-									type: key === "excel" ? "xls" : key,
+									type: key,
 								})
 							);
 						}
@@ -588,7 +588,7 @@
 							}
 							const linkForDownload = document.createElement("a");
 							linkForDownload.href = downloadUrl;
-							linkForDownload.download = `favoritesParsersData.${dataFileType}`;
+							linkForDownload.download = `${this.parser.title}.${dataFileType}`;
 							document.body.appendChild(linkForDownload);
 							linkForDownload.click();
 							linkForDownload.remove();

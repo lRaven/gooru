@@ -119,9 +119,9 @@ const deleteParser = async (parserId) => {
 const downloadFile = async ({ type }) => {
 	try {
 		const response = await fetch(
-			`${store.state.baseURL}/parser/download/${type}`,
+			`${store.state.baseURL}/parser/download/${type}/select/`,
 			{
-				method: "GET",
+				method: "POST",
 				headers: { Authorization: `token ${cookie.get("auth_token")}` },
 			}
 		);

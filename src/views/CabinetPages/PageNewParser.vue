@@ -54,7 +54,7 @@
 			<r-button
 				text="Отправить"
 				type="submit"
-				:disabled="isDisabledBtn"
+				:disabled="isDisabledBtn || isCreateParsourseLoading"
 			></r-button>
 		</form>
 	</section>
@@ -108,6 +108,7 @@
 		},
 		data: () => ({
 			isDisabledBtn: false,
+			isCreateParsourseLoading: false,
 
 			new_parsource: {
 				name: "",
@@ -165,6 +166,8 @@
 
 			async create_parsource() {
 				try {
+					this.isCreateParsourseLoading = true;
+					
 					const response = await send_new_parsource({
 						name: this.new_parsource.name,
 						data_source: this.new_parsource.url,
@@ -174,7 +177,8 @@
 
 					if (response.status === 201) {
 						this.resetForm();
-
+						
+						
 						console.log("New parsource created");
 						this.toast.success("Парсер создан");
 						this.toast.info(ParsourceNotification, {
@@ -195,6 +199,7 @@
 					this.toast.error("Ошибка создания парсера");
 					throw new Error(err);
 				}
+				this.isCreateParsourseLoading = false;
 			},
 		},
 		created() {

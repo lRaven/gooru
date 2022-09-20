@@ -3,8 +3,8 @@
 		<transition mode="out-in">
 			<div class="r-confirm-popup__body" v-if="isPopupBodyVisible">
 				<h4 class="r-confirm-popup__text">{{ text }}</h4>
-
-				<r-button
+				<slot :handleClosePopup="close" :handleConfirm="confirm"></slot>
+				<!-- <r-button
 					text="Подтвердить"
 					@click="this.$emit('action_confirm')"
 				></r-button>
@@ -12,7 +12,7 @@
 					color="white"
 					text="Отмена"
 					@click.stop="this.$emit('close_popup')"
-				></r-button>
+				></r-button> -->
 			</div>
 		</transition>
 	</div>
@@ -28,6 +28,14 @@
 			},
 		},
 		data: () => ({ isPopupBodyVisible: false }),
+		methods: {
+			close() {
+				this.$emit('close_popup')
+			},
+			confirm() {
+				this.$emit('action_confirm');
+			}
+		},
 		mounted() {
 			setTimeout(() => {
 				this.isPopupBodyVisible = true;

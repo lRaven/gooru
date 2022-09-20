@@ -190,8 +190,22 @@
 		},
 		methods: {
 			updateDocumentTitle() {
-				
-				document.title = this.article.title;
+				document.title = `${this.article.title} - Гуру`;
+				const ogMetaTitle = document.createElement('meta');
+				ogMetaTitle.setAttribute('property', 'og:title');
+				ogMetaTitle.content = `${this.article.title}`;
+				const pageHead = document.querySelector('head');
+				pageHead.append(ogMetaTitle);
+
+				const ogMetaImage = document.createElement('meta');
+				ogMetaImage.setAttribute('property', 'og:image');
+				ogMetaImage.content = this.article.image;
+				pageHead.append(ogMetaImage);
+
+				const ogMetaDescription = document.createElement('meta');
+				ogMetaDescription.setAttribute('property', 'og:description');
+				ogMetaDescription.content = ' О появлении и развитии, сферах применения, главных плюсах, удобстве использования компьютерных систем – в нашей новой статье.';
+				pageHead.append(ogMetaDescription);
 			},
 			backToAll() {
 				this.$router.push({ name: "blog" });

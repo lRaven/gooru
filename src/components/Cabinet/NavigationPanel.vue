@@ -685,7 +685,11 @@
 			height: 100%;
 			background: url("/public/img/icon/cabinet/goo.svg") bottom left /
 				90% no-repeat;
-			overflow: hidden;
+			overflow-y: auto;
+			&::-webkit-scrollbar {
+				width: 0;
+				height: 0;
+			}
 
 			@media (max-width: 1023px) {
 				background: none;

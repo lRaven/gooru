@@ -534,6 +534,9 @@
 			@media (max-width: 767px) {
 				padding: 1rem 1.5rem;
 			}
+			@media (max-width: 375px) {
+				padding: 2rem 2.5rem;
+			}
 
 			.the-header {
 				&__container {
@@ -544,12 +547,8 @@
 					@media (max-width: 1140px) {
 						grid-template-columns: min-content max-content;
 					}
-					@media (max-width: 425px) {
-						padding: 2rem;
-					}
-					@media (max-width: 375px) {
-						padding: 1rem;
-					}
+					
+					
 				}
 				&__col {
 					justify-content: space-between;

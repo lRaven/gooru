@@ -345,7 +345,14 @@
 			:text="`Вы действительно хотите удалить источник «${parsourceToDelete.url}»?`"
 			@action_confirm="deleteThisSource(parsourceToDelete.url)"
 			@close_popup="isConfirmDeleteSourcePopupOpen = false"
+			v-slot="{ handleClosePopup, handleConfirm }"
 		>
+			<r-button
+				text="Подтвердить"
+				@click="handleConfirm"
+				:disabled="isSourceDeleteLoading"
+			/>
+			<r-button text="Отмена" color="white" @click="handleClosePopup" />
 		</r-confirm-popup>
 	</section>
 </template>
@@ -360,7 +367,11 @@
 	import { change_manager } from "@/api/userApi";
 	import { prettyDate } from "@/js/processStrings";
 	import { read_notification } from "@/api/notifications";
-	import { updateParsourceImage, downloadParsers, editParserData } from "@/api/parser";
+	import {
+		updateParsourceImage,
+		downloadParsers,
+		editParserData,
+	} from "@/api/parser";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 
 	import { paginationMixin } from "@/mixins/paginationMixins";
@@ -384,11 +395,17 @@
 			async shareParser(index) {
 				const { share_url, id } = this.shareContentList[index];
 				try {
-					await editParserData({ id, updatedData: { is_public: true, } });
+					await editParserData({
+						id,
+						updatedData: { is_public: true },
+					});
 					const shareLink = `${process.env.VUE_APP_FRONTEND_URL}/share/${share_url}`;
-					window.open(this.currentShareLink(index, shareLink), "_blank");
+					window.open(
+						this.currentShareLink(index, shareLink),
+						"_blank"
+					);
 				} catch (error) {
-					this.toast.error('Произошла ошибка!');
+					this.toast.error("Произошла ошибка!");
 					console.log(error);
 				}
 			},
@@ -535,22 +552,25 @@
 					: false;
 			},
 		},
-		data: () => ({
-			isMinimizedRightPanel: false,
-			isParsersLoaded: false,
-			isConfirmDeleteSourcePopupOpen: false,
-			fontSize: "smallSize",
+		data() {
+			return {
+				isMinimizedRightPanel: false,
+				isParsersLoaded: false,
+				isSourceDeleteLoading: false,
+				isConfirmDeleteSourcePopupOpen: false,
+				fontSize: "smallSize",
 
-			selected_manager: "",
+				selected_manager: "",
 
-			selectedListFilter: "newest",
-			parsourceToDelete: null,
+				selectedListFilter: "newest",
+				parsourceToDelete: null,
 
-			dateForDownloadParsers: "",
+				dateForDownloadParsers: "",
 
-			changedParsource: {},
-			new_image: "",
-		}),
+				changedParsource: {},
+				new_image: "",
+			};
+		},
 		methods: {
 			...mapMutations(["SET_TAB", "ADD_PARSERS"]),
 			...mapActions([
@@ -576,16 +596,18 @@
 			async deleteThisSource(sourceUrl) {
 				try {
 					this.isParsersLoaded = false;
+					this.isSourceDeleteLoading = true;
 					await this.deleteParsersWithEqvalDomain({
 						domainPartSourceUrl: sourceUrl,
 						parsourceId: this.parsource_id,
 					});
 					this.toast.success("Источники удалены");
+					this.isSourceDeleteLoading = false;
+					this.isConfirmDeleteSourcePopupOpen = false;
 				} catch (error) {
 					console.log(error);
 					this.toast.error("Ошибка удаления, попробуйте позже!");
 				}
-				this.isParsersLoaded = true;
 			},
 
 			async handleDownload() {
@@ -602,16 +624,16 @@
 					linkForDownload.href = downloadUrl;
 					const currentParsourceName = this.parsource.name;
 					const prettyDateForDownload = this.dateForDownloadParsers
-					.split("-")
-					.reverse()
-					.join(".");
+						.split("-")
+						.reverse()
+						.join(".");
 					linkForDownload.download = `${currentParsourceName}_AllData_${prettyDateForDownload}.xlsx`;
 					document.body.appendChild(linkForDownload);
 					linkForDownload.click();
 					linkForDownload.remove();
 					this.dateForDownloadParsers = "";
 				} catch (error) {
-					this.toast.error('Ошибка при загрузке данных');
+					this.toast.error("Ошибка при загрузке данных");
 				}
 			},
 

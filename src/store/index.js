@@ -22,6 +22,7 @@ import users from '@/store/modules/cabinet/admin/users'
 export default createStore({
 	state: () => ({
 		document_width: null,
+		document_height: null,
 		baseURL: process.env.VUE_APP_BACK_URL,
 	}),
 
@@ -29,6 +30,7 @@ export default createStore({
 
 	mutations: {
 		SET_DOCUMENT_WIDTH: (state, payload) => state.document_width = payload,
+		SET_DOCUMENT_HEIGHT: (state, payload) => state.document_height = payload,
 	},
 
 	actions: {
@@ -37,6 +39,7 @@ export default createStore({
 			await window.addEventListener("resize", () => {
 				setTimeout(() => {
 					context.commit('SET_DOCUMENT_WIDTH', document.documentElement.clientWidth);
+					context.commit('SET_DOCUMENT_HEIGHT', document.documentElement.clientHeight);
 				}, 100);
 			});
 		},

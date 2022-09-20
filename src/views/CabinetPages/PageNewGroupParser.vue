@@ -110,7 +110,7 @@
 				text="Отправить"
 				type="submit"
 				class="page-new-group-parser__submit"
-				:disabled="isDisabledBtn"
+				:disabled="isDisabledBtn || isCreateParsourseLoading"
 			></r-button>
 		</form>
 	</section>
@@ -164,6 +164,7 @@
 		},
 		data: () => ({
 			isDisabledBtn: false,
+			isCreateParsourseLoading: false,
 
 			new_parsource: {
 				name: "",
@@ -233,13 +234,13 @@
 
 			async create_parsource() {
 				try {
+					this.isCreateParsourseLoading = true;
 					const response = await send_new_parsource({
 						name: this.new_parsource.name,
 						data_source: this.new_parsource.url_list,
 						description: this.new_parsource.description,
 						parse_fields: this.new_parsource.parse_fields,
 					});
-
 					if (response.status === 201) {
 						this.resetForm();
 
@@ -263,6 +264,7 @@
 					this.toast.error("Ошибка создания группы парсеров");
 					throw new Error(err);
 				}
+				this.isCreateParsourseLoading = false;
 			},
 
 			add_new_url() {
@@ -418,6 +420,8 @@
 			}
 
 			&-icon {
+				width: 40px;
+				height: 40px;
 				path {
 					transition: all 0.2s ease;
 				}
@@ -431,6 +435,10 @@
 			width: 4rem;
 			@media (max-width: 768px) {
 				grid-column: -1;
+			}
+			&-icon {
+				width: 4rem;
+				height: 4rem;
 			}
 		}
 

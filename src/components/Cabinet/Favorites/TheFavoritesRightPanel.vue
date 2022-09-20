@@ -41,7 +41,7 @@
 			<template v-slot>
 				<div class="the-favorites__right-panel__checkboxes">
 					<r-checkbox
-						v-model="downloadFormatFiles.xls"
+						v-model="downloadFormatFiles.excel"
 						description="Excel"
 					></r-checkbox>
 					<r-checkbox
@@ -112,7 +112,7 @@
 			isRemoveFavoritesLoading: false,
 			model: null,
 			downloadFormatFiles: {
-				xls: false,
+				excel: false,
 				csv: false,
 				json: false,
 			},

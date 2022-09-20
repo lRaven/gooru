@@ -91,6 +91,7 @@
 		width: 27.5rem;
 		transition: all 0.2s ease;
 		z-index: 3;
+
 		@media (max-width: 1023px) {
 			position: fixed;
 			top: 0;
@@ -101,12 +102,16 @@
 			padding: 1.5rem;
 			width: 100vw;
 			height: 100vh;
+			overflow-y: auto;
+			&::-webkit-scrollbar {
+				width: 0;
+				height: 0;
+			}
 		}
 		&_minimize {
 			width: 8rem;
 			padding: 1rem;
 			@media (max-width: 1023px) {
-				
 				position: absolute;
 				transform: translateX(-100vw);
 			}
