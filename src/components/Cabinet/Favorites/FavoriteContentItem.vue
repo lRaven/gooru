@@ -769,6 +769,7 @@
 			font-size: 1.6rem;
 			line-height: 1.3;
 			margin-bottom: 0.5rem;
+			word-break: break-word;
 			&.cropped {
 				display: -webkit-box;
 				text-overflow: ellipsis;

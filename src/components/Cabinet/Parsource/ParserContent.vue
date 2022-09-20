@@ -507,8 +507,8 @@
 					const croppedStr = this.parser.title.slice(0, 21);
 
 					return croppedStr[croppedStr.length - 1] === ""
-						? croppedStr.slice(0, croppedStr.length - 1)
-						: croppedStr;
+						? croppedStr.slice(0, croppedStr.length - 1)+"..."
+						: croppedStr+"...";
 				} else {
 					return this.parser.title;
 				}
