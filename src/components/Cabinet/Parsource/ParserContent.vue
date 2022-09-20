@@ -424,7 +424,15 @@
 			:text="`Вы действительно хотите удалить «${this.croppedTitle}» из избранного?`"
 			@action_confirm="updateFavoriteState"
 			@close_popup="isDeleteFavoritePopupVisible = false"
-		/>
+			v-slot="{ handleConfirm, handleClosePopup }"
+		>
+		<r-button
+				text="Подтвердить"
+				@click="handleConfirm"
+				:disabled="isFavoriteDeleteLoading"
+			/>
+			<r-button text="Отмена" color="white" @click="handleClosePopup" />
+		</r-confirm-popup>
 	</transition>
 </template>
 
@@ -539,6 +547,7 @@
 				isAwaitArticleUpdate: false,
 				isCroppedText: true,
 				isDeleteFavoritePopupVisible: false,
+				isFavoriteDeleteLoading: false,
 
 				textAreaContentHeigth: "",
 
@@ -620,6 +629,9 @@
 			},
 			async updateFavoriteState() {
 				try {
+					if (this.isFavorited) {
+						this.isFavoriteDeleteLoading = true;
+					}
 					await this.updateFavoriteParser({
 						parserToUpdate: { ...this.parser },
 						userId: this.user.id,

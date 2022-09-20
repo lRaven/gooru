@@ -323,7 +323,15 @@
 			:text="`Вы действительно хотите удалить «${croppedTitle}» из избранного?`"
 			@action_confirm="deleteFavoriteParser"
 			@close_popup="isDeleteFavoritePopupVisible = false"
-		/>
+			v-slot="{ handleConfirm, handleClosePopup }"
+		>
+		<r-button
+				text="Подтвердить"
+				@click="handleConfirm"
+				:disabled="isFavoriteDeleteLoading"
+			/>
+			<r-button text="Отмена" color="white" @click="handleClosePopup" />
+		</r-confirm-popup>
 	</li>
 </template>
 
@@ -385,8 +393,8 @@
 					const croppedStr = this.parser.title.slice(0, 21);
 
 					return croppedStr[croppedStr.length - 1] === ""
-						? croppedStr.slice(0, croppedStr.length - 1)
-						: croppedStr;
+						? croppedStr.slice(0, croppedStr.length - 1)+"..."
+						: croppedStr+"...";
 				} else {
 					return this.parser.title;
 				}
@@ -425,6 +433,7 @@
 				isCroppedText: true,
 				isTextOverFlow: false,
 				isDeleteFavoritePopupVisible: false,
+				isFavoriteDeleteLoading: false,
 
 				comment: this.parserProp.comment.text,
 				isEditComment: false,
@@ -533,6 +542,7 @@
 			},
 			async deleteFavoriteParser() {
 				try {
+					this.isFavoriteDeleteLoading = true;
 					await this.updateFavoriteParser({
 						parserToUpdate: {
 							...this.parser,
@@ -552,6 +562,7 @@
 						`Не удалось удалить «${this.parser.title}» из избранного !`
 					);
 				}
+				this.isFavoriteDeleteLoading = false;
 			},
 			async handleClickDownload() {
 				try {
