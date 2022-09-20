@@ -773,7 +773,7 @@
 				margin-bottom: 2.6rem;
 				.r-button {
 					width: max-content;
-					outline-color: $white !important;
+					border-color: $white !important;
 					color: $white !important;
 					font-weight: 600 !important;
 				}

@@ -95,11 +95,11 @@
 		}
 		&.bordered {
 			background-color: transparent;
-			outline: 0.1rem solid rgba($black, 0.5);
+			border: 0.1rem solid rgba($black, 0.5);
 			color: rgba($black, 0.5);
 			border-radius: 1rem;
 			&:hover {
-				outline-color: $primary;
+				border-color: $primary;
 				color: $primary;
 			}
 
@@ -107,7 +107,7 @@
 				&:hover {
 					background-color: transparent;
 					color: rgba($black, 0.5);
-					outline-color: rgba($black, 0.5);
+					border-color: rgba($black, 0.5);
 				}
 			}
 		}

@@ -48,6 +48,7 @@
 			this.getDocumentWidth();
 			this.getUserData();
 			this.getRates();
+			
 		},
 	};
 </script>
