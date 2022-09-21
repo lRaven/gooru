@@ -1,17 +1,23 @@
 const navBarForUser = [
-	{ id: 1, text: "Подписка" },
-	{ id: 2, text: "Обращения" },
-	{ id: 3, text: "Мои парсеры" },
-	{ id: 4, text: "Избранное" },
-	{ id: 5, text: "Мой профиль" },
+	{ id: 1, text: "Подписка", name: "rates" },
+	{ id: 2, text: "Обращения", name: "appeals", routeParams: { query: { page: 1 } }, },
+	{ id: 3, text: "Мои парсеры", name: "parsources", routeParams: { query: { page: 1 } }, },
+	{ id: 4, text: "Избранное", name: "favorites", },
+	{ id: 5, text: "Мой профиль", name: "profile" },
 ];
 
 const navBarForManager = [
-	{ id: 1, text: "Пользователи" },
-	{ id: 2, text: "Обращения" },
-	{ id: 3, text: "Мои парсеры" },
-	{ id: 4, text: "Избранное" },
-	{ id: 5, text: "Мой профиль" },
+	{ id: 1, text: "Пользователи", name: "users", routeParams: { query: { page: 1 } }, },
+	{ id: 2, text: "Обращения", name: "appeals", routeParams: { query: { page: 1 } }, },
+	{ id: 3, text: "Все парсеры", name: "parsources", routeParams: { query: { page: 1 } }, },
+	{ id: 4, text: "Мой профиль", name: "profile" },
+];
+const navBarForAdmin = [
+	{ id: 1, text: "Пользователи", name: "users", routeParams: { query: { page: 1 } } },
+	{ id: 2, text: "Управление", name: "control", },
+	{ id: 3, text: "Обращения", name: "appeals", routeParams: { query: { page: 1 } } },
+	{ id: 4, text: "Все парсеры", name: "parsources", routeParams: { query: { page: 1 } } },
+	{ id: 5, text: "Мой профиль", name: "profile", },
 ];
 
 const navBarDataHome = [
@@ -21,4 +27,4 @@ const navBarDataHome = [
 	{ id: 3, text: 'Блог', name: 'blog' },
 ];
 
-export { navBarForUser, navBarDataHome };
+export { navBarDataHome, navBarForUser, navBarForManager, navBarForAdmin, };

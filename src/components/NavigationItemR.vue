@@ -32,17 +32,22 @@
 		},
 		props: {
 			id: { type: Number, required: true },
+			name: { type: String, required: true, },
 			text: { type: String, required: true },
 			icon: { type: Object, required: true },
 			notificationCount: { type: Number, default: 0 },
 			isMinimized: { type: Boolean, required: true },
 			isActive: { type: Boolean, required: true },
 		},
-		methods: {
+		inject: ['handleClick'],
+		/* methods: {
 			handleClick() {
 				this.$emit("setTab", this.id);
 			},
-		},
+		}, */
+	created() {
+		console.log(this.name)
+	}
 	};
 </script>
 

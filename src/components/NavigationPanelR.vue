@@ -9,6 +9,7 @@
 			:key="tab.id"
 			:id="tab.id"
 			:text="tab.text"
+			:name="tab.name"
 			:icon="tabIcons[tab.text]"
 			:isActive="tab.id === currentTab?.id"
 			:isMinimized="isMenuMinimized"
@@ -34,10 +35,12 @@
 		components: {
 			NavigationItemR,
 		},
+		inject: ['handleNavigateTo'],
 		methods: {
-			handleSetTab(tabId) {
-				const choosenTab = this.tabs.find((tab) => tab.id === tabId);
-				this.$emit("navigate-to", choosenTab);
+			handleSetTab(value) {
+				this.handleNavigateTo(value);
+				/* const choosenTab = this.tabs.find((tab) => tab.id === tabId);
+				this.$emit("navigate-to", choosenTab); */
 			},
 		},
 	};

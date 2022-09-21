@@ -124,6 +124,13 @@
 					console.log(error);
 				}
 			},
+			handleClick() {
+				this.$emit('setTab', this.id);
+			},
+			handleNavigateTo(tabId) {
+				const choosenTab = this.tabs.find((tab) => tab.id === tabId);
+				this.$emit("navigate-to", choosenTab);
+			},
 		},
 		data() {
 			return {
