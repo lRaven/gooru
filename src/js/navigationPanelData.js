@@ -1,7 +1,17 @@
 const navBarForUser = [
-	{ id: 1, selected: false, tab: "all", icon_fill: "", text: "Все" },
-	{ id: 2, selected: false, tab: "parser", icon_fill: "", text: "Парсинг" },
-	{ id: 3, selected: false, tab: "hh", icon_fill: "", text: "HH" },
+	{ id: 1, text: "Подписка" },
+	{ id: 2, text: "Обращения" },
+	{ id: 3, text: "Мои парсеры" },
+	{ id: 4, text: "Избранное" },
+	{ id: 5, text: "Мой профиль" },
+];
+
+const navBarForManager = [
+	{ id: 1, text: "Пользователи" },
+	{ id: 2, text: "Обращения" },
+	{ id: 3, text: "Мои парсеры" },
+	{ id: 4, text: "Избранное" },
+	{ id: 5, text: "Мой профиль" },
 ];
 
 const navBarDataHome = [

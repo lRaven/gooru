@@ -7,12 +7,15 @@
 			@close_menu="close_menu"
 		></the-header>
 
-		<navigation-panel
+		<!-- <navigation-panel
 			:notifications="notifications"
 			:isMenuMinimized="isMenuMinimized"
 			@open_menu="open_menu"
 			@close_menu="close_menu"
-		></navigation-panel>
+		></navigation-panel> -->
+		<side-bar>
+			<navigation-panel-r :tabs="navBarForUser"  @navigate-to="handleNavigate" />
+		</side-bar>
 
 		<main class="page-cabinet__main main">
 			<router-view v-slot="{ Component }">
@@ -32,12 +35,18 @@
 	import { mapState, mapActions } from "vuex";
 	import TheHeader from "@/components/TheHeader";
 	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
+	import SideBar from "@/components/SideBar.vue";
+	import NavigationPanelR from "@/components/NavigationPanelR.vue";
+
+	import { navBarForUser } from "@/js/navigationPanelData";
 
 	export default {
 		name: "PageCabinet",
 		components: {
 			TheHeader,
 			NavigationPanel,
+			SideBar,
+			NavigationPanelR,
 		},
 		watch: {
 			user_auth() {
@@ -70,8 +79,21 @@
 
 				document_width: (state) => state.document_width,
 			}),
+
+			navigationTabs() {
+				switch(this.userRole) {
+					case 'DefaultUser':
+						return navBarForUser;
+					case 'Manager':
+						return [];
+					case 'AdminCRM':
+						return [];
+					default:
+						return 
+				}
+			}
 		},
-		data: () => ({ isMenuMinimized: false }),
+		data: () => ({ isMenuMinimized: false, }),
 		methods: {
 			...mapActions(["getNotifications"]),
 
