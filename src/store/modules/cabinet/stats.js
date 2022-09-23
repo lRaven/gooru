@@ -35,7 +35,6 @@ const mutations = {
 const actions = {
 	updateRateData(context, payload) {
 		const updatedRateData = [];
-		console.error('Отсутсвует поле finish_date, оно заменено на duration')
 		context.state.stats[2].forEach((stat) => {
 			switch (stat.description) {
 				case "Дата оплаты:":

@@ -2,7 +2,7 @@ import cookie from "vue-cookies";
 import axios from "axios";
 import store from "@/store";
 
-import { getUserRates } from "@/api/userApi";
+import { getUserRates, getReferalData } from "@/api/userApi";
 
 const state = () => ({
 	user_auth: null,
@@ -32,7 +32,11 @@ const actions = {
 			const response = await axios.get(`${store.state.baseURL}/auth/users/me`, {
 				headers: { Authorization: `token ${cookie.get("auth_token")}` },
 			});
-
+			if (response.data.role === 'DefaultUser') {
+				const referalToken = await getReferalData();
+				const [myReferalData] = referalToken;
+				response.data.referalToken = myReferalData.token;
+			}
 			if (response.status === 200) {
 				console.log("User is authorized");
 				context.commit("SET_USER_DATA", response.data);

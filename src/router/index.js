@@ -38,8 +38,6 @@ import PageBrief from "@/views/PageBrief";
 
 import PageNotFound from "@/views/PageNotFound";
 
-
-
 const routes = [
 	{
 		path: "/",
@@ -65,7 +63,7 @@ const routes = [
 		path: "/blog",
 		name: "blog",
 		component: PageBlog,
-		redirect: () => '/blog/all',
+		redirect: () => "/blog/all",
 
 		meta: {
 			title: "Блог",
@@ -73,24 +71,24 @@ const routes = [
 		},
 		children: [
 			{
-				path: ':id',
-				name: 'blog-articles',
+				path: ":id",
+				name: "blog-articles",
 				component: PageArticles,
 				meta: {
-					title: 'Статьи',
+					title: "Статьи",
 					requiresAuth: false,
-				}
+				},
 			},
 			{
-				path: 'article/:articleId',
-				name: 'blog-article',
+				path: "article/:articleId",
+				name: "blog-article",
 				component: PageArticle,
 				meta: {
-					title: 'Статья',
+					title: "Статья",
 					requiresAuth: false,
-				}
-			}
-		]
+				},
+			},
+		],
 	},
 	{
 		path: "/cabinet",
@@ -245,6 +243,17 @@ const routes = [
 			title: "Регистрация",
 			requiresAuth: false,
 		},
+		children: [
+			{
+				path: ":id",
+				name: "registration",
+				component: PageRegistration,
+				meta: {
+					title: "Регистрация",
+					requiresAuth: false,
+				},
+			},
+		],
 	},
 
 	{

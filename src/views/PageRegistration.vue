@@ -104,7 +104,7 @@
 	import { mapState } from "vuex";
 
 	import TheHeader from "@/components/TheHeader.vue";
-	import { registration } from "@/api/userApi";
+	import { registration, registrationByReferalLink } from "@/api/userApi";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
@@ -158,38 +158,46 @@
 			},
 			async create_account() {
 				try {
-					const response = await registration({
-						email: this.user_data.email.value,
-						password: this.user_data.password.value,
-					});
-
-					if (response.status === 201) {
-						this.toast.success(
-							"Вы успешно зарегистрировали свой аккаунт"
-						);
-						this.toast.info(
-							`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
-						);
-
-						console.log("Account created");
-
-						console.log("Redirect to login page");
-						this.$router.push({ name: "login" });
+					const referalToken = this.$route.params?.id;
+					const registrationData = {};
+					registrationData.email = this.user_data.email.value;
+					registrationData.password = this.user_data.password.value;
+					if (referalToken) {
+						registrationData.ref_friend = referalToken;
+						await registrationByReferalLink(registrationData);
+					} else {
+						await registration(registrationData);
 					}
-					if (response.status === 400) {
-						const error_list = returnErrorMessages(response.data);
+					this.toast.success(
+						"Вы успешно зарегистрировали свой аккаунт"
+					);
+					this.toast.info(
+						`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+					);
+
+					console.log("Account created");
+					console.log("Redirect to login page");
+					this.$router.push({ name: "login" });
+				} catch (err) {
+					
+					if (err.status === 400) {
+						const error_list = returnErrorMessages(err.data);
 						error_list.forEach((el) => {
 							this.toast.error(el);
 						});
+					} else {
+						this.toast.error(err);
 					}
-				} catch (err) {
-					this.toast.error(err);
-					throw new Error(err);
 				}
 			},
 		},
+		created() {
+			const referalToken = this.$route.params?.id;
+			console.log(referalToken);
+		},
 		setup() {
 			const toast = useToast();
+
 			return { toast };
 		},
 	};

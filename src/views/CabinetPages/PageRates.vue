@@ -5,7 +5,7 @@
 		</transition>
 
 		<transition-group mode="out-in">
-			<template v-if="!userRate?.tariff && !isLoading">
+			<template v-if="!hasSelectedTariff">
 				<h2 class="page-rates__title">Выберите тариф</h2>
 				<div
 					class="page-rates__body page-rates__body_align-items_center"
@@ -37,7 +37,7 @@
 				</div>
 			</template>
 
-			<template v-else-if="userRate?.tariff && !isLoading">
+			<template v-else-if="hasSelectedTariff">
 				<div class="page-rates__stats">
 					<div class="page-rates__stats-item">
 						<h2 class="page-rates__title">Статистика за сегодня</h2>
@@ -74,17 +74,20 @@
 								color="bordered"
 								text="Сменить подписку"
 							/>
-							<div  class="referal">
-								<span class="referal__link">{{ referalLink }}</span>
-								<r-button text="Скопировать" @click="handleCopyReferalLink"/>
-								<r-tooltip>
-									<span class="referal__tooltip-text">Скопировано</span>
-								</r-tooltip>
-							</div>
 						</template>
 					</div>
 				</div>
 			</template>
+			<div class="referal page-rates__referal" v-if="hasSelectedTariff">
+				<h3 class="referal__title">Реферальная программа</h3>
+				<hr class="referal__horizontal-rule" />
+				<span class="referal__link" @click="handleCopyReferalLink">{{
+					referalLink
+				}}</span>
+				<r-tooltip class="referal__tooltip" :class="{ 'referal__tooltip_visible': isReferalTooltipVisible }">
+					<span class="referal__tooltip-text">Скопировано!</span>
+				</r-tooltip>
+			</div>
 		</transition-group>
 
 		<transition name="fade" mode="out-in">
@@ -202,15 +205,18 @@
 				}
 				return true;
 			},
-			referalLink() {
-				return `${this.frontendUrl}/registration`
+			hasSelectedTariff() {
+				return this.userRate?.tariff && !this.isLoading;
 			},
-
+			referalLink() {
+				return `${this.frontendUrl}/registration/${this.user.referalToken}`;
+			},
 		},
 		data: () => ({
 			frontendUrl: process.env.VUE_APP_FRONTEND_URL,
 			isRatesLoaded: false,
 			isModalVisible: false,
+			isReferalTooltipVisible: false,
 			initialTopic: "Тема обращения",
 
 			new_appeal: {
@@ -226,20 +232,25 @@
 			...mapActions(["getUserRate", "updateRateData", "getAllParsers"]),
 			async select_rate(rate_id) {
 				try {
-					const redirectUrl = await payRate(this.$cookies.get("auth_token"), rate_id);
+					const redirectUrl = await payRate(
+						this.$cookies.get("auth_token"),
+						rate_id
+					);
 					await this.getUserRate();
-					window.open(redirectUrl, '_blank');
+					window.open(redirectUrl, "_blank");
 				} catch (err) {
-					
 					return err.response;
 				}
 			},
 			async handleCopyReferalLink() {
 				try {
 					await navigator.clipboard.writeText(this.referalLink);
-					
+					this.isReferalTooltipVisible = true;
+					setTimeout(() => {
+						this.isReferalTooltipVisible = false;
+					}, 3000);
 				} catch (error) {
-					console.log(error)
+					console.log(error);
 				}
 			},
 
@@ -361,6 +372,9 @@
 					}
 				}
 			}
+		}
+		&__referal {
+			margin: 6rem 0 0 0;
 		}
 
 		&__help {
@@ -581,6 +595,50 @@
 					grid-column: 1/1;
 				}
 			}
+		}
+	}
+	.referal {
+		display: grid;
+		background-color: $white;
+		padding: 2rem;
+		box-shadow: $shadow;
+		border-radius: 1rem;
+		width: fit-content;
+
+		&__title {
+			font-size: 2.4rem;
+			font-weight: 700;
+			margin: 0 0 2rem 0;
+			color: $primary;
+		}
+		&__link {
+			font-size: 1.8rem;
+			padding: 0.5rem;
+			border: 1px solid rgba($color: $black, $alpha: 0.5);
+			background-color: $light-gray;
+			border-radius: 0.5rem;
+			&:hover {
+				cursor: pointer;
+			}
+		}
+		&__horizontal-rule {
+			height: 0.1rem;
+			background-color: $light-gray;
+			border: none;
+			margin-bottom: 1.8rem;
+			grid-column: 1/3;
+		}
+	
+		:deep(.tooltip.referal__tooltip){
+			display: none;
+			grid-column: 2/3;
+		}
+		:deep(.tooltip.referal__tooltip_visible){
+			display: flex;
+		}
+		&__tooltip-text {
+			font-size: 1.4rem;
+			color: $white;
 		}
 	}
 </style>

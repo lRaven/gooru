@@ -13,7 +13,23 @@ const registration = async ({ email, password }) => {
 			password,
 		});
 		return response;
-	} catch (error) { return error.response }
+	} catch (error) {
+		throw error.response;
+	}
+};
+
+const registrationByReferalLink = async ({ email, password, ref_friend }) => {
+	try {
+		await axios.post(`${process.env.VUE_APP_BACK_URL}/user/`, {
+			username: email,
+			email,
+			password,
+			ref_friend,
+		});
+	} catch (error) {
+		throw error.response;
+	}
+	
 };
 
 const registration_by_tel = async () => {
@@ -32,7 +48,19 @@ const login = async ({ username, password }) => {
 			password,
 		});
 		return response;
-	} catch (error) { return error.response }
+	} catch (error) {
+		return error.response;
+	}
+};
+
+const getReferalData = async () => {
+	const { data } = await axios.get(
+		`${process.env.VUE_APP_BACK_URL}/users/referal`,
+		{
+			headers: { Authorization: `token ${cookie.get("auth_token")}` },
+		}
+	);
+	return data;
 };
 
 const logout = async () => {
@@ -94,33 +122,38 @@ const logout = async () => {
 	}
 };
 
-//* запрос на подтверждение сброса пароля 
+//* запрос на подтверждение сброса пароля
 const reset_password_request = async (email) => {
 	try {
-		const response = await axios.post(`${store.state.baseURL}/user/verify/reset_password/`, { email });
+		const response = await axios.post(
+			`${store.state.baseURL}/user/verify/reset_password/`,
+			{ email }
+		);
 		return response;
+	} catch (err) {
+		return err.response;
 	}
-	catch (err) { return err.response }
-}
+};
 
 const reset_password = async ({ uid, token, password }) => {
 	try {
-		const response = await axios.post(`${store.state.baseURL}/user/verify/${uid}/${token}/change_password/`,
+		const response = await axios.post(
+			`${store.state.baseURL}/user/verify/${uid}/${token}/change_password/`,
 			{ password }
 		);
 		return response;
+	} catch (err) {
+		return err.response;
 	}
-	catch (err) { return err.response }
 };
 
 const subscribeToDigest = async (email) => {
-	try{
+	try {
 		await axios.post(`${process.env.VUE_APP_BACK_URL}/send-mail/`, {
 			email,
 		});
-
-	} catch(error) {
-		throw {...error};
+	} catch (error) {
+		throw { ...error };
 	}
 };
 
@@ -160,24 +193,27 @@ const payRate = async (token, id) => {
 	try {
 		const response = await axios.get(`${baseURL}/api/pay/${id}/`, {
 			headers: {
-				Authorization: `token ${token}`
-			}
+				Authorization: `token ${token}`,
+			},
 		});
 		return response.data.redirect_url;
+	} catch (err) {
+		return err.response;
 	}
-	catch (err) { return err.response }
-}
+};
 
 //* user data edit
 const change_password = async ({ new_password, current_password }) => {
 	try {
 		const response = await axios.post(
 			`${baseURL}/auth/users/set_password/`,
-			{ new_password, current_password, },
-			{ headers: { Authorization: `token ${cookie.get("auth_token")}` }, }
+			{ new_password, current_password },
+			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 		);
 		return response;
-	} catch (err) { return err.response; }
+	} catch (err) {
+		return err.response;
+	}
 };
 
 const change_user_data = async (user_id, args) => {
@@ -194,7 +230,9 @@ const change_user_data = async (user_id, args) => {
 		);
 
 		return response;
-	} catch (err) { return err.response }
+	} catch (err) {
+		return err.response;
+	}
 };
 
 const upload_avatar = async ({ user_id, avatar }) => {
@@ -210,24 +248,30 @@ const upload_avatar = async ({ user_id, avatar }) => {
 			}
 		);
 		return response;
-	} catch (err) { return err.response }
+	} catch (err) {
+		return err.response;
+	}
 };
 
 //* admin requests
 const updateRate = async (rateObjToUpdate) => {
 	try {
 		const { data } = await axios.put(
-			`${store.state.baseURL}/tariff/${rateObjToUpdate.id}/`, rateObjToUpdate,
-			{ headers: { Authorization: `token ${cookie.get("auth_token")}`, }, }
+			`${store.state.baseURL}/tariff/${rateObjToUpdate.id}/`,
+			rateObjToUpdate,
+			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 		);
 		return data;
-	} catch (error) { return error.response }
+	} catch (error) {
+		return error.response;
+	}
 };
 
 const change_manager = async ({ user, manager, user_manager }) => {
 	try {
 		const response = await axios.patch(
-			`${baseURL}/usermanager/${user_manager}/`, { user, manager, },
+			`${baseURL}/usermanager/${user_manager}/`,
+			{ user, manager },
 			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 		);
 
@@ -243,13 +287,17 @@ const delete_user = async (user_id) => {
 			headers: { Authorization: `token ${cookie.get("auth_token")}` },
 		});
 		return response;
-	} catch (err) { return err.response }
+	} catch (err) {
+		return err.response;
+	}
 };
 
 export {
 	registration,
+	registrationByReferalLink,
 	registration_by_tel,
 	login,
+	getReferalData,
 	logout,
 	reset_password_request,
 	reset_password,
