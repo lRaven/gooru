@@ -2,5 +2,8 @@
   font-family: 'Atyp Display';
   font-weight: 400;
   font-style: normal;
-  src: url('@/assets/fonts/AtypDisplay-Regular.woff') format('woff'), url('@/assets/fonts/AtypDisplay-Regular.woff2') format('woff2');
+  src: url('@/assets/fonts/AtypDisplay-Regular.woff') format('woff'), url('@/assets/fonts/AtypDisplay-Regular.woff2') format('woff2'),
+  url('@/assets/fonts/AtypDisplay-Medium.woff') format('woff'), url('@/assets/fonts/AtypDisplay-Medium.woff2') format('woff2'),
+  url('@/assets/fonts/AtypDisplay-Semibold.woff') format('woff'), url('@/assets/fonts/AtypDisplay-Semibold.woff2') format('woff2'),
+  url('@/assets/fonts/AtypDisplay-Bold.woff') format('woff'), url('@/assets/fonts/AtypDisplay-Bold.woff2') format('woff2'),
 }

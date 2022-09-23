@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Compas gooru-  парсер для фрилансеров"/>
+  <page-home />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PageHome from '@/view/PageHome.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    PageHome
   }
 }
 </script>
@@ -19,7 +18,7 @@ export default {
 body {
 		font-family: "AtypDisplay", sans-serif;
 		color: $black;
-
+		background-color: $grey;
 		&.locked {
 			overflow: hidden;
 		}
