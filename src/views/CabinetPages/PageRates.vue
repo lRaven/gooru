@@ -5,7 +5,7 @@
 		</transition>
 
 		<transition-group mode="out-in">
-			<template v-if="!userRate?.id && !isLoading">
+			<template v-if="!userRate?.tariff && !isLoading">
 				<h2 class="page-rates__title">Выберите тариф</h2>
 				<div
 					class="page-rates__body page-rates__body_align-items_center"
@@ -37,7 +37,7 @@
 				</div>
 			</template>
 
-			<template v-else-if="userRate?.id && !isLoading">
+			<template v-else-if="userRate?.tariff && !isLoading">
 				<div class="page-rates__stats">
 					<div class="page-rates__stats-item">
 						<h2 class="page-rates__title">Статистика за сегодня</h2>
@@ -74,6 +74,13 @@
 								color="bordered"
 								text="Сменить подписку"
 							/>
+							<div  class="referal">
+								<span class="referal__link">{{ referalLink }}</span>
+								<r-button text="Скопировать" @click="handleCopyReferalLink"/>
+								<r-tooltip>
+									<span class="referal__tooltip-text">Скопировано</span>
+								</r-tooltip>
+							</div>
 						</template>
 					</div>
 				</div>
@@ -188,15 +195,20 @@
 			},
 			isLoading() {
 				if (this.userRate !== null) {
-					if (this.userRate.id) {
+					if (this.userRate.tariff) {
 						this.updateRateData(this.userRate);
 					}
 					return false;
 				}
 				return true;
 			},
+			referalLink() {
+				return `${this.frontendUrl}/registration`
+			},
+
 		},
 		data: () => ({
+			frontendUrl: process.env.VUE_APP_FRONTEND_URL,
 			isRatesLoaded: false,
 			isModalVisible: false,
 			initialTopic: "Тема обращения",
@@ -220,6 +232,14 @@
 				} catch (err) {
 					
 					return err.response;
+				}
+			},
+			async handleCopyReferalLink() {
+				try {
+					await navigator.clipboard.writeText(this.referalLink);
+					
+				} catch (error) {
+					console.log(error)
 				}
 			},
 

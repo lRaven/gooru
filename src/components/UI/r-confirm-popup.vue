@@ -4,15 +4,6 @@
 			<div class="r-confirm-popup__body" v-if="isPopupBodyVisible">
 				<h4 class="r-confirm-popup__text">{{ text }}</h4>
 				<slot :handleClosePopup="close" :handleConfirm="confirm"></slot>
-				<!-- <r-button
-					text="Подтвердить"
-					@click="this.$emit('action_confirm')"
-				></r-button>
-				<r-button
-					color="white"
-					text="Отмена"
-					@click.stop="this.$emit('close_popup')"
-				></r-button> -->
 			</div>
 		</transition>
 	</div>

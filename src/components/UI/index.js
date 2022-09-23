@@ -10,6 +10,7 @@ import rInput from '@/components/UI/r-input';
 
 import rConfirmPopup from '@/components/UI/r-confirm-popup';
 import rModal from '@/components/UI/r-modal';
+import rTooltip from "@/components/UI/r-tooltip";
 
 export default {
 	rButton,
@@ -24,4 +25,5 @@ export default {
 
 	rConfirmPopup,
 	rModal,
+	rTooltip,
 }
