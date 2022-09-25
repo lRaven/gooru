@@ -7,18 +7,21 @@
 			</h1>
 		</section>
     <the-free-period />
+		<the-user-promlems />
 	</main>
 </template>
 
 <script>
 	import TheHeader from "@/components/Home/TheHeader.vue";
   import TheFreePeriod from "@/components/Home/TheFreePeriod.vue";
+	import TheUserPromlems from "@/components/Home/TheUserPromlems.vue";
 
 	export default {
 		name: "PageHome",
 		components: {
 			TheHeader,
       TheFreePeriod,
+			TheUserPromlems,
 		},
 	};
 </script>

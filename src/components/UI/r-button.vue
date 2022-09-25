@@ -8,7 +8,7 @@
 export default {
   name: 'rButton',
   props: {
-    type: { String, default: 'button' },
+    type: { type: String, default: 'button' },
   }
 }
 </script>

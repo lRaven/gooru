@@ -16,7 +16,7 @@ export default {
 <style lang="scss">
 @import "@/assets/scss/AtypDisplay.scss";
 body {
-		font-family: "AtypDisplay", sans-serif;
+		font-family: "Atyp Display", sans-serif;
 		color: $black;
 		background-color: $grey;
 		&.locked {
