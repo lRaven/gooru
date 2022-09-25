@@ -163,7 +163,7 @@
 			handleNavigate(currentTabName) {
 				const navigationObject = {};
 				this.currentTabName = currentTabName;
-				console.log(this.currentTab(currentTabName));
+
 				if (this.currentTab(currentTabName)?.routeParams) {
 					navigationObject.query = {};
 					navigationObject.query.page =
