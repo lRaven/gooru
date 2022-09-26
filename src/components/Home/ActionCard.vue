@@ -1,7 +1,13 @@
 <template>
 	<div class="action-card">
 		<div class="action-card__borderd">
-			<p class="action-card__text">{{ text }}</p>
+			<p
+				v-for="(text, index) in textBlocks"
+				:key="index"
+				class="action-card__text"
+			>
+				{{ text }}
+			</p>
 			<arrow-icon class="action-card__arrow-icon" />
 		</div>
 	</div>
@@ -12,7 +18,7 @@
 	export default {
 		name: "ActionCard",
 		props: {
-			text: { type: String, required: true },
+			textBlocks: { type: Array, required: true },
 		},
 		components: {
 			ArrowIcon,
@@ -29,20 +35,22 @@
 			position: relative;
 			background-color: $black;
 			color: $white;
+			cursor: url("@/../public/cursor/cursorForActionCard.png"),
+				url("@/../public/cursor/cursorForActionCard.cur"), pointer;
 
 			:deep(.icon.action-card__arrow-icon) {
 				path {
 					fill: $white;
 				}
 			}
-      .action-card__borderd {
-        border-bottom: 2px solid transparent;
-      }
+			.action-card__borderd {
+				border-bottom: 2px solid transparent;
+			}
 		}
 		&__borderd {
 			display: flex;
 			justify-content: space-between;
-      padding: 0 0 4rem 0;
+			padding: 0 0 4rem 0;
 			border-bottom: 2px solid $black;
 		}
 

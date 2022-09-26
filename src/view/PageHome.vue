@@ -8,6 +8,9 @@
 		</section>
     <the-free-period />
 		<the-user-promlems />
+		<the-user-solutions />
+		<img class="page-home__laptop-img" src="@/../public/LapTopPic.svg" alt="картинка ноутбука"/>
+		<the-subscribe-invite class="page-home__subscribe-invite"/>
 	</main>
 </template>
 
@@ -15,6 +18,8 @@
 	import TheHeader from "@/components/Home/TheHeader.vue";
   import TheFreePeriod from "@/components/Home/TheFreePeriod.vue";
 	import TheUserPromlems from "@/components/Home/TheUserPromlems.vue";
+	import TheUserSolutions from "@/components/Home/TheUserSolutions.vue";
+	import TheSubscribeInvite from "@/components/Home/TheSubscribeInvite.vue";
 
 	export default {
 		name: "PageHome",
@@ -22,6 +27,8 @@
 			TheHeader,
       TheFreePeriod,
 			TheUserPromlems,
+			TheUserSolutions,
+			TheSubscribeInvite,
 		},
 	};
 </script>
@@ -30,6 +37,14 @@
 	.page-home {
 		&__header {
 			margin: 0 auto;
+		}
+		&__main {
+			position: relative;
+		}
+		&__laptop-img {
+			max-width: 1920px;
+			width: 100%;
+			background: linear-gradient(to bottom, $white 89%, $black 11%);
 		}
 	}
 	.acquaintance {
