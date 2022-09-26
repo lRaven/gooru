@@ -11,6 +11,7 @@
 		<the-user-solutions />
 		<img class="page-home__laptop-img" src="@/../public/LapTopPic.svg" alt="картинка ноутбука"/>
 		<the-subscribe-invite class="page-home__subscribe-invite"/>
+		<the-footer />
 	</main>
 </template>
 
@@ -20,6 +21,7 @@
 	import TheUserPromlems from "@/components/Home/TheUserPromlems.vue";
 	import TheUserSolutions from "@/components/Home/TheUserSolutions.vue";
 	import TheSubscribeInvite from "@/components/Home/TheSubscribeInvite.vue";
+	import TheFooter from "@/components/Home/TheFooter.vue";
 
 	export default {
 		name: "PageHome",
@@ -29,6 +31,7 @@
 			TheUserPromlems,
 			TheUserSolutions,
 			TheSubscribeInvite,
+			TheFooter,
 		},
 	};
 </script>
@@ -58,7 +61,7 @@
 			line-height: 14.1rem;
       text-transform: uppercase;
       margin: 17.8rem 0 0 0;
-      width: 65%;
+      width: 70%;
 		}
 	}
 </style>
