@@ -1,6 +1,9 @@
 <template>
 	<section class="user-solutions">
-		<h2 class="user-solutions__title">Предлагаем решение!</h2>
+		<h2 class="user-solutions__title">
+			Предлагаем решение!
+			<solution-cruve-line-icon class="user-solutions__icon" />
+		</h2>
 		<action-card
 			:textBlocks="[
 				`В наш парсер уже включены все источники, где
@@ -25,10 +28,12 @@
 
 <script>
 	import ActionCard from "@/components/Home/ActionCard.vue";
+	import SolutionCruveLineIcon from "@/assets/icons/SolutionCruveLineIcon.vue";
 	export default {
 		name: "TheUserSolutions",
 		components: {
 			ActionCard,
+			SolutionCruveLineIcon,
 		},
 	};
 </script>
@@ -40,11 +45,16 @@
 			font-size: 4.8rem;
 			font-weight: 600;
 			line-height: 6.7rem;
-      margin: 0 0 8rem 10rem;
-      text-transform: uppercase;
-      width: 100%;
-      max-width: 38rem;
+			margin: 0 0 8rem 10rem;
+			text-transform: uppercase;
+			width: 100%;
+			max-width: 38rem;
+      position: relative;
 		}
-
+		&__icon {
+			position: absolute;
+			top: 90%;
+      left: 0;
+		}
 	}
 </style>

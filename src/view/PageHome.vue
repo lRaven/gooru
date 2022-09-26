@@ -4,6 +4,7 @@
 		<section class="acquaintance">
 			<h1 class="acquaintance__title">
 				Compas gooru- парсер для фрилансеров
+				<acquaintance-cruve-icon class="acquaintance__icon" />
 			</h1>
 		</section>
     <the-free-period />
@@ -23,6 +24,8 @@
 	import TheSubscribeInvite from "@/components/Home/TheSubscribeInvite.vue";
 	import TheFooter from "@/components/Home/TheFooter.vue";
 
+	import AcquaintanceCruveIcon from "@/assets/icons/AcquaintanceCruveIcon.vue";
+
 	export default {
 		name: "PageHome",
 		components: {
@@ -32,6 +35,8 @@
 			TheUserSolutions,
 			TheSubscribeInvite,
 			TheFooter,
+
+			AcquaintanceCruveIcon,
 		},
 	};
 </script>
@@ -62,6 +67,13 @@
       text-transform: uppercase;
       margin: 17.8rem 0 0 0;
       width: 70%;
+			height: fit-content;
+			position: relative;
+		}
+		&__icon {
+			position: absolute;
+			top: 92%;
+			left: 0;
 		}
 	}
 </style>

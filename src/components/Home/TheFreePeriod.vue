@@ -33,6 +33,7 @@
 						фриланс бирж и других форумов.
 					</p>
 				</li>
+				<cruve-arrow-icon class="features__icon" />
 			</ul>
 			<r-button class="free-period__button"> Бесплатный период </r-button>
 		</div>
@@ -40,8 +41,12 @@
 </template>
 
 <script>
+import CruveArrowIcon from "@/assets/icons/CruveArrowIcon.vue";
 	export default {
 		name: "TheFreePeriod",
+		components: {
+			CruveArrowIcon,
+		}
 	};
 </script>
 
@@ -70,6 +75,7 @@
 		}
     &__features {
       margin: 0 0 6.8rem 0;
+			position: relative;
     }
 		:deep(.r-button.free-period__button) {
 			font-size: 3.6rem;
@@ -87,6 +93,10 @@
 		gap: 3.2rem;
     max-width: 76.8rem;
     width: 100%;
+		&__icon {
+			position: absolute;
+			right: 5rem;
+		}
 	}
 	.feature-item {
 		display: flex;
