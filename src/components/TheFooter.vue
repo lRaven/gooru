@@ -4,8 +4,8 @@
 			<span class="footer__copyright">&copy;</span>
 			<span class="footer__logo">compass pro</span>
 		</div>
-		<span class="footer__policy"
-			>Политика в отношении обработки персональных данных</span
+		<a class="footer__policy" href="#" target="__blank"
+			>Политика в отношении обработки персональных данных</a
 		>
 		<nav class="footer__navigation">
 			<a class="footer__navigation-link" href="#">СОЦ. СЕТИ.</a>

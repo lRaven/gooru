@@ -7,5 +7,5 @@ const app = createApp(App);
 Object.keys(components).forEach( componentName => {
   app.component(componentName, components[componentName]);
 });
-
+app.config.unwrapInjectedRef = true;
 app.mount('#app')

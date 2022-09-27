@@ -19,9 +19,6 @@ body {
 		font-family: "Atyp Display", sans-serif;
 		color: $black;
 		background-color: $grey;
-		&.locked {
-			overflow: hidden;
-		}
 		cursor: url('@/../public/cursor/cursorForActionCard.png'), url('@/../public/cursor/cursorForActionCard.cur'), auto;
 	}
 	* {
@@ -30,5 +27,8 @@ body {
 
 		//*chrome/safari
 		
+	}
+	#app {
+		overflow: hidden;
 	}
 </style>

@@ -40,6 +40,9 @@
 	.subscribe-invite {
 		padding: 20rem 10rem 0 10rem;
 		background-color: $black;
+		@media (max-width: 1670px) {
+			padding: 18rem 8rem 0 8rem;
+		}
 		&__descriptions {
 			display: flex;
 			margin: 0 0 10.4rem 0;
@@ -79,7 +82,11 @@
 			height: 1.5rem;
 			background-color: $red;
 			border-radius: 50%;
-			margin: 0 30.8rem 0 0;
+			/* margin: 0 30.8rem 0 0; */
+			margin: 0 18% 0 0;
+			/* @media (max-width: 1670px) {
+				margin: 0 15rem 0 0;
+			} */
 		}
 		&__pitch-point {
 			font-size: 2rem;
@@ -105,7 +112,8 @@
 			line-height: 5rem;
 			text-transform: uppercase;
 			color: $white;
-			padding: 2.5rem 8rem;
+			padding: 2.5rem 0;
+			width: 33%;
 			margin: 0 2rem 0 0;
 		}
 		:deep(.r-button.subscribe-invite__subscribe-button) {
@@ -113,14 +121,15 @@
 			line-height: 5rem;
 			text-transform: uppercase;
 			color: $black;
-			padding: 2.5rem 22.3rem;
+			padding: 2.5rem 0;
 			background-color: $white;
+			width: 51%;
 			margin: 0 2rem 0 0;
 		}
 		&__sale {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			font-size: 2.4rem;
 			line-height: 3.4rem;
 			color: $white;
