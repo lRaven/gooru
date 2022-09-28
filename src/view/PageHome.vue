@@ -35,7 +35,7 @@
 			</h1>
 		</section>
 		<the-free-period />
-		<the-user-promlems id="about"/>
+		<the-user-promlems id="about" />
 		<the-user-solutions />
 		<section class="laptop">
 			<img
@@ -45,10 +45,7 @@
 			/>
 		</section>
 		<the-subscribe-invite class="page-home__subscribe-invite" />
-		<!--
-		
-		
-		<the-footer /> -->
+		<the-footer />
 	</main>
 </template>
 
@@ -61,10 +58,7 @@
 	import TheUserPromlems from "@/components/Home/TheUserPromlems.vue";
 	import TheUserSolutions from "@/components/Home/TheUserSolutions.vue";
 	import TheSubscribeInvite from "@/components/Home/TheSubscribeInvite.vue";
-	/* 
-	
-	
-	import TheFooter from "@/components/TheFooter.vue"; */
+	import TheFooter from "@/components/TheFooter.vue";
 
 	import EllipseWithArrowIcon from "@/assets/icons/EllipseWithArrowIcon.vue";
 	import BurgerIcon from "@/assets/icons/BurgerIcon.vue";
@@ -79,10 +73,7 @@
 			TheUserPromlems,
 			TheUserSolutions,
 			TheSubscribeInvite,
-			/*
-			
-			
-			TheFooter, */
+			TheFooter,
 
 			EllipseWithArrowIcon,
 			BurgerIcon,

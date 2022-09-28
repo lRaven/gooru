@@ -18,6 +18,11 @@
 				`Большую часть времени находишься в поисках интересных задач из твоей специальности, выполнение которых уходит на второй план`,
 			]"
 		/>
+		<img
+			class="user-problem__agree-image"
+			src="@/../public/cursor/cursorForActionCard.png"
+			alt="красный круг с союзом 'да'"
+		/>
 	</section>
 </template>
 
@@ -67,6 +72,14 @@
 				font-size: 3.2rem;
 				line-height: 3.5rem;
 				margin: 0 0 6rem 2.5rem;
+			}
+		}
+		&__agree-image {
+			display: none;
+			align-self: center;
+			margin: 5rem 0 0 0;
+			@media (max-width: 600px) {
+				display: block;
 			}
 		}
 	}

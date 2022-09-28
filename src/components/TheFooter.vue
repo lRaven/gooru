@@ -30,10 +30,29 @@
 		padding: 10rem 10rem 3rem;
 		width: 100%;
 		background-color: $black;
+		@media (max-width: 1670px) {
+			padding: 10rem 8rem 3rem;
+		}
+		@media (max-width: 1490px) {
+			padding: 8rem 6rem 3rem;
+		}
+		@media (max-width: 785px) {
+			padding: 6rem 6rem 3rem;
+			grid-gap: 0;
+		}
+		@media (max-width: 600px) {
+			padding: 6rem 4rem 3rem;
+		}
+		@media (max-width: 450px) {
+			padding: 4rem 2.5rem 2rem;
+		}
 		&__company {
 			display: flex;
 			align-items: center;
 			grid-column: 1/2;
+			@media (max-width: 785px) {
+				margin: 0 0 1rem 0;
+			}
 		}
 		&__copyright {
 			font-family: Montserrat;
@@ -58,6 +77,13 @@
 			text-decoration: underline;
 			color: rgba($color: $white, $alpha: 0.5);
 			grid-column: 1/2;
+			@media (max-width: 785px) {
+				margin: 0 0 4rem 0;
+			}
+			@media (max-width: 450px) {
+				max-width: 22rem;
+				width: 100%;
+			}
 		}
 		&__navigation {
 			display: flex;
@@ -65,6 +91,9 @@
 			grid-column: 2/3;
 			grid-row: 1/3;
 			align-self: center;
+			@media (max-width: 1023px) {
+				display: none;
+			}
 			&-link {
 				font-size: 2rem;
 				font-weight: 400;
@@ -79,13 +108,17 @@
 				}
 			}
 		}
-    &__team-caption {
-      font-size: 1.3rem;
+		&__team-caption {
+			font-size: 1.3rem;
 			font-weight: 400;
 			line-height: 1.8rem;
 			color: rgba($color: $white, $alpha: 0.6);
 			grid-column: 3/4;
-      justify-self: end;
-    }
+			justify-self: end;
+			@media (max-width: 785px) {
+				grid-column: 1/2;
+				justify-self: start;
+			}
+		}
 	}
 </style>

@@ -54,6 +54,7 @@
 				]"
 			/>
 		</template>
+		<p class="user-solutions__try-free">ПОПРОБОВАТЬ БЕСПЛАТНО!</p>
 	</section>
 </template>
 
@@ -72,7 +73,9 @@
 
 <style lang="scss" scoped>
 	.user-solutions {
-		padding: 15rem 0 0 0;
+		display: flex;
+		flex-direction: column;
+		padding: 15rem 0 5rem 0;
 		&__title {
 			font-size: 4.8rem;
 			font-weight: 600;
@@ -106,6 +109,24 @@
 			position: absolute;
 			top: 90%;
 			left: 0;
+		}
+		&__try-free {
+			display: none;
+			justify-content: center;
+			align-items: center;
+			align-self: center;
+			font-size: 1.6rem;
+			line-height: 2.2rem;
+			text-align: center;
+			color: $white;
+			background-color: $red;
+			width: 15.4rem;
+			height: 15.4rem;
+			border-radius: 50%;
+			margin: 5rem 0 0 0;
+			@media (max-width: 600px) {
+				display: flex;
+			}
 		}
 	}
 </style>
