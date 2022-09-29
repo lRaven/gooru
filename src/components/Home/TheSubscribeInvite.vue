@@ -29,9 +29,11 @@
 			</div>
 			<div class="subscribe-invite__offer">
 				<r-button class="subscribe-invite__free-button"
+				@click="handleRedirectToGooru('registration')"
 					>Бесплатный период</r-button
 				>
 				<r-button class="subscribe-invite__subscribe-button"
+				@click="handleRedirectToGooru('#rates')"
 					>ОФОРМИТЬ ПОДПИСКУ</r-button
 				>
 				<p
@@ -67,9 +69,11 @@
 				</p>
 				<div class="subscribe-invite__offer">
 					<r-button class="subscribe-invite__free-button"
+					@click="handleRedirectToGooru('registration')"
 						>Бесплатный период</r-button
 					>
 					<r-button class="subscribe-invite__subscribe-button"
+					@click="handleRedirectToGooru('#rates')"
 						>ОФОРМИТЬ ПОДПИСКУ</r-button
 					>
 					<p
@@ -92,11 +96,16 @@
 
 	export default {
 		name: "TheSubscribeInvite",
-		inject: ["documentWidth", "appContext"],
+		inject: ["documentWidth", "appContext", "gooruFrontendUrl"],
 		computed: {
 			texts() {
 				const currentContext = this.appContext;
 				return texts[currentContext].subscribeInvite;
+			}
+		},
+		methods: {
+			handleRedirectToGooru(targetEndPoint) {
+				window.open(this.gooruFrontendUrl+`/${targetEndPoint}`, 'blank');
 			}
 		}
 	};
@@ -124,7 +133,10 @@
 		}
 		&__descriptions {
 			display: flex;
+			flex-wrap: wrap;
+			gap: 2rem 20rem;
 			margin: 0 0 10.4rem 0;
+			
 			@media (max-width: 1375px) {
 				grid-column: 1/3;
 				margin: 0 0 8.4rem 0;
@@ -139,18 +151,14 @@
 		&__text {
 			font-size: 2.4rem;
 			line-height: 3.4rem;
-			margin: 0 24.2rem 0 0;
 			max-width: 33.6rem;
 			width: 100%;
 			color: $white;
-			&:last-child {
-				margin: 0;
+			@media (max-width: 1600px) {
+				min-width: 50rem;
 			}
-			@media (max-width: 900px) {
-				margin: 0 8rem 0 0;
-			}
-			@media (max-width: 600px) {
-				margin: 0 0 2rem 0;
+			@media (max-width: 1100px) {
+				min-width: 100%;
 			}
 			@media (max-width: 450px) {
 				font-size: 2.2rem;

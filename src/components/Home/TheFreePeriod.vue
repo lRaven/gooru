@@ -21,7 +21,11 @@
 				/>
 			</h2>
 			<ul class="features free-period__features">
-				<li class="feature-item" v-for="(item, index) in itemsList" :key="index">
+				<li
+					class="feature-item"
+					v-for="(item, index) in itemsList"
+					:key="index"
+				>
 					<h3
 						class="feature-item__title"
 						:class="{
@@ -36,7 +40,8 @@
 						:class="{
 							'feature-item__caption_color_black':
 								isBusinesBlogerContext,
-								'feature-item__caption_full-size': (index === itemsList.length - 1)
+							'feature-item__caption_full-size':
+								index === itemsList.length - 1,
 						}"
 					>
 						{{ item.caption }}
@@ -47,16 +52,21 @@
 					class="features__icon"
 				/>
 			</ul>
-			<r-button v-if="documentWidth > 1300" class="free-period__button" :class="{
-							'free-period__button_black':
-								isBusinesBlogerContext,
-						}">
+			<r-button
+				v-if="documentWidth > 1300"
+				class="free-period__button"
+				:class="{
+					'free-period__button_black': isBusinesBlogerContext,
+				}"
+				@click="handleRedirectToRegistration"
+			>
 				Бесплатный период
 			</r-button>
 		</div>
 		<r-button
 			v-if="documentWidth <= 1300"
 			class="free-period__button free-period__button_black"
+			@click="handleRedirectToRegistration"
 		>
 			Бесплатный период
 		</r-button>
@@ -73,7 +83,7 @@
 			CruveArrowIcon,
 			MobileArrowCruveIcon,
 		},
-		inject: ["documentWidth", "appContext"],
+		inject: ["documentWidth", "appContext", "gooruFrontendUrl"],
 		computed: {
 			isBusinesBlogerContext() {
 				if (
@@ -92,8 +102,13 @@
 			itemsList() {
 				const currentContext = this.appContext;
 				return texts[currentContext].freeperiod.items;
-			}
+			},
 		},
+		methods: {
+			handleRedirectToRegistration() {
+				window.open(this.gooruFrontendUrl+'/registration', 'blank');
+			}
+		}
 	};
 </script>
 
@@ -125,13 +140,14 @@
 			@media (max-width: 1650px) {
 				grid-template-columns: repeat(2, 1fr);
 			}
-			/* @media (max-width: 1200px) {
-				grid-template-columns: 25% 1fr;
-			} */
 			@media (max-width: 1300px) {
 				grid-template-columns: 1fr;
+				width: 90%;
 				justify-items: center;
 				padding: 4rem 3rem 0 3rem;
+			}
+			@media (max-width: 1090px) {
+				width: 100%;
 			}
 			@media (max-width: 600px) {
 				padding: 3rem 2rem 0 2rem;

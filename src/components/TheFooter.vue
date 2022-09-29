@@ -4,12 +4,12 @@
 			<span class="footer__copyright">&copy;</span>
 			<span class="footer__logo">compass pro</span>
 		</div>
-		<a class="footer__policy" href="#" target="__blank"
+		<a class="footer__policy" href="#" target="_blank"
 			>Политика в отношении обработки персональных данных</a
 		>
 		<nav class="footer__navigation">
 			<a class="footer__navigation-link" href="#">СОЦ. СЕТИ.</a>
-			<a class="footer__navigation-link" href="#">О НАС</a>
+			<a class="footer__navigation-link" href="#about">О НАС</a>
 		</nav>
 		<span class="footer__team-caption"
 			>Дизайн разработан командой Compas Pro</span

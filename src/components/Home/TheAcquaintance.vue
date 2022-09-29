@@ -7,14 +7,18 @@
 			</h1>
 		</template>
 		<template v-else-if="appContext === 'busines'">
-			<h1 class="acquaintance__title">
-				Compas gooru-
-				<img
+			<div class="acquaintance__title-container">
+				<h1 class="acquaintance__title">
+					Compas gooru-
+					<!-- <img
 					class="acquaintance__icon_busines"
 					src="@/../public/busines/BusinesHeaderPic.svg"
-				/>
-				парсер для бизнеса
-			</h1>
+				/> -->
+				</h1>
+				<busines-header-icon class="acquaintance__icon_busines" />
+				<h1 class="acquaintance__title">парсер</h1>
+				<h1 class="acquaintance__title">для бизнеса</h1>
+			</div>
 		</template>
 		<template v-else>
 			<h1 class="acquaintance__title">
@@ -26,11 +30,13 @@
 
 <script>
 	import AcquaintanceCruveIcon from "@/assets/icons/AcquaintanceCruveIcon.vue";
+	import BusinesHeaderIcon from "@/assets/icons/busines/BusinesHeaderIcon.vue";
 
 	export default {
 		name: "TheAcquaintance",
 		components: {
 			AcquaintanceCruveIcon,
+			BusinesHeaderIcon,
 		},
 		inject: ["appContext"],
 		computed: {
@@ -91,9 +97,13 @@
 			}
 		}
 		&_blogers {
-      padding: 0 10rem 10rem 10rem;
-      height: initial;
+			padding: 0 10rem 10rem 10rem;
+			height: initial;
 			background: no-repeat 90% 30%/ 268px url("@/../public/blogers/BlogersHeaderPic.svg");
+		}
+		&__title-container {
+			display: grid;
+			margin: 8rem 0 0 0;
 		}
 
 		&__title {
@@ -144,6 +154,9 @@
 			top: 92%;
 			left: 0;
 			width: 100%;
+			&_busines {
+				float: left;
+			}
 		}
 	}
 </style>

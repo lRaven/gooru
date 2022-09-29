@@ -16,6 +16,7 @@
 			return {
 				documentWidth: computed(() => this.documentWidth),
 				appContext: computed(() => process.env.VUE_APP_CONTEXT),
+				gooruFrontendUrl: computed(() => process.env.VUE_APP_GOORU_FRONTEND),
 			};
 		},
 		data() {
@@ -54,5 +55,6 @@
 	}
 	#app {
 		overflow: hidden;
+		position: relative;
 	}
 </style>

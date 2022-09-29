@@ -1,8 +1,8 @@
 <template>
 	<header class="header">
-		<p class="header__logo">
+		<a class="header__logo" href="https://compas-goo.ru/" target="_blank">
 			compass<span class="header__logo header__logo_gooru">gooru</span>
-		</p>
+		</a>
 		<slot></slot>
 	</header>
 </template>
@@ -41,6 +41,7 @@
 			line-height: 2.9rem;
 			letter-spacing: 0.02em;
 			text-transform: uppercase;
+			color: $black;
 			@media (max-width: 1100px) {
 				font-size: 2.3rem;
 				line-height: 2.8rem;

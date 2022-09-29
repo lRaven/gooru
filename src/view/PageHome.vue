@@ -1,10 +1,38 @@
 <template>
 	<the-header class="page-home__header">
 		<nav class="navigation">
-			<a class="navigation__link" href="#">СОЦ. СЕТИ.</a>
+			<div class="navigation__link navigation__link_dropdown">
+				СОЦ. СЕТИ.
+				<ul class="dropdown">
+					<li class="dropdown__item">
+						<a
+							class="dropdown__link"
+							href="https://telegram.im/@compass_pro"
+							target="_blank"
+							>TELEGRAM</a
+						>
+					</li>
+					<li class="dropdown__item">
+						<a
+							class="dropdown__link"
+							href="https://wa.me/+79375596195"
+							target="_blank"
+							>WHATSAPP</a
+						>
+					</li>
+				</ul>
+			</div>
 			<a class="navigation__link" href="#about">О НАС</a>
-			<a class="navigation__link" href="#">ВОЙТИ</a>
-			<a class="navigation__link navigation__link_try-it" href="#"
+			<a
+				class="navigation__link"
+				:href="gooruFrontendUrl + '/login'"
+				target="_blank"
+				>ВОЙТИ</a
+			>
+			<a
+				class="navigation__link navigation__link_try-it"
+				:href="gooruFrontendUrl + '/registration'"
+				target="_blank"
 				>ПОПРОБОВАТЬ БЕСПЛАТНО
 				<ellipse-with-arrow-icon class="navigation__link-icon" />
 			</a>
@@ -14,24 +42,50 @@
 		</button>
 	</the-header>
 	<side-bar
+		class="page-home__sidebar"
 		:isSideBarMinimized="isSideBarMinimized"
 		@close-sidebar="handleCloseSideBar"
 	>
 		<nav class="navigation navigation_burger">
-			<a class="navigation__link" href="#">СОЦ. СЕТИ.</a>
-			<a class="navigation__link" href="#about">О НАС</a>
-			<a class="navigation__link" href="#">ВОЙТИ</a>
-			<a class="navigation__link navigation__link_try-it" href="#"
+			<a
+				class="navigation__link"
+				href="#about"
+				@click="handleCloseSideBar"
+				>О НАС</a
+			>
+			<a
+				class="navigation__link"
+				:href="gooruFrontendUrl + '/login'"
+				target="_blank"
+				>ВОЙТИ</a
+			>
+			<a
+				class="navigation__link navigation__link_try-it"
+				:href="gooruFrontendUrl + '/registration'"
+				target="_blank"
 				>ПОПРОБОВАТЬ БЕСПЛАТНО
 				<ellipse-with-arrow-icon class="navigation__link-icon" />
 			</a>
+			<p class="navigation__link navigation__link_underline">КОНТАКТЫ</p>
+			<a
+				class="navigation__link"
+				href="https://telegram.im/@compass_pro"
+				target="_blank"
+				>TELEGRAM</a
+			>
+			<a
+				class="navigation__link"
+				href="https://wa.me/+79375596195"
+				target="_blank"
+				>WHATSAPP</a
+			>
 		</nav>
 	</side-bar>
 	<main class="page-home__main">
-		<the-acquaintance />
+		<the-acquaintance-r />
 		<the-free-period />
-		<the-user-promlems id="about" />
-		<the-user-solutions />
+		<the-user-promlems />
+		<the-user-solutions id="about" />
 		<section class="laptop">
 			<img
 				class="laptop__image"
@@ -47,7 +101,8 @@
 <script>
 	import TheHeader from "@/components/TheHeader.vue";
 	import SideBar from "@/components/SideBar.vue";
-	import TheAcquaintance from "@/components/Home/TheAcquaintance.vue";
+	/* 	import TheAcquaintance from "@/components/Home/TheAcquaintance.vue"; */
+	import TheAcquaintanceR from "@/components/Home/TheAcquaintanceR.vue";
 	import TheFreePeriod from "@/components/Home/TheFreePeriod.vue";
 	import TheUserPromlems from "@/components/Home/TheUserPromlems.vue";
 	import TheUserSolutions from "@/components/Home/TheUserSolutions.vue";
@@ -62,7 +117,7 @@
 		components: {
 			TheHeader,
 			SideBar,
-			TheAcquaintance,
+			TheAcquaintanceR,
 			TheFreePeriod,
 			TheUserPromlems,
 			TheUserSolutions,
@@ -72,10 +127,18 @@
 			EllipseWithArrowIcon,
 			BurgerIcon,
 		},
+		inject: ["gooruFrontendUrl", "documentWidth"],
 		data() {
 			return {
 				isSideBarMinimized: true,
 			};
+		},
+		watch: {
+			documentWidth() {
+				if (this.documentWidth >= 1023) {
+					this.handleCloseSideBar();
+				}
+			},
 		},
 		methods: {
 			handleCloseSideBar() {
@@ -92,6 +155,15 @@
 	.page-home {
 		&__header {
 			margin: 0 auto;
+		}
+		&__sidebar {
+			padding: 4.7rem 6rem 3.7rem 6rem;
+			@media (max-width: 600px) {
+				padding: 3.7rem 4rem 3.7rem 4rem;
+			}
+			@media (max-width: 450px) {
+				padding: 3rem 3rem 3.7rem 3rem;
+			}
 		}
 		&__main {
 			position: relative;
@@ -145,8 +217,8 @@
 				color: $white;
 				border-radius: 0;
 				padding: 0;
-				margin: 0;
-				transition: all 0.3 ease;
+				margin: 1rem 0 0 0;
+				transition: all 0.2s ease;
 				&:hover {
 					color: $black;
 					background-color: $white;
@@ -155,6 +227,10 @@
 
 			&:nth-child(3) {
 				margin: 0;
+				@media (max-width: 1023px) {
+					display: flex;
+					align-items: center;
+				}
 			}
 
 			&:last-child {
@@ -182,7 +258,27 @@
 			&:hover {
 				cursor: pointer;
 			}
+			&_dropdown {
+				position: relative;
+				&:hover {
+					transition: all 0.3s ease;
+					border-color: transparent;
+					.dropdown {
+						transform: none;
+					}
+				}
+			}
+			&_underline {
+				border-bottom: 1px solid $white;
+				width: fit-content;
+				&:hover {
+					color: $white;
+					background-color: $black;
+					cursor: default;
+				}
+			}
 		}
+
 		:deep(.icon.navigation__link-icon) {
 			margin: 0 0 0 3rem;
 			@media (max-width: 1400px) {
@@ -201,7 +297,41 @@
 			}
 		}
 	}
-	
+	.dropdown {
+		padding: 8rem 3rem 2rem 3rem;
+		width: fit-content;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		border: 2px solid $black;
+		border-radius: 2rem;
+		position: absolute;
+		top: -1rem;
+		left: -1rem;
+		right: 0;
+		transform: translateY(-200%);
+		transition: all 0.3s ease;
+		&:hover {
+			z-index: 2;
+			transform: none;
+		}
+		@media (max-width: 1650px) {
+			padding: 8rem 2rem 2rem 2rem;
+		}
+		@media (max-width: 1400px) {
+			padding: 8rem 1.5rem 2rem 1.5rem;
+		}
+		&__link {
+			color: $black;
+			padding: 0.5rem;
+			transition: all 0.3s ease;
+			&:hover {
+				background-color: $black;
+				color: $white;
+			}
+		}
+	}
+
 	.laptop {
 		display: flex;
 		justify-content: center;
@@ -209,11 +339,12 @@
 		overflow: hidden;
 		&__image {
 			max-width: 1920px;
+			max-height: 1000px;
 			width: 100%;
 			background: linear-gradient(to bottom, $grey 89%, $black 11%);
 			@media (max-width: 550px) {
 				position: relative;
-				left: 45rem;
+				left: 47rem;
 				width: 1283px;
 			}
 		}
