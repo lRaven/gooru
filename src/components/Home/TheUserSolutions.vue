@@ -2,72 +2,49 @@
 	<section class="user-solutions">
 		<h2 class="user-solutions__title">
 			Предлагаем решение!
-			<solution-cruve-line-icon class="user-solutions__icon" />
+			<solution-cruve-line-icon v-if="appContext !== 'busines'" class="user-solutions__icon" />
 		</h2>
-		<template v-if="documentWidth > 550">
-			<action-card
-				:textBlocks="[
-					`В наш парсер уже включены все источники, где
-		можно найти работу по твоей тематике.`,
-					`Ты просто забиваешь нужные тебе
-		ключевые слова, для более точной настройки. Либо просто кликаешь на
-		определенную тематику.`,
-				]"
+		<action-card v-for="(card, index) in cards" :key="index"
+				:textBlocks="card"
 			/>
-			<action-card
-				:textBlocks="[
-					`Парсер в режиме онлайн собирает в личном
-		кабинете все обращения, как только они появились.`,
-					`Просто выбирай
-		интересные задачи для тебя и откликайся. Ты можешь вечером потратить
-		10-15 минут и написать всем сразу, как только появляется обращение пока
-		заказчик «теплый»`,
-				]"
-			/>
-		</template>
-		<template v-else>
-			<action-card
-				:textBlocks="[
-					`В наш парсер уже включены все источники, где
-		можно найти работу по твоей тематике.`,
-				]"
-			/>
-			<action-card
-				:textBlocks="[
-					`Ты просто забиваешь нужные тебе
-		ключевые слова, для более точной настройки. Либо просто кликаешь на
-		определенную тематику.`,
-				]"
-			/>
-			<action-card
-				:textBlocks="[
-					`Парсер в режиме онлайн собирает в личном
-		кабинете все обращения, как только они появились.`,
-				]"
-			/>
-			<action-card
-				:textBlocks="[
-					`Просто выбирай
-		интересные задачи для тебя и откликайся. Ты можешь вечером потратить
-		10-15 минут и написать всем сразу, как только появляется обращение пока
-		заказчик «теплый»`,
-				]"
-			/>
-		</template>
-		<p class="user-solutions__try-free">ПОПРОБОВАТЬ БЕСПЛАТНО!</p>
+		<p
+			class="user-solutions__try-free"
+			:class="{
+				'user-solutions__try-free_blue': appContext === 'busines',
+			}"
+		>
+			ПОПРОБОВАТЬ БЕСПЛАТНО!
+		</p>
 	</section>
 </template>
 
 <script>
 	import ActionCard from "@/components/Home/ActionCard.vue";
 	import SolutionCruveLineIcon from "@/assets/icons/SolutionCruveLineIcon.vue";
+
+	import texts from "@/assets/textData.json";
+
 	export default {
 		name: "TheUserSolutions",
 		components: {
 			ActionCard,
 			SolutionCruveLineIcon,
 		},
-		inject: ["documentWidth"],
+		inject: ["documentWidth", "appContext"],
+		computed: {
+			cards() {
+				const currentContext = this.appContext;
+				if (this.documentWidth > 550) {
+					return texts[currentContext].usersolutions;
+				} else {
+					return texts[currentContext].usersolutions.reduce( (prev, current) => {
+						const [firstPart, secondPart] = current;
+						return [...prev, [firstPart], [secondPart]];
+					}, []);
+				}
+				
+			},
+		}
 	};
 </script>
 
@@ -126,6 +103,9 @@
 			margin: 5rem 0 0 0;
 			@media (max-width: 600px) {
 				display: flex;
+			}
+			&_blue {
+				background-color: $blue;
 			}
 		}
 	}

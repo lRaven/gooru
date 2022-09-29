@@ -1,50 +1,61 @@
 <template>
 	<section class="free-period">
-		<div class="free-period__inner">
+		<div
+			class="free-period__inner"
+			:class="{
+				'free-period__inner_background_transparent':
+					isBusinesBlogerContext,
+			}"
+		>
 			<img class="free-period__mokup" src="@/../public/MuckuppPic.svg" />
-			<h2 class="free-period__title">
-				Для фрилансеров, которые устали мониторить телеграм чаты, группы
-				в вк, фриланс биржы для поиска клиентов
-				<mobile-arrow-cruve-icon v-if="documentWidth <= 450" class="features__icon" />
+			<h2
+				class="free-period__title"
+				:class="{
+					'free-period__title_color_black': isBusinesBlogerContext,
+				}"
+			>
+				{{ title }}
+				<mobile-arrow-cruve-icon
+					v-if="documentWidth <= 450 && !isBusinesBlogerContext"
+					class="features__icon"
+				/>
 			</h2>
 			<ul class="features free-period__features">
-				<li class="feature-item">
-					<h3 class="feature-item__title">Забудь про мониторинг</h3>
-					<p class="feature-item__caption">
-						Парсер будет собирать все обращения в онлайн режиме.
-					</p>
-				</li>
-				<li class="feature-item">
-					<h3 class="feature-item__title">Будь первым</h3>
-					<p class="feature-item__caption">
-						Просто выбираешь нужную тематику и получаешь обращения у
-						себя в личном кабинете.
-					</p>
-				</li>
-				<li class="feature-item">
-					<h3 class="feature-item__title">
-						Никаких холодных обращений
+				<li class="feature-item" v-for="(item, index) in itemsList" :key="index">
+					<h3
+						class="feature-item__title"
+						:class="{
+							'feature-item__title_color_black':
+								isBusinesBlogerContext,
+						}"
+					>
+						{{ item.title }}
 					</h3>
 					<p
-						class="feature-item__caption feature-item__caption_full-size"
+						class="feature-item__caption"
+						:class="{
+							'feature-item__caption_color_black':
+								isBusinesBlogerContext,
+								'feature-item__caption_full-size': (index === itemsList.length - 1)
+						}"
 					>
-						Парсер собирает по ключевым словам и пересылает
-						сообщения от потенциальных клиентов по типу: "Ищу
-						таргетолога". Это не спам, а ответ на запрос от
-						потенциального клиента. Информация берется из открытых
-						источников, из каналов телеграмма, групп вконтакте,
-						фриланс бирж и других форумов.
+						{{ item.caption }}
 					</p>
 				</li>
-				<cruve-arrow-icon v-if="documentWidth > 450" class="features__icon" />
-				
+				<cruve-arrow-icon
+					v-if="documentWidth > 450 && !isBusinesBlogerContext"
+					class="features__icon"
+				/>
 			</ul>
-			<r-button v-if="documentWidth > 900" class="free-period__button">
+			<r-button v-if="documentWidth > 1300" class="free-period__button" :class="{
+							'free-period__button_black':
+								isBusinesBlogerContext,
+						}">
 				Бесплатный период
 			</r-button>
 		</div>
 		<r-button
-			v-if="documentWidth <= 900"
+			v-if="documentWidth <= 1300"
 			class="free-period__button free-period__button_black"
 		>
 			Бесплатный период
@@ -55,13 +66,34 @@
 <script>
 	import CruveArrowIcon from "@/assets/icons/CruveArrowIcon.vue";
 	import MobileArrowCruveIcon from "@/assets/icons/MobileArrowCruveIcon.vue";
+	import texts from "@/assets/textData.json";
 	export default {
 		name: "TheFreePeriod",
 		components: {
 			CruveArrowIcon,
 			MobileArrowCruveIcon,
 		},
-		inject: ["documentWidth"],
+		inject: ["documentWidth", "appContext"],
+		computed: {
+			isBusinesBlogerContext() {
+				if (
+					this.appContext === "busines" ||
+					this.appContext === "blogers"
+				) {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			title() {
+				const currentContext = this.appContext;
+				return texts[currentContext].freeperiod.title;
+			},
+			itemsList() {
+				const currentContext = this.appContext;
+				return texts[currentContext].freeperiod.items;
+			}
+		},
 	};
 </script>
 
@@ -71,7 +103,7 @@
 		@media (max-width: 1650px) {
 			padding: 0 8rem;
 		}
-		@media (max-width: 900px) {
+		@media (max-width: 1300px) {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
@@ -93,10 +125,10 @@
 			@media (max-width: 1650px) {
 				grid-template-columns: repeat(2, 1fr);
 			}
-			@media (max-width: 1200px) {
+			/* @media (max-width: 1200px) {
 				grid-template-columns: 25% 1fr;
-			}
-			@media (max-width: 900px) {
+			} */
+			@media (max-width: 1300px) {
 				grid-template-columns: 1fr;
 				justify-items: center;
 				padding: 4rem 3rem 0 3rem;
@@ -108,6 +140,10 @@
 				padding: 2rem 4rem 0 2rem;
 				border-radius: 1.4rem;
 			}
+			&_background_transparent {
+				background-color: transparent;
+				border: 2px solid $black;
+			}
 		}
 		&__mokup {
 			grid-row: 1/4;
@@ -116,10 +152,10 @@
 				width: 100%;
 				height: 100%;
 			}
-			@media (max-width: 1200px) {
+			/* @media (max-width: 1200px) {
 				width: inherit;
-			}
-			@media (max-width: 900px) {
+			} */
+			@media (max-width: 1300px) {
 				width: 100%;
 				grid-row: 4/4;
 			}
@@ -135,7 +171,7 @@
 			@media (max-width: 1650px) {
 				margin: 8rem 0 5rem 0;
 			}
-			@media (max-width: 900px) {
+			@media (max-width: 1300px) {
 				margin: 0 0 2rem 0;
 			}
 			@media (max-width: 767px) {
@@ -152,6 +188,9 @@
 				line-height: 2.3rem;
 				margin: 0 0 4rem 0;
 				position: relative;
+			}
+			&_color_black {
+				color: $black;
 			}
 		}
 		&__features {
@@ -172,7 +211,7 @@
 			@media (max-width: 1300px) {
 				padding: 2rem 6rem;
 			}
-			@media (max-width: 900px) {
+			@media (max-width: 1300px) {
 				grid-column: 1/2;
 				margin: 3rem 0 0 0;
 			}
@@ -218,7 +257,7 @@
 				top: 80%;
 			}
 		}
-		@media (max-width: 900px) {
+		@media (max-width: 1300px) {
 			grid-column: 1/2;
 		}
 	}
@@ -245,15 +284,15 @@
 				font-size: 1.8rem;
 				line-height: 2.5rem;
 			}
+			&_color_black {
+				color: $black;
+			}
 		}
 		&__caption {
 			font-size: 1.8rem;
 			line-height: 2.9rem;
 			color: #acacac;
 			width: 50%;
-			&_full-size {
-				width: 100%;
-			}
 			@media (max-width: 650px) {
 				font-size: 1.6rem;
 				line-height: 2.7rem;
@@ -261,6 +300,12 @@
 			@media (max-width: 450px) {
 				font-size: 1.4rem;
 				line-height: 1.6rem;
+			}
+			&_full-size {
+				width: 100%;
+			}
+			&_color_black {
+				color: #505050;
 			}
 		}
 	}

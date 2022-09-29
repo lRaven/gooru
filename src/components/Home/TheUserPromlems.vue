@@ -1,38 +1,37 @@
 <template>
 	<section class="user-problem">
 		<h2 class="user-problem__title">Сталкивался с этим?</h2>
-		<action-card
-			:textBlocks="[
-				`Малый поток клиентов по «сарафану». Работать с
-		«холодными» заявками - нет желания. Хочется стабильного потока
-		постоянных клиентов`,
-			]"
-		/>
-		<action-card
-			:textBlocks="[
-				`Мониторинг обращений на различных биржах съедает много времени и сил. Необходимо рассматривать запросы каждого потенциального клиента на разных ресурсах`,
-			]"
-		/>
-		<action-card
-			:textBlocks="[
-				`Большую часть времени находишься в поисках интересных задач из твоей специальности, выполнение которых уходит на второй план`,
-			]"
+		<action-card v-for="(card, index) in cards" :key="index"
+			:textBlocks="card"
 		/>
 		<img
 			class="user-problem__agree-image"
-			src="@/../public/cursor/cursorForActionCard.png"
+			:src="argeeImageSrc"
 			alt="красный круг с союзом 'да'"
 		/>
 	</section>
 </template>
 
 <script>
+	import texts from "@/assets/textData.json";
 	import ActionCard from "@/components/Home/ActionCard.vue";
 
 	export default {
 		name: "TheUserPromlems",
 		components: {
 			ActionCard,
+		},
+		inject: ["appContext"],
+		computed: {
+			argeeImageSrc() {
+				return this.appContext === "busines"
+					? "@/../public/busines/blueAgreePic.png"
+					: "@/../public/cursor/cursorForActionCard.png";
+			},
+			cards() {
+				const currentContext = this.appContext;
+				return texts[currentContext].userproblems;
+			},
 		},
 	};
 </script>

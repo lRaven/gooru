@@ -28,12 +28,7 @@
 		</nav>
 	</side-bar>
 	<main class="page-home__main">
-		<section class="acquaintance">
-			<h1 class="acquaintance__title">
-				Compas gooru- парсер для фрилансеров
-				<acquaintance-cruve-icon class="acquaintance__icon" />
-			</h1>
-		</section>
+		<the-acquaintance />
 		<the-free-period />
 		<the-user-promlems id="about" />
 		<the-user-solutions />
@@ -50,10 +45,9 @@
 </template>
 
 <script>
-	import { computed } from "vue";
-
 	import TheHeader from "@/components/TheHeader.vue";
 	import SideBar from "@/components/SideBar.vue";
+	import TheAcquaintance from "@/components/Home/TheAcquaintance.vue";
 	import TheFreePeriod from "@/components/Home/TheFreePeriod.vue";
 	import TheUserPromlems from "@/components/Home/TheUserPromlems.vue";
 	import TheUserSolutions from "@/components/Home/TheUserSolutions.vue";
@@ -62,13 +56,13 @@
 
 	import EllipseWithArrowIcon from "@/assets/icons/EllipseWithArrowIcon.vue";
 	import BurgerIcon from "@/assets/icons/BurgerIcon.vue";
-	import AcquaintanceCruveIcon from "@/assets/icons/AcquaintanceCruveIcon.vue";
 
 	export default {
 		name: "PageHome",
 		components: {
 			TheHeader,
 			SideBar,
+			TheAcquaintance,
 			TheFreePeriod,
 			TheUserPromlems,
 			TheUserSolutions,
@@ -77,17 +71,10 @@
 
 			EllipseWithArrowIcon,
 			BurgerIcon,
-			AcquaintanceCruveIcon,
-		},
-		provide() {
-			return {
-				documentWidth: computed(() => this.documentWidth),
-			};
 		},
 		data() {
 			return {
 				isSideBarMinimized: true,
-				documentWidth: document.documentElement.clientWidth,
 			};
 		},
 		methods: {
@@ -97,15 +84,6 @@
 			handleOpenSideBar() {
 				this.isSideBarMinimized = false;
 			},
-			getDocumentWidth() {
-				this.documentWidth = document.documentElement.clientWidth;
-			},
-		},
-		created() {
-			window.addEventListener("resize", this.getDocumentWidth);
-		},
-		beforeUnmount() {
-			window.removeEventListener("resize", this.getDocumentWidth);
 		},
 	};
 </script>
@@ -223,89 +201,7 @@
 			}
 		}
 	}
-	.acquaintance {
-		display: flex;
-		padding: 0 10rem;
-		background: no-repeat 90% 10%/59% url("@/../public/background-gif.svg");
-		height: 81.7rem;
-		@media (max-width: 1650px) {
-			padding: 0 8rem;
-		}
-		@media (max-width: 1400px) {
-			padding: 0 6rem;
-		}
-		@media (max-width: 1300px) {
-			background: no-repeat 90% 10%/80%
-				url("@/../public/background-gif.svg");
-		}
-		@media (max-width: 1023px) {
-			height: 50.7rem;
-		}
-		@media (max-width: 870px) {
-			background: no-repeat 90% 10%/100%
-				url("@/../public/background-gif.svg");
-		}
-		@media (max-width: 600px) {
-			background: no-repeat 90% 10%/100%
-				url("@/../public/background-gif.svg");
-			padding: 0 4rem;
-			height: 40.7rem;
-		}
-		@media (max-width: 450px) {
-			height: 20.7rem;
-			padding: 0 2.6rem 0 3rem;
-		}
-
-		&__title {
-			font-size: 12.8rem;
-			font-weight: 900;
-			line-height: 14.1rem;
-			text-transform: uppercase;
-			margin: 17.8rem 0 0 0;
-			width: 70%;
-			height: fit-content;
-			position: relative;
-			@media (max-width: 1450px) {
-				font-size: 11.8rem;
-				width: 90%;
-			}
-			@media (max-width: 1300px) {
-				margin: 13rem 0 0 0;
-			}
-			@media (max-width: 1023px) {
-				font-size: 7.8rem;
-				line-height: 10.1rem;
-			}
-			@media (max-width: 870px) {
-				margin: 8rem 0 0 0;
-			}
-			@media (max-width: 767px) {
-				font-size: 6.8rem;
-				line-height: 9.1rem;
-				width: 100%;
-			}
-			@media (max-width: 600px) {
-				font-size: 5.8rem;
-				line-height: 8.1rem;
-			}
-			@media (max-width: 530px) {
-				font-size: 4.8rem;
-				line-height: 7.1rem;
-				margin: 6rem 0 0 0;
-			}
-			@media (max-width: 450px) {
-				font-size: 3.6rem;
-				line-height: 4rem;
-				margin: 0;
-			}
-		}
-		&__icon {
-			position: absolute;
-			top: 92%;
-			left: 0;
-			width: 100%;
-		}
-	}
+	
 	.laptop {
 		display: flex;
 		justify-content: center;

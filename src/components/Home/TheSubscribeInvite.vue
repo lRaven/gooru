@@ -1,13 +1,8 @@
 <template>
 	<section class="subscribe-invite">
 		<div class="subscribe-invite__descriptions">
-			<p class="subscribe-invite__text">
-				Больше клиентов, 10 обращений в день это 300 в месяц. Своего
-				клиента ты точно найдешь
-			</p>
-			<p class="subscribe-invite__text">
-				Проще писать людям у которых уже есть запрос, чем обрабатывать
-				холодные заявки.
+			<p class="subscribe-invite__text" v-for="(text, index) in texts" :key="index">
+				{{ text }}
 			</p>
 		</div>
 		<template v-if="documentWidth > 1375">
@@ -15,7 +10,13 @@
 				<div class="subscribe-invite__company">
 					<span class="subscribe-invite__logo">compass</span>
 					<span class="subscribe-invite__logo">gooru</span>
-					<div class="subscribe-invite__mark"></div>
+					<div
+						class="subscribe-invite__mark"
+						:class="{
+							'subscribe-invite__mark_blue':
+								appContext === 'busines',
+						}"
+					></div>
 				</div>
 
 				<p class="subscribe-invite__pitch-point">Экономь свое время</p>
@@ -33,7 +34,14 @@
 				<r-button class="subscribe-invite__subscribe-button"
 					>ОФОРМИТЬ ПОДПИСКУ</r-button
 				>
-				<p class="subscribe-invite__sale">10%</p>
+				<p
+					class="subscribe-invite__sale"
+					:class="{
+						'subscribe-invite__sale_blue': appContext === 'busines',
+					}"
+				>
+					10%
+				</p>
 			</div>
 		</template>
 		<template v-else>
@@ -41,7 +49,13 @@
 				<div class="subscribe-invite__company">
 					<span class="subscribe-invite__logo">compass</span>
 					<span class="subscribe-invite__logo">gooru</span>
-					<div class="subscribe-invite__mark"></div>
+					<div
+						class="subscribe-invite__mark"
+						:class="{
+							'subscribe-invite__mark_blue':
+								appContext === 'busines',
+						}"
+					></div>
 				</div>
 
 				<p class="subscribe-invite__pitch-point">Экономь свое время</p>
@@ -58,7 +72,15 @@
 					<r-button class="subscribe-invite__subscribe-button"
 						>ОФОРМИТЬ ПОДПИСКУ</r-button
 					>
-					<p class="subscribe-invite__sale">10%</p>
+					<p
+						class="subscribe-invite__sale"
+						:class="{
+							'subscribe-invite__sale_blue':
+								appContext === 'busines',
+						}"
+					>
+						10%
+					</p>
 				</div>
 			</div>
 		</template>
@@ -66,9 +88,17 @@
 </template>
 
 <script>
+	import texts from "@/assets/textData.json";
+
 	export default {
 		name: "TheSubscribeInvite",
-		inject: ["documentWidth"],
+		inject: ["documentWidth", "appContext"],
+		computed: {
+			texts() {
+				const currentContext = this.appContext;
+				return texts[currentContext].subscribeInvite;
+			}
+		}
 	};
 </script>
 
@@ -188,6 +218,9 @@
 			}
 			@media (max-width: 450px) {
 				margin: 0;
+			}
+			&_blue {
+				background-color: $blue;
 			}
 		}
 		&__pitch-point {
@@ -336,6 +369,9 @@
 			@media (max-width: 650px) {
 				grid-column: 1/2;
 				justify-self: center;
+			}
+			&_blue {
+				background-color: $blue;
 			}
 		}
 	}
