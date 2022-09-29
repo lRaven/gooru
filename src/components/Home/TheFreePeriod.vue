@@ -7,7 +7,7 @@
 					isBusinesBlogerContext,
 			}"
 		>
-			<img class="free-period__mokup" src="@/../public/MuckuppPic.svg" />
+			<img class="free-period__mokup" src="@/../public/phonePic.svg" />
 			<h2
 				class="free-period__title"
 				:class="{

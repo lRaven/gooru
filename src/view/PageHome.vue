@@ -1,5 +1,11 @@
 <template>
-	<the-header class="page-home__header">
+	<the-header
+		class="page-home__header"
+		:class="{
+			'page-home__header_visible': isHeaderVisible,
+			'page-home__header_hidden': !isHeaderVisible,
+		}"
+	>
 		<nav class="navigation">
 			<div class="navigation__link navigation__link_dropdown">
 				СОЦ. СЕТИ.
@@ -89,7 +95,7 @@
 		<section class="laptop">
 			<img
 				class="laptop__image"
-				src="@/../public/LapTopPic.svg"
+				:src="laptopPicSrc"
 				alt="картинка ноутбука"
 			/>
 		</section>
@@ -127,10 +133,12 @@
 			EllipseWithArrowIcon,
 			BurgerIcon,
 		},
-		inject: ["gooruFrontendUrl", "documentWidth"],
+		inject: ["gooruFrontendUrl", "documentWidth", "appContext"],
 		data() {
 			return {
 				isSideBarMinimized: true,
+				isHeaderVisible: true,
+				scrollValue: 0,
 			};
 		},
 		watch: {
@@ -140,6 +148,13 @@
 				}
 			},
 		},
+		computed: {
+			laptopPicSrc() {
+				return this.appContext === "blogers"
+					? "/blogers/laptopPic.svg"
+					: "/laptopPic.svg";
+			},
+		},
 		methods: {
 			handleCloseSideBar() {
 				this.isSideBarMinimized = true;
@@ -147,6 +162,20 @@
 			handleOpenSideBar() {
 				this.isSideBarMinimized = false;
 			},
+			handleChangeScroll() {
+				if (scrollY - this.scrollValue > 0) {
+					this.isHeaderVisible = false;
+				} else {
+					this.isHeaderVisible = true;
+				}
+				this.scrollValue = scrollY;
+			},
+		},
+		created() {
+			window.addEventListener("scroll", this.handleChangeScroll);
+		},
+		beforeUnmount() {
+			window.removeEventListener("scroll", this.handleChangeScroll);
 		},
 	};
 </script>
@@ -154,7 +183,21 @@
 <style lang="scss" scoped>
 	.page-home {
 		&__header {
-			margin: 0 auto;
+			position: fixed;
+			width: 100%;
+			z-index: 3;
+			background-color: $grey;
+			
+			&_visible {
+				transition: all 0.3s ease;
+				position: fixed;
+				transform: none;
+			}
+			&_hidden {
+				transition: all 0.3s ease;
+				position: absolute;
+				transform: translateY(-200%);
+			}
 		}
 		&__sidebar {
 			padding: 4.7rem 6rem 3.7rem 6rem;
@@ -167,6 +210,16 @@
 		}
 		&__main {
 			position: relative;
+			padding: 12.6rem 0 0 0;
+			@media (max-width: 1023px) {
+				padding: 11.2rem 0 0 0;
+			}
+			@media (max-width: 600px) {
+				padding: 10.2rem 0 0 0;
+			}
+			@media (max-width: 450px) {
+				padding: 15.6rem 0 0 0;
+			}
 		}
 	}
 	.header {
@@ -344,8 +397,11 @@
 			background: linear-gradient(to bottom, $grey 89%, $black 11%);
 			@media (max-width: 550px) {
 				position: relative;
-				left: 47rem;
+				left: 45rem;
 				width: 1283px;
+			}
+			@media (max-width: 450px) {
+				left: 40rem;
 			}
 		}
 	}

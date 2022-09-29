@@ -50,8 +50,6 @@
 	* {
 		scroll-behavior: smooth;
 		transition: padding 0.3s ease, margin 0.3s ease;
-
-		//*chrome/safari
 	}
 	#app {
 		overflow: hidden;
