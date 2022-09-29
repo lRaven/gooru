@@ -24,7 +24,7 @@
 		inject: ["appContext"],
 		computed: {
 			argeeImageSrc() {
-				return this.appContext === "busines" ? `@/../public/busines/blueAgreePic.png`	: `@/../public/cursor/redAgreePic.png`;
+				return this.appContext === "busines" ? `/busines/blueAgreePic.png`	: `/cursor/redAgreePic.png`;
 			},
 			cards() {
 				const currentContext = this.appContext;
