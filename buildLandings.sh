@@ -1,11 +1,15 @@
 echo "Создаем папки"
 
-sudo cp -R freelance-app/. busines/
-sudo cp -R freelance-app/. freelance/
-sudo cp -R freelance-app/. blogers/
+sudo cp -R gooru-landing/. busines/
+sudo cp -R gooru-landing/. freelance/
+sudo cp -R gooru-landing/. blogers/
 
-cd /busines && echo -e "NODE_ENV=production\nVUE_APP_CONTEXT=busines" > .env.production && npm i && npm run build cd ..
-cd /freelance && echo -e "NODE_ENV=production\nVUE_APP_CONTEXT=freelance" > .env.production && npm i && npm run build && cd ..
-cd /blogers && echo -e "NODE_ENV=production\nVUE_APP_CONTEXT=blogers" > .env.production && npm i && npm run build && cd ..
+cd busines/ && echo -e "NODE_ENV=production\nVUE_APP_CONTEXT=busines\nVUE_APP_GOORU_FRONTEND=https://compas-goo.ru" > .env.production && cd ..
+cd freelance/ && echo -e "NODE_ENV=production\nVUE_APP_CONTEXT=freelance\nVUE_APP_GOORU_FRONTEND=https://compas-goo.ru" > .env.production && cd ..
+cd blogers/ && echo -e "NODE_ENV=production\nVUE_APP_CONTEXT=blogers\nVUE_APP_GOORU_FRONTEND=https://compas-goo.ru" > .env.production && cd ..
+
+cd blogers/ && sudo npm i && sudo npm run build && cd ..
+cd freelance/ && sudo npm i && sudo npm run build && cd ..
+cd blogers/ && sudo npm i && sudo npm run build && cd ..
 
 echo "Done."
