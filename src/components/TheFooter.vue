@@ -4,11 +4,34 @@
 			<span class="footer__copyright">&copy;</span>
 			<span class="footer__logo">compass pro</span>
 		</div>
-		<a class="footer__policy" href="#" target="_blank"
+		<a class="footer__policy" href="/docs/Оферта ГУРУ.pdf" target="_blank"
 			>Политика в отношении обработки персональных данных</a
 		>
 		<nav class="footer__navigation">
-			<a class="footer__navigation-link" href="#">СОЦ. СЕТИ.</a>
+			<div
+				class="footer__navigation-link footer__navigation-link_dropdown"
+				href="#"
+			>
+				СОЦ. СЕТИ.
+				<ul class="dropdown">
+					<li class="dropdown__item">
+						<a
+							class="dropdown__link"
+							href="https://telegram.im/@compass_pro"
+							target="_blank"
+							>TELEGRAM</a
+						>
+					</li>
+					<li class="dropdown__item">
+						<a
+							class="dropdown__link"
+							href="https://wa.me/+79375596195"
+							target="_blank"
+							>WHATSAPP</a
+						>
+					</li>
+				</ul>
+			</div>
 			<a class="footer__navigation-link" href="#about">О НАС</a>
 		</nav>
 		<span class="footer__team-caption"
@@ -106,6 +129,16 @@
 				&:hover {
 					cursor: pointer;
 				}
+				&_dropdown {
+					position: relative;
+					&:hover {
+						transition: all 0.3s ease;
+						border-color: transparent;
+						.dropdown {
+							transform: none;
+						}
+					}
+				}
 			}
 		}
 		&__team-caption {
@@ -118,6 +151,42 @@
 			@media (max-width: 785px) {
 				grid-column: 1/2;
 				justify-self: start;
+			}
+		}
+	}
+	.dropdown {
+		padding: 2rem 3rem 7rem 3rem;
+		width: fit-content;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		border: 2px solid rgba($color: $white, $alpha: 0.5);
+		border-radius: 2rem;
+		position: absolute;
+		top: -9.5rem;
+		left: -2rem;
+		right: 0;
+		transform: translateY(200%);
+		transition: all 0.3s ease;
+		&:hover {
+			z-index: 2;
+			transform: none;
+		}
+		@media (max-width: 1650px) {
+			padding: 2rem 2rem 6rem 2rem;
+			left: -0.5rem;
+		}
+		@media (max-width: 1400px) {
+			padding: 2rem 1.5rem 6rem 1.5rem;
+			left: 0rem;
+		}
+		&__link {
+			color: $white;
+			padding: 0.5rem;
+			transition: all 0.3s ease;
+			&:hover {
+				background-color: $white;
+				color: $black;
 			}
 		}
 	}

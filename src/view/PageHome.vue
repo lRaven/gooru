@@ -108,7 +108,7 @@
 	import TheHeader from "@/components/TheHeader.vue";
 	import SideBar from "@/components/SideBar.vue";
 	/* 	import TheAcquaintance from "@/components/Home/TheAcquaintance.vue"; */
-	import TheAcquaintanceR from "@/components/Home/TheAcquaintanceR.vue";
+	import TheAcquaintanceR from "@/components/Home/TheAcquaintance.vue";
 	import TheFreePeriod from "@/components/Home/TheFreePeriod.vue";
 	import TheUserPromlems from "@/components/Home/TheUserPromlems.vue";
 	import TheUserSolutions from "@/components/Home/TheUserSolutions.vue";
@@ -356,6 +356,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
+		background-color: $grey;
 		border: 2px solid $black;
 		border-radius: 2rem;
 		position: absolute;
@@ -364,8 +365,9 @@
 		right: 0;
 		transform: translateY(-200%);
 		transition: all 0.3s ease;
+		z-index: -1;
 		&:hover {
-			z-index: 2;
+			
 			transform: none;
 		}
 		@media (max-width: 1650px) {
