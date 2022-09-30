@@ -34,7 +34,7 @@
 		computed: {
 			cards() {
 				const currentContext = this.appContext;
-				if (this.documentWidth > 550) {
+				if (this.documentWidth > 700) {
 					return texts[currentContext].usersolutions;
 				} else {
 					return texts[currentContext].usersolutions.reduce( (prev, current) => {
