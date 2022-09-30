@@ -22,14 +22,14 @@
 							>TELEGRAM</a
 						>
 					</li>
-					<li class="dropdown__item">
+					<!-- <li class="dropdown__item">
 						<a
 							class="dropdown__link"
 							href="https://wa.me/+79375596195"
 							target="_blank"
 							>WHATSAPP</a
 						>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 			<a class="footer__navigation-link" href="#about">О НАС</a>
@@ -131,11 +131,18 @@
 				}
 				&_dropdown {
 					position: relative;
+					overflow: hidden;
+					.dropdown {
+						visibility: hidden;
+					}
+					transition: all 0.3s ease;
 					&:hover {
-						transition: all 0.3s ease;
+						
 						border-color: transparent;
+						overflow: visible;
 						.dropdown {
 							transform: none;
+							visibility: visible;
 						}
 					}
 				}
@@ -155,15 +162,15 @@
 		}
 	}
 	.dropdown {
-		padding: 2rem 3rem 7rem 3rem;
 		width: fit-content;
+		padding: 2rem 3rem 5rem 3rem;
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
 		border: 2px solid rgba($color: $white, $alpha: 0.5);
 		border-radius: 2rem;
 		position: absolute;
-		top: -9.5rem;
+		top: -5.5rem;
 		left: -2rem;
 		right: 0;
 		transform: translateY(200%);
@@ -173,11 +180,11 @@
 			transform: none;
 		}
 		@media (max-width: 1650px) {
-			padding: 2rem 2rem 6rem 2rem;
+			padding: 2rem 2rem 5rem 2rem;
 			left: -0.5rem;
 		}
 		@media (max-width: 1400px) {
-			padding: 2rem 1.5rem 6rem 1.5rem;
+			padding: 2rem 1.5rem 5rem 1.5rem;
 			left: 0rem;
 		}
 		&__link {

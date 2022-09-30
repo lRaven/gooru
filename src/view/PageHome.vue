@@ -18,14 +18,14 @@
 							>TELEGRAM</a
 						>
 					</li>
-					<li class="dropdown__item">
+					<!-- <li class="dropdown__item">
 						<a
 							class="dropdown__link"
 							href="https://wa.me/+79375596195"
 							target="_blank"
 							>WHATSAPP</a
 						>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 			<a class="navigation__link" href="#about">О НАС</a>
@@ -79,12 +79,12 @@
 				target="_blank"
 				>TELEGRAM</a
 			>
-			<a
+			<!-- <a
 				class="navigation__link"
 				href="https://wa.me/+79375596195"
 				target="_blank"
 				>WHATSAPP</a
-			>
+			> -->
 		</nav>
 	</side-bar>
 	<main class="page-home__main">
@@ -187,16 +187,19 @@
 			width: 100%;
 			z-index: 3;
 			background-color: $grey;
-			
+
 			&_visible {
 				transition: all 0.3s ease;
-				position: fixed;
-				transform: none;
+				opacity: 1;
+				/* position: fixed; */
+				/* transform: none; */
 			}
 			&_hidden {
 				transition: all 0.3s ease;
-				position: absolute;
-				transform: translateY(-200%);
+				opacity: 0;
+				visibility: hidden;
+				/* position: absolute;
+				transform: translateY(-200%); */
 			}
 		}
 		&__sidebar {
@@ -305,7 +308,7 @@
 					margin: 0 0 0 3rem;
 				}
 				@media (max-width: 1023px) {
-					margin: 0;
+					margin: 1rem 0 0 0;
 				}
 			}
 			&:hover {
@@ -318,6 +321,7 @@
 					border-color: transparent;
 					.dropdown {
 						transform: none;
+						visibility: visible;
 					}
 				}
 			}
@@ -351,7 +355,7 @@
 		}
 	}
 	.dropdown {
-		padding: 8rem 3rem 2rem 3rem;
+		padding: 5rem 3rem 2rem 3rem;
 		width: fit-content;
 		flex-direction: column;
 		align-items: center;
@@ -364,17 +368,19 @@
 		left: -1rem;
 		right: 0;
 		transform: translateY(-200%);
+		visibility: hidden;
 		transition: all 0.3s ease;
 		z-index: -1;
 		&:hover {
-			
 			transform: none;
 		}
 		@media (max-width: 1650px) {
-			padding: 8rem 2rem 2rem 2rem;
+			padding: 5rem 2rem 2rem 2rem;
+			left: 0rem;
 		}
 		@media (max-width: 1400px) {
-			padding: 8rem 1.5rem 2rem 1.5rem;
+			padding: 5rem 1.5rem 2rem 1.5rem;
+			left: -0.5rem;
 		}
 		&__link {
 			color: $black;

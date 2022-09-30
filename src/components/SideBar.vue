@@ -53,6 +53,7 @@
 		}
 		&_minimize {
 			position: absolute;
+			visibility: hidden;
 			transform: translateX(201vw);
 		}
 		&__controls {
