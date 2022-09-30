@@ -293,6 +293,11 @@
 			padding: 2.5rem 0;
 			width: 33%;
 			margin: 0 2rem 0 0;
+			transition: all 0.3s ease;
+			&:hover {
+				color: $black;
+				background-color: $white;
+			}
 			@media (max-width: 1490px) {
 				font-size: 3.2rem;
 				line-height: 4.6rem;
@@ -330,6 +335,11 @@
 			background-color: $white;
 			width: 51%;
 			margin: 0 2rem 0 0;
+			transition: all 0.3s ease;
+			&:hover {
+				color: $white;
+				background-color: $black;
+			}
 			@media (max-width: 1490px) {
 				font-size: 3.2rem;
 				line-height: 4.6rem;

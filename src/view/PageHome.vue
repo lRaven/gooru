@@ -187,6 +187,7 @@
 			width: 100%;
 			z-index: 3;
 			background-color: $grey;
+			max-width: 2500px;
 
 			&_visible {
 				transition: all 0.3s ease;
@@ -253,6 +254,14 @@
 			border: 2px solid $black;
 			border-radius: 12.4rem;
 			color: $black;
+			
+
+			transition: all 0.3s ease;
+			&:hover {
+				color: $white;
+				background-color: $black;
+			}
+
 			@media (max-width: 1650px) {
 				margin: 0 2rem 0 0;
 			}
@@ -294,6 +303,7 @@
 				align-items: center;
 				padding: 0;
 				border: none;
+				padding: 0.5rem;
 				margin: 0 0 0 35.6rem;
 				@media (max-width: 1650px) {
 					margin: 0 0 0 20rem;
@@ -319,6 +329,8 @@
 				&:hover {
 					transition: all 0.3s ease;
 					border-color: transparent;
+					color: $black;
+					background-color: transparent;
 					.dropdown {
 						transform: none;
 						visibility: visible;

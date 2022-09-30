@@ -100,6 +100,12 @@
 			text-decoration: underline;
 			color: rgba($color: $white, $alpha: 0.5);
 			grid-column: 1/2;
+			transition: all 0.3s ease;
+			
+			&:hover {
+				cursor: pointer;
+				color: rgba($color: $white, $alpha: 1);
+			}
 			@media (max-width: 785px) {
 				margin: 0 0 4rem 0;
 			}
@@ -126,8 +132,12 @@
 				border: 2px solid rgba($color: $white, $alpha: 0.5);
 				border-radius: 12.4rem;
 				color: rgba($color: $white, $alpha: 0.5);
+				transition: all 0.3s ease;
+
 				&:hover {
 					cursor: pointer;
+					border: 2px solid rgba($color: $white, $alpha: 1);
+					color: rgba($color: $white, $alpha: 1);
 				}
 				&_dropdown {
 					position: relative;
@@ -137,7 +147,6 @@
 					}
 					transition: all 0.3s ease;
 					&:hover {
-						
 						border-color: transparent;
 						overflow: visible;
 						.dropdown {

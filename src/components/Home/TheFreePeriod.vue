@@ -168,9 +168,6 @@
 				width: 100%;
 				height: 100%;
 			}
-			/* @media (max-width: 1200px) {
-				width: inherit;
-			} */
 			@media (max-width: 1300px) {
 				width: 100%;
 				grid-row: 4/4;
@@ -224,6 +221,12 @@
 			color: $white;
 			grid-column: 2/3;
 			margin: 0 0 4.5rem 0;
+			transition: all 0.3s ease;
+			&:hover {
+				color: $white;
+				background-color: $black;
+			}
+
 			@media (max-width: 1300px) {
 				padding: 2rem 6rem;
 			}

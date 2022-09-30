@@ -54,5 +54,12 @@
 	#app {
 		overflow: hidden;
 		position: relative;
+		@media (min-width: 2500px) {
+			max-width: 250rem;
+			margin:  0 auto;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
 	}
 </style>
