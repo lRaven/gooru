@@ -25,8 +25,8 @@ import PageFavorites from "@/views/CabinetPages/PageFavorites";
 
 import PageProfile from "@/views/CabinetPages/PageProfile";
 
-import PageNewParser from "@/views/CabinetPages/PageNewParser";
-import PageNewGroupParser from "@/views/CabinetPages/PageNewGroupParser";
+import PageNewSource from "@/views/CabinetPages/PageNewSource";
+import PageNewGroupSource from "@/views/CabinetPages/PageNewGroupSource";
 
 //* admin pages
 import PageUsers from "@/views/CabinetPages/PageUsers";
@@ -174,7 +174,7 @@ const routes = [
 			{
 				path: "new_parser",
 				name: "new_parser",
-				component: PageNewParser,
+				component: PageNewSource,
 				meta: {
 					title: "Новый источник",
 					requiresAuth: true,
@@ -184,7 +184,7 @@ const routes = [
 			{
 				path: "new_group_parser",
 				name: "new_group_parser",
-				component: PageNewGroupParser,
+				component: PageNewGroupSource,
 				meta: {
 					title: "Новая группа источников",
 					requiresAuth: true,
