@@ -4,6 +4,7 @@
 		:class="{
 			'page-home__header_visible': isHeaderVisible,
 			'page-home__header_hidden': !isHeaderVisible,
+			'page-home__header_short': scrollValue > 200,
 		}"
 	>
 		<nav class="navigation">
@@ -18,14 +19,6 @@
 							>TELEGRAM</a
 						>
 					</li>
-					<!-- <li class="dropdown__item">
-						<a
-							class="dropdown__link"
-							href="https://wa.me/+79375596195"
-							target="_blank"
-							>WHATSAPP</a
-						>
-					</li> -->
 				</ul>
 			</div>
 			<a class="navigation__link" href="#about">О НАС</a>
@@ -79,16 +72,10 @@
 				target="_blank"
 				>TELEGRAM</a
 			>
-			<!-- <a
-				class="navigation__link"
-				href="https://wa.me/+79375596195"
-				target="_blank"
-				>WHATSAPP</a
-			> -->
 		</nav>
 	</side-bar>
 	<main class="page-home__main">
-		<the-acquaintance-r />
+		<the-acquaintance />
 		<the-free-period />
 		<the-user-promlems />
 		<the-user-solutions id="about" />
@@ -107,8 +94,7 @@
 <script>
 	import TheHeader from "@/components/TheHeader.vue";
 	import SideBar from "@/components/SideBar.vue";
-	/* 	import TheAcquaintance from "@/components/Home/TheAcquaintance.vue"; */
-	import TheAcquaintanceR from "@/components/Home/TheAcquaintance.vue";
+	import TheAcquaintance from "@/components/Home/TheAcquaintance.vue";
 	import TheFreePeriod from "@/components/Home/TheFreePeriod.vue";
 	import TheUserPromlems from "@/components/Home/TheUserPromlems.vue";
 	import TheUserSolutions from "@/components/Home/TheUserSolutions.vue";
@@ -123,7 +109,7 @@
 		components: {
 			TheHeader,
 			SideBar,
-			TheAcquaintanceR,
+			TheAcquaintance,
 			TheFreePeriod,
 			TheUserPromlems,
 			TheUserSolutions,
@@ -201,6 +187,9 @@
 				visibility: hidden;
 				/* position: absolute;
 				transform: translateY(-200%); */
+			}
+			&_short {
+				padding-bottom: 3.7rem;
 			}
 		}
 		&__sidebar {
@@ -303,7 +292,7 @@
 				align-items: center;
 				padding: 0;
 				border: none;
-				padding: 0.5rem;
+				padding: 0.5rem 1rem;
 				margin: 0 0 0 35.6rem;
 				@media (max-width: 1650px) {
 					margin: 0 0 0 20rem;

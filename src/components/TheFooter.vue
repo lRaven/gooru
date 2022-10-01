@@ -10,7 +10,6 @@
 		<nav class="footer__navigation">
 			<div
 				class="footer__navigation-link footer__navigation-link_dropdown"
-				href="#"
 			>
 				СОЦ. СЕТИ.
 				<ul class="dropdown">
@@ -22,14 +21,6 @@
 							>TELEGRAM</a
 						>
 					</li>
-					<!-- <li class="dropdown__item">
-						<a
-							class="dropdown__link"
-							href="https://wa.me/+79375596195"
-							target="_blank"
-							>WHATSAPP</a
-						>
-					</li> -->
 				</ul>
 			</div>
 			<a class="footer__navigation-link" href="#about">О НАС</a>
