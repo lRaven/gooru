@@ -15,8 +15,8 @@
 		provide() {
 			return {
 				documentWidth: computed(() => this.documentWidth),
-				appContext: computed(() => process.env.VUE_APP_CONTEXT),
-				gooruFrontendUrl: computed(() => process.env.VUE_APP_GOORU_FRONTEND),
+				appContext: process.env.VUE_APP_CONTEXT,
+				gooruFrontendUrl: process.env.VUE_APP_GOORU_FRONTEND,
 			};
 		},
 		data() {
