@@ -20,19 +20,38 @@ const mutations = {
 	SET_USER_AUTH: (state, payload) => (state.user_auth = payload),
 
 	SET_USER_DATA: (state, payload) => (state.user = payload),
-	CLEAR_USER_DATA: (state) => state.user = {},
+	CLEAR_USER_DATA: (state) => (state.user = {}),
 
 	SET_USER_RATE_DATA: (state, payload) => (state.rate = payload),
-	CLEAR_USER_RATE_DATA: (state) => state.rate = null,
+	CLEAR_USER_RATE_DATA: (state) => (state.rate = null),
 };
 
 const actions = {
 	getUserData: async (context) => {
 		try {
-			const response = await axios.get(`${store.state.baseURL}/auth/users/me`, {
-				headers: { Authorization: `token ${cookie.get("auth_token")}` },
-			});
-			if (response.data.role === 'DefaultUser') {
+			const response = await axios.get(
+				`${store.state.baseURL}/auth/users/me`,
+				{
+					headers: {
+						Authorization: `token ${cookie.get("auth_token")}`,
+					},
+				}
+			);
+			try {
+				const tariffGroup = response.data.groups.find(({ name }) =>
+					name.toLowerCase().includes("tariff")
+				);
+				if (tariffGroup) {
+					const [, tariff] = tariffGroup.name.split(" ");
+					response.data.tariff = tariff.toLowerCase();
+				} else {
+					response.data.tariff = "";
+				}
+			} catch (e) {
+				console.log(e)
+			}
+
+			if (response.data.role === "DefaultUser") {
 				const referalToken = await getReferalData();
 				const [myReferalData] = referalToken;
 				response.data.referalToken = myReferalData.token;
@@ -43,14 +62,13 @@ const actions = {
 				context.commit("SET_USER_AUTH", true);
 				console.log("User data saved");
 
-
-				localStorage.setItem('role', response.data.role);
+				localStorage.setItem("role", response.data.role);
 			}
 		} catch {
 			console.log("User isn't authorized");
 			localStorage.clear();
 			context.commit("SET_USER_AUTH", false);
-			context.dispatch('clearCabinetData');
+			context.dispatch("clearCabinetData");
 			cookie.remove("auth_token");
 		}
 	},
@@ -65,7 +83,9 @@ const actions = {
 				const { data: tariffInfo } = await axios.get(
 					`${store.state.baseURL}/tariff/${userRate.tariff}`,
 					{
-						headers: { Authorization: `token ${cookie.get("auth_token")}` },
+						headers: {
+							Authorization: `token ${cookie.get("auth_token")}`,
+						},
 					}
 				);
 
@@ -75,7 +95,6 @@ const actions = {
 					amount: tariffInfo.cost,
 					loaded: true,
 				});
-
 			} else {
 				context.commit("SET_USER_RATE_DATA", { loaded: true });
 			}
@@ -85,16 +104,16 @@ const actions = {
 	},
 
 	clearCabinetData(context) {
-		//* очистка profile 
-		context.commit('CLEAR_USER_DATA');
-		context.commit('CLEAR_USER_RATE_DATA');
+		//* очистка profile
+		context.commit("CLEAR_USER_DATA");
+		context.commit("CLEAR_USER_RATE_DATA");
 
-		context.commit('CLEAR_APPEALS_STATE');
-		context.commit('CLEAR_USERS_STATE');
-		context.commit('CLEAR_PARSERS_STATE');
-		context.commit('CLEAR_MESSENGER_STATE');
-		context.commit('CLEAR_FAVORITES_STATE');
-	}
+		context.commit("CLEAR_APPEALS_STATE");
+		context.commit("CLEAR_USERS_STATE");
+		context.commit("CLEAR_PARSERS_STATE");
+		context.commit("CLEAR_MESSENGER_STATE");
+		context.commit("CLEAR_FAVORITES_STATE");
+	},
 };
 
 export default {

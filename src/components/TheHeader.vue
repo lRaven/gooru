@@ -91,7 +91,7 @@
 			<div class="the-header__col" v-if="!isClear">
 				<div
 					class="the-header__create"
-					v-if="isCabinetVersion === true"
+					v-if="isCabinetVersion === true && user.tariff"
 				>
 					<r-button
 						text="Новый источник"
@@ -125,6 +125,7 @@
 					</r-button>
 
 					<r-button
+						v-if="user.tariff !== 'freelance'"
 						text="Новая группа источников"
 						@click="this.$router.push({ name: 'new_group_parser' })"
 					>
