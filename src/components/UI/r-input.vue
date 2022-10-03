@@ -129,10 +129,10 @@
 			text-overflow: ellipsis;
 			transition: all 0.2s ease;
 			&:hover {
-				border-color: rgba($gray, 0.5);
+				border-color: rgba($primary, 1);
 			}
 			&:focus {
-				border-color: $gray;
+				border-color: rgba($primary, 1);
 			}
 			&:disabled {
 				border-color: rgba($black, 0.1);

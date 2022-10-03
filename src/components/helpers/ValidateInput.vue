@@ -1,8 +1,8 @@
 <template>
 	<slot
-		name="field"
-		:isInvalid="isInvalidField"
     :errors="errors"
+		:isInvalid="isInvalidField"
+    :canShowError="canShowError"
 		:isOnFocus="onFocus"
     :isEdited="isEdited"
     :handleBlur="handleBlur"
@@ -12,9 +12,13 @@
 
 <script>
 	export default {
-		name: "ValidateInput",
+		name: "InputFieldValidator",
+    emits: {
+      'onchange-validation-state': null
+    },
 		props: {
-			newValue: { type: [String, Number], required: true },
+      name: { type: String, default: '' },
+			newValue: { type: String, required: true },
 			rules: { type: Object, required: true },
 		},
 		data() {
@@ -25,7 +29,6 @@
 		},
     computed: {
       isInvalidField() {
-        console.log(this.errors)
         return Object.values(this.errors).reduce( (prev, currentValue) => {
           return currentValue || prev;
         }, false);
@@ -42,9 +45,16 @@
 
             case 'regExp':
               return this.rules[ruleName].test(this.newValue) ? errorObject[ruleName] = false : errorObject[ruleName] = true;
+            case 'isEqual':
+              return this.rules[ruleName] !== this.newValue ? errorObject[ruleName] = true : errorObject[ruleName] = false;
+            case 'length':
+              return this.rules[ruleName] !== this.newValue.length ? errorObject[ruleName] = true : errorObject[ruleName] = false;
           }
         });
         return errorObject;
+      },
+      canShowError() {
+        return this.isInvalidField && this.isEdited && !this.onFocus;
       }
     },
 		methods: {
@@ -56,7 +66,8 @@
 				this.onFocus = true;
 			},
 		},
+    updated() {
+      this.$emit('onchange-validation-state', { [this.name+'Error']: this.isInvalidField });
+    }
 	};
 </script>
-
-<style></style>

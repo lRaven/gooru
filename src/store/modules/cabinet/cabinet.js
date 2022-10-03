@@ -37,18 +37,14 @@ const actions = {
 					},
 				}
 			);
-			try {
-				const tariffGroup = response.data.groups.find(({ name }) =>
-					name.toLowerCase().includes("tariff")
-				);
-				if (tariffGroup) {
-					const [, tariff] = tariffGroup.name.split(" ");
-					response.data.tariff = tariff.toLowerCase();
-				} else {
-					response.data.tariff = "";
-				}
-			} catch (e) {
-				console.log(e)
+			const tariffGroup = response.data.groups.find(({ name }) =>
+				name.toLowerCase().includes("tariff")
+			);
+			if (tariffGroup) {
+				const [, tariff] = tariffGroup.name.split(" ");
+				response.data.tariff = tariff.toLowerCase();
+			} else {
+				response.data.tariff = "";
 			}
 
 			if (response.data.role === "DefaultUser") {

@@ -206,7 +206,7 @@
 	import { read_notification } from "@/api/notifications";
 
 	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
-	import FilterPannel from "@/components/Cabinet/Appeals/FilterPanel.vue";
+	import FilterPannel from "@/components/Cabinet/Appeals/ChoosenPanel.vue";
 	import { paginationMixin } from "@/mixins/paginationMixins";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import RightPanel from "@/components/Cabinet/RightPanel.vue";

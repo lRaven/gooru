@@ -1,23 +1,23 @@
 <template>
-	<div class="filter-panel" :class="{ 'filter-panel_background_transparent': !isPanelOpen }">
+	<div
+		class="choosen-panel"
+		:class="{ 'choosen-panel_background_transparent': !isPanelOpen }"
+	>
 		<slot
 			name="visibleManageButton"
 			:changePanelVisibility="handleChangeVisibility"
 		></slot>
 		<template v-if="isPanelOpen">
-			<h3 class="filter-panel__title">{{ title }}</h3>
-			<div class="filter-params">
-				<div
-					class="filter-param filter-param__filter-params"
-					:class="{ active: choosenParams.includes(param.id) }"
-					v-for="param in params"
-					:key="param.id"
-					@click="changeFilterParams(param.id)"
-				>
-					<p class="filter-param__description">
-						{{ param.description }}
-					</p>
-				</div>
+			<h3 class="choosen-panel__title">{{ title }}</h3>
+			<div class="choosen-params">
+				<slot
+					v-for="{ id, description } in params"
+					name="paramsItems"
+					:keyId="id"
+					:description="description"
+					:handleChangeFilterParams="changeChoosenParams({ id, description })"
+					:hasChoosen="choosenParams.includes(param.id)"
+				></slot>
 			</div>
 		</template>
 	</div>
@@ -25,9 +25,9 @@
 
 <script>
 	export default {
-		name: "FilterPanel",
+		name: "ChoosenPanel",
 		emits: {
-			"filter-params-changed": null,
+			"choosen-params-changed": null,
 			"change-panel-visibility": null,
 		},
 		props: {
@@ -37,15 +37,15 @@
 			},
 			title: { type: String, default: "" },
 		},
+		inject: ['changeChoosenParams'],
 		data() {
 			return {
 				choosenParams: [],
 				isPanelOpen: false,
-				text: "Открой меня",
 			};
 		},
 		methods: {
-			changeFilterParams(triggeredParam) {
+			/* changeFilterParams(triggeredParam) {
 				if (this.choosenParams.includes(triggeredParam)) {
 					this.choosenParams = this.choosenParams.filter(
 						(param) => param !== triggeredParam
@@ -53,13 +53,13 @@
 				} else {
 					this.choosenParams.push(triggeredParam);
 				}
-				this.$emit("filter-params-changed", this.choosenParams);
-			},
+				this.$emit("choosen-params-changed", this.choosenParams);
+			}, */
 			handleChangeVisibility() {
 				this.isPanelOpen
 					? (this.isPanelOpen = false)
 					: (this.isPanelOpen = true);
-				this.$emit('change-panel-visibility', this.isPanelOpen);
+				this.$emit("change-panel-visibility", this.isPanelOpen);
 			},
 		},
 		mounted() {
@@ -73,7 +73,7 @@
 
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
-	.filter-panel {
+	.choosen-panel {
 		padding: 1rem;
 		background-color: $white;
 		border-radius: 1rem;
@@ -85,12 +85,12 @@
 			margin: 0 0 2rem 0;
 		}
 	}
-	.filter-params {
+	.choosen-params {
 		display: flex;
 		flex-wrap: wrap;
 		width: 100%;
 	}
-	.filter-param {
+	.choosen-param {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -112,7 +112,7 @@
 		&__description {
 			font-size: 1.4rem;
 		}
-		&__filter-params {
+		&__choosen-params {
 			margin: 0 2rem 2rem 0;
 			&:last-child {
 				margin: 0 0 2rem 0;
