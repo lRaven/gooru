@@ -25,7 +25,7 @@ import PageFavorites from "@/views/CabinetPages/PageFavorites";
 
 import PageProfile from "@/views/CabinetPages/PageProfile";
 
-import PageNewSourceR from "@/views/CabinetPages/PageNewSourceR";
+import PageNewSource from "@/views/CabinetPages/PageNewSource";
 import PageNewGroupSource from "@/views/CabinetPages/PageNewGroupSource";
 
 //* admin pages
@@ -174,7 +174,7 @@ const routes = [
 			{
 				path: "new_parser",
 				name: "new_parser",
-				component: PageNewSourceR,
+				component: PageNewSource,
 				meta: {
 					title: "Новый источник",
 					requiresAuth: true,

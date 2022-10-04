@@ -2,7 +2,7 @@
 	<section class="page-new-parser">
 		<h2 class="page-new-parser__title">Новый источник</h2>
 
-		<form class="page-new-parser__form" @submit.prevent="create_parsource">
+		<div class="page-new-parser__form">
 			<template v-if="user.role !== 'DefaultUser'">
 				<p class="page-new-parser__input-description">
 					Введите пользователя*
@@ -14,49 +14,21 @@
 					v-model="selectedUser"
 				></r-dropdown>
 			</template>
-
-			<p class="page-new-parser__input-description">Название источника*</p>
-			<r-input
-				:spellCheck="false"
-				input_type="text"
-				v-model="new_parsource.name"
-				:value="new_parsource.name"
-				placeholder="Введите название источника"
-			></r-input>
-
-			<p class="page-new-parser__input-description">
-				URL страницы с данными*
-			</p>
-			<r-input
-				:spellCheck="false"
-				input_type="url"
-				v-model="new_parsource.url"
-				placeholder="https://"
-			></r-input>
-
-			<p class="page-new-parser__input-description">
-				Категория сбора информации*
-			</p>
-			<r-input
-				input_type="text"
-				v-model="new_parsource.parse_fields"
-				placeholder="Укажите категорию сбора информации "
-			></r-input>
-
-			<p class="page-new-parser__input-description">
-				Основные требования*
-			</p>
-			<r-textarea
-				placeholder="Введите требования"
-				v-model="new_parsource.description"
-			></r-textarea>
-
+			<component
+				:is="userTariffComponent"
+				:key="resetKey"
+				@change-form="handleChangeForm"
+				@change-form-valid-state="handleDisableFormSubmit"
+				class="page-new-parser__tariff-component"
+			/>
+			
 			<r-button
 				text="Отправить"
 				type="submit"
 				:disabled="isDisabledBtn || isCreateParsourseLoading"
+				@click="create_parsource"
 			></r-button>
-		</form>
+		</div>
 	</section>
 </template>
 
@@ -67,118 +39,72 @@
 	import { useToast } from "vue-toastification";
 
 	import ParsourceNotification from "@/components/Cabinet/Parsources/ParsourceNotification.vue";
+	import FreelanceForm from "@/components/Cabinet/NewSource/Freelance/FreelanceNewSourceForm.vue";
+	import DefaultForm from "@/components/Cabinet/NewSource/Default/DefaultNewSourceForm.vue";
 
 	export default {
-		name: "PageNewSource",
-		watch: {
-			new_parsource: {
-				handler() {
-					if (this.userRole === "DefaultUser") {
-						//* валидация для обычного юзера
-						this.checkFieldsInputs("user");
-					} else {
-						//* валидация для менеджера/админа
-						this.checkFieldsInputs("manager");
-					}
-				},
-				deep: true,
-			},
-			selectedUser() {
-				if (this.userRole === "DefaultUser") {
-					//* запуск валидации для обычного юзера
-					this.checkFieldsInputs("user");
-				} else {
-					//* запуск валидации для менеджера/админа
-					this.checkFieldsInputs("manager");
-				}
-			},
-
-			userRole() {
-				if (this.userRole === "DefaultUser") {
-					//* запуск валидации для обычного юзера
-					this.checkFieldsInputs("user");
-				} else {
-					//* получаем юзеров если это не обычный пользователь
-					this.getAllUsers();
-
-					//* запуск валидации для менеджера/админа
-					this.checkFieldsInputs("manager");
-				}
-			},
+		name: "PageNewSourceR",
+		components: {
+			FreelanceForm,
+			DefaultForm,
 		},
 		data: () => ({
-			isDisabledBtn: false,
+			isDisabledBtn: true,
 			isCreateParsourseLoading: false,
-
-			new_parsource: {
-				name: "",
-				url: "",
-				parse_fields: "",
-				description: "",
-			},
+			resetKey: 0,
+			newSourceData: null,
 			selectedUser: null,
 		}),
+
 		computed: {
 			...mapState({
 				user: (state) => state.cabinet.user,
 				users: (state) => state.users.all_users,
 				userRole: (state) => state.cabinet.user.role,
 			}),
+
 			managerUsers() {
 				return this.users.filter((user) => user.role === "DefaultUser");
+			},
+			userTariffComponent() {
+				switch (this.user.tariff) {
+					case "freelance":
+						return FreelanceForm;
+					default:
+						return DefaultForm;
+				}
 			},
 		},
 		methods: {
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllUsers", "getNotifications"]),
 
-			checkFieldsInputs(options) {
-				switch (options) {
-					case "user": {
-						this.new_parsource.name.length > 0 &&
-						this.new_parsource.url.length > 0 &&
-						this.new_parsource.parse_fields.length > 0 &&
-						this.new_parsource.description.length > 0
-							? (this.isDisabledBtn = false)
-							: (this.isDisabledBtn = true);
-						break;
-					}
-					case "manager": {
-						this.new_parsource.name.length > 0 &&
-						this.new_parsource.url.length > 0 &&
-						this.new_parsource.parse_fields.length > 0 &&
-						this.new_parsource.description.length > 0 &&
-						this.selectedUser !== null
-							? (this.isDisabledBtn = false)
-							: (this.isDisabledBtn = true);
-						break;
-					}
-				}
+			handleChangeForm(formState) {
+				this.newSourceData = {...formState};
 			},
-
-			resetForm() {
-				for (const key in this.new_parsource) {
-					if (Object.hasOwnProperty.call(this.new_parsource, key)) {
-						this.new_parsource[key] = "";
-					}
-				}
+			handleDisableFormSubmit(validationState) {
+				this.isDisabledBtn = !validationState;
+			},
+			handleResetForm() {
+				// возможно это не очень хорошее решение, мне оно самому не нравится
+				// однако так мы получаем легкий сброс всех данных, в том числе в оберточных компонентах
+				// не забиваем лишней логикой дочерний компонент формы и т.д.
+				this.resetKey += 1;
+				this.isDisabledBtn = true;
+				this.newSourceData = null;
 			},
 
 			async create_parsource() {
 				try {
 					this.isCreateParsourseLoading = true;
-					
+
 					const response = await send_new_parsource({
-						name: this.new_parsource.name,
-						data_source: this.new_parsource.url,
-						description: this.new_parsource.description,
-						parse_fields: this.new_parsource.parse_fields,
+						...this.newSourceData
 					});
 
 					if (response.status === 201) {
-						this.resetForm();
-						
-						
+						this.handleResetForm();
+
 						console.log("New parsource created");
 						this.toast.success("Парсер создан");
 						this.toast.info(ParsourceNotification, {
@@ -204,16 +130,8 @@
 		},
 		created() {
 			this.SET_TAB("new_parser");
-
-			if (this.userRole === "DefaultUser") {
-				//* запуск валидации для обычного юзера
-				this.checkFieldsInputs("user");
-			} else {
-				//* получаем юзеров если это не обычный пользователь
+			if (this.userRole === "Manager") {
 				this.getAllUsers();
-
-				//* запуск валидации для менеджера/админа
-				this.checkFieldsInputs("manager");
 			}
 		},
 		setup() {
@@ -249,23 +167,22 @@
 
 		&__form {
 			display: grid;
-			grid-template-columns: 32rem 1fr 15rem;
+			grid-template-columns: 32rem 1fr;
 			grid-gap: 3rem 4rem;
 			align-items: center;
+			max-width: 1400px;
 			@media (max-width: 1300px) {
 				grid-template-columns: 32rem minmax(30rem, 50rem);
 			}
 			@media (max-width: 1024px) {
 				grid-template-columns: 29rem 1fr;
 			}
-			@media (max-width: 700px) {
+			@media (max-width: 768px) {
 				grid-template-columns: 1fr;
-			}
-			@media (max-width: 540px) {
-				grid-gap: 2.5rem;
+				gap: 3rem 0;
 			}
 			@media (max-width: 450px) {
-				grid-gap: 1rem;
+				gap: 1rem 0;
 			}
 			.r-input,
 			.r-textarea {
@@ -278,6 +195,9 @@
 			.r-textarea {
 				height: 14.5rem;
 			}
+		}
+		&__tariff-component {
+			grid-column: 1/3;
 		}
 
 		&__input-description,
