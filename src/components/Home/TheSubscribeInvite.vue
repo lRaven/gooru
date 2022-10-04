@@ -323,7 +323,7 @@
 			@media (max-width: 390px) {
 				font-size: 1.9rem;
 				line-height: 3rem;
-				padding: 2.5rem 2rem;
+				padding: 1.8rem 1.8rem;
 			}
 		}
 		:deep(.r-button.subscribe-invite__subscribe-button) {
@@ -367,7 +367,7 @@
 			@media (max-width: 390px) {
 				font-size: 1.9rem;
 				line-height: 3rem;
-				padding: 2.5rem 2rem;
+				padding: 1.8rem 1.8rem;
 			}
 		}
 		&__sale {

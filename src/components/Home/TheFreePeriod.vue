@@ -223,8 +223,8 @@
 			margin: 0 0 4.5rem 0;
 			transition: all 0.3s ease;
 			&:hover {
-				color: $white;
-				background-color: $black;
+				color: $black;
+				background-color: $white;
 			}
 
 			@media (max-width: 1300px) {
@@ -257,6 +257,10 @@
 		:deep(.r-button.free-period__button_black) {
 			border-color: $black;
 			color: $black;
+			&:hover {
+				color: $white;
+				background-color: $black;
+			}
 		}
 	}
 	.features {
@@ -312,9 +316,15 @@
 			line-height: 2.9rem;
 			color: #acacac;
 			width: 50%;
+			@media (max-width: 900px) {
+				font-size: 1.6rem;
+				line-height: 2.7rem;
+				width: 60%;
+			}
 			@media (max-width: 650px) {
 				font-size: 1.6rem;
 				line-height: 2.7rem;
+				width: 100%;
 			}
 			@media (max-width: 450px) {
 				font-size: 1.4rem;

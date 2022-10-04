@@ -74,10 +74,13 @@
 			font-size: 2.4rem;
 			line-height: 3.4rem;
 			width: 30%;
-			@media (max-width: 1100px) {
+			@media (max-width: 1500px) {
+				width: 50%;
+			}
+			@media (max-width: 1200px) {
 				width: 60%;
 			}
-			@media (max-width: 550px) {
+			@media (max-width: 650px) {
 				width: 100%;
 			}
 			@media (max-width: 450px) {

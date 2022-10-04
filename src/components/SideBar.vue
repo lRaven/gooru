@@ -47,12 +47,13 @@
 		z-index: 3;
 		background-color: $black;
 		transition: all 0.3s ease;
+
 		&::-webkit-scrollbar {
 			width: 0;
 			height: 0;
 		}
 		&_minimize {
-			position: absolute;
+			position: fixed;
 			visibility: hidden;
 			transform: translateX(201vw);
 		}

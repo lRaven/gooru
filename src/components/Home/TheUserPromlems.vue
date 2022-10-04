@@ -7,7 +7,7 @@
 		<img
 			class="user-problem__agree-image"
 			:src="argeeImageSrc"
-			alt="красный круг с союзом 'да'"
+			alt="круг с союзом 'да'"
 		/>
 	</section>
 </template>
