@@ -134,20 +134,7 @@
 						return "/img/icon/cabinet/share.svg";
 				}
 			},
-			currentShareLink() {
-				return (index, parserLink) => {
-					switch (this.network) {
-						case "telegram":
-							return `https://t.me/share/url?url=${parserLink}&text=${this.userComments[index]}`;
-						case "vk":
-							return `https://vk.com/share.php?url=${parserLink}&title=${this.userComments[index]}`;
-						case "odnoklassniki":
-							return `https://connect.ok.ru/offer?url=${parserLink}&title=${this.userComments[index]}`;
-						default:
-							return "/img/icon/cabinet/share.svg";
-					}
-				};
-			},
+			
 			isTooLongСontent() {
 				return  (indexInShareContent) => {
 					const parserCommentLength = (this.parserComments[indexInShareContent] || 0) && this.shareContentList[indexInShareContent].comment.text.length;
@@ -166,6 +153,18 @@
 			},
 			closePopup() {
 				this.isPopupOpen = false;
+			},
+			currentShareLink(index, shareLink) {
+				switch (this.network) {
+						case "telegram":
+							return `https://t.me/share/url?url=${shareLink}&text=${this.userComments[index]}`;
+						case "vk":
+							return `https://vk.com/share.php?url=${shareLink}&title=${this.userComments[index]}`;
+						case "odnoklassniki":
+							return `https://connect.ok.ru/offer?url=${shareLink}&title=${this.userComments[index]}`;
+						default:
+							return "/img/icon/cabinet/share.svg";
+					}
 			},
 			share(index) {
 				this.shareParser(index);

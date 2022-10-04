@@ -57,6 +57,70 @@
 							:title="`«${userRate.name}»`"
 						/>
 					</div>
+					<div
+						v-if="documentWidth <= 700 && !pendingForCapture"
+						class="referal page-rates__referal"
+					>
+						<h3 class="referal__title">Реферальная программа</h3>
+						<hr class="referal__horizontal-rule" />
+						<span
+							class="referal__copy-text"
+							:class="{
+								'referal__copy-text_visible':
+									isReferalTooltipVisible,
+							}"
+							>
+							<check-icon class="referal__success-copy-icon" />
+							Скопировано</span
+						>
+						<span
+							class="referal__link"
+							:class="{
+								referal__link_border_green:
+									isReferalTooltipVisible,
+							}"
+							@click="handleCopyReferalLink"
+							>{{ referalLink }}</span
+						>
+
+						<ul class="referal__share">
+							<social-share-icon
+								:shareContentList="[
+									{
+										id: 0,
+										title: '',
+										comment: { text: '', id: null },
+										url: referalLink,
+									},
+								]"
+								network="odnoklassniki"
+							></social-share-icon>
+
+							<social-share-icon
+								:shareContentList="[
+									{
+										id: 0,
+										title: '',
+										comment: { text: '', id: null },
+										url: referalLink,
+									},
+								]"
+								network="vk"
+							></social-share-icon>
+
+							<social-share-icon
+								:shareContentList="[
+									{
+										id: 0,
+										title: '',
+										comment: { text: '', id: null },
+										url: referalLink,
+									},
+								]"
+								network="telegram"
+							></social-share-icon>
+						</ul>
+					</div>
 
 					<div class="page-rates__stats-buttons">
 						<p
@@ -78,15 +142,66 @@
 					</div>
 				</div>
 			</template>
-			<div class="referal page-rates__referal" v-if="hasSelectedTariff">
+			<div
+				v-if="hasSelectedTariff && documentWidth > 700"
+				class="referal page-rates__referal"
+			>
 				<h3 class="referal__title">Реферальная программа</h3>
 				<hr class="referal__horizontal-rule" />
-				<span class="referal__link" @click="handleCopyReferalLink">{{
-					referalLink
-				}}</span>
-				<r-tooltip class="referal__tooltip" :class="{ 'referal__tooltip_visible': isReferalTooltipVisible }">
-					<span class="referal__tooltip-text">Скопировано!</span>
-				</r-tooltip>
+				<span
+							class="referal__copy-text"
+							:class="{
+								'referal__copy-text_visible':
+									isReferalTooltipVisible,
+							}"
+							><check-icon class="referal__success-copy-icon" />
+							Скопировано</span
+						>
+				<span
+					class="referal__link"
+					:class="{
+						referal__link_border_green: isReferalTooltipVisible,
+					}"
+					@click="handleCopyReferalLink"
+					>{{ referalLink }}
+				</span>
+				<ul class="referal__share">
+					<social-share-icon
+						:shareContentList="[
+							{
+								id: 0,
+								title: '',
+								comment: { text: '', id: null },
+								url: referalLink,
+							},
+						]"
+						network="odnoklassniki"
+					></social-share-icon>
+
+					<social-share-icon
+						:shareContentList="[
+							{
+								id: 0,
+								title: '',
+								comment: { text: '', id: null },
+								url: referalLink,
+							},
+						]"
+						network="vk"
+					></social-share-icon>
+
+					<social-share-icon
+						:shareContentList="[
+							{
+								id: 0,
+								title: '',
+								comment: { text: '', id: null },
+								url: referalLink,
+							},
+						]"
+						network="telegram"
+					></social-share-icon>
+				</ul>
 			</div>
 		</transition-group>
 
@@ -151,14 +266,18 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
+	import { useToast } from "vue-toastification";
 
 	import RateCard from "@/components/Rates/RateCard.vue";
 	import StatsCard from "@/components/Cabinet/Stats/StatsCard.vue";
 	import BriefCard from "@/components/Brief/BriefCard.vue";
+	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
+
+	import CheckIcon from "@/assets/icons/Home/CheckIcon.vue";
+
 	import { add_ticket } from "@/api/tickets";
 	import { payRate } from "@/api/userApi";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
-	import { useToast } from "vue-toastification";
 
 	export default {
 		name: "PageRates",
@@ -166,6 +285,17 @@
 			RateCard,
 			StatsCard,
 			BriefCard,
+			SocialShareIcon,
+			CheckIcon,
+		},
+		provide: {
+			shareParser(index) {
+				const referalLink = this.shareContentList[index].url;
+				window.open(
+					this.currentShareLink(index, referalLink),
+					"_blank"
+				);
+			},
 		},
 		watch: {
 			userRate() {},
@@ -375,6 +505,9 @@
 		}
 		&__referal {
 			margin: 6rem 0 0 0;
+			@media (max-width: 700px) {
+				margin: 0;
+			}
 		}
 
 		&__help {
@@ -437,7 +570,7 @@
 			display: grid;
 			grid-template-columns: repeat(2, 52rem);
 			grid-gap: 6rem 14rem;
-			@media (max-width: 1400px) {
+			@media (max-width: 1500px) {
 				grid-template-columns: repeat(2, 1fr);
 				grid-gap: 3rem 7rem;
 			}
@@ -605,40 +738,67 @@
 		border-radius: 1rem;
 		width: fit-content;
 
+		@media (max-width: 380px) {
+			padding: 1rem;
+		}
+
 		&__title {
 			font-size: 2.4rem;
 			font-weight: 700;
 			margin: 0 0 2rem 0;
 			color: $primary;
+			@media (max-width: 380px) {
+				font-size: 2rem;
+				margin: 0 0 1.8rem 0;
+			}
 		}
 		&__link {
 			font-size: 1.8rem;
-			padding: 0.5rem;
-			border: 1px solid rgba($color: $black, $alpha: 0.5);
-			background-color: $light-gray;
+			padding: 1rem 2rem;
+			border: 1px solid rgba($color: $black, $alpha: 0.8);
 			border-radius: 0.5rem;
+			@media (max-width: 1120px) {
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
 			&:hover {
 				cursor: pointer;
+			}
+			&_border_green {
+				color: rgba($color: green, $alpha: 0.9);
+				border-color: rgba($color: green, $alpha: 0.5);
+			}
+		}
+		&__copy-text {
+			font-size: 1.8rem;
+			color: rgba($color: green, $alpha: 0.9);
+			padding: 1rem 0;
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			visibility: hidden;
+			grid-column: 1/3;
+			&_visible {
+				visibility: visible;
+			}
+		}
+		:deep(.icon.referal__success-copy-icon) {
+			path {
+				fill: rgba($color: green, $alpha: 0.9);
 			}
 		}
 		&__horizontal-rule {
 			height: 0.1rem;
 			background-color: $light-gray;
 			border: none;
-			margin-bottom: 1.8rem;
 			grid-column: 1/3;
 		}
-	
-		:deep(.tooltip.referal__tooltip){
-			display: none;
-			grid-column: 2/3;
-		}
-		:deep(.tooltip.referal__tooltip_visible){
+		&__share {
 			display: flex;
-		}
-		&__tooltip-text {
-			font-size: 1.4rem;
-			color: $white;
+			align-items: center;
+			gap: 2rem;
+			margin: 3rem 0 0 0;
+			grid-column: 1/2;
 		}
 	}
 </style>
