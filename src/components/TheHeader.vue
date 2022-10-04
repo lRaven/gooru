@@ -91,110 +91,117 @@
 			<div class="the-header__col" v-if="!isClear">
 				<div
 					class="the-header__create"
-					v-if="isCabinetVersion === true && user.tariff"
+					v-if="isCabinetVersion === true"
 				>
-					<r-button
-						text="Новый источник"
-						@click="this.$router.push({ name: 'new_parser' })"
-					>
-						<template v-slot:icon>
-							<svg
-								width="16"
-								height="17"
-								viewBox="0 0 16 17"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-								class="r-button__icon"
-							>
-								<path
-									d="M8.3194 3.5V8.3731C8.3194 8.6196 8.1196 8.8194 7.8731 8.8194H3"
-									stroke="white"
-									stroke-width="1.5"
-									stroke-miterlimit="10"
-									stroke-linecap="round"
-								/>
-								<path
-									d="M8.32129 14.1387V9.26564C8.32129 9.01914 8.52109 8.81934 8.76759 8.81934H13.6407"
-									stroke="white"
-									stroke-width="1.5"
-									stroke-miterlimit="10"
-									stroke-linecap="round"
-								/>
-							</svg>
-						</template>
-					</r-button>
+					<template v-if="user.tariff">
+						<r-button
+							text="Новый источник"
+							@click="this.$router.push({ name: 'new_parser' })"
+						>
+							<template v-slot:icon>
+								<svg
+									width="16"
+									height="17"
+									viewBox="0 0 16 17"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="r-button__icon"
+								>
+									<path
+										d="M8.3194 3.5V8.3731C8.3194 8.6196 8.1196 8.8194 7.8731 8.8194H3"
+										stroke="white"
+										stroke-width="1.5"
+										stroke-miterlimit="10"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M8.32129 14.1387V9.26564C8.32129 9.01914 8.52109 8.81934 8.76759 8.81934H13.6407"
+										stroke="white"
+										stroke-width="1.5"
+										stroke-miterlimit="10"
+										stroke-linecap="round"
+									/>
+								</svg>
+							</template>
+						</r-button>
 
-					<r-button
-						v-if="user.tariff !== 'freelance'"
-						text="Новая группа источников"
-						@click="this.$router.push({ name: 'new_group_parser' })"
-					>
-						<template v-slot:icon>
-							<svg
-								width="16"
-								height="17"
-								viewBox="0 0 16 17"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-								class="r-button__icon"
-							>
-								<path
-									d="M10.8148 4.25V8.1732C10.8148 8.3716 10.6577 8.5325 10.4638 8.5325H6.63086"
-									stroke="white"
-									stroke-width="1.5"
-									stroke-miterlimit="10"
-									stroke-linecap="round"
-								/>
-								<path
-									d="M10.8164 12.8147V8.89153C10.8164 8.69313 10.9735 8.53223 11.1674 8.53223H15.0003"
-									stroke="white"
-									stroke-width="1.5"
-									stroke-miterlimit="10"
-									stroke-linecap="round"
-								/>
-								<path
-									d="M1 8.53223H3.6181"
-									stroke="white"
-									stroke-width="1.5"
-									stroke-miterlimit="10"
-									stroke-linecap="round"
-								/>
-								<path
-									d="M1 12.6089H3.6181"
-									stroke="white"
-									stroke-width="1.5"
-									stroke-miterlimit="10"
-									stroke-linecap="round"
-								/>
-								<path
-									d="M1 4.25H3.6181"
-									stroke="white"
-									stroke-width="1.5"
-									stroke-miterlimit="10"
-									stroke-linecap="round"
-								/>
-								<path
-									d="M6.63086 12.8149H8.03356"
-									stroke="white"
-									stroke-width="1.5"
-									stroke-miterlimit="10"
-									stroke-linecap="round"
-								/>
-								<path
-									d="M6.63086 4.25H8.03356"
-									stroke="white"
-									stroke-width="1.5"
-									stroke-miterlimit="10"
-									stroke-linecap="round"
-								/>
-							</svg>
-						</template>
-					</r-button>
+						<r-button
+							v-if="user.tariff !== 'freelance'"
+							text="Новая группа источников"
+							@click="
+								this.$router.push({ name: 'new_group_parser' })
+							"
+						>
+							<template v-slot:icon>
+								<svg
+									width="16"
+									height="17"
+									viewBox="0 0 16 17"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="r-button__icon"
+								>
+									<path
+										d="M10.8148 4.25V8.1732C10.8148 8.3716 10.6577 8.5325 10.4638 8.5325H6.63086"
+										stroke="white"
+										stroke-width="1.5"
+										stroke-miterlimit="10"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M10.8164 12.8147V8.89153C10.8164 8.69313 10.9735 8.53223 11.1674 8.53223H15.0003"
+										stroke="white"
+										stroke-width="1.5"
+										stroke-miterlimit="10"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M1 8.53223H3.6181"
+										stroke="white"
+										stroke-width="1.5"
+										stroke-miterlimit="10"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M1 12.6089H3.6181"
+										stroke="white"
+										stroke-width="1.5"
+										stroke-miterlimit="10"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M1 4.25H3.6181"
+										stroke="white"
+										stroke-width="1.5"
+										stroke-miterlimit="10"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M6.63086 12.8149H8.03356"
+										stroke="white"
+										stroke-width="1.5"
+										stroke-miterlimit="10"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M6.63086 4.25H8.03356"
+										stroke="white"
+										stroke-width="1.5"
+										stroke-miterlimit="10"
+										stroke-linecap="round"
+									/>
+								</svg>
+							</template>
+						</r-button>
+					</template>
 				</div>
 
 				<nav class="the-header__nav" v-if="isBlogVersion === true">
 					<ul class="the-header__links">
-						<li class="the-header__link" @click="handleRedirectToHome('#rates')">
+						<li
+							class="the-header__link"
+							@click="handleRedirectToHome('#rates')"
+						>
 							Тарифы
 						</li>
 						<li
@@ -203,18 +210,21 @@
 						>
 							Как это работает
 						</li>
-						<li class="the-header__link" @click="handleRedirectToHome('#about')">
-							О компании
-						</li>
 						<li
 							class="the-header__link"
-							@click="handleOpenBlog"
+							@click="handleRedirectToHome('#about')"
 						>
+							О компании
+						</li>
+						<li class="the-header__link" @click="handleOpenBlog">
 							Блог
 						</li>
 					</ul>
 				</nav>
-				<nav class="the-header__nav" v-else-if="isCabinetVersion === false">
+				<nav
+					class="the-header__nav"
+					v-else-if="isCabinetVersion === false"
+				>
 					<ul class="the-header__links">
 						<li class="the-header__link" @click="scroll('#rates')">
 							Тарифы
@@ -228,15 +238,11 @@
 						<li class="the-header__link" @click="scroll('#about')">
 							О компании
 						</li>
-						<li
-							class="the-header__link"
-							@click="handleOpenBlog"
-						>
+						<li class="the-header__link" @click="handleOpenBlog">
 							Блог
 						</li>
 					</ul>
 				</nav>
-				
 
 				<div class="the-header__buttons" v-if="user_auth === false">
 					<r-button
@@ -383,7 +389,7 @@
 				value: Boolean,
 				default: false,
 			},
-			isBlogVersion: { type: Boolean, default: false, },
+			isBlogVersion: { type: Boolean, default: false },
 			isClear: {
 				value: Boolean,
 				default: false,
@@ -428,15 +434,12 @@
 		methods: {
 			scroll,
 			handleRedirectToHome(anchor) {
-				this.$router.push({ name: 'home', params: { anchor } });
+				this.$router.push({ name: "home", params: { anchor } });
 			},
 			handleOpenBlog() {
-				this.$router.push({ name: 'blog' })
-				.catch(() => {
-					this.toast.error('Ошибка, попробуйте позднее');
+				this.$router.push({ name: "blog" }).catch(() => {
+					this.toast.error("Ошибка, попробуйте позднее");
 				});
-				
-				
 			},
 			paintHeaderWhenPageScrolled() {
 				this.$refs.header.classList.add("bg");
@@ -542,17 +545,17 @@
 			.the-header {
 				&__container {
 					display: grid;
-					grid-template-columns: 22rem 1fr;
+					grid-template-columns: max-content 1fr;
 					grid-gap: 4rem;
-
-					@media (max-width: 1140px) {
-						grid-template-columns: min-content max-content;
-					}
-					
-					
 				}
 				&__col {
 					justify-content: space-between;
+
+					&:last-child {
+						@media (max-width: 1023px) {
+							justify-self: end;
+						}
+					}
 				}
 				&__logo {
 					@media (max-width: 1023px) {

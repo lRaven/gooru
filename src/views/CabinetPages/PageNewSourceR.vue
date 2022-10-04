@@ -2,7 +2,7 @@
 	<section class="page-new-parser">
 		<h2 class="page-new-parser__title">Новый источник</h2>
 
-		<div class="page-new-parser__form" @submit.prevent="create_parsource">
+		<div class="page-new-parser__form">
 			<template v-if="user.role !== 'DefaultUser'">
 				<p class="page-new-parser__input-description">
 					Введите пользователя*
@@ -16,13 +16,17 @@
 			</template>
 			<component
 				:is="userTariffComponent"
-        class="page-new-parser__tariff-component"
+				:key="resetKey"
 				@change-form="handleChangeForm"
+				@change-form-valid-state="handleDisableFormSubmit"
+				class="page-new-parser__tariff-component"
 			/>
+			
 			<r-button
 				text="Отправить"
 				type="submit"
 				:disabled="isDisabledBtn || isCreateParsourseLoading"
+				@click="create_parsource"
 			></r-button>
 		</div>
 	</section>
@@ -47,8 +51,8 @@
 		data: () => ({
 			isDisabledBtn: true,
 			isCreateParsourseLoading: false,
-
-      newSourceData: null,
+			resetKey: 0,
+			newSourceData: null,
 			selectedUser: null,
 		}),
 
@@ -75,24 +79,31 @@
 			...mapMutations(["SET_TAB"]),
 			...mapActions(["getAllUsers", "getNotifications"]),
 
-      handleChangeForm(formState) {
-        this.isDisabledBtn = !formState.isValid
-        
-      },
+			handleChangeForm(formState) {
+				this.newSourceData = {...formState};
+			},
+			handleDisableFormSubmit(validationState) {
+				this.isDisabledBtn = !validationState;
+			},
+			handleResetForm() {
+				// возможно это не очень хорошее решение, мне оно самому не нравится
+				// однако так мы получаем легкий сброс всех данных, в том числе в оберточных компонентах
+				// не забиваем лишней логикой дочерний компонент формы и т.д.
+				this.resetKey += 1;
+				this.isDisabledBtn = true;
+				this.newSourceData = null;
+			},
 
 			async create_parsource() {
 				try {
 					this.isCreateParsourseLoading = true;
 
 					const response = await send_new_parsource({
-						name: this.new_parsource.name,
-						data_source: this.new_parsource.url,
-						description: this.new_parsource.description,
-						parse_fields: this.new_parsource.parse_fields,
+						...this.newSourceData
 					});
 
 					if (response.status === 201) {
-						this.resetForm();
+						this.handleResetForm();
 
 						console.log("New parsource created");
 						this.toast.success("Парсер создан");
@@ -119,9 +130,9 @@
 		},
 		created() {
 			this.SET_TAB("new_parser");
-      if (this.userRole === 'Manager') {
-        this.getAllUsers();
-      }
+			if (this.userRole === "Manager") {
+				this.getAllUsers();
+			}
 		},
 		setup() {
 			const toast = useToast();
@@ -156,23 +167,22 @@
 
 		&__form {
 			display: grid;
-			grid-template-columns: 32rem 1fr 15rem;
+			grid-template-columns: 32rem 1fr;
 			grid-gap: 3rem 4rem;
 			align-items: center;
+			max-width: 1400px;
 			@media (max-width: 1300px) {
 				grid-template-columns: 32rem minmax(30rem, 50rem);
 			}
 			@media (max-width: 1024px) {
 				grid-template-columns: 29rem 1fr;
 			}
-			@media (max-width: 700px) {
+			@media (max-width: 768px) {
 				grid-template-columns: 1fr;
-			}
-			@media (max-width: 540px) {
-				grid-gap: 2.5rem;
+				gap: 3rem 0;
 			}
 			@media (max-width: 450px) {
-				grid-gap: 1rem;
+				gap: 1rem 0;
 			}
 			.r-input,
 			.r-textarea {
@@ -186,9 +196,9 @@
 				height: 14.5rem;
 			}
 		}
-    &__tariff-component {
-      grid-column: 1/3;
-    }
+		&__tariff-component {
+			grid-column: 1/3;
+		}
 
 		&__input-description,
 		.r-button {

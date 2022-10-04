@@ -79,7 +79,7 @@
 				</router-link>
 			</div>
 
-			<div class="navigation-panel__create">
+			<div class="navigation-panel__create" v-if="user.tariff">
 				<r-button
 					color="bordered"
 					text="Новый источник"
@@ -115,6 +115,7 @@
 					</template>
 				</r-button>
 				<r-button
+					v-if="user.tariff !== 'freelance'"
 					color="bordered"
 					text="Новая группа источников"
 					@click="

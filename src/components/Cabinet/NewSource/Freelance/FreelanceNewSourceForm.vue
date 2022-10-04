@@ -78,6 +78,7 @@
 		},
 		emits: {
 			"change-form": null,
+			"change-form-valid-state": null,
 		},
 		data() {
 			return {
@@ -100,10 +101,12 @@
 					const processedForm = this.handleProcessFormData();
 					this.$emit("change-form", {
 						...processedForm,
-						isValid: this.isValid,
 					});
 				},
 				deep: true,
+			},
+			isValid() {
+				this.$emit("change-form-valid-state", this.isValid);
 			},
 		},
 		computed: {
@@ -163,6 +166,7 @@
 				processedForm.freelance_source =
 					this.formState.choosenExchange.filter((id) => id !== 3);
 				processedForm.description = this.formState.requirements;
+				processedForm.name = "Фриланс";
 				processedForm.keyWords = [...this.formState.parsingKeyWords];
 				return processedForm;
 			},
@@ -173,13 +177,18 @@
 <style lang="scss" scoped>
 	@import "@/assets/scss/variables";
 	.freelance-form {
-		@media (min-width: 1500px) {
-			display: grid;
-			grid-template-columns: max-content 1fr;
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		gap: 3rem 4rem;
+		@media (max-width: 1200px) {
+			display: flex;
+			flex-direction: column;
+			gap: 3rem;
 		}
-		display: flex;
-		flex-direction: column;
-		gap: 3rem;
+		@media (max-width: 550px) {
+			gap: 2rem;
+		}
+
 		&__input-description {
 			font-size: 2rem;
 			color: rgba(50, 50, 50, 0.7);
@@ -200,8 +209,10 @@
 			align-items: center;
 			flex-wrap: wrap;
 			gap: 1rem 2rem;
-			@media (min-width: 1500px) {
-				grid-column: 2/3;
+
+			@media (max-width: 550px) {
+				gap: 1rem 1.5rem;
+				grid-column: 1/2;
 			}
 		}
 	}
@@ -212,12 +223,17 @@
 			align-self: center;
 			grid-column: 2/3;
 		}
+		@media (max-width: 550px) {
+			display: grid;
+			gap: 1.5rem;
+		}
 
 		&__variant {
 			font-size: 1.8rem;
 			font-weight: 600;
 			padding: 1.5rem 2.5rem;
 			color: $primary;
+			text-align: center;
 			background-color: $white;
 			border: 2px solid transparent;
 			border-radius: 1rem;
@@ -230,6 +246,10 @@
 				cursor: pointer;
 				border-color: $primary;
 			}
+			&:last-child {
+				grid-column: 1/3;
+			}
+
 			&_active {
 				color: $white;
 				background-color: $primary;
@@ -245,6 +265,10 @@
 		border-radius: 1.5rem;
 		background-color: $primary;
 
+		@media (max-width: 550px) {
+			padding: 1rem 2rem;
+			gap: 1rem;
+		}
 		&__text {
 			font-size: 1.8rem;
 			line-height: 1.1;
@@ -255,8 +279,16 @@
 		&__remove-button {
 			background-color: transparent;
 			transition: all 0.2s ease;
+			svg {
+				width: 100%;
+				height: 100%;
+			}
 			path {
 				stroke-width: 3px;
+			}
+			@media (max-width: 550px) {
+				width: 20px;
+				height: 20px;
 			}
 			&:hover {
 				path {
