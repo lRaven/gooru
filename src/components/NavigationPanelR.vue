@@ -13,7 +13,7 @@
 			:icon="tabIcons[tab.text]"
 			:isActive="tab.id === currentTab?.id"
 			:isMinimized="isMenuMinimized"
-			@setTab="handleSetTab"
+			@setTab="$emit('navigate-to', tab.id)"
 		/>
 	</nav>
 </template>
@@ -34,14 +34,6 @@
 		},
 		components: {
 			NavigationItemR,
-		},
-		inject: ['handleNavigateTo'],
-		methods: {
-			handleSetTab(value) {
-				this.handleNavigateTo(value);
-				/* const choosenTab = this.tabs.find((tab) => tab.id === tabId);
-				this.$emit("navigate-to", choosenTab); */
-			},
 		},
 	};
 </script>

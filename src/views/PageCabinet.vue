@@ -6,13 +6,6 @@
 			@open_menu="handleOpenBar"
 			@close_menu="handleCloseBar"
 		></the-header>
-
-		<!-- <navigation-panel
-			:notifications="notifications"
-			:isSideBarMinimized="isSideBarMinimized"
-			@open_menu="open_menu"
-			@close_menu="close_menu"
-		></navigation-panel> -->
 		<side-bar
 			class="page-cabinet__side-bar"
 			:isSideBarMinimized="isSideBarMinimized"
@@ -63,6 +56,7 @@
 		navBarForAdmin,
 	} from "@/js/navigationPanelData";
 	import { mapState, mapActions } from "vuex";
+	// import store from "@/store";
 
 	export default {
 		name: "PageCabinet",
@@ -88,16 +82,6 @@
 			ProfileIcon,
 			UsersIcon,
 		},
-		provide: {
-			handleClick() {
-				console.log(this.name);
-				this.$emit("setTab", this.name);
-			},
-			handleNavigateTo(tabName) {
-				console.log(this);
-				this.$emit("navigate-to", tabName);
-			},
-		},
 		data: () => ({
 			isSideBarMinimized: false,
 			currentTabName: "parsources",
@@ -108,14 +92,14 @@
 					this.$router.push({ name: "login" });
 			},
 			//* при получении юзера, редиректить на дефолтную страницу юзера в случае если находимся на главной странице кабинета
-			userRole: {
+			/* userRole: {
 				handler() {
 					if (this.$route.name === "cabinet") {
 						this.redirectUserByRole(this.userRole);
 					}
 				},
 				deep: true,
-			},
+			}, */
 
 			//* при изменении url смотреть, если находимся на главной странице кабинета, то редирект на дефолтную страницу юзера
 			"$route.path"() {
@@ -123,7 +107,7 @@
 				if (routeName === "cabinet") {
 					this.redirectUserByRole(this.userRole);
 				} else {
-					this.currentTabName = routeName;
+					//this.currentTabName = routeName;
 				}
 			},
 		},
@@ -151,6 +135,7 @@
 			},
 			currentTab() {
 				return (currentTabName) => {
+					console.log(this.navigationTabs, currentTabName);
 					return this.navigationTabs.find(
 						(tab) => tab.name === currentTabName
 					);
@@ -160,16 +145,19 @@
 		methods: {
 			...mapActions(["getNotifications"]),
 
-			handleNavigate(currentTabName) {
+			handleNavigate(tabId) {
 				const navigationObject = {};
-				this.currentTabName = currentTabName;
+				const currentTab = this.navigationTabs.find(
+					({ id }) => id === tabId
+				);
 
-				if (this.currentTab(currentTabName)?.routeParams) {
+				this.currentTabName = currentTab.name;
+				if (currentTab?.routeParams) {
 					navigationObject.query = {};
 					navigationObject.query.page =
-						this.currentTab(currentTabName).routeParams.query.page;
+						currentTab.routeParams.query.page;
 				}
-				navigationObject.name = currentTabName;
+				navigationObject.name = currentTab.name;
 				this.$router.push(navigationObject);
 				if (this.document_width <= 1023) {
 					this.handleCloseBar();
@@ -215,12 +203,20 @@
 		},
 		created() {
 			this.getNotifications();
-			this.redirectUserByRole(this.userRole);
+			// this.redirectUserByRole(this.userRole);
 		},
 		mounted() {
 			this.document_width > 1023
 				? (this.isSideBarMinimized = false)
 				: (this.isSideBarMinimized = true);
+		},
+		beforeRouteEnter(to, from, next) {
+			next((vm) => {
+						vm.currentTabName = to.name;
+					});
+		},
+		beforeRouteUpdate(to) {
+			this.currentTabName = to.name;
 		},
 	};
 </script>

@@ -76,15 +76,6 @@
 			DefaultIcon /* eslint-disable */,
 			HowItWorks /* eslint-disable */,
 		},
-		provide: {
-			handleClick() {
-				this.$emit('setTab', this.id);
-			},
-			handleNavigateTo(tabId) {
-				const choosenTab = this.tabs.find((tab) => tab.id === tabId);
-				this.$emit("navigate-to", choosenTab);
-			},
-		},
 		data() {
 			return { isMenuMinimized: true, currentTab: null };
 		},
@@ -118,17 +109,17 @@
 		},
 		methods: {
 			scroll,
-			handleNavigate(tab) {
+			handleNavigate(tabId) {
 				/*
 				структура таба
 				{ id: 0, text: 'Тарифы', anchor: '#rates'}
 				*/
-				this.currentTab = tab;
-				if (tab?.anchor) {
-					scroll(tab.anchor);
+				this.currentTab = this.$options.navBarDataHome.find( ({ id }) => tabId === id );
+				if (this.currentTab?.anchor) {
+					scroll(this.currentTab.anchor);
 					this.isMenuMinimized = true;
 				} else {
-					this.$router.push({ name: tab.name });
+					this.$router.push({ name: this.currentTab.name });
 				}
 			},
 			handleOpenBar() {

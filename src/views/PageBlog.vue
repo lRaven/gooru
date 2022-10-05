@@ -124,13 +124,6 @@
 					console.log(error);
 				}
 			},
-			handleClick() {
-				this.$emit('setTab', this.id);
-			},
-			handleNavigateTo(tabId) {
-				const choosenTab = this.tabs.find((tab) => tab.id === tabId);
-				this.$emit("navigate-to", choosenTab);
-			},
 		},
 		data() {
 			return {
@@ -219,9 +212,10 @@
 				this.isNotFoundBlogTab = false;
 				this.$router.push({ name: "blog" });
 			},
-			handleNavigate(tabName) {
-				const params = tabName.params ? tabName.params : {};
-				this.$router.push({ name: tabName.name, params });
+			handleNavigate(tabId) {
+				const choosenTab = this.blogTabs.find( ({ id }) => tabId === id );
+				const params = choosenTab.params ? choosenTab.params : {};
+				this.$router.push({ name: choosenTab.name, params });
 				if (this.documentWidth <= 1023) {
 					this.isMenuMinimize = true;
 				}

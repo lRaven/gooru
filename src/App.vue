@@ -1,7 +1,8 @@
 <template>
 	<router-view v-slot="{ Component }">
 		<transition mode="out-in">
-			<component :is="Component" />
+			<component v-if="user?.role" :is="Component" />
+			<p v-else>LOADING</p>
 		</transition>
 	</router-view>
 </template>
@@ -48,7 +49,6 @@
 			this.getDocumentWidth();
 			this.getUserData();
 			this.getRates();
-			
 		},
 	};
 </script>

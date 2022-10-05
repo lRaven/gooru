@@ -5,7 +5,7 @@
 			'navigation-item_active': isActive,
 			'navigation-item_minimize': isMinimized,
 		}"
-		@click="handleClick"
+		@click="$emit('setTab')"
 	>
 		<component
 			:is="icon"
@@ -39,15 +39,6 @@
 			isMinimized: { type: Boolean, required: true },
 			isActive: { type: Boolean, required: true },
 		},
-		inject: ['handleClick'],
-		/* methods: {
-			handleClick() {
-				this.$emit("setTab", this.id);
-			},
-		}, */
-	created() {
-		console.log(this.name)
-	}
 	};
 </script>
 

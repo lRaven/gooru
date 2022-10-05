@@ -2,7 +2,7 @@ import axios from "axios";
 import store from "@/store";
 import cookie from "vue-cookies";
 
-const baseURL = store.state.baseURL;
+const baseURL = process.env.VUE_APP_BACK_URL;
 
 //* auth
 const registration = async ({ email, password }) => {
