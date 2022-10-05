@@ -143,7 +143,7 @@
 				</div>
 			</template>
 			<div
-				v-if="hasSelectedTariff && documentWidth > 700"
+				v-if="!pendingForCapture && documentWidth > 700"
 				class="referal page-rates__referal"
 			>
 				<h3 class="referal__title">Реферальная программа</h3>
