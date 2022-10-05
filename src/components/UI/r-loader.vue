@@ -76,20 +76,4 @@
 			stroke-dashoffset: -124;
 		}
 	}
-
-	@keyframes color {
-		0% {
-			stroke: $primary;
-		}
-		40% {
-			stroke: $primary;
-		}
-		66% {
-			stroke: $primary;
-		}
-		80%,
-		90% {
-			stroke: $primary;
-		}
-	}
 </style>

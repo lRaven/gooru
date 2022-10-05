@@ -13,6 +13,7 @@
 			@close-bar="handleCloseBar"
 		>
 			<navigation-panel-r
+				v-if="userRole"
 				class="page-cabinet__navigation-panel"
 				:tabs="navigationTabs"
 				:tabIcons="$options.tabIcons"
@@ -20,6 +21,7 @@
 				:isMenuMinimized="isSideBarMinimized"
 				@navigate-to="handleNavigate"
 			/>
+			<r-loader class="page-cabinet__side-bar-loader" v-else />
 		</side-bar>
 
 		<main class="page-cabinet__main main">
@@ -28,10 +30,6 @@
 					<component :is="Component" />
 				</transition>
 			</router-view>
-
-			<transition mode="out-in">
-				<r-loader v-if="$route.name === 'cabinet'" />
-			</transition>
 		</main>
 	</div>
 </template>
@@ -56,7 +54,7 @@
 		navBarForAdmin,
 	} from "@/js/navigationPanelData";
 	import { mapState, mapActions } from "vuex";
-	// import store from "@/store";
+	import store from "@/store";
 
 	export default {
 		name: "PageCabinet",
@@ -91,25 +89,6 @@
 				if (this.user_auth === false)
 					this.$router.push({ name: "login" });
 			},
-			//* при получении юзера, редиректить на дефолтную страницу юзера в случае если находимся на главной странице кабинета
-			/* userRole: {
-				handler() {
-					if (this.$route.name === "cabinet") {
-						this.redirectUserByRole(this.userRole);
-					}
-				},
-				deep: true,
-			}, */
-
-			//* при изменении url смотреть, если находимся на главной странице кабинета, то редирект на дефолтную страницу юзера
-			"$route.path"() {
-				const routeName = this.$route.name;
-				if (routeName === "cabinet") {
-					this.redirectUserByRole(this.userRole);
-				} else {
-					//this.currentTabName = routeName;
-				}
-			},
 		},
 		computed: {
 			...mapState({
@@ -135,7 +114,7 @@
 			},
 			currentTab() {
 				return (currentTabName) => {
-					console.log(this.navigationTabs, currentTabName);
+					console.log(this.navigationTabs, this.currentTabName);
 					return this.navigationTabs.find(
 						(tab) => tab.name === currentTabName
 					);
@@ -203,7 +182,6 @@
 		},
 		created() {
 			this.getNotifications();
-			// this.redirectUserByRole(this.userRole);
 		},
 		mounted() {
 			this.document_width > 1023
@@ -211,9 +189,93 @@
 				: (this.isSideBarMinimized = true);
 		},
 		beforeRouteEnter(to, from, next) {
-			next((vm) => {
-						vm.currentTabName = to.name;
+			let userRole = store.state.cabinet.user?.role;
+			console.log(from);
+			if (!userRole) {
+				const unsubscribe = store.subscribe((mutation) => {
+					if (mutation.type === "SET_USER_DATA") {
+						userRole = mutation.payload.role;
+						unsubscribe();
+					}
+				});
+			}
+			if (from.name === "login") {
+				next((vm) => {
+					switch (userRole) {
+						case "DefaultUser":
+							vm.$router.push({
+								name: "parsources",
+								query: { page: 1 },
+							});
+							break;
+						case "Manager":
+							vm.$router.push({
+								name: "appeals",
+								query: { page: 1 },
+							});
+							break;
+						case "AdminCRM":
+							vm.$router.push({
+								name: "users",
+								query: { page: 1 },
+							});
+							break;
+						default:
+							vm.$router.push({
+								name: "parsources",
+								query: { page: 1 },
+							});
+							break;
+					}
+				});
+			} else if (from.name === "home") {
+				/* на главной странице в секции тарифов при клике по кнопке 'Выбрать'
+					если пользователь залогинен происходит редирект с query-параметром from = ratesPopup
+				 */
+				const redirectWithQueryParam = to.query?.from;
+				if (redirectWithQueryParam) {
+					next((vm) => {
+						switch (userRole) {
+							case "DefaultUser":
+								vm.$router.push({
+									name: "rates",
+								});
+								break;
+							case "AdminCRM":
+								vm.$router.push({
+									name: "control",
+								});
+								break;
+							default:
+								vm.$router.push({
+									name: "profile",
+								});
+								break;
+						}
 					});
+				} else {
+					next((vm) => {
+						switch (userRole) {
+							case "AdminCRM":
+								vm.$router.push({
+									name: "users",
+									query: { page: 1 },
+								});
+								break;
+							default:
+								vm.$router.push({
+									name: "parsources",
+									query: { page: 1 },
+								});
+								break;
+						}
+					});
+				}
+			} else {
+				next((vm) => {
+					vm.currentTabName = to.name;
+				});
+			}
 		},
 		beforeRouteUpdate(to) {
 			this.currentTabName = to.name;
@@ -234,7 +296,16 @@
 			grid-template-columns: 1fr;
 		}
 		&__side-bar {
+			position: relative;
 			margin-top: 6.4rem;
+		}
+		:deep(.r-loader.page-cabinet__side-bar-loader) {
+			top: 25%;
+			.r-loader__icon {
+				.r-loader__path {
+					stroke: $white;
+				}
+			}
 		}
 		&__navigation-panel {
 			:deep(.navigation-item) {

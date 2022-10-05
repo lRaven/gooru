@@ -1,8 +1,7 @@
 <template>
 	<router-view v-slot="{ Component }">
 		<transition mode="out-in">
-			<component v-if="user?.role" :is="Component" />
-			<p v-else>LOADING</p>
+			<component :is="Component" />
 		</transition>
 	</router-view>
 </template>
@@ -12,10 +11,6 @@
 
 	export default {
 		watch: {
-			$route(to) {
-				document.title = to.meta.title || "Default Title";
-			},
-
 			"$route.path"() {
 				//* срабатывает при переходе по router-link
 				document.querySelector("body").classList.remove("locked");
