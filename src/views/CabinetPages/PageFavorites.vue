@@ -158,7 +158,7 @@
 			FavoriteContentItem,
 		},
 		provide: {
-			async shareParser(index) {
+			async share(index) {
 				const { share_url, id, is_public } = this.shareContentList[index];
 				try {
 					if (!is_public) {
@@ -238,7 +238,7 @@
 				if (triggerdParser.isSelect) {
 					this.selectedParsers.push(triggerdParser);
 				} else {
-					this.selectedParsers = this.selectedParsers.filter( parser => parser.id!== triggerdParser.id);
+					this.selectedParsers = this.selectedParsers.filter( parser => parser.id !== triggerdParser.id);
 				}
 			},
 		},

@@ -92,7 +92,7 @@
 <script>
 	import TheHeader from "@/components/TheHeader.vue";
 	import SideBar from "@/components/SideBar.vue";
-	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
+	import SocialShareIcon from "@/components/Cabinet/SocialShare.vue";
 
 	import { getSharedParser } from "@/api/parser";
 
@@ -106,7 +106,7 @@
 			SocialShareIcon,
 		},
 		provide: {
-			async shareParser(index) {
+			async share(index) {
 				const { shareUrl } = this.shareContentList[index];
 				try {
 					window.open(

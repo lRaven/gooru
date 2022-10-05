@@ -11,10 +11,11 @@
 					selected_item="ФИО"
 					:list="managerUsers"
 					showedValue="username"
-					v-model="selectedUser"
+					v-model="selectedUserId"
 				></r-dropdown>
 			</template>
 			<component
+				v-if="selectedUserId && user.role !== 'DefaultUser'"
 				:is="userTariffComponent"
 				:key="resetKey"
 				@change-form="handleChangeForm"
@@ -43,7 +44,7 @@
 	import DefaultForm from "@/components/Cabinet/NewSource/Default/DefaultNewSourceForm.vue";
 
 	export default {
-		name: "PageNewSourceR",
+		name: "PageNewSource",
 		components: {
 			FreelanceForm,
 			DefaultForm,
@@ -53,7 +54,7 @@
 			isCreateParsourseLoading: false,
 			resetKey: 0,
 			newSourceData: null,
-			selectedUser: null,
+			selectedUserId: null,
 		}),
 
 		computed: {
@@ -67,7 +68,20 @@
 				return this.users.filter((user) => user.role === "DefaultUser");
 			},
 			userTariffComponent() {
-				switch (this.user.tariff) {
+				let formType = '';
+				if (this.userRole === 'DefaultUser') {
+					formType = this.user.tariff;
+				} else {
+					const selectedUser = this.users.find( ({ id }) => id === this.selectedUserId);
+					const tariffGroup = selectedUser.groups.find( ( { name } ) => name.toLowerCase().includes('tariff'));
+					if (tariffGroup) {
+						const [ , tariff] = tariffGroup.name.split(' ');
+						formType = tariff.toLowerCase();
+					} else {
+						formType = 'default';
+					}
+				}
+				switch (formType) {
 					case "freelance":
 						return FreelanceForm;
 					default:
@@ -97,7 +111,9 @@
 			async create_parsource() {
 				try {
 					this.isCreateParsourseLoading = true;
-
+					if (this.selectedUserId) {
+						this.newSourceData.user = this.selectedUserId;
+					}
 					const response = await send_new_parsource({
 						...this.newSourceData
 					});

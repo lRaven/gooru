@@ -80,7 +80,7 @@
 <script>
 	import { useToast } from "vue-toastification";
 	export default {
-		name: "SocialShareIcon",
+		name: "SocialShare",
 		emits: {
 			"complete-sharing": null,
 		},
@@ -94,7 +94,7 @@
 				required: true,
 			},
 		},
-		inject: ['shareParser'],
+		inject: ['share'],
 		data() {
 			return {
 				isPopupOpen: false,
@@ -165,9 +165,6 @@
 						default:
 							return "/img/icon/cabinet/share.svg";
 					}
-			},
-			share(index) {
-				this.shareParser(index);
 			},
 			completeSharing() {
 				this.closePopup();

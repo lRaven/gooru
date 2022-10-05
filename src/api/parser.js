@@ -11,11 +11,8 @@ const send_new_parsource = async (args) => {
 	try {
 		const response = await axios.post(
 			`${store.state.baseURL}/parsource/`,
-			{
-				name: args.name,
-				data_source: args.data_source,
-				description: args.description,
-				parse_fields: args.parse_fields,
+			{	
+				...args
 			},
 			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 		);

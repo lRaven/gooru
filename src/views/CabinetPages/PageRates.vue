@@ -271,7 +271,7 @@
 	import RateCard from "@/components/Rates/RateCard.vue";
 	import StatsCard from "@/components/Cabinet/Stats/StatsCard.vue";
 	import BriefCard from "@/components/Brief/BriefCard.vue";
-	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
+	import SocialShareIcon from "@/components/Cabinet/SocialShare.vue";
 
 	import CheckIcon from "@/assets/icons/Home/CheckIcon.vue";
 
@@ -289,7 +289,7 @@
 			CheckIcon,
 		},
 		provide: {
-			shareParser(index) {
+			share(index) {
 				const referalLink = this.shareContentList[index].url;
 				window.open(
 					this.currentShareLink(index, referalLink),

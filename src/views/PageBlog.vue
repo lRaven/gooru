@@ -43,16 +43,16 @@
 						</svg>
 					</template>
 					<template v-else>
-						<social-share-icon
+						<social-share
 							class="social-icon_background-color_white"
 							network="odnoklassniki"
 							:shareContentList="sharedArticle"
 						/>
-						<social-share-icon
+						<social-share
 							network="vk"
 							:shareContentList="sharedArticle"
 						/>
-						<social-share-icon
+						<social-share
 							network="telegram"
 							:shareContentList="sharedArticle"
 						/>
@@ -82,7 +82,7 @@
 	import TheHeader from "@/components/TheHeader.vue";
 	import SideBar from "@/components/SideBar.vue";
 	import NavigationPanelR from "@/components/NavigationPanelR.vue";
-	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
+	import SocialShare from "@/components/Cabinet/SocialShare.vue";
 
 	import InfinityIcon from "@/assets/icons/InfinityIcon.vue";
 	import ParsingIcon from "@/assets/icons/ParsingIcon.vue";
@@ -105,14 +105,14 @@
 			TheHeader,
 			NavigationPanelR,
 			SideBar,
-			SocialShareIcon,
+			SocialShare,
 			ParsingIcon,
 			TechnologyIcon,
 			InfinityIcon,
 			FileIcon,
 		},
 		provide: {
-			async shareParser(index) {
+			share(index) {
 				const { shareUrl } = this.shareContentList[index];
 				try {
 					window.open(
@@ -196,7 +196,7 @@
 				if (matchedArticle) {
 					const { title, id } = matchedArticle;
 					const shareUrl = `${process.env.VUE_APP_FRONTEND_URL}${this.$route.fullPath}`;
-					return [{ title, id, url: window.location, comment: { text: "", id: null }, shareUrl, },];
+					return [{ title, id, url: shareUrl, comment: { text: "", id: null }, shareUrl },];
 				}
 				return [];
 			},

@@ -392,7 +392,7 @@
 			RightPanel,
 		},
 		provide: {
-			async shareParser(index) {
+			async share(index) {
 				const { share_url, id } = this.shareContentList[index];
 				try {
 					await editParserData({

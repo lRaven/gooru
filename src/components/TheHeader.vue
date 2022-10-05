@@ -93,7 +93,7 @@
 					class="the-header__create"
 					v-if="isCabinetVersion === true"
 				>
-					<template v-if="user.tariff">
+					<template v-if="user.tariff || user.role !== 'DefaultUser'">
 						<r-button
 							text="Новый источник"
 							@click="this.$router.push({ name: 'new_parser' })"
@@ -126,7 +126,7 @@
 						</r-button>
 
 						<r-button
-							v-if="user.tariff !== 'freelance'"
+							v-if="user.tariff !== 'freelance' || user.role !== 'DefaultUser'"
 							text="Новая группа источников"
 							@click="
 								this.$router.push({ name: 'new_group_parser' })

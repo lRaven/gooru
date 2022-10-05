@@ -16,20 +16,20 @@
 					class="the-favorites__right-panel-social"
 					@click.capture="handleClickSharedIcon($event)"
 				>
-					<social-share-icon
+					<social-share
 						:shareContentList="selectedParsers"
 						network="odnoklassniki"
-					></social-share-icon>
+					></social-share>
 
-					<social-share-icon
+					<social-share
 						:shareContentList="selectedParsers"
 						network="vk"
-					></social-share-icon>
+					></social-share>
 
-					<social-share-icon
+					<social-share
 						:shareContentList="selectedParsers"
 						network="telegram"
-					></social-share-icon>
+					></social-share>
 				</div>
 				<p class="the-favorites__right-panel-alert-message">
 					{{ alertMessage }}
@@ -85,7 +85,7 @@
 	import { multiaction_delete } from "@/api/multiaction_delete";
 	import { downloadFile, } from "@/api/parser";
 
-	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
+	import SocialShare from "@/components/Cabinet/SocialShare.vue";
 
 	export default {
 		name: 'TheFavoritesRightPanel',
@@ -105,7 +105,7 @@
 			},
 		},
 		components: {
-			SocialShareIcon,
+			SocialShare,
 		},
 		data: () => ({
 			confirmRemoveValue: false,

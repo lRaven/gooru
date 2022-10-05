@@ -209,10 +209,13 @@
 			align-items: center;
 			flex-wrap: wrap;
 			gap: 1rem 2rem;
-
+			grid-column: 2/3;
+			@media (max-width: 1200px) {
+				grid-column: 1/2;
+			}
 			@media (max-width: 550px) {
 				gap: 1rem 1.5rem;
-				grid-column: 1/2;
+
 			}
 		}
 	}

@@ -336,7 +336,7 @@
 </template>
 
 <script>
-	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
+	import SocialShareIcon from "@/components/Cabinet/SocialShare.vue";
 
 	import { directive } from "vue3-click-away";
 	import { mapState, mapActions, mapMutations } from "vuex";
