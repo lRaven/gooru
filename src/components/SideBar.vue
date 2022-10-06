@@ -134,12 +134,11 @@
 			}
 		}
 		&__logo {
-			visibility: hidden;
-			display: inline;
+			display: none;
 			color: #fff;
 			font-size: 1.6rem;
 			@media (max-width: 1023px) {
-				visibility: visible;
+				display: inline;
 			}
 		}
 		&__cross-icon {

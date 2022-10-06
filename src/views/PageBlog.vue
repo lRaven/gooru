@@ -13,14 +13,13 @@
 			@close-bar="handleCloseMenu"
 			@open-bar="handleOpenMenu"
 		>
-			<navigation-panel-r
+			<navigation-panel
 				:tabs="blogTabs"
 				:tabIcons="tabIcons"
 				:currentTab="currentTab"
 				:isMenuMinimized="isMenuMinimize"
 				@navigate-to="handleNavigate"
-			>
-			</navigation-panel-r>
+			/>
 			<template v-if="sharedArticle.length">
 				<div
 					class="social-media"
@@ -81,7 +80,7 @@
 <script>
 	import TheHeader from "@/components/TheHeader.vue";
 	import SideBar from "@/components/SideBar.vue";
-	import NavigationPanelR from "@/components/NavigationPanelR.vue";
+	import NavigationPanel from "@/components/NavigationPanel.vue";
 	import SocialShareIcon from "@/components/Cabinet/SocialShareIcon.vue";
 
 	import InfinityIcon from "@/assets/icons/InfinityIcon.vue";
@@ -103,7 +102,7 @@
 	export default {
 		components: {
 			TheHeader,
-			NavigationPanelR,
+			NavigationPanel,
 			SideBar,
 			SocialShareIcon,
 			ParsingIcon,

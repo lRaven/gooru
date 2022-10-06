@@ -12,8 +12,7 @@
 			@open-bar="handleOpenBar"
 			@close-bar="handleCloseBar"
 		>
-			<navigation-panel-r
-				v-if="userRole"
+			<navigation-panel
 				class="page-cabinet__navigation-panel"
 				:tabs="navigationTabs"
 				:tabIcons="$options.tabIcons"
@@ -21,7 +20,6 @@
 				:isMenuMinimized="isSideBarMinimized"
 				@navigate-to="handleNavigate"
 			/>
-			<r-loader class="page-cabinet__side-bar-loader" v-else />
 		</side-bar>
 
 		<main class="page-cabinet__main main">
@@ -36,9 +34,8 @@
 
 <script>
 	import TheHeader from "@/components/TheHeader";
-	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
 	import SideBar from "@/components/SideBar.vue";
-	import NavigationPanelR from "@/components/NavigationPanelR.vue";
+	import NavigationPanel from "@/components/NavigationPanel.vue";
 
 	import RatesIcon from "@/assets/icons/Cabinet/NavigationPanel/RatesIcon.vue";
 	import ParsersIcon from "@/assets/icons/Cabinet/NavigationPanel/ParsersIcon.vue";
@@ -52,7 +49,8 @@
 		navBarForUser,
 		navBarForManager,
 		navBarForAdmin,
-	} from "@/js/navigationPanelData";
+		navigateCabinet,
+	} from "@/router/navigationUtils";
 	import { mapState, mapActions } from "vuex";
 	import store from "@/store";
 
@@ -70,9 +68,8 @@
 		},
 		components: {
 			TheHeader,
-			NavigationPanel,
 			SideBar,
-			NavigationPanelR,
+			NavigationPanel,
 			RatesIcon,
 			ParsersIcon,
 			FavoritesIcon,
@@ -114,7 +111,6 @@
 			},
 			currentTab() {
 				return (currentTabName) => {
-					console.log(this.navigationTabs, this.currentTabName);
 					return this.navigationTabs.find(
 						(tab) => tab.name === currentTabName
 					);
@@ -148,37 +144,6 @@
 			handleCloseBar() {
 				this.isSideBarMinimized = true;
 			},
-
-			//* редирект на дефолтную страницу кабинета в зависимости от роли юзера
-			redirectUserByRole(role) {
-				switch (role) {
-					case "DefaultUser": {
-						if (this.$route.query.from === "ratePopup") {
-							this.$router.push({ name: "rates" });
-						} else {
-							this.$router.push({
-								name: "parsources",
-								query: { page: 1 },
-							});
-						}
-						break;
-					}
-					case "Manager": {
-						this.$router.push({
-							name: "parsources",
-							query: { page: 1 },
-						});
-						break;
-					}
-					case "AdminCRM": {
-						this.$router.push({
-							name: "users",
-							query: { page: 1 },
-						});
-						break;
-					}
-				}
-			},
 		},
 		created() {
 			this.getNotifications();
@@ -190,90 +155,37 @@
 		},
 		beforeRouteEnter(to, from, next) {
 			let userRole = store.state.cabinet.user?.role;
-			console.log(from);
+			/* к сожалению эти хуки не поддерживают асинхронность 
+			не получилось сделать этот код совсем плоским, но по крайней мере 
+			удалось избавиться от ещё более ужасных ветвлений*/
 			if (!userRole) {
+				// подписка на события мутаций в сторе, т.к. запрос о данных пользователя уже ушел на сервер
 				const unsubscribe = store.subscribe((mutation) => {
 					if (mutation.type === "SET_USER_DATA") {
 						userRole = mutation.payload.role;
+						const redirectObject = navigateCabinet(
+							userRole,
+							to,
+							from
+						);
+						next((vm) => {
+							if (redirectObject) {
+								vm.$router.push(redirectObject);
+							} else {
+								vm.currentTabName = to.name;
+							}
+						});
 						unsubscribe();
 					}
 				});
-			}
-			if (from.name === "login") {
-				next((vm) => {
-					switch (userRole) {
-						case "DefaultUser":
-							vm.$router.push({
-								name: "parsources",
-								query: { page: 1 },
-							});
-							break;
-						case "Manager":
-							vm.$router.push({
-								name: "appeals",
-								query: { page: 1 },
-							});
-							break;
-						case "AdminCRM":
-							vm.$router.push({
-								name: "users",
-								query: { page: 1 },
-							});
-							break;
-						default:
-							vm.$router.push({
-								name: "parsources",
-								query: { page: 1 },
-							});
-							break;
-					}
-				});
-			} else if (from.name === "home") {
-				/* на главной странице в секции тарифов при клике по кнопке 'Выбрать'
-					если пользователь залогинен происходит редирект с query-параметром from = ratesPopup
-				 */
-				const redirectWithQueryParam = to.query?.from;
-				if (redirectWithQueryParam) {
-					next((vm) => {
-						switch (userRole) {
-							case "DefaultUser":
-								vm.$router.push({
-									name: "rates",
-								});
-								break;
-							case "AdminCRM":
-								vm.$router.push({
-									name: "control",
-								});
-								break;
-							default:
-								vm.$router.push({
-									name: "profile",
-								});
-								break;
-						}
-					});
-				} else {
-					next((vm) => {
-						switch (userRole) {
-							case "AdminCRM":
-								vm.$router.push({
-									name: "users",
-									query: { page: 1 },
-								});
-								break;
-							default:
-								vm.$router.push({
-									name: "parsources",
-									query: { page: 1 },
-								});
-								break;
-						}
-					});
-				}
 			} else {
+				const redirectObject = navigateCabinet(userRole, to, from);
 				next((vm) => {
-					vm.currentTabName = to.name;
+					if (redirectObject) {
+						vm.$router.push(redirectObject);
+					} else {
+						vm.currentTabName = to.name;
+					}
 				});
 			}
 		},

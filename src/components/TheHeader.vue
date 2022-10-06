@@ -193,7 +193,10 @@
 
 				<nav class="the-header__nav" v-if="isBlogVersion === true">
 					<ul class="the-header__links">
-						<li class="the-header__link" @click="handleRedirectToHome('#rates')">
+						<li
+							class="the-header__link"
+							@click="handleRedirectToHome('#rates')"
+						>
 							Тарифы
 						</li>
 						<li
@@ -202,18 +205,21 @@
 						>
 							Как это работает
 						</li>
-						<li class="the-header__link" @click="handleRedirectToHome('#about')">
-							О компании
-						</li>
 						<li
 							class="the-header__link"
-							@click="handleOpenBlog"
+							@click="handleRedirectToHome('#about')"
 						>
+							О компании
+						</li>
+						<li class="the-header__link" @click="handleOpenBlog">
 							Блог
 						</li>
 					</ul>
 				</nav>
-				<nav class="the-header__nav" v-else-if="isCabinetVersion === false">
+				<nav
+					class="the-header__nav"
+					v-else-if="isCabinetVersion === false"
+				>
 					<ul class="the-header__links">
 						<li class="the-header__link" @click="scroll('#rates')">
 							Тарифы
@@ -227,15 +233,11 @@
 						<li class="the-header__link" @click="scroll('#about')">
 							О компании
 						</li>
-						<li
-							class="the-header__link"
-							@click="handleOpenBlog"
-						>
+						<li class="the-header__link" @click="handleOpenBlog">
 							Блог
 						</li>
 					</ul>
 				</nav>
-				
 
 				<div class="the-header__buttons" v-if="user_auth === false">
 					<r-button
@@ -290,6 +292,7 @@
 							v-if="isProfileOpened === true"
 						>
 							<li
+								v-if="!isCabinetVersion"
 								class="the-header__account-menu-item"
 								@click="
 									this.$router.push({ name: 'cabinet' });
@@ -382,7 +385,7 @@
 				value: Boolean,
 				default: false,
 			},
-			isBlogVersion: { type: Boolean, default: false, },
+			isBlogVersion: { type: Boolean, default: false },
 			isClear: {
 				value: Boolean,
 				default: false,
@@ -427,15 +430,12 @@
 		methods: {
 			scroll,
 			handleRedirectToHome(anchor) {
-				this.$router.push({ name: 'home', params: { anchor } });
+				this.$router.push({ name: "home", params: { anchor } });
 			},
 			handleOpenBlog() {
-				this.$router.push({ name: 'blog' })
-				.catch(() => {
-					this.toast.error('Ошибка, попробуйте позднее');
+				this.$router.push({ name: "blog" }).catch(() => {
+					this.toast.error("Ошибка, попробуйте позднее");
 				});
-				
-				
 			},
 			paintHeaderWhenPageScrolled() {
 				this.$refs.header.classList.add("bg");
@@ -547,8 +547,6 @@
 					@media (max-width: 1140px) {
 						grid-template-columns: min-content max-content;
 					}
-					
-					
 				}
 				&__col {
 					justify-content: space-between;
