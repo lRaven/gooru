@@ -112,7 +112,7 @@
 			currentTab() {
 				return (currentTabName) => {
 					return this.navigationTabs.find(
-						(tab) => tab.name === currentTabName
+						(tab) => tab.name.includes(currentTabName) 
 					);
 				};
 			},
