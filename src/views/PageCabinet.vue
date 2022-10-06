@@ -111,8 +111,8 @@
 			},
 			currentTab() {
 				return (currentTabName) => {
-					return this.navigationTabs.find(
-						(tab) => tab.name.includes(currentTabName) 
+					return this.navigationTabs.find((tab) =>
+						tab.name.includes(currentTabName)
 					);
 				};
 			},
@@ -208,8 +208,10 @@
 			grid-template-columns: 1fr;
 		}
 		&__side-bar {
-			position: relative;
 			margin-top: 6.4rem;
+			@media (max-width: 1023px) {
+				margin-top: 0;
+			}
 		}
 		:deep(.r-loader.page-cabinet__side-bar-loader) {
 			top: 25%;
