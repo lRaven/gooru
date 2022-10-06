@@ -5,7 +5,7 @@
 			'navigation-item_active': isActive,
 			'navigation-item_minimize': isMinimized,
 		}"
-		@click="handleClick"
+		@click="$emit('setTab')"
 	>
 		<component
 			:is="icon"
@@ -26,22 +26,18 @@
 
 <script>
 	export default {
-		name: "NavigationItemR",
+		name: "NavigationItem",
 		emits: {
 			setTab: null,
 		},
 		props: {
 			id: { type: Number, required: true },
+			name: { type: String, required: true, },
 			text: { type: String, required: true },
 			icon: { type: Object, required: true },
 			notificationCount: { type: Number, default: 0 },
 			isMinimized: { type: Boolean, required: true },
 			isActive: { type: Boolean, required: true },
-		},
-		methods: {
-			handleClick() {
-				this.$emit("setTab", this.id);
-			},
 		},
 	};
 </script>

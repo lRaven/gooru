@@ -2,17 +2,25 @@
 	<div class="page-cabinet theme-container">
 		<the-header
 			:isCabinetVersion="true"
-			:isMenuMinimized="isMenuMinimized"
-			@open_menu="open_menu"
-			@close_menu="close_menu"
+			:isMenuMinimized="isSideBarMinimized"
+			@open_menu="handleOpenBar"
+			@close_menu="handleCloseBar"
 		></the-header>
-
-		<navigation-panel
-			:notifications="notifications"
-			:isMenuMinimized="isMenuMinimized"
-			@open_menu="open_menu"
-			@close_menu="close_menu"
-		></navigation-panel>
+		<side-bar
+			class="page-cabinet__side-bar"
+			:isSideBarMinimized="isSideBarMinimized"
+			@open-bar="handleOpenBar"
+			@close-bar="handleCloseBar"
+		>
+			<navigation-panel
+				class="page-cabinet__navigation-panel"
+				:tabs="navigationTabs"
+				:tabIcons="$options.tabIcons"
+				:currentTab="currentTab(currentTabName)"
+				:isMenuMinimized="isSideBarMinimized"
+				@navigate-to="handleNavigate"
+			/>
+		</side-bar>
 
 		<main class="page-cabinet__main main">
 			<router-view v-slot="{ Component }">
@@ -20,45 +28,63 @@
 					<component :is="Component" />
 				</transition>
 			</router-view>
-
-			<transition mode="out-in">
-				<r-loader v-if="$route.name === 'cabinet'" />
-			</transition>
 		</main>
 	</div>
 </template>
 
 <script>
-	import { mapState, mapActions } from "vuex";
 	import TheHeader from "@/components/TheHeader";
-	import NavigationPanel from "@/components/Cabinet/NavigationPanel";
+	import SideBar from "@/components/SideBar.vue";
+	import NavigationPanel from "@/components/NavigationPanel.vue";
+
+	import RatesIcon from "@/assets/icons/Cabinet/NavigationPanel/RatesIcon.vue";
+	import ParsersIcon from "@/assets/icons/Cabinet/NavigationPanel/ParsersIcon.vue";
+	import FavoritesIcon from "@/assets/icons/Cabinet/NavigationPanel/FavoritesIcon.vue";
+	import AppealsIcon from "@/assets/icons/Cabinet/NavigationPanel/AppealsIcon.vue";
+	import ProfileIcon from "@/assets/icons/Cabinet/NavigationPanel/ProfileIcon.vue";
+	import UsersIcon from "@/assets/icons/Cabinet/NavigationPanel/UsersIcon.vue";
+	import ControlIcon from "@/assets/icons/Cabinet/NavigationPanel/ControlIcon.vue";
+
+	import {
+		navBarForUser,
+		navBarForManager,
+		navBarForAdmin,
+		navigateCabinet,
+	} from "@/router/navigationUtils";
+	import { mapState, mapActions } from "vuex";
+	import store from "@/store";
 
 	export default {
 		name: "PageCabinet",
+		tabIcons: {
+			Подписка: RatesIcon,
+			Обращения: AppealsIcon,
+			"Мои парсеры": ParsersIcon,
+			"Все парсеры": ParsersIcon,
+			Избранное: FavoritesIcon,
+			"Мой профиль": ProfileIcon,
+			Пользователи: UsersIcon,
+			Управление: ControlIcon,
+		},
 		components: {
 			TheHeader,
+			SideBar,
 			NavigationPanel,
+			RatesIcon,
+			ParsersIcon,
+			FavoritesIcon,
+			AppealsIcon,
+			ProfileIcon,
+			UsersIcon,
 		},
+		data: () => ({
+			isSideBarMinimized: false,
+			currentTabName: "parsources",
+		}),
 		watch: {
 			user_auth() {
 				if (this.user_auth === false)
 					this.$router.push({ name: "login" });
-			},
-			//* при получении юзера, редиректить на дефолтную страницу юзера в случае если находимся на главной странице кабинета
-			userRole: {
-				handler() {
-					if (this.$route.name === "cabinet") {
-						this.redirectUserByRole(this.userRole);
-					}
-				},
-				deep: true,
-			},
-
-			//* при изменении url смотреть, если находимся на главной странице кабинета, то редирект на дефолтную страницу юзера
-			"$route.path"() {
-				if (this.$route.name === "cabinet") {
-					this.redirectUserByRole(this.userRole);
-				}
 			},
 		},
 		computed: {
@@ -70,57 +96,101 @@
 
 				document_width: (state) => state.document_width,
 			}),
+
+			navigationTabs() {
+				switch (this.userRole) {
+					case "DefaultUser":
+						return navBarForUser;
+					case "Manager":
+						return navBarForManager;
+					case "AdminCRM":
+						return navBarForAdmin;
+					default:
+						return [];
+				}
+			},
+			currentTab() {
+				return (currentTabName) => {
+					return this.navigationTabs.find(
+						(tab) => tab.name === currentTabName
+					);
+				};
+			},
 		},
-		data: () => ({ isMenuMinimized: false }),
 		methods: {
 			...mapActions(["getNotifications"]),
 
-			//* редирект на дефолтную страницу кабинета в зависимости от роли юзера
-			redirectUserByRole(role) {
-				switch (role) {
-					case "DefaultUser": {
-						if (this.$route.query.from === "ratePopup") {
-							this.$router.push({ name: "rates" });
-						} else {
-							this.$router.push({
-								name: "parsources",
-								query: { page: 1 },
-							});
-						}
-						break;
-					}
-					case "Manager": {
-						this.$router.push({
-							name: "parsources",
-							query: { page: 1 },
-						});
-						break;
-					}
-					case "AdminCRM": {
-						this.$router.push({
-							name: "users",
-							query: { page: 1 },
-						});
-						break;
-					}
+			handleNavigate(tabId) {
+				const navigationObject = {};
+				const currentTab = this.navigationTabs.find(
+					({ id }) => id === tabId
+				);
+
+				this.currentTabName = currentTab.name;
+				if (currentTab?.routeParams) {
+					navigationObject.query = {};
+					navigationObject.query.page =
+						currentTab.routeParams.query.page;
+				}
+				navigationObject.name = currentTab.name;
+				this.$router.push(navigationObject);
+				if (this.document_width <= 1023) {
+					this.handleCloseBar();
 				}
 			},
-
-			close_menu() {
-				this.isMenuMinimized = true;
+			handleOpenBar() {
+				this.isSideBarMinimized = false;
 			},
-			open_menu() {
-				this.isMenuMinimized = false;
+			handleCloseBar() {
+				this.isSideBarMinimized = true;
 			},
 		},
 		created() {
 			this.getNotifications();
-			this.redirectUserByRole(this.userRole);
 		},
 		mounted() {
 			this.document_width > 1023
-				? (this.isMenuMinimized = false)
-				: (this.isMenuMinimized = true);
+				? (this.isSideBarMinimized = false)
+				: (this.isSideBarMinimized = true);
+		},
+		beforeRouteEnter(to, from, next) {
+			let userRole = store.state.cabinet.user?.role;
+			/* к сожалению эти хуки не поддерживают асинхронность 
+			не получилось сделать этот код совсем плоским, но по крайней мере 
+			удалось избавиться от ещё более ужасных ветвлений*/
+			if (!userRole) {
+				// подписка на события мутаций в сторе, т.к. запрос о данных пользователя уже ушел на сервер
+				const unsubscribe = store.subscribe((mutation) => {
+					if (mutation.type === "SET_USER_DATA") {
+						userRole = mutation.payload.role;
+						const redirectObject = navigateCabinet(
+							userRole,
+							to,
+							from
+						);
+						next((vm) => {
+							if (redirectObject) {
+								vm.$router.push(redirectObject);
+							} else {
+								vm.currentTabName = to.name;
+							}
+						});
+						unsubscribe();
+					}
+				});
+			} else {
+				const redirectObject = navigateCabinet(userRole, to, from);
+				next((vm) => {
+					if (redirectObject) {
+						vm.$router.push(redirectObject);
+					} else {
+						vm.currentTabName = to.name;
+					}
+				});
+			}
+		},
+		beforeRouteUpdate(to) {
+			this.currentTabName = to.name;
 		},
 	};
 </script>
@@ -136,6 +206,23 @@
 
 		@media (max-width: 1023px) {
 			grid-template-columns: 1fr;
+		}
+		&__side-bar {
+			position: relative;
+			margin-top: 6.4rem;
+		}
+		:deep(.r-loader.page-cabinet__side-bar-loader) {
+			top: 25%;
+			.r-loader__icon {
+				.r-loader__path {
+					stroke: $white;
+				}
+			}
+		}
+		&__navigation-panel {
+			:deep(.navigation-item) {
+				padding: 0.8rem 1.4rem 0.8rem 2.5rem;
+			}
 		}
 
 		&__main {

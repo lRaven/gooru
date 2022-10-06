@@ -297,6 +297,7 @@
 							v-if="isProfileOpened === true"
 						>
 							<li
+								v-if="!isCabinetVersion"
 								class="the-header__account-menu-item"
 								@click="
 									this.$router.push({ name: 'cabinet' });

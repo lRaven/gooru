@@ -3,25 +3,26 @@
 		class="navigation-panel"
 		:class="{ 'navigation-panel_minimize': isMenuMinimized }"
 	>
-		<navigation-item-r
+		<navigation-item
 			class="navigation-panel__navigation-item"
 			v-for="tab in tabs"
 			:key="tab.id"
 			:id="tab.id"
 			:text="tab.text"
+			:name="tab.name"
 			:icon="tabIcons[tab.text]"
 			:isActive="tab.id === currentTab?.id"
 			:isMinimized="isMenuMinimized"
-			@setTab="handleSetTab"
+			@setTab="$emit('navigate-to', tab.id)"
 		/>
 	</nav>
 </template>
 
 <script>
-	import NavigationItemR from "@/components/NavigationItemR.vue";
+	import NavigationItem from "@/components/NavigationItem.vue";
 
 	export default {
-		name: "NavigationPanelR",
+		name: "NavigationPanel",
 		emits: {
 			"navigate-to": null,
 		},
@@ -32,13 +33,7 @@
 			isMenuMinimized: { type: Boolean, required: true },
 		},
 		components: {
-			NavigationItemR,
-		},
-		methods: {
-			handleSetTab(tabId) {
-				const choosenTab = this.tabs.find((tab) => tab.id === tabId);
-				this.$emit("navigate-to", choosenTab);
-			},
+			NavigationItem,
 		},
 	};
 </script>

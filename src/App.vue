@@ -11,10 +11,6 @@
 
 	export default {
 		watch: {
-			$route(to) {
-				document.title = to.meta.title || "Default Title";
-			},
-
 			"$route.path"() {
 				//* срабатывает при переходе по router-link
 				document.querySelector("body").classList.remove("locked");

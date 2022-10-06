@@ -6,7 +6,7 @@
 			@close_menu="handleCloseBar"
 		/>
 		<side-bar class="page-home__sidebar-panel" :isSideBarMinimized="isMenuMinimized" @close-bar="handleCloseBar">
-			<navigation-panel-r
+			<navigation-panel
 				:tabs="$options.navBarDataHome"
 				:tabIcons="tabIcons"
 				:isMenuMinimized="isMenuMinimized"
@@ -31,7 +31,7 @@
 <script>
 	import TheHeader from "@/components/TheHeader";
 	import SideBar from "@/components/SideBar.vue";
-	import NavigationPanelR from "@/components/NavigationPanelR.vue";
+	import NavigationPanel from "@/components/NavigationPanel.vue";
 
 	import TheBanner from "@/components/Home/TheBanner";
 	import TheBenefits from "@/components/Home/TheBenefits";
@@ -50,7 +50,7 @@
 	import HowItWorks from "@/assets/icons/Home/NavigationPanel/HowItWorks.vue";
 
 	import { scroll } from "@/js/scrollToLink";
-	import { navBarDataHome } from "@/js/navigationPanelData";
+	import { navBarDataHome } from "@/router/navigationUtils";
 	import { mapState } from "vuex";
 
 	export default {
@@ -59,7 +59,7 @@
 		components: {
 			TheHeader,
 			SideBar,
-			NavigationPanelR,
+			NavigationPanel,
 
 			TheBanner,
 			TheBenefits,
@@ -109,17 +109,17 @@
 		},
 		methods: {
 			scroll,
-			handleNavigate(tab) {
+			handleNavigate(tabId) {
 				/*
 				структура таба
 				{ id: 0, text: 'Тарифы', anchor: '#rates'}
 				*/
-				this.currentTab = tab;
-				if (tab?.anchor) {
-					scroll(tab.anchor);
+				this.currentTab = this.$options.navBarDataHome.find( ({ id }) => tabId === id );
+				if (this.currentTab?.anchor) {
+					scroll(this.currentTab.anchor);
 					this.isMenuMinimized = true;
 				} else {
-					this.$router.push({ name: tab.name });
+					this.$router.push({ name: this.currentTab.name });
 				}
 			},
 			handleOpenBar() {

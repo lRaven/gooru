@@ -283,6 +283,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
+	document.title = to.meta?.title || 'Gooru';
 	if (to.meta.requiresAuth === true) {
 		if (localStorage.getItem("userAuth") !== "yes") {
 			return { name: "login" };
