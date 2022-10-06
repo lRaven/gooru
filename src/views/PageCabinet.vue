@@ -86,6 +86,9 @@
 				if (this.user_auth === false)
 					this.$router.push({ name: "login" });
 			},
+			document_width(){
+				this.isSideBarMinimized = this.document_width < 1024;
+			}
 		},
 		computed: {
 			...mapState({

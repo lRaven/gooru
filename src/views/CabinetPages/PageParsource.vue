@@ -371,6 +371,7 @@
 		updateParsourceImage,
 		downloadParsers,
 		editParserData,
+		updateFreelanceParser,
 	} from "@/api/parser";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 
@@ -483,6 +484,7 @@
 				pagination_data: (state) => state.parsers.parsers_pagination,
 
 				userRole: (state) => state.cabinet.user.role,
+				user: (state) => state.cabinet.user,
 				all_users: (state) => state.users.all_users,
 				users_managers: (state) => state.users.users_managers,
 			}),
@@ -725,12 +727,21 @@
 		},
 		created() {
 			this.SET_TAB("parsers");
+			this.isMinimizedRightPanel = this.documentWidth <= 1440;
+			if (this.user.tariff === 'freelance') {
+				try {
+					updateFreelanceParser(this.parsource_id).then(() => {
+						console.log('toDO')
+					})
+				} catch (error) {
+					console.error(error)
+				}
+			}
 			try {
 				if (!this.$store.state.parsers.all_parsers.length) {
 					console.log("get all parsers");
 					this.getAllParsers();
 				}
-				this.isMinimizedRightPanel = this.documentWidth < 1023;
 				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 				this.parsers_notifications.forEach((notification) => {
 					const id = +notification.url.split("/")[2];
@@ -777,8 +788,9 @@
 		grid-template-columns: 1fr max-content;
 		padding: 0;
 		height: calc(100vh - 6.4rem);
-		grid-gap: 2rem;
-
+		@media screen and (max-width: 1023px) {
+			grid-gap: 2rem;
+		}
 		@media screen and (max-width: 540px) {
 			grid-gap: 0;
 		}
@@ -843,6 +855,9 @@
 				margin-bottom: 1rem;
 			}
 		}
+		:deep(.right-panel.page-parsource__right-panel) {
+			background-color: $white;
+		}
 
 		&__content {
 			display: grid;
@@ -854,6 +869,10 @@
 			grid-gap: 3rem 2rem;
 			overflow-x: hidden;
 			overflow-y: auto;
+			&::-webkit-scrollbar {
+				width: 0;
+				height: 0;
+			}
 			@media (max-width: 1440px) {
 				padding-right: 8rem;
 			}
@@ -1076,6 +1095,7 @@
 			text-overflow: ellipsis;
 			overflow: hidden;
 			white-space: nowrap;
+			cursor: default;
 		}
 		&__remove-button {
 			background-color: transparent;

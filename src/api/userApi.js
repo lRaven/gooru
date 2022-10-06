@@ -20,7 +20,7 @@ const registration = async ({ email, password }) => {
 
 const registrationByReferalLink = async ({ email, password, ref_friend }) => {
 	try {
-		await axios.post(`${process.env.VUE_APP_BACK_URL}/user/`, {
+		await axios.post(`${baseURL}/user/`, {
 			username: email,
 			email,
 			password,
@@ -55,7 +55,7 @@ const login = async ({ username, password }) => {
 
 const getReferalData = async () => {
 	const { data } = await axios.get(
-		`${process.env.VUE_APP_BACK_URL}/users/referal`,
+		`${baseURL}/users/referal`,
 		{
 			headers: { Authorization: `token ${cookie.get("auth_token")}` },
 		}
@@ -149,7 +149,7 @@ const reset_password = async ({ uid, token, password }) => {
 
 const subscribeToDigest = async (email) => {
 	try {
-		await axios.post(`${process.env.VUE_APP_BACK_URL}/send-mail/`, {
+		await axios.post(`${baseURL}/send-mail/`, {
 			email,
 		});
 	} catch (error) {

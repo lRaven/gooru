@@ -2,15 +2,12 @@ import axios from "axios";
 import store from "@/store";
 import cookie from "vue-cookies";
 
-let baseURL;
-setTimeout(() => {
-	baseURL = store.state.baseURL;
-}, 0);
+const baseURL = process.env.VUE_APP_BACK_URL;
 
 const send_new_parsource = async (args) => {
 	try {
 		const response = await axios.post(
-			`${store.state.baseURL}/parsource/`,
+			`${baseURL}/parsource/`,
 			{	
 				...args
 			},
@@ -74,17 +71,27 @@ const updateParsourceImage = async ({ parsource_id, image }) => {
 //* parser requests
 const getSharedParser = async (id) => {
 	try {
-		const { data: parserData } = await axios.get(`${process.env.VUE_APP_BACK_URL}/public-parser/${id}`);
+		const { data: parserData } = await axios.get(`${baseURL}/public-parser/${id}`);
 		return parserData;
 	} catch (error) {
 		throw { ...error };
 	}
 };
 
+const updateFreelanceParser = async (parsourceId) => {
+	try {
+		await axios.post(`${baseURL}/api-parser-python-update/`, {
+			id_parsource: parsourceId,
+		});
+	} catch (error) {
+		throw new Error('Что-то пошло не так');
+	}
+};
+
 const editParserData = async ({ id, updatedData }) => {
 	try {
 		const { data: updatedParserData } = await axios.patch(
-			`${process.env.VUE_APP_BACK_URL}/parser/${id}/`,
+			`${baseURL}/parser/${id}/`,
 			{
 				...updatedData,
 			},
@@ -103,7 +110,7 @@ const editParserData = async ({ id, updatedData }) => {
 const deleteParser = async (parserId) => {
 	try {
 		await axios.delete(
-			`${process.env.VUE_APP_BACK_URL}/parser/${parserId}/`,
+			`${baseURL}/parser/${parserId}/`,
 			{
 				headers: { Authorization: `token ${cookie.get("auth_token")}` },
 			}
@@ -146,7 +153,7 @@ const downloadParsers = async ({ parsourceId, parserIds, date }, type = 'excel')
 	}
 	try {
 		const response = await fetch(
-			`${process.env.VUE_APP_BACK_URL}/parser/download/${type}/select/`,
+			`${baseURL}/parser/download/${type}/select/`,
 			{
 				method: "POST",
 				headers: { Authorization: `token ${cookie.get("auth_token")}`, 'content-type': 'application/json' },
@@ -281,6 +288,7 @@ export {
 	updateParsourceName,
 	updateParsourceImage,
 	getSharedParser,
+	updateFreelanceParser,
 	editParserData,
 	deleteParser,
 	downloadFile,
