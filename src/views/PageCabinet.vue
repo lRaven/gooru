@@ -223,6 +223,9 @@
 			:deep(.navigation-item) {
 				padding: 0.8rem 1.4rem 0.8rem 2.5rem;
 			}
+			:deep(.navigation-item_minimize) {
+				padding: 1rem;
+			}
 		}
 
 		&__main {

@@ -15,7 +15,7 @@
 				></r-dropdown>
 			</template>
 			<component
-				v-if="selectedUserId && user.role !== 'DefaultUser'"
+				v-if="(selectedUserId && user.role !== 'DefaultUser') || user.role === 'DefaultUser'"
 				:is="userTariffComponent"
 				:key="resetKey"
 				@change-form="handleChangeForm"
