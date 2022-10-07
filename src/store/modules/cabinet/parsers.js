@@ -5,6 +5,7 @@ import { multiaction_delete } from "@/api/multiaction_delete";
 import {
 	getComments,
 	updateParsourceName,
+	updateFreelanceParserData,
 	deleteParser,
 	getUserFavoriteParsers,
 	createFavoriteParser,
@@ -36,8 +37,11 @@ const getters = {
 		);
 	},
 	favoriteParsources: (state) => {
-		const favoriteParsources = state.all_parsources.filter( parsource => {
-			const matchedParser = state.all_parsers.find( parser => parser.parsource === parsource.id && parser.favoriteId);
+		const favoriteParsources = state.all_parsources.filter((parsource) => {
+			const matchedParser = state.all_parsers.find(
+				(parser) =>
+					parser.parsource === parsource.id && parser.favoriteId
+			);
 			if (matchedParser) {
 				return parsource;
 			}
@@ -349,6 +353,14 @@ const actions = {
 		}
 	},
 	getAllParsers: async (context) => {
+		// это массив исключений, в него будут попадать исключительные ситуации случившиеся в этом экшене
+		// исключительные ситуации не являются ошибками и мы сожем продолжить какой-то сценарий
+		const exceptions = [];
+		try {
+			await context.dispatch("updateParserData");
+		} catch (error) {
+			exceptions.push(error.message);
+		}
 		try {
 			const response = await axios.get(
 				`${store.state.baseURL}/parser/?page_size=${1e6}`,
@@ -392,9 +404,41 @@ const actions = {
 				parsersList.reverse();
 				context.commit("SET_ALL_PARSERS", parsersList);
 				console.log("Full parser list saved");
+				return exceptions;
 			}
 		} catch (err) {
 			throw new Error(err);
+		}
+	},
+
+	updateParserData: async (context) => {
+		const tariff = context.rootState.cabinet.user.tariff;
+		if (tariff === "freelance") {
+			if (context.state.all_parsources.length === 0) {
+				await context.dispatch("getAllParsources");
+			}
+			const freelanceParsources = context.state.all_parsources.filter(
+				({ data_type }) => data_type === 3
+			);
+			const promiseQuery = freelanceParsources.map(({ id }) => {
+				return updateFreelanceParserData(id);
+			});
+			const resultArray = await Promise.allSettled(promiseQuery);
+			resultArray.forEach((result) => {
+				if (result.status === "rejected") {
+					let errorMessage = "";
+					if (result.reason.response.status === 429) {
+						const [delayTime] =
+							result.reason.response.data.detail.match(/\d+/);
+						errorMessage =
+							"Не удалось обновить данные, попробуйте через " +
+							delayTime +
+							" cекунд";
+						throw new Error(errorMessage);
+					}
+					throw new Error("Произошла ошибка");
+				}
+			});
 		}
 	},
 

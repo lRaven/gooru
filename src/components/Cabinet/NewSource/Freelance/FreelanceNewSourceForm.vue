@@ -1,5 +1,12 @@
 <template>
 	<div class="freelance-form">
+		<p class="freelance-form__input-description">Укажите имя источника*</p>
+		<r-input
+			class="freelance-form__input"
+			input_type="text"
+			placeholder="Введите имя"
+			v-model="formState.name"
+		/>
 		<p class="freelance-form__input-description">
 			Какую биржу будем парсить?*
 		</p>
@@ -88,6 +95,7 @@
 					{ id: 3, description: "Выбрать всё" },
 				],
 				formState: {
+					name: "",
 					choosenExchange: [],
 					parsingKeyWords: [],
 					requirements: "",
@@ -114,7 +122,8 @@
 				return (
 					this.formState.choosenExchange.length > 0 &&
 					this.formState.parsingKeyWords.length > 0 &&
-					this.formState.requirements.length > 0
+					this.formState.requirements.length > 0 &&
+					this.formState.name.length > 2
 				);
 			},
 		},
@@ -166,8 +175,15 @@
 				processedForm.freelance_source =
 					this.formState.choosenExchange.filter((id) => id !== 3);
 				processedForm.description = this.formState.requirements;
-				processedForm.name = "Фриланс";
-				processedForm.keyWords = [...this.formState.parsingKeyWords];
+				processedForm.name = this.formState.name;
+				processedForm.keywords = this.formState.parsingKeyWords.reduce( (prev, keyWord, index) => {
+
+						if (this.formState.parsingKeyWords.length - 1 === index) {
+							return prev + keyWord.text;
+						}
+						return prev + keyWord.text + ", ";
+					}, "");
+				processedForm.data_type = 3;
 				return processedForm;
 			},
 		},
@@ -215,7 +231,6 @@
 			}
 			@media (max-width: 550px) {
 				gap: 1rem 1.5rem;
-
 			}
 		}
 	}

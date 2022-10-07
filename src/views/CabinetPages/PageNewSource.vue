@@ -15,14 +15,17 @@
 				></r-dropdown>
 			</template>
 			<component
-				v-if="(selectedUserId && user.role !== 'DefaultUser') || user.role === 'DefaultUser'"
+				v-if="
+					(selectedUserId && user.role !== 'DefaultUser') ||
+					user.role === 'DefaultUser'
+				"
 				:is="userTariffComponent"
 				:key="resetKey"
 				@change-form="handleChangeForm"
 				@change-form-valid-state="handleDisableFormSubmit"
 				class="page-new-parser__tariff-component"
 			/>
-			
+
 			<r-button
 				text="Отправить"
 				type="submit"
@@ -35,7 +38,10 @@
 
 <script>
 	import { mapState, mapMutations, mapActions } from "vuex";
-	import { send_new_parsource } from "@/api/parser";
+	import {
+		send_new_parsource,
+		createNewFreelanceParsource,
+	} from "@/api/parser";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
 
@@ -68,24 +74,31 @@
 				return this.users.filter((user) => user.role === "DefaultUser");
 			},
 			userTariffComponent() {
-				let formType = '';
-				if (this.userRole === 'DefaultUser') {
-					formType = this.user.tariff;
-				} else {
-					const selectedUser = this.users.find( ({ id }) => id === this.selectedUserId);
-					const tariffGroup = selectedUser.groups.find( ( { name } ) => name.toLowerCase().includes('tariff'));
-					if (tariffGroup) {
-						const [ , tariff] = tariffGroup.name.split(' ');
-						formType = tariff.toLowerCase();
-					} else {
-						formType = 'default';
-					}
-				}
-				switch (formType) {
+				switch (this.sourceType) {
 					case "freelance":
 						return FreelanceForm;
 					default:
 						return DefaultForm;
+				}
+			},
+			sourceType() {
+				let formType = "";
+				if (this.userRole === "DefaultUser") {
+					return this.user.tariff;
+				} else {
+					const selectedUser = this.users.find(
+						({ id }) => id === this.selectedUserId
+					);
+					const tariffGroup = selectedUser.groups.find(({ name }) =>
+						name.toLowerCase().includes("tariff")
+					);
+					if (tariffGroup) {
+						const [, tariff] = tariffGroup.name.split(" ");
+						formType = tariff.toLowerCase();
+					} else {
+						formType = "default";
+					}
+					return formType;
 				}
 			},
 		},
@@ -94,7 +107,7 @@
 			...mapActions(["getAllUsers", "getNotifications"]),
 
 			handleChangeForm(formState) {
-				this.newSourceData = {...formState};
+				this.newSourceData = { ...formState };
 			},
 			handleDisableFormSubmit(validationState) {
 				this.isDisabledBtn = !validationState;
@@ -114,32 +127,40 @@
 					if (this.selectedUserId) {
 						this.newSourceData.user = this.selectedUserId;
 					}
-					const response = await send_new_parsource({
-						...this.newSourceData
+					const { data } = await send_new_parsource({
+						...this.newSourceData,
 					});
-
-					if (response.status === 201) {
-						this.handleResetForm();
-
-						console.log("New parsource created");
-						this.toast.success("Парсер создан");
-						this.toast.info(ParsourceNotification, {
-							timeout: false,
-							closeButton: false,
-							icon: false,
-							closeOnClick: false,
+					if (this.sourceType === "freelance") {
+						const id_parsource = data.id;
+						const sources = this.newSourceData.freelance_source;
+						const id_user = this.selectedUserId ? this.selectedUserId : this.user.id;
+						const keywords = this.newSourceData.keywords;
+						await createNewFreelanceParsource({
+							id_parsource,
+							sources,
+							id_user,
+							keywords,
 						});
-						this.getNotifications();
 					}
+					console.log("New parsource created");
+					this.toast.success("Парсер создан");
+					this.toast.info(ParsourceNotification, {
+						timeout: false,
+						closeButton: false,
+						icon: false,
+						closeOnClick: false,
+					});
+					this.getNotifications();
+					this.handleResetForm();
+				} catch ({ response }) {
 					if (response.status === 400) {
 						const error_list = returnErrorMessages(response.data);
 						error_list.forEach((el) => {
 							this.toast.error(el);
 						});
+					} else {
+						this.toast.error("Ошибка создания парсера");
 					}
-				} catch (err) {
-					this.toast.error("Ошибка создания парсера");
-					throw new Error(err);
 				}
 				this.isCreateParsourseLoading = false;
 			},

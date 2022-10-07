@@ -5,7 +5,7 @@
 				<div class="page-parsource__content-header">
 					<div
 						class="page-parsource-details"
-						v-if="documentWidth <= 540"
+						v-if="documentWidth <= 810"
 					>
 						<div class="page-parsource-details__info">
 							<button
@@ -39,7 +39,7 @@
 							<font-tool
 								class="page-parsource__content-header-font-tool"
 								@change-font-size="handleChangeFontSize"
-								v-if="this.documentWidth <= 540"
+								v-if="this.documentWidth <= 810"
 							/>
 						</div>
 					</div>
@@ -53,11 +53,11 @@
 						<font-tool
 							class="page-parsource__content-header-font-tool"
 							@change-font-size="handleChangeFontSize"
-							v-if="this.documentWidth > 540"
+							v-if="this.documentWidth > 810"
 						/>
 						<div
 							class="page-parsource__content-header-sort"
-							v-if="this.documentWidth > 540"
+							v-if="this.documentWidth > 810"
 						>
 							<button
 								type="button"
@@ -93,6 +93,15 @@
 								с комментариями
 							</button>
 						</div>
+						<r-button
+							class="page-parsource__update-data"
+							text="Обновить"
+							@click="handleUpdateParsersData"
+							:disabled="isUpdateOnDelay || !isParsersLoaded"
+						></r-button>
+						<p class="page-parsource__update-time">
+							{{ lastUpdatedTime }}
+						</p>
 						<p class="page-parsource__total-processed">
 							всего обработано
 							{{ count }}
@@ -100,7 +109,7 @@
 					</div>
 
 					<r-dropdown
-						v-if="this.documentWidth <= 540"
+						v-if="this.documentWidth <= 810"
 						selected_item="по свежести материала"
 						sendValue="filterValue"
 						showedValue="description"
@@ -365,13 +374,12 @@
 	import rDateRangePicker from "@/components/Cabinet/r-date-range-picker";
 
 	import { change_manager } from "@/api/userApi";
-	import { prettyDate } from "@/js/processStrings";
+	import { prettyDate, prettyDateTime } from "@/js/processStrings";
 	import { read_notification } from "@/api/notifications";
 	import {
 		updateParsourceImage,
 		downloadParsers,
 		editParserData,
-		updateFreelanceParser,
 	} from "@/api/parser";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 
@@ -495,6 +503,10 @@
 				"sourcesInParsource",
 			]),
 
+			lastUpdatedTime() {
+				return this.parsource.last_time_sync ? `Последнее обновление: ${prettyDateTime(this.parsource.last_time_sync)}`
+				: "";
+			},
 			parsers() {
 				if (this.selectedListFilter === "favorites") {
 					return this.favoriteParsers;
@@ -557,6 +569,7 @@
 		data() {
 			return {
 				isMinimizedRightPanel: false,
+				isUpdateOnDelay: false,
 				isParsersLoaded: false,
 				isSourceDeleteLoading: false,
 				isConfirmDeleteSourcePopupOpen: false,
@@ -586,6 +599,7 @@
 				"deleteParsersWithEqvalDomain",
 			]),
 			prettyDate,
+			prettyDateTime,
 
 			handleChangeFontSize(size) {
 				this.fontSize = size;
@@ -610,6 +624,19 @@
 					console.log(error);
 					this.toast.error("Ошибка удаления, попробуйте позже!");
 				}
+			},
+
+			async handleUpdateParsersData() {
+				try {
+					this.isParsersLoaded = false;
+					const exceptionsInUpdate = await this.getAllParsers();
+					exceptionsInUpdate.forEach( exceptionText => {
+						this.toast.error(exceptionText);
+					})
+				} catch (error) {
+					this.toast.error('Что-то пошло не так!');
+				}
+				this.isParsersLoaded = true;
 			},
 
 			async handleDownload() {
@@ -728,20 +755,8 @@
 		created() {
 			this.SET_TAB("parsers");
 			this.isMinimizedRightPanel = this.documentWidth <= 1440;
-			if (this.user.tariff === 'freelance') {
-				try {
-					updateFreelanceParser(this.parsource_id).then(() => {
-						console.log('toDO')
-					})
-				} catch (error) {
-					console.error(error)
-				}
-			}
+			this.getAllParsers();
 			try {
-				if (!this.$store.state.parsers.all_parsers.length) {
-					console.log("get all parsers");
-					this.getAllParsers();
-				}
 				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 				this.parsers_notifications.forEach((notification) => {
 					const id = +notification.url.split("/")[2];
@@ -791,7 +806,7 @@
 		@media screen and (max-width: 1023px) {
 			grid-gap: 2rem;
 		}
-		@media screen and (max-width: 540px) {
+		@media (max-width: 800px) {
 			grid-gap: 0;
 		}
 
@@ -858,6 +873,42 @@
 		:deep(.right-panel.page-parsource__right-panel) {
 			background-color: $white;
 		}
+		:deep(.right-panel.minimized) {
+			@media (max-width: 800px) {
+				transform: translateX(10rem);
+			}
+		}
+		&__update-time {
+			font-size: 1.8rem;
+			line-height: 2.9rem;
+			color: rgba($black, 0.7);
+			grid-column: -1;
+			grid-row: 2;
+			justify-self: end;
+			@media screen and (max-width: 800px) {
+				grid-row: 3;
+				grid-column: 1;
+				justify-self: start;
+			}
+		}
+		:deep(.r-button.page-parsource__update-data) {
+			padding: 1rem 1.8rem;
+			width: fit-content;
+			justify-self: end;
+			grid-column: -1;
+			grid-row: 1;
+			@media screen and (max-width: 800px) {
+				grid-row: 2/4;
+				grid-column: -1;
+				align-self: end;
+			}
+			@media screen and (max-width: 450px) {
+				width: 100%;
+				grid-row: 4;
+				grid-column: 1/3;
+				align-self: start;
+			}
+		}
 
 		&__content {
 			display: grid;
@@ -876,9 +927,12 @@
 			@media (max-width: 1440px) {
 				padding-right: 8rem;
 			}
-			@media (max-width: 767px) {
-				padding: 2rem 7rem 2rem 1.5rem;
+			@media (max-width: 800px) {
+				padding: 2rem;
 			}
+			/* @media (max-width: 767px) {
+				padding: 2rem 2rem 2rem 1.5rem;
+			} */
 			@media (max-width: 540px) {
 				padding: 2rem 1.5rem;
 			}
@@ -906,12 +960,10 @@
 						grid-template-columns: repeat(2, max-content);
 					}
 					@media (max-width: 1024px) {
-						grid-gap: 0.5rem 0;
+						grid-gap: 1rem 0;
 					}
-					@media (max-width: 540px) {
-						display: flex;
-						flex-wrap: wrap;
-						grid-gap: 1rem;
+					@media screen and (max-width: 800px) {
+						padding: 2rem 0;
 					}
 				}
 				&-sort {
@@ -928,7 +980,7 @@
 					grid-column: 1/2;
 					grid-row: 2;
 					justify-self: start;
-					@media (max-width: 540px) {
+					@media (max-width: 800px) {
 						margin: 0 0 0 auto;
 					}
 				}
@@ -975,13 +1027,14 @@
 		&__total-processed {
 			font-size: 1.8rem;
 			line-height: 2.9rem;
+			text-align: end;
 			color: rgba($black, 0.7);
 			grid-row: 3;
-			grid-column: 3;
+			grid-column: -1;
 			@media screen and (max-width: 800px) {
-				grid-row: 1;
-				grid-column: 2/3;
-				justify-self: end;
+				grid-row: 2;
+				grid-column: 1;
+				justify-self: start;
 			}
 			@media screen and (max-width: 620px) {
 				font-size: 1.7rem;

@@ -8,14 +8,34 @@ const send_new_parsource = async (args) => {
 	try {
 		const response = await axios.post(
 			`${baseURL}/parsource/`,
-			{	
-				...args
+			{
+				...args,
 			},
 			{ headers: { Authorization: `token ${cookie.get("auth_token")}` } }
 		);
 		return response;
 	} catch (err) {
-		return err.response;
+		throw { ...err };
+	}
+};
+
+const createNewFreelanceParsource = async ({
+	sources,
+	id_user,
+	id_parsource,
+	keywords,
+}) => {
+	try {
+		await axios.post(`${baseURL}/api-parser-python/`, {
+			sources,
+			id_user,
+			id_parsource,
+			keywords,
+		}, {
+			headers: { Authorization: `token ${cookie.get("auth_token")}` },
+		});
+	} catch (error) {
+		throw { ...error };
 	}
 };
 
@@ -71,20 +91,31 @@ const updateParsourceImage = async ({ parsource_id, image }) => {
 //* parser requests
 const getSharedParser = async (id) => {
 	try {
-		const { data: parserData } = await axios.get(`${baseURL}/public-parser/${id}`);
+		const { data: parserData } = await axios.get(
+			`${baseURL}/public-parser/${id}`
+		);
 		return parserData;
 	} catch (error) {
 		throw { ...error };
 	}
 };
 
-const updateFreelanceParser = async (parsourceId) => {
+const updateFreelanceParserData = async (parsourceId) => {
 	try {
-		await axios.post(`${baseURL}/api-parser-python-update/`, {
-			id_parsource: parsourceId,
-		});
+		await axios.post(
+			`${baseURL}/api-parser-python-update/`,
+			{
+				id_parsource: parsourceId,
+			},
+			{
+				headers: {
+					Authorization: `token ${cookie.get("auth_token")}`,
+				},
+			}
+		);
+		return { parsourceId };
 	} catch (error) {
-		throw new Error('Что-то пошло не так');
+		throw { ...error };
 	}
 };
 
@@ -109,12 +140,9 @@ const editParserData = async ({ id, updatedData }) => {
 
 const deleteParser = async (parserId) => {
 	try {
-		await axios.delete(
-			`${baseURL}/parser/${parserId}/`,
-			{
-				headers: { Authorization: `token ${cookie.get("auth_token")}` },
-			}
-		);
+		await axios.delete(`${baseURL}/parser/${parserId}/`, {
+			headers: { Authorization: `token ${cookie.get("auth_token")}` },
+		});
 	} catch (error) {
 		throw { ...error };
 	}
@@ -140,7 +168,10 @@ const downloadFile = async ({ type }) => {
 	}
 };
 
-const downloadParsers = async ({ parsourceId, parserIds, date }, type = 'excel') => {
+const downloadParsers = async (
+	{ parsourceId, parserIds, date },
+	type = "excel"
+) => {
 	const requestObject = {};
 	if (parsourceId) {
 		requestObject.parsource = parsourceId;
@@ -156,7 +187,10 @@ const downloadParsers = async ({ parsourceId, parserIds, date }, type = 'excel')
 			`${baseURL}/parser/download/${type}/select/`,
 			{
 				method: "POST",
-				headers: { Authorization: `token ${cookie.get("auth_token")}`, 'content-type': 'application/json' },
+				headers: {
+					Authorization: `token ${cookie.get("auth_token")}`,
+					"content-type": "application/json",
+				},
 				body: JSON.stringify(requestObject),
 			}
 		);
@@ -284,11 +318,12 @@ const deleteFavoriteParser = async (id) => {
 
 export {
 	send_new_parsource,
+	createNewFreelanceParsource,
 	delete_parsource,
 	updateParsourceName,
 	updateParsourceImage,
 	getSharedParser,
-	updateFreelanceParser,
+	updateFreelanceParserData,
 	editParserData,
 	deleteParser,
 	downloadFile,
