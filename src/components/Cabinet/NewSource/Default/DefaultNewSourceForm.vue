@@ -33,7 +33,7 @@
 			name="url"
 			:newValue="new_parsource.url"
 			:rules="{
-				regExp: /https?:\/\/(www.)?([\w\-]+\.{0,1}){1,32}\.[a-z]{2,}\/?$/,
+				regExp: /https?:\/\/(www.)?([\w\-]+\.{0,1}){1,32}\.[a-z]{2,}((?=\/)[\w\-\._~:\/\?#\[\]@!$&\'()\*+,;=]+#?)?$/,
 			}"
 			v-slot="{ errors, canShowError, handleBlur, handleFocus }"
 			@onchange-validation-state="handleChangeValidateState"

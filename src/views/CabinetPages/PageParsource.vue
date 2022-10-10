@@ -426,8 +426,9 @@
 				}
 			},
 
-			parsource() {
+			async parsource() {
 				this.changedParsource = { ...this.parsource };
+				await this.updateParserData({ parsourceId: this.parsource_id });
 				this.getCards({
 					parsource_name: this.parsource_name,
 					page_number: this.page,
@@ -504,8 +505,8 @@
 			]),
 
 			lastUpdatedTime() {
-				return this.parsource.last_time_sync ? `Последнее обновление: ${prettyDateTime(this.parsource.last_time_sync)}`
-				: "";
+				return this.parsource.last_time_sync
+					? `Последнее обновление: ${prettyDateTime(this.parsource.last_time_sync)}` : "";
 			},
 			parsers() {
 				if (this.selectedListFilter === "favorites") {
@@ -589,6 +590,7 @@
 		methods: {
 			...mapMutations(["SET_TAB", "ADD_PARSERS"]),
 			...mapActions([
+				"updateParserData",
 				"getParsers",
 				"getParsource",
 				"getAllParsers",
@@ -629,12 +631,24 @@
 			async handleUpdateParsersData() {
 				try {
 					this.isParsersLoaded = false;
-					const exceptionsInUpdate = await this.getAllParsers();
-					exceptionsInUpdate.forEach( exceptionText => {
-						this.toast.error(exceptionText);
-					})
+					const exceptionsInUpdate = await this.updateParserData({
+						parsourceId: this.parsource_id,
+					});
+					if (exceptionsInUpdate.length) {
+						console.log(exceptionsInUpdate)
+						exceptionsInUpdate.forEach((exceptionText) => {
+							this.toast.error(exceptionText);
+						});
+					} else {
+						await this.getCards({
+						parsource_name: this.parsource_name,
+						page_number: this.page,
+						page_size: this.pagination.cards_in_page,
+						nextPage: false,
+					});
+					}
 				} catch (error) {
-					this.toast.error('Что-то пошло не так!');
+					this.toast.error("Что-то пошло не так!");
 				}
 				this.isParsersLoaded = true;
 			},
@@ -755,7 +769,7 @@
 		created() {
 			this.SET_TAB("parsers");
 			this.isMinimizedRightPanel = this.documentWidth <= 1440;
-			this.getAllParsers();
+			// this.getAllParsers();
 			try {
 				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 				this.parsers_notifications.forEach((notification) => {

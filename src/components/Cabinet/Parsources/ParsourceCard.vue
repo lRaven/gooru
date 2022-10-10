@@ -160,8 +160,8 @@
 						v-if="isCanSelect"
 					></r-checkbox>
 
-					<p class="parsource-card__source" :title="source">
-						{{ source }}
+					<p class="parsource-card__source" :title="parsource.name">
+						{{ parsource.name }}
 					</p>
 				</div>
 

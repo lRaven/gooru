@@ -353,14 +353,6 @@ const actions = {
 		}
 	},
 	getAllParsers: async (context) => {
-		// это массив исключений, в него будут попадать исключительные ситуации случившиеся в этом экшене
-		// исключительные ситуации не являются ошибками и мы сожем продолжить какой-то сценарий
-		const exceptions = [];
-		try {
-			await context.dispatch("updateParserData");
-		} catch (error) {
-			exceptions.push(error.message);
-		}
 		try {
 			const response = await axios.get(
 				`${store.state.baseURL}/parser/?page_size=${1e6}`,
@@ -404,26 +396,33 @@ const actions = {
 				parsersList.reverse();
 				context.commit("SET_ALL_PARSERS", parsersList);
 				console.log("Full parser list saved");
-				return exceptions;
 			}
 		} catch (err) {
 			throw new Error(err);
 		}
 	},
 
-	updateParserData: async (context) => {
+	updateParserData: async (context, payload) => {
 		const tariff = context.rootState.cabinet.user.tariff;
 		if (tariff === "freelance") {
-			if (context.state.all_parsources.length === 0) {
-				await context.dispatch("getAllParsources");
+			let parsourcesToUpdate = [];
+			if (payload?.parsourceId) {
+				//  тут повесим объект т.к. не очень хочется фильтровать массив парсоурсов на отдельные id
+				parsourcesToUpdate.push({ id: payload.parsourceId });
+			} else {
+				if (context.state.all_parsources.length === 0) {
+					await context.dispatch("getAllParsources");
+				}
+				parsourcesToUpdate = context.state.all_parsources.filter(
+					({ data_type }) => data_type === 3
+				);
 			}
-			const freelanceParsources = context.state.all_parsources.filter(
-				({ data_type }) => data_type === 3
-			);
-			const promiseQuery = freelanceParsources.map(({ id }) => {
+
+			const promiseQuery = parsourcesToUpdate.map(({ id }) => {
 				return updateFreelanceParserData(id);
 			});
 			const resultArray = await Promise.allSettled(promiseQuery);
+			const exceptions = [];
 			resultArray.forEach((result) => {
 				if (result.status === "rejected") {
 					let errorMessage = "";
@@ -434,11 +433,12 @@ const actions = {
 							"Не удалось обновить данные, попробуйте через " +
 							delayTime +
 							" cекунд";
-						throw new Error(errorMessage);
+							return exceptions.push(errorMessage);
 					}
-					throw new Error("Произошла ошибка");
+					return exceptions.push(errorMessage);
 				}
 			});
+			return exceptions;
 		}
 	},
 
