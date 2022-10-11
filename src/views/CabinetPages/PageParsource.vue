@@ -428,7 +428,6 @@
 
 			async parsource() {
 				this.changedParsource = { ...this.parsource };
-				await this.updateParserData({ parsourceId: this.parsource_id });
 				this.getCards({
 					parsource_name: this.parsource_name,
 					page_number: this.page,
@@ -505,8 +504,7 @@
 			]),
 
 			lastUpdatedTime() {
-				return this.parsource.last_time_sync
-					? `Последнее обновление: ${prettyDateTime(this.parsource.last_time_sync)}` : "";
+				return this.parsource.last_time_sync ? `Последнее обновление: ${prettyDateTime(this.parsource.last_time_sync)}` : "";
 			},
 			parsers() {
 				if (this.selectedListFilter === "favorites") {
@@ -635,17 +633,18 @@
 						parsourceId: this.parsource_id,
 					});
 					if (exceptionsInUpdate.length) {
-						console.log(exceptionsInUpdate)
+						console.log(exceptionsInUpdate);
 						exceptionsInUpdate.forEach((exceptionText) => {
 							this.toast.error(exceptionText);
 						});
 					} else {
+						await this.getParsource(this.parsource_id);
 						await this.getCards({
-						parsource_name: this.parsource_name,
-						page_number: this.page,
-						page_size: this.pagination.cards_in_page,
-						nextPage: false,
-					});
+							parsource_name: this.parsource_name,
+							page_number: this.page,
+							page_size: this.pagination.cards_in_page,
+							nextPage: false,
+						});
 					}
 				} catch (error) {
 					this.toast.error("Что-то пошло не так!");
@@ -769,7 +768,6 @@
 		created() {
 			this.SET_TAB("parsers");
 			this.isMinimizedRightPanel = this.documentWidth <= 1440;
-			// this.getAllParsers();
 			try {
 				//* TODO: пока нет функционала прочитать несколько уведомлений за раз это будет через цикл, исправить как появится возможность обращения к нескольким уведомлениям
 				this.parsers_notifications.forEach((notification) => {
@@ -782,9 +780,11 @@
 						this.clear_notifications(notification.id);
 					}
 				});
-
-				this.getParsource(this.parsource_id);
-				this.getAllParsources();
+				this.updateParserData({ parsourceId: this.parsource_id })
+				.then( () => {
+					this.getParsource(this.parsource_id);
+					this.getAllParsources();
+				});
 
 				if (
 					this.userRole !== "DefaultUser" &&
@@ -899,6 +899,9 @@
 			grid-column: -1;
 			grid-row: 2;
 			justify-self: end;
+			@media screen and (max-width: 1200px) {
+				grid-column: 2/4;
+			}
 			@media screen and (max-width: 800px) {
 				grid-row: 3;
 				grid-column: 1;
@@ -978,6 +981,7 @@
 					}
 					@media screen and (max-width: 800px) {
 						padding: 2rem 0;
+						grid-template-columns: repeat(2, minmax(auto, max-content));
 					}
 				}
 				&-sort {
