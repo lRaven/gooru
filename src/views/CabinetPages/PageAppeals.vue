@@ -192,7 +192,7 @@
 					<r-button
 						text="Отправить"
 						type="submit"
-						:disabled="!isNewAppealValid"
+						:disabled="!isNewAppealValid || isNewAppealSending"
 					></r-button>
 				</form>
 			</template>
@@ -299,6 +299,7 @@
 				},
 				sortParams: [],
 				isNewAppealValid: false,
+				isNewAppealSending: false,
 			};
 		},
 		methods: {
@@ -319,6 +320,7 @@
 
 			async create_ticket() {
 				try {
+					this.isNewAppealSending = true;
 					const response = await add_ticket({
 						name: this.user.username,
 						phone_number: this.user.phone_number,
@@ -349,6 +351,7 @@
 					this.toast.error("Ошибка создания обращения");
 					throw new Error(err);
 				}
+				this.isNewAppealSending = false;
 			},
 
 			async getCards(params) {

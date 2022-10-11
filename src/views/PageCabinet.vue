@@ -215,18 +215,13 @@
 			@media (max-width: 1023px) {
 				margin-top: 0;
 			}
-		}
-		:deep(.r-loader.page-cabinet__side-bar-loader) {
-			top: 25%;
-			.r-loader__icon {
-				.r-loader__path {
-					stroke: $white;
-				}
+			.side-bar__controls {
+				padding: 0 1rem 0 2rem;
 			}
 		}
 		&__navigation-panel {
 			:deep(.navigation-item) {
-				padding: 0.8rem 1.4rem 0.8rem 2.5rem;
+				padding: 0.8rem 1rem 0.8rem 2rem;
 			}
 			:deep(.navigation-item_minimize) {
 				padding: 1rem;

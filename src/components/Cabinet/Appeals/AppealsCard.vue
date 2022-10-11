@@ -188,7 +188,6 @@
 					return "!";
 				}
 			},
-			
 		},
 		methods: {
 			handleOpenAppeal() {
@@ -238,10 +237,9 @@
 
 		&.manager {
 			@media (min-width: 1300px) {
-				grid-template-columns: max-content repeat(
-						2,
-						minmax(auto, max-content)
-					) 1fr;
+				grid-template-columns:
+					max-content repeat(2, minmax(auto, max-content))
+					1fr;
 			}
 			@media (max-width: 450px) {
 				.appeals-card__row {
@@ -268,6 +266,7 @@
 			display: flex;
 			align-items: center;
 			gap: 1rem;
+			overflow: hidden;
 
 			@media (max-width: 1300px) {
 				&:first-child {
@@ -283,8 +282,10 @@
 			align-items: center;
 			gap: 2rem;
 			justify-content: space-between;
+			overflow: hidden;
 
 			@media (max-width: 400px) {
+				display: grid;
 				gap: 1rem;
 			}
 		}
@@ -296,6 +297,10 @@
 
 		&__source {
 			font-size: 1.8rem;
+			text-overflow: ellipsis;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
 		}
 
 		&__counter {

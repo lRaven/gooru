@@ -45,7 +45,7 @@
 						Забыли пароль?
 					</button>
 
-					<r-button :disabled="!isValidForm" text="Войти"></r-button>
+					<r-button :disabled="!isValidForm || isFormDataSending" text="Войти"></r-button>
 					<img
 						class="page-login__form-image"
 						src="http://localhost:8080/img/goo-colored.70a6d289.svg"
@@ -111,7 +111,7 @@
 						></r-input>
 						<r-button
 							text="Отправить"
-							:disabled="!isResetPasswordFormValid"
+							:disabled="!isResetPasswordFormValid || isFormDataSending"
 						></r-button>
 					</form>
 				</template>
@@ -165,6 +165,7 @@
 		data: () => ({
 			isChangePasswordRequestModalOpen: false,
 			isChangePasswordModalOpen: false,
+			isFormDataSending: false,
 
 			user_data: {
 				email: {
@@ -188,12 +189,14 @@
 			...mapActions(["getUserData", "getUserRate", "getRates"]),
 
 			async auth() {
+				this.isFormDataSending = true;
 				try {
 					const response = await login({
 						username: this.user_data.email.value,
 						password: this.user_data.password.value,
 					});
 					if (response.status === 200) {
+						this.handleResetForm();
 						this.toast.success("Вход выполнен успешно");
 						this.$cookies.set(
 							"auth_token",
@@ -219,15 +222,22 @@
 					);
 					throw new Error(err);
 				}
+				this.isFormDataSending = false;
 			},
 
 			close_modal() {
 				this.isChangePasswordModalOpen = false;
 				this.isChangePasswordRequestModalOpen = false;
 			},
+			handleResetForm() {
+				this.user_data.email.value = '';
+				this.user_data.email.valid = false;
+				this.user_data.password.value = false;
+			},
 
 			async send_password_change_email_request() {
 				try {
+					this.isFormDataSending = true;
 					const response = await reset_password_request(
 						this.email_for_password_reset
 					);
@@ -247,9 +257,11 @@
 					this.toast.error("Ошибка отправки запроса");
 					throw new Error(err);
 				}
+				this.isFormDataSending = false;
 			},
 			async send_reset_password() {
 				try {
+					this.isFormDataSending = true;
 					const response = await reset_password({
 						uid: this.$route.query.uid,
 						token: this.$route.query.token,
@@ -271,6 +283,7 @@
 					this.toast.error("Ошибка смены пароля");
 					throw new Error(err);
 				}
+				this.isFormDataSending = false;
 			},
 		},
 		mounted() {

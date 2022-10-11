@@ -157,36 +157,33 @@
 			...mapMutations(["SET_USER_CONTACTS"]),
 			async create_user() {
 				try {
-					const response = await registration({
+					await registration({
 						email: this.user_data.email.value,
 						password: this.user_data.password,
 					});
-
-					if (response.status === 201) {
-						this.toast.success(
-							"Вы успешно зарегистрировали свой аккаунт"
-						);
-						this.toast.info(
-							`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
-						);
+					this.toast.success(
+						"Вы успешно зарегистрировали свой аккаунт"
+					);
+					this.toast.info(
+						`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
+					);
 						console.log("User created from brief");
 
 						this.SET_USER_CONTACTS({
 							email: this.user_data.email.value,
 						});
 						this.$emit("moveToNextPage");
-					}
-					if (response.status === 400) {
-						const error_list = returnErrorMessages(response.data);
+				} catch (err) {
+					if (err.status === 400) {
+						const error_list = returnErrorMessages(err.data);
 						error_list.forEach((el) => {
 							this.toast.error(el);
 						});
-					}
-				} catch (err) {
-					this.toast.error(
+					} else {
+						this.toast.error(
 						"Ошибка отправки контактов, проверьте правильность введённых данных"
 					);
-					throw new Error(err);
+					}
 				}
 			},
 		},

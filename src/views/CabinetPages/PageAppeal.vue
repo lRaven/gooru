@@ -79,7 +79,7 @@
 				let result = "";
 
 				const find = this.all_parsers.find(
-					(el) => el.id === this.appeal?.id
+					(el) => el.id === this.appeal.parser
 				);
 				if (find !== undefined) {
 					result = find.title;
@@ -190,6 +190,12 @@
 			@media (max-width: 570px) {
 				font-size: 2.5rem;
 			}
+			@media (max-width: 540px) {
+				grid-column: 2/3;
+			}
+			@media (max-width: 450px) {
+				gap: 0.5rem;
+			}
 		}
 		&__header {
 			display: flex;
@@ -198,10 +204,13 @@
 			align-items: center;
 			font-weight: 500;
 			@media (max-width: 540px) {
+				display: grid;
+				grid-template-columns: max-content 1fr;
 				padding: 0 1.5rem;
 			}
 			@media (max-width: 380px) {
 				gap: 0.5rem;
+				padding: 0;
 			}
 		}
 

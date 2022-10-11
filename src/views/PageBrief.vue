@@ -25,6 +25,7 @@
 					</transition>
 
 					<r-progressbar
+					v-if="document_width > 768"
 						:direction="
 							document_width < 768 ? 'horizontal' : 'vertical'
 						"
@@ -114,7 +115,13 @@
 							/>
 						</button>
 					</transition>
-
+					<r-progressbar
+					v-if="document_width <= 768"
+						:direction="
+							document_width < 768 ? 'horizontal' : 'vertical'
+						"
+						:progress="page_progress"
+					></r-progressbar>
 					<transition mode="out-in">
 						<button
 							type="button"

@@ -108,6 +108,13 @@
 			&.smooth {
 				scroll-behavior: smooth;
 			}
+			&::-webkit-scrollbar {
+				width: 0;
+				height: 0;
+			}
+			@media (max-width: 450px) {
+				gap: 2rem;
+			}
 		}
 
 		&__messages,

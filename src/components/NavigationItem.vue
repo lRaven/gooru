@@ -75,11 +75,13 @@
 		}
 
 		&__text {
+			word-break: break-all;
 			font-weight: 600;
 			color: $white;
 		}
 		:deep(.icon.navigation-item__icon) {
 			margin: 0 1.5rem 0 0;
+			min-width: 3.2rem;
 			path {
 				fill-opacity: 0.5;
 			}
