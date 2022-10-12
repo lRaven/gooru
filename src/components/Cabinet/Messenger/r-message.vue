@@ -112,6 +112,9 @@
 						left: 0;
 						box-shadow: #f6f6f6 0 -5rem 0 0;
 						border-top-left-radius: 5rem;
+						@media (max-width: 450px) {
+							border-top-left-radius: 10rem;
+						}
 					}
 				}
 				&__user {
@@ -127,6 +130,9 @@
 			width: fit-content;
 			min-width: 8rem;
 
+			@media (max-width: 450px) {
+				padding: 1.7rem;
+			}
 			&::before {
 				content: "";
 
@@ -165,6 +171,10 @@
 			border-radius: 50%;
 			object-fit: cover;
 			grid-row: 1/3;
+			@media (max-width: 450px) {
+				width: 3rem;
+				height: 3rem;
+			}
 		}
 
 		&__username {

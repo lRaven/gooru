@@ -32,14 +32,7 @@ const registrationByReferalLink = async ({ email, password, ref_friend }) => {
 	
 };
 
-const registration_by_tel = async () => {
-	try {
-		const response = await axios.post(`${baseURL}/user/auth/tel/`, {});
-		return response;
-	} catch (err) {
-		throw new Error();
-	}
-};
+
 
 const login = async ({ username, password }) => {
 	try {
@@ -128,7 +121,7 @@ const reset_password_request = async (email) => {
 		const response = await axios.post(
 			`${store.state.baseURL}/user/verify/reset_password/`,
 			{ email }
-		);
+		);[[]]
 		return response;
 	} catch (err) {
 		return err.response;
@@ -295,7 +288,6 @@ const delete_user = async (user_id) => {
 export {
 	registration,
 	registrationByReferalLink,
-	registration_by_tel,
 	login,
 	getReferalData,
 	logout,

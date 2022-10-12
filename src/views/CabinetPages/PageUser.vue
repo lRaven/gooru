@@ -115,7 +115,7 @@
 				<r-button
 					color="bordered"
 					text="Удалить"
-					@click.prevent="delete_this_user"
+					@click.prevent="isConfirmDeleteUserPopupOpen = true"
 				>
 					<template v-slot:icon>
 						<svg
@@ -283,6 +283,20 @@
 				</div>
 			</transition-group>
 		</div>
+		<r-confirm-popup
+			v-if="isConfirmDeleteUserPopupOpen"
+			:text="`Вы действительно хотите удалить «${user_data.email}»?`"
+			@action_confirm="delete_this_user"
+			@close_popup="isConfirmDeleteUserPopupOpen = false"
+			v-slot="{ handleClosePopup, handleConfirm }"
+		>
+			<r-button
+				text="Подтвердить"
+				@click="handleConfirm"
+				:disabled="isSourceDeleteLoading"
+			/>
+			<r-button text="Отмена" color="white" @click="handleClosePopup" />
+		</r-confirm-popup>
 	</section>
 </template>
 
@@ -406,6 +420,7 @@
 		data() {
 			return {
 				isFormDisabled: true,
+				isConfirmDeleteUserPopupOpen: false,
 				path: this.$route.path,
 				user_id: this.$route.params.id,
 

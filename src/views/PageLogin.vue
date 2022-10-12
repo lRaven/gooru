@@ -241,10 +241,12 @@
 					const response = await reset_password_request(
 						this.email_for_password_reset
 					);
-					if (response.status === 201) {
+					if (response.status === 200) {
 						this.toast.success(
 							`Письмо с инструкциями было отправлено на\n${this.email_for_password_reset}\nИзменить пароль можно в личном кабинете`
 						);
+						this.close_modal();
+						
 						console.log("password change request sent");
 					}
 					if (response.status === 400) {
@@ -252,6 +254,9 @@
 						error_list.forEach((el) => {
 							this.toast.error(el);
 						});
+					} else if (response.status === 404) {
+						this.toast.error(`Вам уже отправлено письмо с инструкцией на почтовый ящик\n${this.email_for_password_reset}`);
+						this.close_modal();
 					}
 				} catch (err) {
 					this.toast.error("Ошибка отправки запроса");
@@ -268,7 +273,7 @@
 						password: this.change_password_data.new_password,
 					});
 
-					if (response.status === 201) {
+					if (response.status === 200) {
 						console.log("password changed");
 						this.toast.success("Пароль успешно восстановлен");
 						this.close_modal();

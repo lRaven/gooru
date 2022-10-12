@@ -1,6 +1,6 @@
 <template>
 	<div class="the-messenger">
-		<h4 class="the-messenger__title" v-if="title">{{ title }}</h4>
+		<!-- <h4 class="the-messenger__title" v-if="title">{{ title }}</h4> -->
 		<chat-body
 			:ticket_id="ticket_id"
 			:chat_messages="messages"
@@ -125,7 +125,7 @@
 		border-radius: 0.8rem 0.8rem 0 0;
 		overflow: hidden;
 		display: grid;
-		grid-template-rows: max-content 1fr max-content;
+		grid-template-rows: 1fr max-content;
 		&__title {
 			text-align: center;
 			word-break: break-all;

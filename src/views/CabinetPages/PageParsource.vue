@@ -633,7 +633,6 @@
 						parsourceId: this.parsource_id,
 					});
 					if (exceptionsInUpdate.length) {
-						console.log(exceptionsInUpdate);
 						exceptionsInUpdate.forEach((exceptionText) => {
 							this.toast.error(exceptionText);
 						});

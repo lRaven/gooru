@@ -65,6 +65,10 @@
 			width: fit-content;
 			padding: 1rem;
 			border-radius: 50%;
+			.navigation-item__notification-counter {
+				top: 110%;
+				right: -0.5rem;
+			}
 		}
 		&:hover {
 			cursor: pointer;
@@ -95,6 +99,7 @@
 			margin: 0;
 		}
 		
+		
 		&__notification-counter {
 			font-size: 1.4rem;
 			font-weight: 600;
@@ -102,12 +107,13 @@
 			justify-content: center;
 			align-items: center;
 			position: absolute;
-			right: -30px;
+			right: 0;
 			top: 50%;
 			transform: translateY(-50%);
 			background-color: $red;
 			color: $white;
-			padding: 1.1rem;
+			min-width: 2rem;
+			height: 2rem;
 			border-radius: 50%;
 		}
 	}

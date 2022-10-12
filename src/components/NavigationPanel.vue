@@ -11,6 +11,7 @@
 			:text="tab.text"
 			:name="tab.name"
 			:icon="tabIcons[tab.text]"
+			:notificationCount="notifications ? notifications[tab.name]: 0"
 			:isActive="tab.id === currentTab?.id"
 			:isMinimized="isMenuMinimized"
 			@setTab="$emit('navigate-to', tab.id)"
@@ -29,6 +30,7 @@
 		props: {
 			tabs: { type: Array, required: true },
 			tabIcons: { type: [Object], required: true },
+			notifications: { type: Object,  },
 			currentTab: { type: Object, required: true },
 			isMenuMinimized: { type: Boolean, required: true },
 		},

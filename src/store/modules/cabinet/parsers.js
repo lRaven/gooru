@@ -434,7 +434,11 @@ const actions = {
 							delayTime +
 							" cекунд";
 							return exceptions.push(errorMessage);
+					} else if (result.reason.response.status === 403) {
+						errorMessage = "Доступ запрещен";
+						return exceptions.push(errorMessage);
 					}
+					errorMessage = "Что-то пошло не так!";
 					return exceptions.push(errorMessage);
 				}
 			});

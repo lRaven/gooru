@@ -16,6 +16,7 @@
 				class="page-cabinet__navigation-panel"
 				:tabs="navigationTabs"
 				:tabIcons="$options.tabIcons"
+				:notifications="notifications"
 				:currentTab="currentTab(currentTabName)"
 				:isMenuMinimized="isSideBarMinimized"
 				@navigate-to="handleNavigate"
@@ -51,7 +52,7 @@
 		navBarForAdmin,
 		navigateCabinet,
 	} from "@/router/navigationUtils";
-	import { mapState, mapActions } from "vuex";
+	import { mapState, mapActions, mapGetters } from "vuex";
 	import store from "@/store";
 
 	export default {
@@ -95,10 +96,11 @@
 				tab: (state) => state.navigation_panel.tab,
 				user_auth: (state) => state.cabinet.user_auth,
 				userRole: (state) => state.cabinet.user.role,
-				notifications: (state) => state.notifications.notifications,
+				/* notifications: (state) => state.notifications.notifications, */
 
 				document_width: (state) => state.document_width,
 			}),
+			...mapGetters(["appeals_notifications", "parsources_notifications", "parsers_notifications", "user_notifications"]),
 
 			navigationTabs() {
 				switch (this.userRole) {
@@ -111,6 +113,21 @@
 					default:
 						return [];
 				}
+			},
+			notifications() {
+				const notificationObj = {};
+				this.navigationTabs.forEach( (tab) => {
+					if (tab.name === 'appeals') {
+						notificationObj['appeals'] = this.appeals_notifications.length;
+					} else if (tab.name === 'parsources') {
+						notificationObj['parsources'] = this.parsources_notifications.length + this.parsers_notifications.length;
+					} else if (tab.name === 'users') {
+						notificationObj['users'] = this.user_notifications.length;
+					} else {
+						notificationObj[tab.name] = 0;
+					}
+				});
+				return notificationObj;
 			},
 			currentTab() {
 				return (currentTabName) => {

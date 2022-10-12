@@ -23,7 +23,7 @@
 		</button>
 
 		<div class="right-panel__header">
-			<img :src="icon" alt="" class="right-panel__icon" />
+			<slot name="icon"></slot>
 			<h5 class="right-panel__title" v-if="isMinimized === false">
 				{{ title }}
 			</h5>
@@ -39,10 +39,6 @@
 	export default {
 		name: "RightPanel",
 		props: {
-			icon: {
-				value: String,
-				default: "/img/icon/cabinet/arrow-double.svg",
-			},
 			closeIcon: {
 				value: String,
 				default: "arrow",
@@ -151,8 +147,8 @@
 			gap: 1.2rem;
 			margin-bottom: 2.6rem;
 		}
-		&__icon {
-			width: 3.2rem;
+		:slotted(.right-panel__icon) {
+			min-width: 3.2rem;
 		}
 		&__title {
 			font-weight: 600;

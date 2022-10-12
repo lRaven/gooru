@@ -240,6 +240,11 @@
 					this.clear_notifications(notification.id);
 				});
 			},
+			parsers_notifications() {
+				this.parsers_notifications.forEach((notification) => {
+					this.clear_notifications(notification.id);
+				});
+			},
 		},
 		computed: {
 			...mapState({
