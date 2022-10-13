@@ -162,7 +162,7 @@
 
 			<div
 				class="page-parsource__content-bottom"
-				v-if="number_of_pages > 1"
+				v-if="number_of_pages > 1 && parsers.length"
 			>
 				<r-button
 					:disabled="page >= number_of_pages"
@@ -449,6 +449,7 @@
 					page_size: this.pagination.cards_in_page,
 					nextPage: false,
 				});
+				this.getAllParsers();
 				if (this.user.tariff === 'freelance') {
 					try {
 					await createNewFreelanceParsource({
