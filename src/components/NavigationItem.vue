@@ -107,7 +107,7 @@
 			justify-content: center;
 			align-items: center;
 			position: absolute;
-			right: 0;
+			right: -2.5rem;
 			top: 50%;
 			transform: translateY(-50%);
 			background-color: $red;

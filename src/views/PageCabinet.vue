@@ -96,7 +96,6 @@
 				tab: (state) => state.navigation_panel.tab,
 				user_auth: (state) => state.cabinet.user_auth,
 				userRole: (state) => state.cabinet.user.role,
-				/* notifications: (state) => state.notifications.notifications, */
 
 				document_width: (state) => state.document_width,
 			}),
@@ -239,6 +238,11 @@
 		&__navigation-panel {
 			:deep(.navigation-item) {
 				padding: 0.8rem 1rem 0.8rem 2rem;
+				.navigation-item__notification-counter {
+					@media (max-width: 1023px) {
+						right: 0.5rem;
+					}
+				}
 			}
 			:deep(.navigation-item_minimize) {
 				padding: 1rem;
