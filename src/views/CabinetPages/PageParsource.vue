@@ -448,7 +448,8 @@
 					page_size: this.pagination.cards_in_page,
 					nextPage: false,
 				});
-				try {
+				if (this.user.tariff === 'freelance') {
+					try {
 					await createNewFreelanceParsource({
 						sources: this.parsource.freelance_source,
 						id_user: this.user.id,
@@ -458,6 +459,8 @@
 				} catch (err) {
 					return err;
 				}
+				}
+				
 			},
 			cards() {
 				this.isParsersLoaded = true;
