@@ -579,7 +579,6 @@
 			flex-direction: column;
 			background-color: $light-blue;
 			border-radius: 0.6rem;
-			overflow-y: auto;
 			-webkit-overflow-scrolling: touch;
 			box-shadow: $shadow;
 			.appeals-card {

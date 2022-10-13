@@ -444,25 +444,24 @@
 			async parsource() {
 				this.changedParsource = { ...this.parsource };
 				this.getCards({
-					parsource_name: this.parsource_name,
+					parsource_id: this.parsource_id,
 					page_number: this.page,
 					page_size: this.pagination.cards_in_page,
 					nextPage: false,
 				});
 				this.getAllParsers();
-				if (this.user.tariff === 'freelance') {
+				if (this.user.tariff === "freelance") {
 					try {
-					await createNewFreelanceParsource({
-						sources: this.parsource.freelance_source,
-						id_user: this.user.id,
-						id_parsource: this.parsource.id,
-						keywords: this.parsource.keywords,
-					});
-				} catch (err) {
-					return err;
+						await createNewFreelanceParsource({
+							sources: this.parsource.freelance_source,
+							id_user: this.user.id,
+							id_parsource: this.parsource.id,
+							keywords: this.parsource.keywords,
+						});
+					} catch (err) {
+						return err;
+					}
 				}
-				}
-				
 			},
 			cards() {
 				this.isParsersLoaded = true;
@@ -534,7 +533,9 @@
 
 			lastUpdatedTime() {
 				return this.parsource.last_time_sync
-					? `Последнее обновление: ${prettyDateTime(this.parsource.last_time_sync)}`: "";
+					? `Последнее обновление: ${prettyDateTime(this.parsource.last_time_sync
+					)}`
+					: "";
 			},
 
 			parsers() {
@@ -672,7 +673,7 @@
 					} else {
 						await this.getParsource(this.parsource_id);
 						await this.getCards({
-							parsource_name: this.parsource_name,
+							parsource_id: this.parsource_id,
 							page_number: this.page,
 							page_size: this.pagination.cards_in_page,
 							nextPage: false,
@@ -714,7 +715,7 @@
 			async getCards(params) {
 				try {
 					this.getParsers({
-						parsource_name: this.parsource_name,
+						parsource_id: this.parsource_id,
 						...params,
 					});
 				} catch (err) {
@@ -724,7 +725,7 @@
 			async getNextCards(params) {
 				try {
 					const response = await this.getParsers({
-						parsource_name: this.parsource_name,
+						parsource_id: this.parsource_id,
 						...params,
 					});
 

@@ -259,7 +259,7 @@ const actions = {
 			const response = await axios.get(
 				`${store.state.baseURL}/parser/?${
 					args.search ? `search=${args.search}&` : ""
-				}parsource__name=${args.parsource_name}&page=${
+				}parsource_id=${args.parsource_id}&page=${
 					args.page_number
 				}&page_size=${args.page_size}`,
 				{
