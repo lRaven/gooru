@@ -99,9 +99,9 @@
 
 			<p
 				class="parsource-card__col parsource-card__found"
-				:title="parsource.find || 0"
+				:title="parsource.parsers_count || 0"
 			>
-				{{ parsource.find || 0 }}
+				{{ parsource.parsers_count || 0 }}
 			</p>
 
 			<p
@@ -192,9 +192,9 @@
 
 					<p
 						class="parsource-card__col parsource-card__found"
-						:title="parsource.find || 0"
+						:title="parsource.parsers_count || 0"
 					>
-						{{ parsource.find || 0 }}
+						{{ parsource.parsers_count || 0 }}
 					</p>
 				</div>
 
@@ -236,7 +236,7 @@
 	import { directive } from "vue3-click-away";
 	import { useToast } from "vue-toastification";
 
-	import { prettyDate } from "@/js/processStrings";
+	import { prettyDate, prettyDateTime } from "@/js/processStrings";
 
 	export default {
 		name: "ParsourceCard",
@@ -298,11 +298,8 @@
 					: this.parsource.data_source;
 			},
 			lost_time() {
-				const time = this.parsource.lost_time;
-				const hours = Number(time.slice(0, 2));
-				const minutes = Number(time.slice(3, 5));
-
-				return `${hours > 0 ? hours + "ч" : ""} ${minutes}мин`;
+				const time = this.parsource.last_time_sync;
+				return prettyDateTime(time) 
 			},
 		},
 		data() {

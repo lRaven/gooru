@@ -259,6 +259,19 @@
 						>
 							{{ parsource_name }}
 						</p>
+						<template v-if="parsourceKeyWords">
+							<p
+								class="page-parsource__info-key page-parsource__info-key_name"
+							>
+								Ключевые слова поиска
+							</p>
+							<p
+								class="page-parsource__info-value page-parsource__info-keywords"
+								:title="parsourceKeyWords"
+							>
+								{{ parsourceKeyWords }}
+							</p>
+						</template>
 
 						<p
 							class="page-parsource__info-key"
@@ -380,6 +393,7 @@
 		updateParsourceImage,
 		downloadParsers,
 		editParserData,
+		createNewFreelanceParsource,
 	} from "@/api/parser";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 
@@ -434,6 +448,16 @@
 					page_size: this.pagination.cards_in_page,
 					nextPage: false,
 				});
+				try {
+					await createNewFreelanceParsource({
+						sources: this.parsource.freelance_source,
+						id_user: this.user.id,
+						id_parsource: this.parsource.id,
+						keywords: this.parsource.keywords,
+					});
+				} catch (err) {
+					return err;
+				}
 			},
 			cards() {
 				this.isParsersLoaded = true;
@@ -504,8 +528,10 @@
 			]),
 
 			lastUpdatedTime() {
-				return this.parsource.last_time_sync ? `Последнее обновление: ${prettyDateTime(this.parsource.last_time_sync)}` : "";
+				return this.parsource.last_time_sync
+					? `Последнее обновление: ${prettyDateTime(this.parsource.last_time_sync)}`: "";
 			},
+
 			parsers() {
 				if (this.selectedListFilter === "favorites") {
 					return this.favoriteParsers;
@@ -536,7 +562,9 @@
 			parsource_name() {
 				return this.parsource.name;
 			},
-
+			parsourceKeyWords() {
+				return this.parsource.keywords;
+			},
 			user_manager() {
 				let result;
 
@@ -779,11 +807,12 @@
 						this.clear_notifications(notification.id);
 					}
 				});
-				this.updateParserData({ parsourceId: this.parsource_id })
-				.then( () => {
-					this.getParsource(this.parsource_id);
-					this.getAllParsources();
-				});
+				this.updateParserData({ parsourceId: this.parsource_id }).then(
+					() => {
+						this.getParsource(this.parsource_id);
+						this.getAllParsources();
+					}
+				);
 
 				if (
 					this.userRole !== "DefaultUser" &&
@@ -840,14 +869,14 @@
 
 		&__info {
 			display: grid;
-			grid-template-columns: max-content 1fr;
+			grid-template-columns: minmax(auto, max-content);
 			align-items: center;
 			grid-gap: 1rem;
 			margin: 0 0 4rem 0;
 			@media (max-width: 450px) {
-				grid-template-columns: max-content;
 				.r-status {
 					padding: 0.8rem 2rem;
+					grid-column: 1/3;
 				}
 			}
 
@@ -856,6 +885,9 @@
 				color: rgba($black, 0.7);
 				&_name {
 					align-self: flex-start;
+					@media screen and (max-width: 450px) {
+						grid-column: 1/3;
+					}
 				}
 			}
 			&-value {
@@ -870,6 +902,21 @@
 				word-wrap: break-word;
 				text-overflow: clip;
 				white-space: normal;
+				@media screen and (max-width: 450px) {
+					grid-column: 1/3;
+				}
+			}
+			&-keywords {
+				font-weight: 700;
+				line-height: 1.1;
+				color: $primary;
+				word-wrap: break-word;
+				text-overflow: clip;
+				white-space: normal;
+				grid-column: 2/3;
+				@media screen and (max-width: 450px) {
+					grid-column: 1/3;
+				}
 			}
 
 			&-status {
@@ -980,7 +1027,10 @@
 					}
 					@media screen and (max-width: 800px) {
 						padding: 2rem 0;
-						grid-template-columns: repeat(2, minmax(auto, max-content));
+						grid-template-columns: repeat(
+							2,
+							minmax(auto, max-content)
+						);
 					}
 				}
 				&-sort {

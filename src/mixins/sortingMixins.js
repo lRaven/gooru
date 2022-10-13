@@ -69,8 +69,8 @@ export const sortParsources = {
 			},
 			{
 				id: 6,
-				key: "lost_time",
-				description: "Время парсинга",
+				key: "last_time_sync",
+				description: "Крайнее обновление",
 				direction: "descending",
 			},
 		],
@@ -113,8 +113,8 @@ export const sortParsources = {
 			},
 			{
 				id: 6,
-				key: "lost_time",
-				description: "Время парсинга",
+				key: "last_time_sync",
+				description: "Крайнее обновление",
 				direction: "descending",
 			},
 		],
@@ -399,8 +399,8 @@ export const sortParsourcesUser = {
 			},
 			{
 				id: 6,
-				key: "lost_time",
-				description: "Время парсинга",
+				key: "last_time_sync",
+				description: "Крайнее обновление",
 				direction: "descending",
 			},
 		],
