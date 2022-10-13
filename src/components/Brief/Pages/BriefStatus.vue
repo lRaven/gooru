@@ -135,7 +135,6 @@
 			gap: 5rem;
 			width: 100%;
 			max-width: 45rem;
-			overflow: hidden;
 		}
 
 		&__title {

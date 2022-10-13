@@ -58,14 +58,14 @@
 	export default {
 		name: "PageCabinet",
 		tabIcons: {
-			Подписка: RatesIcon,
-			Обращения: AppealsIcon,
+			"Подписка": RatesIcon,
+			"Обращения": AppealsIcon,
 			"Мои парсеры": ParsersIcon,
 			"Все парсеры": ParsersIcon,
-			Избранное: FavoritesIcon,
+			"Избранное": FavoritesIcon,
 			"Мой профиль": ProfileIcon,
-			Пользователи: UsersIcon,
-			Управление: ControlIcon,
+			"Пользователи": UsersIcon,
+			"Управление": ControlIcon,
 		},
 		components: {
 			TheHeader,
@@ -93,7 +93,6 @@
 		},
 		computed: {
 			...mapState({
-				tab: (state) => state.navigation_panel.tab,
 				user_auth: (state) => state.cabinet.user_auth,
 				userRole: (state) => state.cabinet.user.role,
 
@@ -141,6 +140,7 @@
 
 			handleNavigate(tabId) {
 				const navigationObject = {};
+				
 				const currentTab = this.navigationTabs.find(
 					({ id }) => id === tabId
 				);

@@ -118,6 +118,7 @@
 
 <script>
 	import { mapActions, mapMutations, mapState } from "vuex";
+	import store from "@/store";
 	import { send_new_parsource } from "@/api/parser";
 	import { returnErrorMessages } from "@/js/returnErrorMessages";
 	import { useToast } from "vue-toastification";
@@ -304,6 +305,13 @@
 		setup() {
 			const toast = useToast();
 			return { toast };
+		},
+		beforeRouteEnter(to, from, next) {
+			if (store.state.cabinet.user.tariff === '' || store.state.cabinet.user.tariff === 'freelance') {
+				next({ name: 'rates' });
+			} else {
+				next();
+			}
 		},
 	};
 </script>

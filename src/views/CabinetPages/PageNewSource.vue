@@ -48,6 +48,7 @@
 	import ParsourceNotification from "@/components/Cabinet/Parsources/ParsourceNotification.vue";
 	import FreelanceForm from "@/components/Cabinet/NewSource/Freelance/FreelanceNewSourceForm.vue";
 	import DefaultForm from "@/components/Cabinet/NewSource/Default/DefaultNewSourceForm.vue";
+	import store from '@/store';
 
 	export default {
 		name: "PageNewSource",
@@ -174,6 +175,13 @@
 		setup() {
 			const toast = useToast();
 			return { toast };
+		},
+		beforeRouteEnter(to, from, next) {
+			if (store.state.cabinet.user.tariff === '') {
+				next({ name: 'rates' });
+			} else {
+				next();
+			}
 		},
 	};
 </script>
