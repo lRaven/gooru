@@ -94,6 +94,7 @@
 							</button>
 						</div>
 						<r-button
+							v-if="user.tariff === 'freelance'"
 							class="page-parsource__update-data"
 							text="Обновить"
 							@click="handleUpdateParsersData"
