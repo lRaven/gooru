@@ -45,7 +45,10 @@
 						Забыли пароль?
 					</button>
 
-					<r-button :disabled="!isValidForm || isFormDataSending" text="Войти"></r-button>
+					<r-button
+						:disabled="!isValidForm || isFormDataSending"
+						text="Войти"
+					></r-button>
 					<img
 						class="page-login__form-image"
 						src="http://localhost:8080/img/goo-colored.70a6d289.svg"
@@ -65,9 +68,7 @@
 						class="page-login__modal-form"
 						@submit.prevent="send_password_change_email_request"
 					>
-						<h2 class="page-login__modal-form-title">
-							Восстановление пароля
-						</h2>
+						<h2 class="page-login__modal-form-title">Восстановление пароля</h2>
 						<p class="page-login__modal-form-description">Email:</p>
 						<r-input
 							input_type="email"
@@ -81,21 +82,14 @@
 		</transition>
 
 		<transition mode="out-in" name="fade">
-			<r-modal
-				v-if="isChangePasswordModalOpen"
-				@close-modal="close_modal"
-			>
+			<r-modal v-if="isChangePasswordModalOpen" @close-modal="close_modal">
 				<template v-slot>
 					<form
 						class="page-login__modal-form"
 						@submit.prevent="send_reset_password"
 					>
-						<h2 class="page-login__modal-form-title">
-							Сменить пароль
-						</h2>
-						<p class="page-login__modal-form-description">
-							Новый пароль:
-						</p>
+						<h2 class="page-login__modal-form-title">Сменить пароль</h2>
+						<p class="page-login__modal-form-description">Новый пароль:</p>
 						<r-input
 							input_type="password"
 							placeholder="Введите новый пароль"
@@ -121,19 +115,15 @@
 </template>
 
 <script>
-	import { mapState, mapActions } from "vuex";
+	import { mapState, mapActions } from 'vuex';
 
-	import TheHeader from "@/components/TheHeader.vue";
-	import {
-		login,
-		reset_password_request,
-		reset_password,
-	} from "@/api/userApi";
-	import { returnErrorMessages } from "@/js/returnErrorMessages";
-	import { useToast } from "vue-toastification";
+	import TheHeader from '@/components/TheHeader.vue';
+	import { login, reset_password_request, reset_password } from '@/api/userApi';
+	import { returnErrorMessages } from '@/js/returnErrorMessages';
+	import { useToast } from 'vue-toastification';
 
 	export default {
-		name: "PageLogin",
+		name: 'PageLogin',
 		components: { TheHeader },
 		computed: {
 			...mapState({
@@ -151,7 +141,7 @@
 
 			isHasQueryParamsForResetPassword() {
 				const keys = Object.keys(this.$route.query);
-				return keys.includes("uid") && keys.includes("token");
+				return keys.includes('uid') && keys.includes('token');
 			},
 			isResetPasswordFormValid() {
 				return (
@@ -169,24 +159,24 @@
 
 			user_data: {
 				email: {
-					value: "",
+					value: '',
 					valid: false,
 					error_message: null,
 				},
 				password: {
-					value: "",
+					value: '',
 					error_message: null,
 				},
 			},
 
-			email_for_password_reset: "",
+			email_for_password_reset: '',
 			change_password_data: {
-				new_password: "",
-				new_password_confirm: "",
+				new_password: '',
+				new_password_confirm: '',
 			},
 		}),
 		methods: {
-			...mapActions(["getUserData", "getUserRate", "getRates"]),
+			...mapActions(['getUserData', 'getUserRate', 'getRates']),
 
 			async auth() {
 				this.isFormDataSending = true;
@@ -197,18 +187,15 @@
 					});
 					if (response.status === 200) {
 						this.handleResetForm();
-						this.toast.success("Вход выполнен успешно");
-						this.$cookies.set(
-							"auth_token",
-							response.data.auth_token
-						);
-						localStorage.setItem("userAuth", "yes");
+						this.toast.success('Вход выполнен успешно');
+						this.$cookies.set('auth_token', response.data.auth_token);
+						localStorage.setItem('userAuth', 'yes');
 
 						this.getUserData();
 						this.getUserRate();
 						this.getRates();
 
-						this.$router.push({ name: "cabinet" });
+						this.$router.push({ name: 'cabinet' });
 					}
 					if (response.status === 400) {
 						const error_list = returnErrorMessages(response.data);
@@ -218,7 +205,7 @@
 					}
 				} catch (err) {
 					this.toast.error(
-						"Не удаётся войти. Пожалуйста проверьте правильность написания email и пароля"
+						'Не удаётся войти. Пожалуйста проверьте правильность написания email и пароля'
 					);
 					throw new Error(err);
 				}
@@ -246,8 +233,8 @@
 							`Письмо с инструкциями было отправлено на\n${this.email_for_password_reset}\nИзменить пароль можно в личном кабинете`
 						);
 						this.close_modal();
-						
-						console.log("password change request sent");
+
+						console.log('password change request sent');
 					}
 					if (response.status === 400) {
 						const error_list = returnErrorMessages(response.data);
@@ -255,11 +242,13 @@
 							this.toast.error(el);
 						});
 					} else if (response.status === 404) {
-						this.toast.error(`Вам уже отправлено письмо с инструкцией на почтовый ящик\n${this.email_for_password_reset}`);
+						this.toast.error(
+							`Вам уже отправлено письмо с инструкцией на почтовый ящик\n${this.email_for_password_reset}`
+						);
 						this.close_modal();
 					}
 				} catch (err) {
-					this.toast.error("Ошибка отправки запроса");
+					this.toast.error('Ошибка отправки запроса');
 					throw new Error(err);
 				}
 				this.isFormDataSending = false;
@@ -274,8 +263,8 @@
 					});
 
 					if (response.status === 200) {
-						console.log("password changed");
-						this.toast.success("Пароль успешно восстановлен");
+						console.log('password changed');
+						this.toast.success('Пароль успешно восстановлен');
 						this.close_modal();
 					}
 					if (response.status === 400) {
@@ -285,7 +274,7 @@
 						});
 					}
 				} catch (err) {
-					this.toast.error("Ошибка смены пароля");
+					this.toast.error('Ошибка смены пароля');
 					throw new Error(err);
 				}
 				this.isFormDataSending = false;
@@ -298,7 +287,7 @@
 				this.isChangePasswordModalOpen = true;
 			}
 			//* если есть параметр reset_password_request то открыть модалку запроса смены пароля через email
-			if (this.$route.query.reset_password_request === "true") {
+			if (this.$route.query.reset_password_request === 'true') {
 				this.isChangePasswordRequestModalOpen = true;
 			}
 		},
@@ -310,7 +299,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.page-login {
 		display: flex;
@@ -330,8 +319,8 @@
 			display: flex;
 			justify-content: center;
 			margin-top: 8rem;
-			background: url("/public/img/icon/cabinet/goo-colored.svg") center
-				right 60px / auto 60% no-repeat;
+			background: url('/public/img/icons/cabinet/goo-colored.svg') center right
+				60px / auto 60% no-repeat;
 			width: 100%;
 			@media (max-width: 768px) {
 				background: none;
@@ -397,7 +386,7 @@
 
 				&:first-child {
 					&::after {
-						content: "";
+						content: '';
 						position: absolute;
 						top: -0.5rem;
 						bottom: -0.5rem;

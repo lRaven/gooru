@@ -4,7 +4,7 @@
 
 		<slot name="icon">
 			<img
-				src="/img/icon/cabinet/arrow.svg"
+				src="/img/icons/cabinet/arrow.svg"
 				alt="arrow"
 				class="sort-button__icon"
 				:class="sortItem.direction"
@@ -15,7 +15,7 @@
 
 <script>
 	export default {
-		name: "SortButton",
+		name: 'SortButton',
 		props: {
 			sortItem: {
 				value: Object,
@@ -28,27 +28,27 @@
 		},
 		methods: {
 			sortBy() {
-				this.$emit("update:modelValue", this.sortItem.id);
+				this.$emit('update:modelValue', this.sortItem.id);
 
 				if (this.selected_sort === this.sortItem.id) {
-					if (this.sortItem.direction === "descending") {
-						this.$emit("change_direction", {
+					if (this.sortItem.direction === 'descending') {
+						this.$emit('change_direction', {
 							id: this.sortItem.id,
 							key: this.sortItem.key,
-							direction: "ascending",
+							direction: 'ascending',
 						});
 					} else {
-						this.$emit("change_direction", {
+						this.$emit('change_direction', {
 							id: this.sortItem.id,
 							key: this.sortItem.key,
-							direction: "descending",
+							direction: 'descending',
 						});
 					}
 				} else {
-					this.$emit("new_sort", {
+					this.$emit('new_sort', {
 						id: this.sortItem.id,
 						key: this.sortItem.key,
-						direction: "ascending",
+						direction: 'ascending',
 					});
 				}
 			},
@@ -57,7 +57,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.sort-button {
 		background-color: transparent;

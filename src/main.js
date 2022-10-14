@@ -6,6 +6,7 @@ import VueCookies from 'vue-cookies'
 import VueSocialSharing from "vue-social-sharing"
 import Toast, { POSITION } from "vue-toastification"
 import "vue-toastification/dist/index.css"
+import '@/registerServiceWorker'
 
 import components from '@/components/UI'
 

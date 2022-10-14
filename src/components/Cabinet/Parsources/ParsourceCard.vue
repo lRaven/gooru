@@ -8,7 +8,10 @@
 
 		<div
 			class="parsource-card__content"
-			:class="{ selected: isSelected, 'parsource-card__content_border_red': isHasNotifications }"
+			:class="{
+				selected: isSelected,
+				'parsource-card__content_border_red': isHasNotifications,
+			}"
 			v-if="document_width > 1140"
 		>
 			<p
@@ -25,10 +28,7 @@
 				v-click-away="handleCloseEditParsourceMode"
 			>
 				<template v-if="!isEditParsourceName">
-					<p
-						class="parsource-card__name-text"
-						:title="parsource.name"
-					>
+					<p class="parsource-card__name-text" :title="parsource.name">
 						{{ parsource.name }}
 					</p>
 					<svg
@@ -88,7 +88,7 @@
 				class="parsource-card__col parsource-card__date"
 				:title="parsource.date || '1.1.1970'"
 			>
-				{{ parsource.date ? prettyDate(parsource.date) : "1.1.1970" }}
+				{{ parsource.date ? prettyDate(parsource.date) : '1.1.1970' }}
 			</p>
 
 			<r-status
@@ -112,10 +112,7 @@
 				{{ favoritesCount || 0 }}
 			</p>
 
-			<p
-				class="parsource-card__col parsource-card__time"
-				:title="lost_time"
-			>
+			<p class="parsource-card__col parsource-card__time" :title="lost_time">
 				{{ lost_time }}
 			</p>
 
@@ -132,13 +129,13 @@
 			>
 				<template v-slot:icon>
 					<img
-						src="/img/icon/alert.svg"
+						src="/img/icons/alert.svg"
 						alt="notification"
 						class="parsource-card__notification"
 						v-if="isHasNotifications"
 					/>
 					<img
-						src="/img/icon/dot_list.svg"
+						src="/img/icons/dot_list.svg"
 						alt="dots"
 						class="parsource-card__dots"
 						v-if="document_width <= 1440"
@@ -149,7 +146,10 @@
 
 		<div
 			class="parsource-card__content"
-			:class="{ selected: isSelected, 'parsource-card__content_border_red': isHasNotifications }"
+			:class="{
+				selected: isSelected,
+				'parsource-card__content_border_red': isHasNotifications,
+			}"
 			v-else
 		>
 			<div class="parsource-card__row">
@@ -179,11 +179,7 @@
 						class="parsource-card__col parsource-card__date"
 						:title="parsource.date || '1.1.1970'"
 					>
-						{{
-							parsource.date
-								? prettyDate(parsource.date)
-								: "1.1.1970"
-						}}
+						{{ parsource.date ? prettyDate(parsource.date) : '1.1.1970' }}
 					</p>
 				</div>
 
@@ -211,13 +207,13 @@
 				>
 					<template v-slot:icon>
 						<img
-							src="/img/icon/alert.svg"
+							src="/img/icons/alert.svg"
 							alt="notification"
 							class="parsource-card__notification"
 							v-if="isHasNotifications"
 						/>
 						<img
-							src="/img/icon/dot_list.svg"
+							src="/img/icons/dot_list.svg"
 							alt="dots"
 							class="parsource-card__dots"
 							v-if="document_width < 1440"
@@ -230,16 +226,16 @@
 </template>
 
 <script>
-	import rStatus from "@/components/Cabinet/r-status";
+	import rStatus from '@/components/Cabinet/r-status';
 
-	import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-	import { directive } from "vue3-click-away";
-	import { useToast } from "vue-toastification";
+	import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+	import { directive } from 'vue3-click-away';
+	import { useToast } from 'vue-toastification';
 
-	import { prettyDate, prettyDateTime } from "@/js/processStrings";
+	import { prettyDate, prettyDateTime } from '@/js/processStrings';
 
 	export default {
-		name: "ParsourceCard",
+		name: 'ParsourceCard',
 		props: {
 			parsource: Object,
 
@@ -265,7 +261,7 @@
 					? this.SELECT_PARSOURCE(this.parsource.id)
 					: this.UNSELECT_PARSOURCE(this.parsource.id);
 			},
-			"parsource.selected"() {
+			'parsource.selected'() {
 				this.isSelected = this.parsource.selected;
 			},
 		},
@@ -274,18 +270,21 @@
 				document_width: (state) => state.document_width,
 				allParsers: (state) => state.parsers.all_parsers,
 			}),
-			...mapGetters(["favoriteParsources",]),
+			...mapGetters(['favoriteParsources']),
 			favoritesCount() {
-				const isItFavoriteParser = this.favoriteParsources.find( parsource => parsource.id === this.parsource.id);
+				const isItFavoriteParser = this.favoriteParsources.find(
+					(parsource) => parsource.id === this.parsource.id
+				);
 				if (isItFavoriteParser) {
-					const totalCount = this.allParsers.reduce( (prev, currentParser) => {
-						return currentParser.parsource === this.parsource.id && currentParser.favoriteId ? ++prev : prev;
+					const totalCount = this.allParsers.reduce((prev, currentParser) => {
+						return currentParser.parsource === this.parsource.id &&
+							currentParser.favoriteId
+							? ++prev
+							: prev;
 					}, 0);
 					return totalCount;
 				}
 				return 0;
-				
-				
 			},
 			isHasNotifications() {
 				return this.parsourcesHasParsersNotifications.find(
@@ -293,13 +292,13 @@
 				);
 			},
 			source() {
-				return this.parsource.data_source.split("/")[2]
-					? this.parsource.data_source.split("/")[2]
+				return this.parsource.data_source.split('/')[2]
+					? this.parsource.data_source.split('/')[2]
 					: this.parsource.data_source;
 			},
 			lost_time() {
 				const time = this.parsource.last_time_sync;
-				return prettyDateTime(time) 
+				return prettyDateTime(time);
 			},
 		},
 		data() {
@@ -310,8 +309,8 @@
 			};
 		},
 		methods: {
-			...mapMutations(["SELECT_PARSOURCE", "UNSELECT_PARSOURCE"]),
-			...mapActions(["updateParsourceName"]),
+			...mapMutations(['SELECT_PARSOURCE', 'UNSELECT_PARSOURCE']),
+			...mapActions(['updateParsourceName']),
 
 			handleEditParsourceName() {
 				this.isEditParsourceName = !this.isEditParsourceName;
@@ -329,7 +328,7 @@
 					});
 					this.isEditParsourceName = false;
 				} catch (error) {
-					this.toast.error("Ошибка при обновлении названия ресурса!");
+					this.toast.error('Ошибка при обновлении названия ресурса!');
 				}
 			},
 			prettyDate,
@@ -343,7 +342,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.parsource-card {
 		display: flex;

@@ -17,11 +17,7 @@
 				v-for="item in rate.checkList"
 				:key="item.id"
 			>
-				<img
-					src="/img/icon/tick.svg"
-					alt="tick"
-					class="rate-card__tick"
-				/>
+				<img src="/img/icons/tick.svg" alt="tick" class="rate-card__tick" />
 				<p class="rate-card__checklist-item-text">{{ item.text }}</p>
 			</li>
 		</ul>
@@ -35,7 +31,7 @@
 
 <script>
 	export default {
-		name: "RateCard",
+		name: 'RateCard',
 		props: {
 			isHasButton: {
 				value: Boolean,
@@ -43,11 +39,11 @@
 			},
 			ButtonText: {
 				value: String,
-				default: "button",
+				default: 'button',
 			},
 			color: {
 				value: String,
-				default: "blue",
+				default: 'blue',
 			},
 			rate: Object,
 		},
@@ -55,7 +51,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.rate-card {
 		display: flex;

@@ -21,9 +21,7 @@
 						Регистрация
 					</router-link>
 
-					<p class="page-registration__form-input-description">
-						E-mail
-					</p>
+					<p class="page-registration__form-input-description">E-mail</p>
 					<r-input
 						:spellCheck="false"
 						class="page-registration__form-input"
@@ -33,9 +31,7 @@
 						:error_message="user_data.email.error_message"
 					></r-input>
 
-					<p class="page-registration__form-input-description">
-						Пароль
-					</p>
+					<p class="page-registration__form-input-description">Пароль</p>
 					<r-input
 						:spellCheck="false"
 						class="page-registration__form-input"
@@ -79,8 +75,8 @@
 
 					<p class="page-registration__form-disclaimer">
 						Нажимая кнопку «Зарегистрироваться», я даю согласие
-						на&nbsp;обработку персональных данных, соглашаюсь
-						с&nbsp;тарифами и правилами
+						на&nbsp;обработку персональных данных, соглашаюсь с&nbsp;тарифами и
+						правилами
 						<a
 							href="/docs/Оферта ГУРУ.pdf"
 							target="_blank"
@@ -101,18 +97,18 @@
 </template>
 
 <script>
-	import { mapState } from "vuex";
+	import { mapState } from 'vuex';
 
-	import TheHeader from "@/components/TheHeader.vue";
-	import { registration, registrationByReferalLink } from "@/api/userApi";
-	import { returnErrorMessages } from "@/js/returnErrorMessages";
-	import { useToast } from "vue-toastification";
+	import TheHeader from '@/components/TheHeader.vue';
+	import { registration, registrationByReferalLink } from '@/api/userApi';
+	import { returnErrorMessages } from '@/js/returnErrorMessages';
+	import { useToast } from 'vue-toastification';
 
 	export default {
-		name: "PageRegistration",
+		name: 'PageRegistration',
 		components: { TheHeader },
 		computed: {
-			...mapState(["baseURL"]),
+			...mapState(['baseURL']),
 
 			isValidForm() {
 				return (
@@ -136,17 +132,17 @@
 		data: () => ({
 			user_data: {
 				email: {
-					value: "",
+					value: '',
 					valid: false,
 					error_message: null,
 				},
 				password: {
-					value: "",
+					value: '',
 					isEdited: false,
 					error_message: null,
 				},
 				reapetedPassword: {
-					value: "",
+					value: '',
 					isEdited: false,
 					error_message: null,
 				},
@@ -168,18 +164,15 @@
 					} else {
 						await registration(registrationData);
 					}
-					this.toast.success(
-						"Вы успешно зарегистрировали свой аккаунт"
-					);
+					this.toast.success('Вы успешно зарегистрировали свой аккаунт');
 					this.toast.info(
 						`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
 					);
 
-					console.log("Account created");
-					console.log("Redirect to login page");
-					this.$router.push({ name: "login" });
+					console.log('Account created');
+					console.log('Redirect to login page');
+					this.$router.push({ name: 'login' });
 				} catch (err) {
-					
 					if (err.status === 400) {
 						const error_list = returnErrorMessages(err.data);
 						error_list.forEach((el) => {
@@ -204,7 +197,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.page-registration {
 		display: flex;
@@ -216,8 +209,8 @@
 			display: flex;
 			justify-content: center;
 			margin-top: 8rem;
-			background: url("/public/img/icon/cabinet/goo-colored.svg") center
-				right 60px / auto 60% no-repeat;
+			background: url('/public/img/icons/cabinet/goo-colored.svg') center right
+				60px / auto 60% no-repeat;
 			width: 100%;
 			@media (max-width: 900px) {
 				background: none;

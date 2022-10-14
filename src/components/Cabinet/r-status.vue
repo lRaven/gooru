@@ -6,12 +6,12 @@
 			</template>
 
 			<img
-				src="/img/icon/cabinet/tick.svg"
+				src="/img/icons/cabinet/tick.svg"
 				alt=""
 				v-else-if="statusClass === 'completed'"
 			/>
 
-			<img src="/img/icon/cabinet/postpone.svg" alt="" v-else />
+			<img src="/img/icons/cabinet/postpone.svg" alt="" v-else />
 		</template>
 
 		<template v-else> {{ statusMessage }} </template>
@@ -20,7 +20,7 @@
 
 <script>
 	export default {
-		name: "rStatus",
+		name: 'rStatus',
 		props: {
 			status: Number,
 			isMinimized: {
@@ -32,29 +32,29 @@
 			//* вывод класса в зависимости от статуса (предварительно цифровой, т.к. с бека статус не приходит разный)
 			statusClass() {
 				return this.status !== null && this.status < 100
-					? "works"
+					? 'works'
 					: this.status === 100
-					? "completed"
+					? 'completed'
 					: this.status === null
-					? "postpone"
-					: "";
+					? 'postpone'
+					: '';
 			},
 			//* вывод сообщения статуса в параграф в зависимости от статуса
 			statusMessage() {
-				return this.statusClass === "works"
+				return this.statusClass === 'works'
 					? `Выполнено ${this.status}%`
-					: this.statusClass === "completed"
-					? "Готово"
-					: this.statusClass === "postpone"
-					? "Отложено"
-					: "";
+					: this.statusClass === 'completed'
+					? 'Готово'
+					: this.statusClass === 'postpone'
+					? 'Отложено'
+					: '';
 			},
 		},
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.r-status {
 		user-select: none;

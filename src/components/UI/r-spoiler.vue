@@ -10,7 +10,7 @@
 		>
 			<h5 class="r-spoiler__title">{{ title }}</h5>
 			<img
-				src="/img/icon/arrow-full.svg"
+				src="/img/icons/arrow-full.svg"
 				alt="arrow"
 				class="r-spoiler__arrow"
 				:class="arrowType"
@@ -18,7 +18,7 @@
 				v-if="arrowType === 'purple'"
 			/>
 			<img
-				src="/img/icon/cabinet/arrow.svg"
+				src="/img/icons/cabinet/arrow.svg"
 				alt="arrow"
 				class="r-spoiler__arrow"
 				:class="arrowType"
@@ -35,19 +35,19 @@
 </template>
 
 <script>
-	import { directive } from "vue3-click-away";
-	import { mapState } from "vuex";
+	import { directive } from 'vue3-click-away';
+	import { mapState } from 'vuex';
 
 	export default {
-		name: "rSpoiler",
+		name: 'rSpoiler',
 		props: {
 			title: {
 				value: String,
-				default: "Title",
+				default: 'Title',
 			},
 			arrowType: {
 				value: String,
-				default: "purple",
+				default: 'purple',
 			},
 		},
 		watch: {
@@ -63,7 +63,7 @@
 		},
 		data: () => ({ isContentVisible: false }),
 		computed: {
-			...mapState(["document_width"]),
+			...mapState(['document_width']),
 
 			contentHeight() {
 				return this.$refs.content.offsetHeight;
@@ -72,17 +72,14 @@
 		methods: {
 			openSpoiler() {
 				const contentHeight = this.$refs.content.offsetHeight;
-				this.$refs.arrow.classList.add("open");
-				this.$refs.body.classList.add("open");
-				this.$refs.body.setAttribute(
-					"style",
-					`height: ${contentHeight}px`
-				);
+				this.$refs.arrow.classList.add('open');
+				this.$refs.body.classList.add('open');
+				this.$refs.body.setAttribute('style', `height: ${contentHeight}px`);
 			},
 			closeSpoiler() {
-				this.$refs.arrow.classList.remove("open");
-				this.$refs.body.classList.remove("open");
-				this.$refs.body.removeAttribute("style");
+				this.$refs.arrow.classList.remove('open');
+				this.$refs.body.classList.remove('open');
+				this.$refs.body.removeAttribute('style');
 				this.isContentVisible = false;
 			},
 		},

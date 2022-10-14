@@ -12,28 +12,24 @@
 			<div class="brief-price__row">
 				<p class="brief-price__text">Вам подойдёт тариф</p>
 				<h2 class="brief-price__rate">{{ rate.name }}</h2>
-				<rate-card
-					:isHasButton="false"
-					color="white"
-					:rate="rate"
-				></rate-card>
+				<rate-card :isHasButton="false" color="white" :rate="rate"></rate-card>
 			</div>
 		</div>
 
 		<div class="brief-price__col">
 			<div class="brief-price__row brief-price__more-text">
 				<p class="brief-price__text">
-					Просим учесть, что результат расчета является рекомендуемой
-					ценой стоимости услуги. Очень важно ответственно отнестись к
-					заполнению всех данных используемых в расчете. После
-					получения вашей заявки и проведения предварительного анализа
-					по ней, мы подтвердим стоимость либо внесем дополнения,
-					согласовав все детали расчета вместе с вами.
+					Обратите внимание, что результат расчета является ориентировочным.
+					Чтобы получить максимально точную оценку, нужно ответственно отнестись
+					к заполнению всех данных, используемых в расчёте. После получения
+					вашей заявки и проведения предварительного анализа мы подтвердим
+					стоимость или внесём необходимые дополнения, предварительно согласовав
+					с вами все детали.
 				</p>
 				<hr class="brief-price__horizontal-rule" />
 				<p class="brief-price__text">
-					Оставьте нам свои контактные данные для того, чтобы мы могли
-					с вами пообщаться и задать несколько уточняющих вопросов.
+					Оставьте нам свои контакты, чтобы мы могли с вами связаться и задать
+					уточняющие вопросы.
 				</p>
 			</div>
 
@@ -42,7 +38,7 @@
 					<div class="brief-price__contact">
 						<div class="brief-price__contact-hint">
 							<img
-								src="/img/icon/at.svg"
+								src="/img/icons/at.svg"
 								alt="icon"
 								class="brief-price__contact-icon"
 							/>
@@ -58,13 +54,10 @@
 					</div>
 
 					<transition mode="out-in">
-						<div
-							class="brief-price__contact"
-							v-if="isPasswordInputVisible"
-						>
+						<div class="brief-price__contact" v-if="isPasswordInputVisible">
 							<div class="brief-price__contact-hint">
 								<img
-									src="/img/icon/key.svg"
+									src="/img/icons/key.svg"
 									alt="icon"
 									class="brief-price__contact-icon"
 								/>
@@ -91,16 +84,16 @@
 </template>
 
 <script>
-	import RateCard from "@/components/Rates/RateCard";
-	import rButton from "@/components/Brief/r-button.vue";
-	import { mapMutations, mapState } from "vuex";
-	import { returnErrorMessages } from "@/js/returnErrorMessages";
-	import { registration } from "@/api/userApi";
+	import RateCard from '@/components/Rates/RateCard';
+	import rButton from '@/components/Brief/r-button.vue';
+	import { mapMutations, mapState } from 'vuex';
+	import { returnErrorMessages } from '@/js/returnErrorMessages';
+	import { registration } from '@/api/userApi';
 
-	import { useToast } from "vue-toastification";
+	import { useToast } from 'vue-toastification';
 
 	export default {
-		name: "BriefPrice",
+		name: 'BriefPrice',
 		components: {
 			RateCard,
 			rButton,
@@ -122,8 +115,7 @@
 				client_status: (store) => store.brief.client_status,
 				fields_of_activity: (store) => store.brief.fields_of_activity,
 				site_types: (store) => store.brief.site_types,
-				additional_parameters: (store) =>
-					store.brief.additional_parameters,
+				additional_parameters: (store) => store.brief.additional_parameters,
 				number_of_positions: (store) => store.brief.number_of_positions,
 				source: (store) => store.brief.source,
 				user_contacts: (store) => store.brief.user_contacts,
@@ -146,33 +138,31 @@
 
 			user_data: {
 				email: {
-					value: "",
+					value: '',
 					valid: false,
 				},
-				password: "",
+				password: '',
 			},
 		}),
 
 		methods: {
-			...mapMutations(["SET_USER_CONTACTS"]),
+			...mapMutations(['SET_USER_CONTACTS']),
 			async create_user() {
 				try {
 					await registration({
 						email: this.user_data.email.value,
 						password: this.user_data.password,
 					});
-					this.toast.success(
-						"Вы успешно зарегистрировали свой аккаунт"
-					);
+					this.toast.success('Вы успешно зарегистрировали свой аккаунт');
 					this.toast.info(
 						`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
 					);
-						console.log("User created from brief");
+					console.log('User created from brief');
 
-						this.SET_USER_CONTACTS({
-							email: this.user_data.email.value,
-						});
-						this.$emit("moveToNextPage");
+					this.SET_USER_CONTACTS({
+						email: this.user_data.email.value,
+					});
+					this.$emit('moveToNextPage');
 				} catch (err) {
 					if (err.status === 400) {
 						const error_list = returnErrorMessages(err.data);
@@ -181,8 +171,8 @@
 						});
 					} else {
 						this.toast.error(
-						"Ошибка отправки контактов, проверьте правильность введённых данных"
-					);
+							'Ошибка отправки контактов, проверьте правильность введённых данных'
+						);
 					}
 				}
 			},
@@ -195,7 +185,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.brief-price {
 		display: grid;
@@ -234,7 +224,7 @@
 				font-weight: 700;
 			}
 			&::before {
-				content: "";
+				content: '';
 				position: absolute;
 				left: 0;
 				top: 0;

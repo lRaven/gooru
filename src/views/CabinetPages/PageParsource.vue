@@ -180,7 +180,7 @@
 		</div>
 
 		<right-panel
-			icon="/img/icon/cabinet/more.svg"
+			icon="/img/icons/cabinet/more.svg"
 			title="Детали"
 			class="page-parsource__right-panel"
 			:class="{ mobile: !isMinimizedRightPanel }"
@@ -199,7 +199,7 @@
 						<img
 							:src="
 								changedParsource.screenshot ||
-								'/img/icon/empty-image.svg'
+								'/img/icons/empty-image.svg'
 							"
 							alt=""
 							class="page-parsource__image"
@@ -213,7 +213,7 @@
 								@change="change_image($event.target)"
 							/>
 							<div class="page-parsource__image-pick-btn">
-								<img src="/img/icon/cabinet/edit.svg" alt="" />
+								<img src="/img/icons/cabinet/edit.svg" alt="" />
 								Обновить картинку
 							</div>
 						</label>

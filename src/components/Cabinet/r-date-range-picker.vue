@@ -15,21 +15,18 @@
 		inputClassName="r-date-range-picker__input"
 	>
 		<template #input-icon>
-			<img
-				class="input-slot-image"
-				src="/img/icon/cabinet/calendar.svg"
-			/>
+			<img class="input-slot-image" src="/img/icons/cabinet/calendar.svg" />
 		</template>
 	</Datepicker>
 </template>
 
 <script>
-	import { ref, onMounted } from "vue";
-	import Datepicker from "@vuepic/vue-datepicker";
-	import "@vuepic/vue-datepicker/dist/main.css";
+	import { ref, onMounted } from 'vue';
+	import Datepicker from '@vuepic/vue-datepicker';
+	import '@vuepic/vue-datepicker/dist/main.css';
 
 	export default {
-		name: "rDateRangePicker",
+		name: 'rDateRangePicker',
 		components: { Datepicker },
 		props: {
 			isDisabled: {
@@ -37,14 +34,14 @@
 				default: false,
 			},
 			range: { type: Boolean, default: true },
-			modelType: { type: String, default: "yyyy-MM-dd" },
+			modelType: { type: String, default: 'yyyy-MM-dd' },
 		},
 		emits: {
-			"update:modelValue": null,
+			'update:modelValue': null,
 		},
 		watch: {
 			date() {
-				this.$emit("update:modelValue", this.date);
+				this.$emit('update:modelValue', this.date);
 			},
 		},
 		setup(props) {
@@ -74,12 +71,10 @@
 				//* дефолтный диапазон дат
 				if (props.range) {
 					const startDate = new Date();
-					const endDate = new Date(
-						new Date().setDate(startDate.getDate() + 7)
-					);
+					const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
 					date.value = [startDate, endDate];
 				} else {
-					date.value = "";
+					date.value = '';
 				}
 			});
 			return {
@@ -90,9 +85,6 @@
 	};
 </script>
 
-<style lang="scss" scoped>
-	@import "@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss";
-</style>
 <style lang="scss">
 	// TODO: достилизовать календарь
 	.r-date-range-picker {

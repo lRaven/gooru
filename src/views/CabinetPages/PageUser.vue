@@ -200,7 +200,7 @@
 									: (isSortDropdownVisible = true)
 							"
 						>
-							<img src="/img/icon/cabinet/sort.svg" alt="" />
+							<img src="/img/icons/cabinet/sort.svg" alt="" />
 							<p class="page-user__parsers-sort-description">
 								Сортировать
 							</p>

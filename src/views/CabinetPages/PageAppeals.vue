@@ -39,9 +39,7 @@
 								/>
 							</g>
 						</svg>
-						<p class="page-appeals__controls-text">
-							Новое обращение
-						</p>
+						<p class="page-appeals__controls-text">Новое обращение</p>
 					</button>
 				</div>
 			</template>
@@ -138,12 +136,10 @@
 		</div>
 
 		<right-panel
-			icon="/img/icon/cabinet/appeals-add.svg"
+			icon="/img/icons/cabinet/appeals-add.svg"
 			title="Новое обращение"
 			:closeIcon="
-				documentWidth <= 540 && !isMinimizedRightPanel
-					? 'cross'
-					: 'arrow'
+				documentWidth <= 540 && !isMinimizedRightPanel ? 'cross' : 'arrow'
 			"
 			class="page-appeals__right-panel"
 			:isMinimized="isMinimizedRightPanel"
@@ -231,19 +227,19 @@
 </template>
 
 <script>
-	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-	import { add_ticket } from "@/api/tickets";
-	import { read_notification } from "@/api/notifications";
+	import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+	import { add_ticket } from '@/api/tickets';
+	import { read_notification } from '@/api/notifications';
 
-	import AppealsCard from "@/components/Cabinet/Appeals/AppealsCard.vue";
-	import FilterPannel from "@/components/Cabinet/Appeals/ChoosenPanel.vue";
-	import { paginationMixin } from "@/mixins/paginationMixins";
-	import { returnErrorMessages } from "@/js/returnErrorMessages";
-	import RightPanel from "@/components/Cabinet/RightPanel.vue";
-	import { useToast } from "vue-toastification";
+	import AppealsCard from '@/components/Cabinet/Appeals/AppealsCard.vue';
+	import FilterPannel from '@/components/Cabinet/Appeals/ChoosenPanel.vue';
+	import { paginationMixin } from '@/mixins/paginationMixins';
+	import { returnErrorMessages } from '@/js/returnErrorMessages';
+	import RightPanel from '@/components/Cabinet/RightPanel.vue';
+	import { useToast } from 'vue-toastification';
 
 	export default {
-		name: "PageAppeals",
+		name: 'PageAppeals',
 		mixins: [paginationMixin],
 		components: {
 			RightPanel,
@@ -275,7 +271,7 @@
 
 				all_messages: (state) => state.messenger.all_messages,
 			}),
-			...mapGetters(["appeals_notifications", "appealsByType"]),
+			...mapGetters(['appeals_notifications', 'appealsByType']),
 
 			appeals() {
 				if (this.sortParams.length) {
@@ -290,7 +286,7 @@
 					const notifications = this.appeals_notifications.reduce(
 						(previosList, currentNotification) => {
 							const [, notificationAppealId] =
-								currentNotification.url.split("appeal_id=");
+								currentNotification.url.split('appeal_id=');
 
 							if (+notificationAppealId === appealId) {
 								return [...previosList, currentNotification];
@@ -305,8 +301,8 @@
 
 			appealsHasNotifications() {
 				return this.appeals_notifications.reduce((acc, current) => {
-					if (!acc.includes(+current.url.split("=")[1])) {
-						acc.push(+current.url.split("=")[1]);
+					if (!acc.includes(+current.url.split('=')[1])) {
+						acc.push(+current.url.split('=')[1]);
 					}
 					return acc;
 				}, []);
@@ -327,9 +323,9 @@
 				isAppealsLoaded: false,
 
 				new_appeal: {
-					topic: "",
-					parser: "",
-					message: "",
+					topic: '',
+					parser: '',
+					message: '',
 				},
 				sortParams: [],
 				isNewAppealValid: false,
@@ -337,12 +333,12 @@
 			};
 		},
 		methods: {
-			...mapMutations(["SET_TAB", "ADD_APPEALS"]),
+			...mapMutations(['SET_TAB', 'ADD_APPEALS']),
 			...mapActions([
-				"getAllParsers",
-				"getAppeals",
-				"getAllMessages",
-				"getNotifications",
+				'getAllParsers',
+				'getAppeals',
+				'getAllMessages',
+				'getNotifications',
 			]),
 
 			sortAppeals(sortedParams) {
@@ -370,8 +366,8 @@
 							page_size: this.pagination.cards_in_page,
 						});
 
-						console.log("Ticket created");
-						this.toast.success("Обращение создано");
+						console.log('Ticket created');
+						this.toast.success('Обращение создано');
 
 						this.getNotifications();
 					}
@@ -382,7 +378,7 @@
 						});
 					}
 				} catch (err) {
-					this.toast.error("Ошибка создания обращения");
+					this.toast.error('Ошибка создания обращения');
 					throw new Error(err);
 				}
 				this.isNewAppealSending = false;
@@ -400,9 +396,7 @@
 					const response = await this.getAppeals(params);
 
 					if (response.status === 200) {
-						this.pagination.cards_list.push(
-							...response.data.results
-						);
+						this.pagination.cards_list.push(...response.data.results);
 						this.ADD_APPEALS(this.pagination.cards_list);
 					}
 				} catch (err) {
@@ -418,14 +412,13 @@
 				}
 
 				this.$router.push({
-					name: "appeals",
+					name: 'appeals',
 					query: { page: page_number },
 				});
 			},
 
 			validateForm() {
-				this.new_appeal.topic !== "" &&
-				this.new_appeal.message.length > 0
+				this.new_appeal.topic !== '' && this.new_appeal.message.length > 0
 					? (this.isNewAppealValid = true)
 					: (this.isNewAppealValid = false);
 			},
@@ -433,7 +426,7 @@
 			resetForm() {
 				for (const key in this.new_appeal) {
 					if (Object.hasOwnProperty.call(this.new_appeal, key)) {
-						this.new_appeal[key] = "";
+						this.new_appeal[key] = '';
 					}
 				}
 			},
@@ -454,7 +447,7 @@
 			},
 		},
 		created() {
-			this.SET_TAB("appeals");
+			this.SET_TAB('appeals');
 			this.isMinimizedRightPanel = this.documentWidth <= 1100;
 
 			this.getCards({
@@ -474,7 +467,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.page-appeals {
 		padding: 0;

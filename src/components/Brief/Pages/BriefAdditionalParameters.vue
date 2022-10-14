@@ -48,12 +48,12 @@
 </template>
 
 <script>
-	import rButton from "@/components/Brief/r-button";
-	import rCheckbox from "@/components/Brief/r-checkbox";
-	import { mapMutations } from "vuex";
+	import rButton from '@/components/Brief/r-button';
+	import rCheckbox from '@/components/Brief/r-checkbox';
+	import { mapMutations } from 'vuex';
 
 	export default {
-		name: "BriefAdditionalParameters",
+		name: 'BriefAdditionalParameters',
 		components: {
 			rButton,
 			rCheckbox,
@@ -81,39 +81,37 @@
 			isDisabledBtn: true,
 
 			additional_parameters: [
-				{ id: 1, description: "Парсинг с авторизацией (ваш аккаунт)" },
+				{ id: 1, description: 'Парсинг с авторизацией (ваш аккаунт)' },
 				{
 					id: 2,
-					description:
-						"Разбивка всех характеристик в отдельный столбец",
+					description: 'Разбивка всех характеристик в отдельный столбец',
 				},
 				{
 					id: 3,
-					description: "Дополнительные столбцы данных (сверх 6)",
+					description: 'Дополнительные столбцы данных (больше 6)',
 				},
 				{
 					id: 4,
-					description: "Настроить файл экспорта под вашу CMS",
+					description: 'Настройка файла экспорта под вашу CMS',
 				},
 				{
 					id: 5,
-					description:
-						"Вариативные товары (выпадающие списки, таблицы)",
+					description: 'Вариативные товары (выпадающие списки, таблицы)',
 				},
 				{
 					id: 6,
-					description: "Скачивание до 5 изображений одного товара",
+					description: 'Скачивание до 5 изображений одного товара',
 				},
 			],
 		}),
 		methods: {
-			...mapMutations(["SET_ADDITIONAL_PARAMETERS"]),
+			...mapMutations(['SET_ADDITIONAL_PARAMETERS']),
 		},
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.brief-additional-parameters {
 		display: flex;
@@ -138,7 +136,7 @@
 			font-weight: 700;
 			margin-bottom: 5rem;
 			&::before {
-				content: "";
+				content: '';
 				position: absolute;
 				left: 0;
 				top: 0;

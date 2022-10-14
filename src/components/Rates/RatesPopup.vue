@@ -9,15 +9,11 @@
 
 			<div class="rates-popup__rate">
 				<h4 class="rates-popup__subtitle">Вами выбран тариф</h4>
-				<h2 class="rates-popup__rate-name">
-					«{{ selectedRate.name }}»
-				</h2>
+				<h2 class="rates-popup__rate-name">«{{ selectedRate.name }}»</h2>
 
 				<h5 v-if="selectedRate.price" class="rates-popup__price">
 					К оплате:
-					<span class="rates-popup__sum">
-						{{ selectedRate.price }}₽
-					</span>
+					<span class="rates-popup__sum"> {{ selectedRate.price }}₽ </span>
 					<span class="rates-popup__month"> /мес </span>
 				</h5>
 
@@ -29,7 +25,7 @@
 						:key="item.id"
 					>
 						<img
-							src="/img/icon/tick.svg"
+							src="/img/icons/tick.svg"
 							alt="tick"
 							class="rates-popup__tick"
 						/>
@@ -101,9 +97,7 @@
 						<r-button
 							class="rates-popup__user-credentials-form__submit-button rates-popup__user-credentials-form_area_submit-button"
 							:text="
-								formType === 'registration'
-									? 'Зарегистироваться'
-									: 'Войти'
+								formType === 'registration' ? 'Зарегистироваться' : 'Войти'
 							"
 							:disabled="!isValidForm"
 						/>
@@ -134,9 +128,8 @@
 						v-if="formType === 'registration'"
 						class="rates-popup__user-credentials__privacy-policy"
 					>
-						Нажимая кнопку «Зарегистрироваться», я даю согласие на
-						обработку персональных данных, соглашаюсь с тарифами и
-						правилами
+						Нажимая кнопку «Зарегистрироваться», я даю согласие на обработку
+						персональных данных, соглашаюсь с тарифами и правилами
 						<a
 							href="/docs/Оферта ГУРУ.pdf"
 							target="_blank"
@@ -152,10 +145,10 @@
 </template>
 
 <script>
-	import { mapActions, mapState } from "vuex";
-	import { registration, login, payRate } from "@/api/userApi";
-	import { returnErrorMessages } from "@/js/returnErrorMessages";
-	import { useToast } from "vue-toastification";
+	import { mapActions, mapState } from 'vuex';
+	import { registration, login, payRate } from '@/api/userApi';
+	import { returnErrorMessages } from '@/js/returnErrorMessages';
+	import { useToast } from 'vue-toastification';
 
 	export default {
 		props: {
@@ -165,14 +158,14 @@
 			},
 		},
 		data: () => ({
-			formType: "registration",
+			formType: 'registration',
 
 			user_data: {
 				email: {
-					value: "",
+					value: '',
 					valid: false,
 				},
-				password: "",
+				password: '',
 			},
 		}),
 		computed: {
@@ -187,10 +180,10 @@
 			},
 		},
 		methods: {
-			...mapActions(["getUserData", "getUserRate"]),
+			...mapActions(['getUserData', 'getUserRate']),
 
 			async submitForm() {
-				if (this.formType === "registration") {
+				if (this.formType === 'registration') {
 					try {
 						const response = await registration({
 							email: this.user_data.email.value,
@@ -198,21 +191,17 @@
 						});
 
 						if (response.status === 201) {
-							this.toast.success(
-								"Вы успешно зарегистрировали свой аккаунт"
-							);
+							this.toast.success('Вы успешно зарегистрировали свой аккаунт');
 							this.toast.info(
 								`Мы отправили электронное письмо на адрес:\n${this.user_data.email.value}.\nОткройте это письмо и нажмите на ссылку, чтобы активировать свою учетную запись.`
 							);
-							console.log("Account created");
+							console.log('Account created');
 
 							this.resetForm();
-							this.formType = "login";
+							this.formType = 'login';
 						}
 						if (response.status === 400) {
-							const error_list = returnErrorMessages(
-								response.data
-							);
+							const error_list = returnErrorMessages(response.data);
 							error_list.forEach((el) => {
 								this.toast.error(el);
 							});
@@ -228,30 +217,22 @@
 						});
 
 						if (response.status === 200) {
-							this.toast.success("Вход выполнен успешно");
-							this.$cookies.set(
-								"auth_token",
-								response.data.auth_token
-							);
-							localStorage.setItem("userAuth", "yes");
+							this.toast.success('Вход выполнен успешно');
+							this.$cookies.set('auth_token', response.data.auth_token);
+							localStorage.setItem('userAuth', 'yes');
 
 							this.getUserData();
 							this.getUserRate();
 
 							try {
-								await payRate(
-									response.data.auth_token,
-									this.selectedRate.id
-								);
+								await payRate(response.data.auth_token, this.selectedRate.id);
 							} catch (err) {
 								throw new Error(err);
 							}
 						}
 
 						if (response.status === 400) {
-							const error_list = returnErrorMessages(
-								response.data
-							);
+							const error_list = returnErrorMessages(response.data);
 							error_list.forEach((el) => {
 								this.toast.error(el);
 							});
@@ -263,8 +244,8 @@
 			},
 
 			resetForm() {
-				this.user_data.email = { value: "", valid: false };
-				this.user_data.password = "";
+				this.user_data.email = { value: '', valid: false };
+				this.user_data.password = '';
 			},
 		},
 		setup() {
@@ -275,7 +256,7 @@
 </script>
 
 <style scoped lang="scss">
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.rates-popup {
 		display: flex;
@@ -300,7 +281,7 @@
 			position: absolute;
 			width: 2.5rem;
 			height: 2.5rem;
-			background: transparent url("@/../public/img/icon/popupCross.svg") center /
+			background: transparent url('/public/img/icons/popupCross.svg') center /
 				contain no-repeat;
 			top: 2.2rem;
 			right: 2.2rem;

@@ -36,9 +36,7 @@
 					/>
 				</svg>
 			</button>
-			<a class="side-bar__logo" href="/"
-				><strong>COMPAS</strong> PARSING</a
-			>
+			<a class="side-bar__logo" href="/"><strong>COMPAS</strong> PARSING</a>
 		</div>
 		<slot></slot>
 		<img
@@ -46,17 +44,17 @@
 			:class="{
 				'side-bar__gooru-image_minimize': isSideBarMinimized,
 			}"
-			src="/img/icon/cabinet/goo.svg"
+			src="/img/icons/cabinet/goo.svg"
 		/>
 	</div>
 </template>
 
 <script>
 	export default {
-		name: "SideBar",
+		name: 'SideBar',
 		emits: {
-			"close-bar": null,
-			"open-bar": null,
+			'close-bar': null,
+			'open-bar': null,
 		},
 		props: {
 			isSideBarMinimized: { type: Boolean, required: true },
@@ -64,9 +62,9 @@
 		methods: {
 			handleSwitchBarVisibility() {
 				if (this.isSideBarMinimized) {
-					this.$emit("open-bar");
+					this.$emit('open-bar');
 				} else {
-					this.$emit("close-bar");
+					this.$emit('close-bar');
 				}
 			},
 		},
@@ -74,7 +72,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 	.side-bar {
 		display: flex;
 		flex-direction: column;
@@ -82,11 +80,7 @@
 		position: relative;
 		margin-top: 83px;
 		padding: 1rem 3rem 3rem 3rem;
-		background: linear-gradient(
-			350.85deg,
-			#542f7d -40.69%,
-			#338dd0 109.26%
-		);
+		background: linear-gradient(350.85deg, #542f7d -40.69%, #338dd0 109.26%);
 		height: 100%;
 		width: 27.5rem;
 		transition: all 0.2s ease;

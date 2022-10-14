@@ -3,13 +3,13 @@
 		<div class="brief-status__col">
 			<div class="brief-status__row">
 				<h1 class="brief-status__title">
-					ваш статус<br />
+					Ваш статус<br />
 					клиента
 				</h1>
 
 				<p class="brief-status__description">
 					Отметьте свой статус<br />
-					в поле справа или впишите<br />
+					в поле слева или впишите<br />
 					свой вариант в нижней графе
 				</p>
 			</div>
@@ -38,12 +38,12 @@
 </template>
 
 <script>
-	import rButton from "@/components/Brief/r-button";
-	import rRadioSelect from "@/components/Brief/r-radio-select";
-	import { mapMutations } from "vuex";
+	import rButton from '@/components/Brief/r-button';
+	import rRadioSelect from '@/components/Brief/r-radio-select';
+	import { mapMutations } from 'vuex';
 
 	export default {
-		name: "BriefStatus",
+		name: 'BriefStatus',
 		components: {
 			rButton,
 			rRadioSelect,
@@ -72,46 +72,41 @@
 			isDisabledBtn: true,
 
 			client_statuses: [
-				{ id: 1, description: "Физическое лицо" },
-				{ id: 2, description: "Самозанятый" },
-				{ id: 3, description: "Индивидуальный предприниматель" },
+				{ id: 1, description: 'Физическое лицо' },
+				{ id: 2, description: 'Самозанятый' },
+				{ id: 3, description: 'Индивидуальный предприниматель' },
 				{
 					id: 4,
-					description: "Общество с ограниченной ответственностью",
+					description: 'Общество с ограниченной ответственностью',
 				},
-				{ id: 5, description: "Впишите свой вариант" },
+				{ id: 5, description: 'Впишите свой вариант' },
 			],
 
 			selected_status: {
 				value: null,
-				self_option: "",
+				self_option: '',
 			},
 		}),
 		methods: {
-			...mapMutations([
-				"SET_CLIENT_STATUS",
-				"SET_CLIENT_STATUS_SELF_OPTION",
-			]),
+			...mapMutations(['SET_CLIENT_STATUS', 'SET_CLIENT_STATUS_SELF_OPTION']),
 
 			saveStatus() {
 				this.SET_CLIENT_STATUS(this.selected_status.value);
 
 				if (this.selected_status.value === 5) {
-					this.SET_CLIENT_STATUS_SELF_OPTION(
-						this.selected_status.self_option
-					);
+					this.SET_CLIENT_STATUS_SELF_OPTION(this.selected_status.self_option);
 				} else {
-					this.SET_CLIENT_STATUS_SELF_OPTION("");
+					this.SET_CLIENT_STATUS_SELF_OPTION('');
 				}
 
-				this.$emit("moveToNextPage");
+				this.$emit('moveToNextPage');
 			},
 		},
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.brief-status {
 		display: grid;
@@ -147,7 +142,7 @@
 			font-weight: 700;
 			margin-bottom: 5rem;
 			&::before {
-				content: "";
+				content: '';
 				position: absolute;
 				left: 0;
 				top: 0;

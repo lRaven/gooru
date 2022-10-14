@@ -4,7 +4,7 @@
 			<div class="brief-fields-of-activity__row">
 				<h1 class="brief-fields-of-activity__title">
 					Данные<br />
-					по какой сфере<br />
+					из какой сферы<br />
 					вам интересны?
 				</h1>
 				<p class="brief-fields-of-activity__description">
@@ -48,12 +48,12 @@
 </template>
 
 <script>
-	import rButton from "@/components/Brief/r-button";
-	import rCheckbox from "@/components/Brief/r-checkbox";
-	import { mapMutations } from "vuex";
+	import rButton from '@/components/Brief/r-button';
+	import rCheckbox from '@/components/Brief/r-checkbox';
+	import { mapMutations } from 'vuex';
 
 	export default {
-		name: "BriefFieldsOfActivity",
+		name: 'BriefFieldsOfActivity',
 		props: { document_width: Number },
 		components: {
 			rButton,
@@ -77,9 +77,7 @@
 
 			isHasSelfOption() {
 				let result;
-				const find = this.selected_fields_of_activity.find(
-					(el) => el === 5
-				);
+				const find = this.selected_fields_of_activity.find((el) => el === 5);
 				find === undefined ? (result = false) : (result = true);
 
 				return result;
@@ -93,21 +91,21 @@
 			isDisabledBtn: true,
 
 			fields_of_activity: [
-				{ id: 1, description: "Информационные технологии" },
-				{ id: 2, description: "Маркетинг, реклама" },
-				{ id: 3, description: "Торговля" },
+				{ id: 1, description: 'Информационные технологии' },
+				{ id: 2, description: 'Маркетинг, реклама' },
+				{ id: 3, description: 'Торговля' },
 				{
 					id: 4,
-					description: "Обучение, преподавание",
+					description: 'Обучение, преподавание',
 				},
-				{ id: 5, description: "Впишите свой вариант" },
+				{ id: 5, description: 'Впишите свой вариант' },
 			],
-			fields_of_activity_self_option: "",
+			fields_of_activity_self_option: '',
 		}),
 		methods: {
 			...mapMutations([
-				"SET_FIELDS_OF_ACTIVITY",
-				"SET_FIELDS_OF_ACTIVITY_SELF_OPTION",
+				'SET_FIELDS_OF_ACTIVITY',
+				'SET_FIELDS_OF_ACTIVITY_SELF_OPTION',
 			]),
 
 			saveFieldsOfActivity() {
@@ -117,8 +115,8 @@
 					this.SET_FIELDS_OF_ACTIVITY_SELF_OPTION(
 						this.fields_of_activity_self_option
 					);
-				else this.SET_FIELDS_OF_ACTIVITY_SELF_OPTION("");
-				this.$emit("moveToNextPage");
+				else this.SET_FIELDS_OF_ACTIVITY_SELF_OPTION('');
+				this.$emit('moveToNextPage');
 			},
 
 			validateForm() {
@@ -136,7 +134,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.brief-fields-of-activity {
 		display: flex;
@@ -162,7 +160,7 @@
 			font-weight: 700;
 			margin-bottom: 5rem;
 			&::before {
-				content: "";
+				content: '';
 				position: absolute;
 				left: 0;
 				top: 0;

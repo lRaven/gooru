@@ -89,10 +89,7 @@
 			</div>
 
 			<div class="the-header__col" v-if="!isClear">
-				<div
-					class="the-header__create"
-					v-if="isCabinetVersion === true"
-				>
+				<div class="the-header__create" v-if="isCabinetVersion === true">
 					<template v-if="user.tariff || user.role !== 'DefaultUser'">
 						<r-button
 							text="Новый источник"
@@ -128,9 +125,7 @@
 						<r-button
 							v-if="user.tariff !== 'freelance' || user.role !== 'DefaultUser'"
 							text="Новая группа источников"
-							@click="
-								this.$router.push({ name: 'new_group_parser' })
-							"
+							@click="this.$router.push({ name: 'new_group_parser' })"
 						>
 							<template v-slot:icon>
 								<svg
@@ -216,31 +211,19 @@
 						>
 							О компании
 						</li>
-						<li class="the-header__link" @click="handleOpenBlog">
-							Блог
-						</li>
+						<li class="the-header__link" @click="handleOpenBlog">Блог</li>
 					</ul>
 				</nav>
-				<nav
-					class="the-header__nav"
-					v-else-if="isCabinetVersion === false"
-				>
+				<nav class="the-header__nav" v-else-if="isCabinetVersion === false">
 					<ul class="the-header__links">
-						<li class="the-header__link" @click="scroll('#rates')">
-							Тарифы
-						</li>
-						<li
-							class="the-header__link"
-							@click="scroll('#how-it-works')"
-						>
+						<li class="the-header__link" @click="scroll('#rates')">Тарифы</li>
+						<li class="the-header__link" @click="scroll('#how-it-works')">
 							Как это работает
 						</li>
 						<li class="the-header__link" @click="scroll('#about')">
 							О компании
 						</li>
-						<li class="the-header__link" @click="handleOpenBlog">
-							Блог
-						</li>
+						<li class="the-header__link" @click="handleOpenBlog">Блог</li>
 					</ul>
 				</nav>
 
@@ -265,16 +248,10 @@
 				>
 					<div
 						class="the-header__account-visible"
-						@click="
-							isProfileOpened === true
-								? closeProfile()
-								: openProfile()
-						"
+						@click="isProfileOpened === true ? closeProfile() : openProfile()"
 					>
 						<img
-							:src="
-								user.avatar || '/img/icon/cabinet/no-avatar.svg'
-							"
+							:src="user.avatar || '/img/icons/cabinet/no-avatar.svg'"
 							class="the-header__avatar"
 							alt="avatar"
 						/>
@@ -283,7 +260,7 @@
 						</p>
 						<div class="the-header__account-button">
 							<img
-								src="/img/icon/cabinet/arrow.svg"
+								src="/img/icons/cabinet/arrow.svg"
 								alt=""
 								class="the-header__account-arrow"
 								ref="arrow"
@@ -330,9 +307,7 @@
 									/>
 								</svg>
 
-								<p
-									class="the-header__account-menu-item-description"
-								>
+								<p class="the-header__account-menu-item-description">
 									{{ setButtonText }}
 								</p>
 							</li>
@@ -360,11 +335,7 @@
 									/>
 								</svg>
 
-								<p
-									class="the-header__account-menu-item-description"
-								>
-									Выйти
-								</p>
+								<p class="the-header__account-menu-item-description">Выйти</p>
 							</li>
 						</ul>
 					</transition>
@@ -375,16 +346,16 @@
 </template>
 
 <script>
-	import { useToast } from "vue-toastification";
+	import { useToast } from 'vue-toastification';
 
-	import { scroll } from "@/js/scrollToLink";
-	import { mapState, mapMutations, mapActions } from "vuex";
-	import { logout } from "@/api/userApi";
+	import { scroll } from '@/js/scrollToLink';
+	import { mapState, mapMutations, mapActions } from 'vuex';
+	import { logout } from '@/api/userApi';
 
-	import { directive } from "vue3-click-away";
+	import { directive } from 'vue3-click-away';
 
 	export default {
-		name: "TheHeader",
+		name: 'TheHeader',
 		props: {
 			isCabinetVersion: {
 				value: Boolean,
@@ -416,17 +387,17 @@
 			},
 			setButtonText() {
 				switch (this.user.role) {
-					case "DefaultUser":
-						return "Мои парсы";
-					case "Manager":
-						return "Все парсеры";
-					case "AdminCRM":
-						return "Пользователи";
+					case 'DefaultUser':
+						return 'Мои парсы';
+					case 'Manager':
+						return 'Все парсеры';
+					case 'AdminCRM':
+						return 'Пользователи';
 					default:
-						return "Мой кабинет";
+						return 'Мой кабинет';
 				}
 			},
-			...mapState(["document_width"]),
+			...mapState(['document_width']),
 			...mapState({
 				user: (state) => state.cabinet.user,
 				user_auth: (state) => state.cabinet.user_auth,
@@ -435,31 +406,31 @@
 		methods: {
 			scroll,
 			handleRedirectToHome(anchor) {
-				this.$router.push({ name: "home", params: { anchor } });
+				this.$router.push({ name: 'home', params: { anchor } });
 			},
 			handleOpenBlog() {
-				this.$router.push({ name: "blog" }).catch(() => {
-					this.toast.error("Ошибка, попробуйте позднее");
+				this.$router.push({ name: 'blog' }).catch(() => {
+					this.toast.error('Ошибка, попробуйте позднее');
 				});
 			},
 			paintHeaderWhenPageScrolled() {
-				this.$refs.header.classList.add("bg");
+				this.$refs.header.classList.add('bg');
 			},
 			resetPaintHeaderWhenPageScrolled() {
-				this.$refs.header.classList.remove("bg");
+				this.$refs.header.classList.remove('bg');
 			},
 
 			openProfile() {
 				this.isProfileOpened = true;
-				this.$refs.arrow.classList.add("open");
+				this.$refs.arrow.classList.add('open');
 			},
 			closeProfile() {
 				this.isProfileOpened = false;
-				this.$refs.arrow.classList.remove("open");
+				this.$refs.arrow.classList.remove('open');
 			},
 
-			...mapMutations(["SET_USER_AUTH"]),
-			...mapActions(["clearCabinetData"]),
+			...mapMutations(['SET_USER_AUTH']),
+			...mapActions(['clearCabinetData']),
 
 			async logging_out() {
 				try {
@@ -469,7 +440,7 @@
 						localStorage.clear();
 						this.clearCabinetData();
 
-						console.log("Logout successfully");
+						console.log('Logout successfully');
 					}
 				} catch (err) {
 					throw new Error(err);
@@ -478,7 +449,7 @@
 		},
 		mounted() {
 			if (!this.isCabinetVersion) {
-				window.addEventListener("scroll", () => {
+				window.addEventListener('scroll', () => {
 					this.scrollTop = document.documentElement.scrollTop;
 				});
 			}
@@ -493,7 +464,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.the-header {
 		position: fixed;
@@ -677,7 +648,7 @@
 			}
 
 			&::after {
-				content: "";
+				content: '';
 				position: absolute;
 				left: 3rem;
 				bottom: 0.5rem;

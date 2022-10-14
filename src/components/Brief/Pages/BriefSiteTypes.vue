@@ -5,11 +5,11 @@
 				<h1 class="brief-site-types__title">
 					какой тип сайта<br />
 					вы хотите спарсить<br />
-					в нашем сервисе?
+					на нашем сервисе?
 				</h1>
 				<p class="brief-site-types__description">
 					Выберите один<br />
-					или несколько типов
+					или несколько вариантов
 				</p>
 			</div>
 
@@ -35,12 +35,12 @@
 </template>
 
 <script>
-	import rButton from "@/components/Brief/r-button";
-	import rCheckbox from "@/components/Brief/r-checkbox";
-	import { mapMutations } from "vuex";
+	import rButton from '@/components/Brief/r-button';
+	import rCheckbox from '@/components/Brief/r-checkbox';
+	import { mapMutations } from 'vuex';
 
 	export default {
-		name: "BriefSiteTypes",
+		name: 'BriefSiteTypes',
 		components: {
 			rButton,
 			rCheckbox,
@@ -80,32 +80,30 @@
 			isDisabledBtn: true,
 
 			site_types: [
-				{ id: 1, description: "Интернет-магазин" },
-				{ id: 2, description: "Маркетплэйс" },
-				{ id: 3, description: "Доска объявлений" },
+				{ id: 1, description: 'Интернет-магазин' },
+				{ id: 2, description: 'Маркетплэйс' },
+				{ id: 3, description: 'Доска объявлений' },
 				{
 					id: 4,
-					description: "Новостной сайт",
+					description: 'Новостной сайт',
 				},
-				{ id: 5, description: "Социальная сеть" },
-				{ id: 6, description: "Впишите свой вариант" },
+				{ id: 5, description: 'Социальная сеть' },
+				{ id: 6, description: 'Впишите свой вариант' },
 			],
-			site_types_self_option: "",
+			site_types_self_option: '',
 		}),
 		methods: {
-			...mapMutations(["SET_SITE_TYPES", "SET_SITE_TYPES_SELF_OPTION"]),
+			...mapMutations(['SET_SITE_TYPES', 'SET_SITE_TYPES_SELF_OPTION']),
 
 			saveSiteTypes() {
 				this.SET_SITE_TYPES(this.selected_site_types);
 
 				if (this.isHasSelfOption) {
-					this.SET_SITE_TYPES_SELF_OPTION(
-						this.site_types_self_option
-					);
+					this.SET_SITE_TYPES_SELF_OPTION(this.site_types_self_option);
 				} else {
-					this.SET_SITE_TYPES_SELF_OPTION("");
+					this.SET_SITE_TYPES_SELF_OPTION('');
 				}
-				this.$emit("moveToNextPage");
+				this.$emit('moveToNextPage');
 			},
 
 			validateForm() {
@@ -123,7 +121,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.brief-site-types {
 		display: flex;
@@ -146,7 +144,7 @@
 			font-weight: 700;
 			margin-bottom: 5rem;
 			&::before {
-				content: "";
+				content: '';
 				position: absolute;
 				left: 0;
 				top: 0;

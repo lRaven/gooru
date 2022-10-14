@@ -1,7 +1,7 @@
 <template>
 	<section class="page-parsources">
 		<h2 class="page-parsources__title">
-			{{ userRole === "DefaultUser" ? "Мои парсеры" : "Все парсеры" }}
+			{{ userRole === 'DefaultUser' ? 'Мои парсеры' : 'Все парсеры' }}
 		</h2>
 
 		<div class="page-parsources__control">
@@ -11,9 +11,9 @@
 				:checked="actions.selectAll"
 			></r-checkbox>
 			<button class="page-parsources__postpone" type="button">
-				<img src="/img/icon/cabinet/postpone.svg" alt="postpone" />
+				<img src="/img/icons/cabinet/postpone.svg" alt="postpone" />
 				<p class="page-parsources__postpone-description">
-					Отложить {{ document_width > 540 ? "выбранные" : "" }}
+					Отложить {{ document_width > 540 ? 'выбранные' : '' }}
 				</p>
 			</button>
 			<button
@@ -21,9 +21,9 @@
 				type="button"
 				@click="actions.deleteSelected = true"
 			>
-				<img src="/img/icon/cabinet/remove.svg" alt="remove" />
+				<img src="/img/icons/cabinet/remove.svg" alt="remove" />
 				<p class="page-parsources__remove-description">
-					Удалить {{ document_width > 540 ? "выбранные" : "" }}
+					Удалить {{ document_width > 540 ? 'выбранные' : '' }}
 				</p>
 			</button>
 		</div>
@@ -69,7 +69,7 @@
 							: (isSortDropdownVisible = true)
 					"
 				>
-					<img src="/img/icon/cabinet/sort.svg" alt="" />
+					<img src="/img/icons/cabinet/sort.svg" alt="" />
 					<p class="page-parsources__sort-description">Сортировать</p>
 				</button>
 
@@ -103,9 +103,7 @@
 			<transition mode="out-in">
 				<div
 					class="page-parsources__list"
-					v-if="
-						isParsourcesLoaded && pagination.cards_list.length > 0
-					"
+					v-if="isParsourcesLoaded && pagination.cards_list.length > 0"
 				>
 					<parsource-card
 						v-for="parsource in pagination.cards_list"
@@ -123,10 +121,7 @@
 				<div class="page-parsources__empty">
 					<p
 						class="page-parsources__empty-text"
-						v-if="
-							pagination.cards_list.length === 0 &&
-							isParsourcesLoaded
-						"
+						v-if="pagination.cards_list.length === 0 && isParsourcesLoaded"
 					>
 						Парсеров нет
 					</p>
@@ -153,25 +148,25 @@
 </template>
 
 <script>
-	import SortButton from "@/components/Cabinet/Parsources/SortButton";
-	import ParsourceCard from "@/components/Cabinet/Parsources/ParsourceCard";
+	import SortButton from '@/components/Cabinet/Parsources/SortButton';
+	import ParsourceCard from '@/components/Cabinet/Parsources/ParsourceCard';
 
-	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-	import { sortCards, sortParsources } from "@/mixins/sortingMixins";
-	import { paginationMixin } from "@/mixins/paginationMixins";
-	import { returnErrorMessages } from "@/js/returnErrorMessages";
-	import { read_notification } from "@/api/notifications";
-	import { useToast } from "vue-toastification";
+	import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+	import { sortCards, sortParsources } from '@/mixins/sortingMixins';
+	import { paginationMixin } from '@/mixins/paginationMixins';
+	import { returnErrorMessages } from '@/js/returnErrorMessages';
+	import { read_notification } from '@/api/notifications';
+	import { useToast } from 'vue-toastification';
 
 	export default {
-		name: "PageParsources",
+		name: 'PageParsources',
 		mixins: [sortCards, sortParsources, paginationMixin],
 		components: {
 			SortButton,
 			ParsourceCard,
 		},
 		watch: {
-			"actions.selectAll": {
+			'actions.selectAll': {
 				handler() {
 					this.actions.selectAll === true
 						? this.SELECT_ALL_PARSOURCES()
@@ -180,17 +175,17 @@
 				deep: true,
 			},
 
-			async "actions.deleteSelected"() {
+			async 'actions.deleteSelected'() {
 				if (this.actions.deleteSelected === true) {
 					try {
 						const response = await this.deleteSelectedParsources();
 
 						if (response.status === 200) {
-							this.toast.success("Выбранные парсеры удалены");
+							this.toast.success('Выбранные парсеры удалены');
 
 							//* редирект на 1 страницу
 							this.$router.push({
-								name: "parsources",
+								name: 'parsources',
 								query: { page: 1 },
 							});
 
@@ -205,17 +200,15 @@
 							}, 1000);
 						}
 						if (response.status === 400) {
-							const error_list = returnErrorMessages(
-								response.data
-							);
+							const error_list = returnErrorMessages(response.data);
 							error_list.forEach((el) => {
 								this.toast.error(el);
 							});
 						} else {
-							this.toast.error("Ничего не выбрано");
+							this.toast.error('Ничего не выбрано');
 						}
 					} catch (err) {
-						this.toast.error("Ошибка удаления парсеров");
+						this.toast.error('Ошибка удаления парсеров');
 						setTimeout(() => {
 							this.actions.deleteSelected = false;
 						}, 1000);
@@ -257,24 +250,18 @@
 
 				document_width: (state) => state.document_width,
 			}),
-			...mapGetters([
-				"parsources_notifications",
-				"parsers_notifications",
-			]),
+			...mapGetters(['parsources_notifications', 'parsers_notifications']),
 
 			parsourcesHasParsersNotifications() {
 				//* получить id парсеров из уведомлений
 				const parsers_id = this.parsers_notifications.reduce((arr, current) => {
-						arr.push(+current.url.split("/")[2]);
-						return arr;
-						},[]);
+					arr.push(+current.url.split('/')[2]);
+					return arr;
+				}, []);
 				//* получить список id парсоурсов (уникальные) по id парсеров
 				const result = this.all_parsers.reduce((arr, current) => {
 					parsers_id.find((id) => {
-						if (
-							id === current.id &&
-							!arr.includes(current.parsource)
-						) {
+						if (id === current.id && !arr.includes(current.parsource)) {
 							arr.push(current.parsource);
 						}
 					});
@@ -297,18 +284,17 @@
 		},
 		methods: {
 			...mapMutations([
-				"SET_TAB",
-				"SELECT_ALL_PARSOURCES",
-				"UNSELECT_ALL_PARSOURCES",
-				"ADD_PARSOURCES",
+				'SET_TAB',
+				'SELECT_ALL_PARSOURCES',
+				'UNSELECT_ALL_PARSOURCES',
+				'ADD_PARSOURCES',
 			]),
 			...mapActions([
-				"getParsources",
-				"deleteSelectedParsources",
-				"getNotifications",
-				"getAllParsers",
-				"getAllParsources",
-				
+				'getParsources',
+				'deleteSelectedParsources',
+				'getNotifications',
+				'getAllParsers',
+				'getAllParsources',
 			]),
 
 			async getCards(params) {
@@ -323,9 +309,7 @@
 					const response = await this.getParsources(params);
 
 					if (response.status === 200) {
-						this.pagination.cards_list.push(
-							...response.data.results
-						);
+						this.pagination.cards_list.push(...response.data.results);
 						this.ADD_PARSOURCES(this.pagination.cards_list);
 					}
 				} catch (err) {
@@ -340,7 +324,7 @@
 					this.pagination.load_next_cards = false;
 				}
 				this.$router.push({
-					name: "parsources",
+					name: 'parsources',
 					query: { page: page_number },
 				});
 			},
@@ -361,12 +345,12 @@
 			},
 		},
 		created() {
-			this.SET_TAB("parsers");
-			
+			this.SET_TAB('parsers');
+
 			if (!this.$store.state.parsers.all_parsers.length) {
 				this.getAllParsers();
 			}
-			if(!this.$store.state.parsers.all_parsources.length) {
+			if (!this.$store.state.parsers.all_parsources.length) {
 				this.getAllParsources();
 			}
 			this.getCards({
@@ -381,9 +365,9 @@
 			});
 		},
 		mounted() {
-			if (this.userRole === "Manager") {
+			if (this.userRole === 'Manager') {
 				setTimeout(() => {
-					this.sort_list({ key: "date", direction: "descending" });
+					this.sort_list({ key: 'date', direction: 'descending' });
 				}, 500);
 			}
 		},
@@ -395,7 +379,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.page-parsources {
 		position: relative;

@@ -17,18 +17,13 @@
 							v-if="page_number > 1 && document_width > 767"
 							@click="moveToPrevPage"
 						>
-							<img
-								src="/img/icon/brief/arrow-long.svg"
-								alt="arrow-back"
-							/>
+							<img src="/img/icons/brief/arrow-long.svg" alt="arrow-back" />
 						</button>
 					</transition>
 
 					<r-progressbar
-					v-if="document_width > 768"
-						:direction="
-							document_width < 768 ? 'horizontal' : 'vertical'
-						"
+						v-if="document_width > 768"
+						:direction="document_width < 768 ? 'horizontal' : 'vertical'"
 						:progress="page_progress"
 					></r-progressbar>
 				</div>
@@ -109,17 +104,12 @@
 							v-if="page_number > 1 && document_width < 768"
 							@click="moveToPrevPage"
 						>
-							<img
-								src="/img/icon/brief/arrow-long.svg"
-								alt="arrow-back"
-							/>
+							<img src="/img/icons/brief/arrow-long.svg" alt="arrow-back" />
 						</button>
 					</transition>
 					<r-progressbar
-					v-if="document_width <= 768"
-						:direction="
-							document_width < 768 ? 'horizontal' : 'vertical'
-						"
+						v-if="document_width <= 768"
+						:direction="document_width < 768 ? 'horizontal' : 'vertical'"
 						:progress="page_progress"
 					></r-progressbar>
 					<transition mode="out-in">
@@ -128,7 +118,7 @@
 							class="page-brief__exit"
 							@click="this.$router.push({ name: 'home' })"
 						>
-							<img src="/img/icon/brief/close.svg" alt="close" />
+							<img src="/img/icons/brief/close.svg" alt="close" />
 						</button>
 					</transition>
 				</div>
@@ -138,24 +128,24 @@
 </template>
 
 <script>
-	import rProgressbar from "@/components/Brief/r-progressbar";
+	import rProgressbar from '@/components/Brief/r-progressbar';
 
-	import BriefStart from "@/components/Brief/Pages/BriefStart";
+	import BriefStart from '@/components/Brief/Pages/BriefStart';
 
-	import BriefStatus from "@/components/Brief/Pages/BriefStatus";
-	import BriefFieldsOfActivity from "@/components/Brief/Pages/BriefFieldsOfActivity";
-	import BriefSiteTypes from "@/components/Brief/Pages/BriefSiteTypes";
-	import BriefAdditionalParameters from "@/components/Brief/Pages/BriefAdditionalParameters";
-	import BriefNumberOfPositions from "@/components/Brief/Pages/BriefNumberOfPositions";
-	import BriefSource from "@/components/Brief/Pages/BriefSource";
-	import BriefPrice from "@/components/Brief/Pages/BriefPrice";
+	import BriefStatus from '@/components/Brief/Pages/BriefStatus';
+	import BriefFieldsOfActivity from '@/components/Brief/Pages/BriefFieldsOfActivity';
+	import BriefSiteTypes from '@/components/Brief/Pages/BriefSiteTypes';
+	import BriefAdditionalParameters from '@/components/Brief/Pages/BriefAdditionalParameters';
+	import BriefNumberOfPositions from '@/components/Brief/Pages/BriefNumberOfPositions';
+	import BriefSource from '@/components/Brief/Pages/BriefSource';
+	import BriefPrice from '@/components/Brief/Pages/BriefPrice';
 
-	import BriefEnd from "@/components/Brief/Pages/BriefEnd";
+	import BriefEnd from '@/components/Brief/Pages/BriefEnd';
 
-	import { mapState } from "vuex";
+	import { mapState } from 'vuex';
 
 	export default {
-		name: "PageBrief",
+		name: 'PageBrief',
 		components: {
 			rProgressbar,
 
@@ -176,8 +166,8 @@
 				this.fillTheProgressbar();
 
 				this.document_width < 768
-					? this.transformBgImage("mobile")
-					: this.transformBgImage("pc");
+					? this.transformBgImage('mobile')
+					: this.transformBgImage('pc');
 
 				//* проверка выхода из диапазона
 				if (this.page_number < 1) {
@@ -188,11 +178,11 @@
 				}
 			},
 		},
-		computed: { ...mapState(["document_width"]) },
+		computed: { ...mapState(['document_width']) },
 		data: () => ({
 			page_number: 1,
 			page_progress: [
-				{ id: 1, checked: "checked" },
+				{ id: 1, checked: 'checked' },
 				{ id: 2, checked: false },
 				{ id: 3, checked: false },
 				{ id: 4, checked: false },
@@ -206,82 +196,72 @@
 
 		methods: {
 			fillTheProgressbar() {
-				for (
-					let index = 0;
-					index < this.page_progress.length;
-					index++
-				) {
+				for (let index = 0; index < this.page_progress.length; index++) {
 					this.page_number > index
-						? (this.page_progress[index].checked = "checked")
+						? (this.page_progress[index].checked = 'checked')
 						: (this.page_progress[index].checked = false);
 				}
 			},
 
 			transformBgImage(version) {
 				switch (version) {
-					case "mobile": {
+					case 'mobile': {
 						if (this.page_number === 1) {
-							this.$refs.bg.setAttribute(
-								"style",
-								"transform: rotate(-90deg);"
-							);
+							this.$refs.bg.setAttribute('style', 'transform: rotate(-90deg);');
 						} else if (
 							this.page_number > 1 &&
 							this.page_number < this.page_progress.length
 						) {
 							this.$refs.bg.setAttribute(
-								"style",
-								"transform: translateY(-20%) scale(0.5) rotate(-90deg);"
+								'style',
+								'transform: translateY(-20%) scale(0.5) rotate(-90deg);'
 							);
 						} else {
 							this.$refs.bg.setAttribute(
-								"style",
-								"transform: translate(-15%, 52%) scale(1) rotate(-90deg);"
+								'style',
+								'transform: translate(-15%, 52%) scale(1) rotate(-90deg);'
 							);
 						}
 						break;
 					}
 
-					case "pc": {
+					case 'pc': {
 						if (this.page_number === 1) {
-							this.$refs.bg.removeAttribute("style");
+							this.$refs.bg.removeAttribute('style');
 						} else if (this.page_number === 2) {
 							this.$refs.bg.setAttribute(
-								"style",
-								"transform: translateX(-10%) scale(1.25);"
+								'style',
+								'transform: translateX(-10%) scale(1.25);'
 							);
 						} else if (this.page_number === 3) {
 							this.$refs.bg.setAttribute(
-								"style",
-								"transform: translate(25%, -37%) scale(0.5);"
+								'style',
+								'transform: translate(25%, -37%) scale(0.5);'
 							);
 						} else if (this.page_number === 4) {
 							this.$refs.bg.setAttribute(
-								"style",
-								"transform: translate(-15%, 40%) scale(1.25);"
+								'style',
+								'transform: translate(-15%, 40%) scale(1.25);'
 							);
-						} else if (
-							this.page_number === 5 ||
-							this.page_number === 7
-						) {
+						} else if (this.page_number === 5 || this.page_number === 7) {
 							this.$refs.bg.setAttribute(
-								"style",
-								"transform: translate(-15%, 20%) scale(1);"
+								'style',
+								'transform: translate(-15%, 20%) scale(1);'
 							);
 						} else if (this.page_number === 6) {
 							this.$refs.bg.setAttribute(
-								"style",
-								"transform: translate(0, -20%) scale(0.8);"
+								'style',
+								'transform: translate(0, -20%) scale(0.8);'
 							);
 						} else if (this.page_number === 8) {
 							this.$refs.bg.setAttribute(
-								"style",
-								"transform: translate(-20%, 0) scale(0.6);"
+								'style',
+								'transform: translate(-20%, 0) scale(0.6);'
 							);
 						} else if (this.page_number === 9) {
 							this.$refs.bg.setAttribute(
-								"style",
-								"transform: translate(-25%, -10%) scale(1.25);"
+								'style',
+								'transform: translate(-25%, -10%) scale(1.25);'
 							);
 						}
 						break;
@@ -300,7 +280,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.page-brief {
 		color: $white;

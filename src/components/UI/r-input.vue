@@ -21,7 +21,7 @@
 		/>
 		<transition mode="out-in">
 			<img
-				src="@/../public/img/icon/cabinet/eye-closed.svg"
+				src="/img/icons/cabinet/eye-closed.svg"
 				alt="open-password"
 				v-if="input_type === 'password' && isPasswordHide === true"
 				class="r-input__icon"
@@ -31,7 +31,7 @@
 
 		<transition mode="out-in">
 			<img
-				src="/img/icon/cabinet/eye-open.svg"
+				src="/img/icons/cabinet/eye-open.svg"
 				alt="hide-password"
 				v-if="input_type === 'password' && isPasswordHide === false"
 				class="r-input__icon"
@@ -41,7 +41,7 @@
 
 		<transition mode="out-in">
 			<img
-				src="/img/icon/cabinet/search.svg"
+				src="/img/icons/cabinet/search.svg"
 				alt="search-tool"
 				v-if="input_type === 'search'"
 				class="r-input__icon"
@@ -57,12 +57,12 @@
 
 <script>
 	export default {
-		name: "r-input",
+		name: 'r-input',
 		emits: {
 			blur: null,
 			focus: null,
-			"update:Valid": null,
-			"update:modelValue": null,
+			'update:Valid': null,
+			'update:modelValue': null,
 		},
 		props: {
 			isDisabled: {
@@ -77,7 +77,7 @@
 
 			input_type: {
 				value: String,
-				default: "text",
+				default: 'text',
 			},
 			placeholder: String,
 			modelValue: String,
@@ -89,7 +89,7 @@
 		},
 		computed: {
 			isPasswordHide() {
-				if (this.input_type_changed === "text") {
+				if (this.input_type_changed === 'text') {
 					return false;
 				} else {
 					return true;
@@ -103,17 +103,17 @@
 		},
 		methods: {
 			showPassword() {
-				this.input_type_changed = "text";
+				this.input_type_changed = 'text';
 			},
 			hidePassword() {
-				this.input_type_changed = "password";
+				this.input_type_changed = 'password';
 			},
 		},
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.r-input {
 		position: relative;

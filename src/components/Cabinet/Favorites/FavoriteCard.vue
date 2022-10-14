@@ -2,9 +2,7 @@
 	<div class="favorite-card" v-click-away="closeContent" ref="card">
 		<div
 			:class="
-				cardSize >= 652
-					? 'favorite-card__header'
-					: 'favorite-card__header-tiny'
+				cardSize >= 652 ? 'favorite-card__header' : 'favorite-card__header-tiny'
 			"
 			@click="
 				this.$router.push({
@@ -34,7 +32,7 @@
 					>
 						<template v-slot:icon>
 							<img
-								src="/img/icon/dot_list.svg"
+								src="/img/icons/dot_list.svg"
 								alt="notification"
 								class="parsource-card__notification"
 								v-if="documentWidth <= 1360"
@@ -43,11 +41,7 @@
 					</r-button>
 					<button
 						class="favorite-card__hide"
-						@click="
-							isContentVisible === true
-								? closeContent()
-								: openContent()
-						"
+						@click="isContentVisible === true ? closeContent() : openContent()"
 					>
 						<svg
 							width="10"
@@ -82,20 +76,18 @@
 						в избранном
 					</p>
 					<p class="favorite-card__date">
-						{{ parsource.date ? prettyDate(parsource.date) : "" }}
+						{{ parsource.date ? prettyDate(parsource.date) : '' }}
 					</p>
 				</div>
 				<div class="favorite-card__header-col">
 					<button
 						class="favorite-card__hide"
 						@click.stop="
-							isContentVisible === true
-								? closeContent()
-								: openContent()
+							isContentVisible === true ? closeContent() : openContent()
 						"
 					>
 						<p class="favorite-card__hide-description">
-							{{ isContentVisible ? "свернуть" : "развернуть" }}
+							{{ isContentVisible ? 'свернуть' : 'развернуть' }}
 						</p>
 						<svg
 							width="10"
@@ -128,19 +120,19 @@
 </template>
 
 <script>
-	import FavoriteContentItem from "@/components/Cabinet/Favorites/FavoriteContentItem";
+	import FavoriteContentItem from '@/components/Cabinet/Favorites/FavoriteContentItem';
 
-	import { mapState } from "vuex";
+	import { mapState } from 'vuex';
 
-	import { prettyDate } from "@/js/processStrings";
+	import { prettyDate } from '@/js/processStrings';
 
-	import { directive } from "vue3-click-away";
+	import { directive } from 'vue3-click-away';
 
 	export default {
-		name: "FavoriteCard",
+		name: 'FavoriteCard',
 		components: { FavoriteContentItem },
 		props: { parsource: Object },
-		emits: ["update-selected-parsers"],
+		emits: ['update-selected-parsers'],
 		data() {
 			return {
 				cardSize: 0,
@@ -157,19 +149,19 @@
 		computed: {
 			...mapState({ documentWidth: (state) => state.document_width }),
 			source() {
-				return this.parsource.data_source.split("/")[2]
-					? this.parsource.data_source.split("/")[2]
+				return this.parsource.data_source.split('/')[2]
+					? this.parsource.data_source.split('/')[2]
 					: this.parsource.data_source;
 			},
 		},
 		methods: {
 			openContent() {
 				this.isContentVisible = true;
-				this.$refs.arrow.classList.add("open");
+				this.$refs.arrow.classList.add('open');
 			},
 			closeContent() {
 				this.isContentVisible = false;
-				this.$refs.arrow.classList.remove("open");
+				this.$refs.arrow.classList.remove('open');
 			},
 			handleChangeSelectedParsers(state) {
 				if (state.isSelect) {
@@ -181,7 +173,7 @@
 						}
 					);
 				}
-				this.$emit("update-selected-parsers", {
+				this.$emit('update-selected-parsers', {
 					parsourceId: this.parsource.id,
 					selectedParsers: this.selectedParsers,
 				});
@@ -201,7 +193,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.favorite-card {
 		border-radius: 0.8rem;

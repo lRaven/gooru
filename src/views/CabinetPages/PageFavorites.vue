@@ -15,7 +15,7 @@
 						"
 					>
 						<img
-							src="/img/icon/cabinet/sort.svg"
+							src="/img/icons/cabinet/sort.svg"
 							alt=""
 							class="page-favorites__sort-panel-btn-icon"
 						/>
@@ -23,9 +23,7 @@
 							Сортировать
 						</p>
 					</button>
-					<template
-						v-if="documentWidth <= 540 && !isSortPanelVisible"
-					>
+					<template v-if="documentWidth <= 540 && !isSortPanelVisible">
 						<button
 							class="page-favorites__favorite-panel-btn"
 							@click="isMinimizedRightPanel = false"
@@ -48,9 +46,7 @@
 									/>
 								</g>
 							</svg>
-							<p
-								class="page-favorites__favorite-panel-btn-description"
-							>
+							<p class="page-favorites__favorite-panel-btn-description">
 								Выбрать
 							</p>
 						</button>
@@ -60,9 +56,7 @@
 				<div
 					class="page-favorites__sort-panel-body"
 					:class="
-						sortPanelSize <= 880
-							? 'page-favorites__sort-panel-body_tiny'
-							: ''
+						sortPanelSize <= 880 ? 'page-favorites__sort-panel-body_tiny' : ''
 					"
 					v-show="isSortPanelVisible === true"
 				>
@@ -125,7 +119,7 @@
 		</div>
 
 		<right-panel
-			icon="/img/icon/cabinet/tick-bordered.svg"
+			icon="/img/icons/cabinet/tick-bordered.svg"
 			title="Выбрано"
 			class="page-favorites__right-panel"
 			:isMinimized="isMinimizedRightPanel"
@@ -163,17 +157,17 @@
 </template>
 
 <script>
-	import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+	import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
 
-	import FavoriteContentItem from "@/components/Cabinet/Favorites/FavoriteContentItem.vue";
-	import TheFavoriteRightPanel from "@/components/Cabinet/Favorites/TheFavoritesRightPanel.vue";
+	import FavoriteContentItem from '@/components/Cabinet/Favorites/FavoriteContentItem.vue';
+	import TheFavoriteRightPanel from '@/components/Cabinet/Favorites/TheFavoritesRightPanel.vue';
 
-	import RightPanel from "@/components/Cabinet/RightPanel";
+	import RightPanel from '@/components/Cabinet/RightPanel';
 
-	import { editParserData } from "@/api/parser";
+	import { editParserData } from '@/api/parser';
 
 	export default {
-		name: "PageFavorites",
+		name: 'PageFavorites',
 		components: {
 			RightPanel,
 			TheFavoriteRightPanel,
@@ -181,8 +175,7 @@
 		},
 		provide: {
 			async share(index) {
-				const { share_url, id, is_public } =
-					this.shareContentList[index];
+				const { share_url, id, is_public } = this.shareContentList[index];
 				try {
 					if (!is_public) {
 						await editParserData({
@@ -191,12 +184,9 @@
 						});
 					}
 					const shareLink = `${process.env.VUE_APP_FRONTEND_URL}/share/${share_url}`;
-					window.open(
-						this.currentShareLink(index, shareLink),
-						"_blank"
-					);
+					window.open(this.currentShareLink(index, shareLink), '_blank');
 				} catch (error) {
-					this.toast.error("Произошла ошибка!");
+					this.toast.error('Произошла ошибка!');
 					console.log(error);
 				}
 			},
@@ -204,17 +194,15 @@
 		watch: {
 			favoriteParsers() {
 				this.isParsersLoaded = true;
-				this.selectedParsers = this.selectedParsers.filter(
-					(selectedParser) => {
-						const parserOnPage = this.favoriteParsers.find(
-							(parser) => parser.id === selectedParser.id
-						);
-						if (!parserOnPage) {
-							return false;
-						}
-						return true;
+				this.selectedParsers = this.selectedParsers.filter((selectedParser) => {
+					const parserOnPage = this.favoriteParsers.find(
+						(parser) => parser.id === selectedParser.id
+					);
+					if (!parserOnPage) {
+						return false;
 					}
-				);
+					return true;
+				});
 			},
 			documentWidth() {
 				if (this.documentWidth <= 1100) {
@@ -228,7 +216,7 @@
 				parsers: (state) => state.parsers.all_parsers,
 				documentWidth: (state) => state.document_width,
 			}),
-			...mapGetters(["favoriteParsources"]),
+			...mapGetters(['favoriteParsources']),
 			favoriteParsers() {
 				if (this.show_by_source) {
 					return this.parsers.filter(
@@ -237,17 +225,12 @@
 							parser.parsource === this.show_by_source
 					);
 				} else {
-					return this.parsers.filter(
-						(parser) => parser.favoriteId !== null
-					);
+					return this.parsers.filter((parser) => parser.favoriteId !== null);
 				}
 			},
 			favoriteParsourcesName() {
 				return this.favoriteParsources.reduce((prev, current) => {
-					return [
-						...prev,
-						{ id: current.id, description: current.name },
-					];
+					return [...prev, { id: current.id, description: current.name }];
 				}, []);
 			},
 		},
@@ -259,12 +242,12 @@
 			sortPanelSize: 0,
 
 			show_by_source: null,
-			show_by_content: "",
+			show_by_content: '',
 			selectedParsers: [],
 		}),
 		methods: {
-			...mapMutations(["SET_TAB"]),
-			...mapActions(["getAllParsers", "getAllParsources"]),
+			...mapMutations(['SET_TAB']),
+			...mapActions(['getAllParsers', 'getAllParsources']),
 
 			resetFilter() {
 				this.show_by_source = null;
@@ -281,7 +264,7 @@
 		},
 		created() {
 			this.isMinimizedRightPanel = this.documentWidth <= 1100;
-			this.SET_TAB("favorites");
+			this.SET_TAB('favorites');
 			if (!this.$store.state.parsers.all_parsers.length) {
 				this.getAllParsers();
 			}
@@ -299,7 +282,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.page-favorites {
 		position: relative;

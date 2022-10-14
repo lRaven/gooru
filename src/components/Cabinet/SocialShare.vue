@@ -10,19 +10,16 @@
 	<r-modal v-if="isPopupOpen" @close-modal="closePopup">
 		<div class="share-popup">
 			<h2 class="share-popup__title">Поделиться в {{ networkName }}</h2>
-			<ul
-				class="share-list share-popup__share-list"
-			>
-				<li class="share-list-item share-list__share-list-item"
-				v-for="(shareItem, index) in shareContentList"
-				:key="shareItem.id">
+			<ul class="share-list share-popup__share-list">
+				<li
+					class="share-list-item share-list__share-list-item"
+					v-for="(shareItem, index) in shareContentList"
+					:key="shareItem.id"
+				>
 					<h3 class="share-list-item__title">
 						{{ shareItem.title }}
 					</h3>
-					<a
-						class="share-list-item__link"
-						:href="shareItem.url"
-						target="_blank"
+					<a class="share-list-item__link" :href="shareItem.url" target="_blank"
 						>Ссылка на ресурс</a
 					>
 					<r-textarea
@@ -38,15 +35,13 @@
 						v-model="userComments[index]"
 						:value="userComments[index]"
 					/>
-					<p
-						class="share-list-item__error"
-						v-if="isTooLongСontent(index)"
-					>
-						Суммарная длина контента не должна превышать 750
-						символов
+					<p class="share-list-item__error" v-if="isTooLongСontent(index)">
+						Суммарная длина контента не должна превышать 750 символов
 					</p>
 					<r-checkbox
-						v-if="this.network === 'telegram' && shareContentList[index].comment.id"
+						v-if="
+							this.network === 'telegram' && shareContentList[index].comment.id
+						"
 						description="Добавить комментарий парсера с Gooru"
 						:disabled="hasComment(index)"
 						v-model="parserComments[index]"
@@ -72,17 +67,21 @@
 					></r-button>
 				</li>
 			</ul>
-			<r-button v-if="shareContentList.length > 1" @click.stop="completeSharing" text="Готово"></r-button>
+			<r-button
+				v-if="shareContentList.length > 1"
+				@click.stop="completeSharing"
+				text="Готово"
+			></r-button>
 		</div>
 	</r-modal>
 </template>
 
 <script>
-	import { useToast } from "vue-toastification";
+	import { useToast } from 'vue-toastification';
 	export default {
-		name: "SocialShare",
+		name: 'SocialShare',
 		emits: {
-			"complete-sharing": null,
+			'complete-sharing': null,
 		},
 		props: {
 			network: {
@@ -98,46 +97,46 @@
 		data() {
 			return {
 				isPopupOpen: false,
-				userComments: [""],
+				userComments: [''],
 				parserComments: [false],
 			};
 		},
 		computed: {
 			networkName() {
 				switch (this.network) {
-					case "telegram":
-						return "Telegram";
-					case "vk":
-						return "VK";
-					case "odnoklassniki":
-						return "Одноклассниках";
+					case 'telegram':
+						return 'Telegram';
+					case 'vk':
+						return 'VK';
+					case 'odnoklassniki':
+						return 'Одноклассниках';
 					default:
-						return "интернете";
+						return 'интернете';
 				}
 			},
 			hasComment() {
 				return (index) => {
-					return this.shareContentList[index].comment.text
-						? false
-						: true;
+					return this.shareContentList[index].comment.text ? false : true;
 				};
 			},
 			currentSocialIcon() {
 				switch (this.network) {
-					case "telegram":
-						return "/img/icon/cabinet/tg.svg";
-					case "vk":
-						return "/img/icon/cabinet/VK_Compact_Logo.svg";
-					case "odnoklassniki":
-						return "/img/icon/cabinet/ok.svg";
+					case 'telegram':
+						return '/img/icons/cabinet/tg.svg';
+					case 'vk':
+						return '/img/icons/cabinet/VK_Compact_Logo.svg';
+					case 'odnoklassniki':
+						return '/img/icons/cabinet/ok.svg';
 					default:
-						return "/img/icon/cabinet/share.svg";
+						return '/img/icons/cabinet/share.svg';
 				}
 			},
-			
+
 			isTooLongСontent() {
-				return  (indexInShareContent) => {
-					const parserCommentLength = (this.parserComments[indexInShareContent] || 0) && this.shareContentList[indexInShareContent].comment.text.length;
+				return (indexInShareContent) => {
+					const parserCommentLength =
+						(this.parserComments[indexInShareContent] || 0) &&
+						this.shareContentList[indexInShareContent].comment.text.length;
 					return this.userComments[indexInShareContent]?.length +
 						parserCommentLength +
 						this.shareContentList[indexInShareContent].url.length >
@@ -156,22 +155,22 @@
 			},
 			currentShareLink(index, shareLink) {
 				switch (this.network) {
-						case "telegram":
-							return `https://t.me/share/url?url=${shareLink}&text=${this.userComments[index]}`;
-						case "vk":
-							return `https://vk.com/share.php?url=${shareLink}&title=${this.userComments[index]}`;
-						case "odnoklassniki":
-							return `https://connect.ok.ru/offer?url=${shareLink}&title=${this.userComments[index]}`;
-						default:
-							return "/img/icon/cabinet/share.svg";
-					}
+					case 'telegram':
+						return `https://t.me/share/url?url=${shareLink}&text=${this.userComments[index]}`;
+					case 'vk':
+						return `https://vk.com/share.php?url=${shareLink}&title=${this.userComments[index]}`;
+					case 'odnoklassniki':
+						return `https://connect.ok.ru/offer?url=${shareLink}&title=${this.userComments[index]}`;
+					default:
+						return '/img/icons/cabinet/share.svg';
+				}
 			},
 			completeSharing() {
 				this.closePopup();
 			},
 		},
 		beforeUpdate() {
-			this.userComments = this.shareContentList.map(() => "");
+			this.userComments = this.shareContentList.map(() => '');
 			this.parserComments = this.shareContentList.map(() => false);
 		},
 		setup() {
@@ -182,7 +181,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 	.share-popup {
 		display: flex;
 		flex-direction: column;
@@ -268,7 +267,7 @@
 				padding: 1rem 2rem;
 			}
 		}
-		.r-input{
+		.r-input {
 			grid-column: 1/-1;
 		}
 		.r-checkbox {
@@ -287,7 +286,6 @@
 			@media (max-width: 500px) {
 				font-size: 1.8rem;
 			}
-			
 		}
 	}
 	.social-icon {

@@ -14,7 +14,7 @@
 		<div class="r-checkbox__fake">
 			<div class="r-checkbox__fake-btn">
 				<img
-					src="/img/icon/cabinet/tick.svg"
+					src="/img/icons/cabinet/tick.svg"
 					alt="tick"
 					class="r-checkbox__tick"
 				/>
@@ -28,7 +28,7 @@
 </template>
 <script>
 	export default {
-		name: "rCheckbox",
+		name: 'rCheckbox',
 		props: {
 			description: String,
 			checked: {
@@ -41,7 +41,7 @@
 			},
 			name: {
 				type: String,
-				default: "",
+				default: '',
 			},
 			modelValue: {
 				type: Boolean,
@@ -54,19 +54,19 @@
 					//this.$refs.checkbox.checked = true;
 				} else {
 					//this.$refs.checkbox.checked = false;
-					this.$emit("update:modelValue", this.checked);
+					this.$emit('update:modelValue', this.checked);
 				}
 			},
 		},
 		methods: {
 			handleChange($event) {
-				this.$emit("update:modelValue", $event.target.checked);
+				this.$emit('update:modelValue', $event.target.checked);
 			},
 		},
 	};
 </script>
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.r-checkbox {
 		user-select: none;

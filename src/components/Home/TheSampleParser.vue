@@ -4,17 +4,14 @@
 			<r-plus-box color="#fff"></r-plus-box>
 			<r-plus-box color="#fff" :isFullSquare="true"></r-plus-box>
 			<div class="the-sample-parser__col">
-				<h2 class="the-sample-parser__title">
-					Сделайте пробный парсер
-				</h2>
+				<h2 class="the-sample-parser__title">Получите пробный парсер</h2>
 				<p class="the-sample-parser__description">
-					Предлагаем вам продемонстрировать наши услуги в деле.
-					Отправьте нам запрос на парсинг, и мы предоставим вам
-					пробные результаты в оговоренные сроки.
+					Предлагаем вам увидеть нашу работу в деле. Отправьте нам запрос на
+					парсинг, и мы предоставим пробный результат в оговорённые сроки.
 				</p>
 				<div class="the-sample-parser__buttons">
 					<r-button
-						text="ПРОЙТИ БРИФ"
+						text="ЗАПОЛНИТЬ БРИФ"
 						color="white"
 						@click="this.$router.push({ name: 'brief' })"
 					></r-button>
@@ -294,12 +291,12 @@
 </template>
 
 <script>
-	import rPlusBox from "@/components/Home/r-plus-box";
-	import rAnimatedSvg from "@/components/Home/r-animated-svg";
-	import { mapState } from "vuex";
+	import rPlusBox from '@/components/Home/r-plus-box';
+	import rAnimatedSvg from '@/components/Home/r-animated-svg';
+	import { mapState } from 'vuex';
 
 	export default {
-		name: "TheSampleParser",
+		name: 'TheSampleParser',
 		components: {
 			rPlusBox,
 			rAnimatedSvg,
@@ -307,26 +304,26 @@
 		watch: {
 			document_width() {
 				this.document_width <= 767
-					? (this.link_text = "ЗАДАТЬ ВОПРОСЫ")
-					: (this.link_text = "ЗАДАТЬ ВОПРОСЫ В TELEGRAM");
+					? (this.link_text = 'ЗАДАТЬ ВОПРОСЫ')
+					: (this.link_text = 'ЗАДАТЬ ВОПРОСЫ В TELEGRAM');
 			},
 		},
 		computed: {
-			...mapState(["document_width"]),
+			...mapState(['document_width']),
 		},
 		data: () => ({
-			link_text: "ЗАДАТЬ ВОПРОСЫ В TELEGRAM",
+			link_text: 'ЗАДАТЬ ВОПРОСЫ В TELEGRAM',
 		}),
 		mounted() {
 			this.document_width <= 767
-				? (this.link_text = "ЗАДАТЬ ВОПРОСЫ")
-				: (this.link_text = "ЗАДАТЬ ВОПРОСЫ В TELEGRAM");
+				? (this.link_text = 'ЗАДАТЬ ВОПРОСЫ')
+				: (this.link_text = 'ЗАДАТЬ ВОПРОСЫ В TELEGRAM');
 		},
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.the-sample-parser {
 		color: $white;

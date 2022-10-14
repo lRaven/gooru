@@ -15,7 +15,7 @@
 				"
 			>
 				<img
-					src="/img/icon/cabinet/arrow-long.svg"
+					src="/img/icons/cabinet/arrow-long.svg"
 					alt="back"
 					class="page-appeal__back-icon"
 				/>
@@ -44,9 +44,7 @@
 				<more-icon class="right-panel__icon" />
 			</template>
 			<h3 class="appeal-info__title">Тема обращения</h3>
-			<p class="appeal-info__content">
-				#{{ appeal?.id }} {{ appeal_topic }}
-			</p>
+			<p class="appeal-info__content">#{{ appeal?.id }} {{ appeal_topic }}</p>
 			<template v-if="appeal_source">
 				<h3 class="appeal-info__title">Название парсера</h3>
 				<p :title="appeal_source" class="appeal-info__content">
@@ -60,17 +58,17 @@
 </template>
 
 <script>
-	import TheMessenger from "@/components/Cabinet/Messenger/TheMessenger.vue";
-	import RightPanel from "@/components/Cabinet/RightPanel.vue";
+	import TheMessenger from '@/components/Cabinet/Messenger/TheMessenger.vue';
+	import RightPanel from '@/components/Cabinet/RightPanel.vue';
 
-	import MoreIcon from "@/assets/icons/Cabinet/MoreIcon.vue";
+	import MoreIcon from '@/assets/icons/Cabinet/MoreIcon.vue';
 
-	import { read_notification } from "@/api/notifications";
-	import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-	import { useToast } from "vue-toastification";
+	import { read_notification } from '@/api/notifications';
+	import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+	import { useToast } from 'vue-toastification';
 
 	export default {
-		name: "PageAppeal",
+		name: 'PageAppeal',
 		components: { TheMessenger, RightPanel, MoreIcon },
 		data() {
 			return {
@@ -103,7 +101,7 @@
 				user: (state) => state.cabinet.user,
 				documentWidth: (state) => state.document_width,
 			}),
-			...mapGetters(["appeals_notifications", "appealById"]),
+			...mapGetters(['appeals_notifications', 'appealById']),
 
 			appeal() {
 				return this.appealById(this.appeal_id);
@@ -114,7 +112,7 @@
 			},
 
 			appeal_source() {
-				let result = "";
+				let result = '';
 
 				const find = this.all_parsers.find(
 					(el) => el.id === this.appeal.parser
@@ -126,7 +124,7 @@
 				return result;
 			},
 			appeal_topic() {
-				let result = "";
+				let result = '';
 
 				const find = this.topics.find(
 					(el) => el.id === this.appeal?.topic_type
@@ -140,20 +138,20 @@
 
 			appealNotifications() {
 				const result = this.appeals_notifications.reduce((acc, current) => {
-					console.log(current.url.split("appeal_id=")[1])
-					if (+current.url.split("appeal_id=")[1] === this.appeal_id) {
+					console.log(current.url.split('appeal_id=')[1]);
+					if (+current.url.split('appeal_id=')[1] === this.appeal_id) {
 						acc.push(current.id);
 					}
 					return acc;
-				},[]);
+				}, []);
 
 				return result;
 			},
 			isHasNotifications() {
 				const find = this.appeals_notifications.find((el) => {
-					const id = +el.url.split("appeal_id=")[1];
-					console.log(id, 'id')
-					console.log(this.appeal_id, 'appeal_id')
+					const id = +el.url.split('appeal_id=')[1];
+					console.log(id, 'id');
+					console.log(this.appeal_id, 'appeal_id');
 					return id === this.appeal_id;
 				});
 				/* console.log(find) */
@@ -161,8 +159,8 @@
 			},
 		},
 		methods: {
-			...mapMutations(["SET_TAB"]),
-			...mapActions(["getAllParsers", "getAppeal", "getNotifications"]),
+			...mapMutations(['SET_TAB']),
+			...mapActions(['getAllParsers', 'getAppeal', 'getNotifications']),
 
 			async clear_notifications(notification_id) {
 				try {
@@ -175,7 +173,7 @@
 						this.getNotifications();
 					}
 				} catch (err) {
-					console.log(err)
+					console.log(err);
 				}
 			},
 			handleOpenRigthPanel() {
@@ -187,7 +185,7 @@
 		},
 
 		created() {
-			this.SET_TAB("appeals");
+			this.SET_TAB('appeals');
 			this.getAppeal(this.appeal_id);
 
 			/* if (this.isHasNotifications) {
@@ -206,7 +204,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.page-appeal {
 		padding: 2rem 7.2rem 0 4rem;

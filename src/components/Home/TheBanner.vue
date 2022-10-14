@@ -29,9 +29,7 @@
 					<span class="the-banner__title-bold">Поиск</span>
 					<br />
 					и&nbsp;
-					<span class="the-banner__title-bold">
-						систематиза&shy;ция
-					</span>
+					<span class="the-banner__title-bold"> систематиза&shy;ция </span>
 					<br />
 					информации
 				</h1>
@@ -40,7 +38,7 @@
 				</h3>
 				<div class="the-banner__actions">
 					<r-button
-						text="ПРОЙТИ БРИФ"
+						text="ЗАПОЛНИТЬ БРИФ"
 						@click="this.$router.push({ name: 'brief' })"
 					></r-button>
 					<r-link
@@ -354,12 +352,12 @@
 </template>
 
 <script>
-	import rGradient from "@/components/Home/Banner/r-gradient";
-	import rPlusBox from "@/components/Home/r-plus-box";
-	import rAnimatedSvg from "@/components/Home/r-animated-svg";
+	import rGradient from '@/components/Home/Banner/r-gradient';
+	import rPlusBox from '@/components/Home/r-plus-box';
+	import rAnimatedSvg from '@/components/Home/r-animated-svg';
 
 	export default {
-		name: "TheBanner",
+		name: 'TheBanner',
 		components: {
 			rGradient,
 			rPlusBox,
@@ -369,7 +367,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.the-banner {
 		display: flex;
@@ -391,11 +389,7 @@
 
 		&__title {
 			font-weight: 300;
-			background: linear-gradient(
-				100.25deg,
-				#592372 -11.24%,
-				#338dd0 141.92%
-			);
+			background: linear-gradient(100.25deg, #592372 -11.24%, #338dd0 141.92%);
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
 			background-clip: text;

@@ -4,7 +4,7 @@
 			<div class="the-footer__col">
 				<div class="the-footer__company">
 					<img
-						src="/img/icon/logo.png"
+						src="/img/icons/logo.png"
 						alt="logo"
 						class="the-footer__company-logo"
 					/>
@@ -16,21 +16,16 @@
 
 				<div class="the-footer__partners">
 					<img
-						src="/img/icon/huawei-business.png"
+						src="/img/icons/huawei-business.png"
 						alt="HUAWEI buseness-partner"
 					/>
-					<img
-						src="/img/icon/ibm-business.png"
-						alt="IBM buseness-partner"
-					/>
+					<img src="/img/icons/ibm-business.png" alt="IBM buseness-partner" />
 				</div>
 			</div>
 
 			<div class="the-footer__col">
 				<ul class="the-footer__list">
-					<li class="the-footer__list-item">
-						политика конфиденциальности
-					</li>
+					<li class="the-footer__list-item">политика конфиденциальности</li>
 					<li class="the-footer__list-item">
 						<a
 							href="docs/Оферта ГУРУ.pdf"
@@ -51,7 +46,7 @@
 
 <script>
 	export default {
-		name: "TheFooter",
+		name: 'TheFooter',
 		computed: { current_year: () => new Date().getFullYear() },
 	};
 </script>

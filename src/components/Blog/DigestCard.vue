@@ -6,18 +6,14 @@
 		</h3>
 		<img
 			class="digest-card__logo"
-			src="/img/icon/logo.png"
+			src="/img/icons/logo.png"
 			alt="Лого Компас"
 		/>
 		<form
 			class="digest-form digest-form__digest-card"
 			@submit.prevent="handleSubmit"
 		>
-			<input
-				class="digest-form__input"
-				v-model="email"
-				placeholder="E-mail"
-			/>
+			<input class="digest-form__input" v-model="email" placeholder="E-mail" />
 			<r-button
 				:disabled="isButtonDisable"
 				text="Подписаться"
@@ -28,18 +24,18 @@
 </template>
 
 <script>
-	import { useToast } from "vue-toastification";
+	import { useToast } from 'vue-toastification';
 
-	import { subscribeToDigest } from "@/api/userApi";
+	import { subscribeToDigest } from '@/api/userApi';
 
 	export default {
-		name: "DigestCard",
+		name: 'DigestCard',
 		emits: {
-			"subscribe-result": null,
+			'subscribe-result': null,
 		},
 		data() {
 			return {
-				email: "",
+				email: '',
 			};
 		},
 		computed: {
@@ -51,13 +47,13 @@
 			async handleSubmitEmailForm() {
 				try {
 					await subscribeToDigest(this.email);
-					this.email = "";
-					this.toast.success("Вы подписаны");
+					this.email = '';
+					this.toast.success('Вы подписаны');
 				} catch (error) {
-					let errorMessage = "Произошла ошибка";
+					let errorMessage = 'Произошла ошибка';
 					error.response.data.email.forEach((error) => {
-						if (error.toLowerCase().includes("уже существует")) {
-							errorMessage = "Такая почта уже была указана";
+						if (error.toLowerCase().includes('уже существует')) {
+							errorMessage = 'Такая почта уже была указана';
 						}
 					});
 					this.toast.error(errorMessage);
@@ -72,7 +68,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 	.digest-card {
 		display: grid;
 		padding: 3rem 2rem;
@@ -82,8 +78,8 @@
 			grid-gap: 4rem 0;
 		}
 		@media (max-width: 500px) {
-				padding: 2rem 1rem;
-			}
+			padding: 2rem 1rem;
+		}
 
 		&__title {
 			font-size: 3.2rem;

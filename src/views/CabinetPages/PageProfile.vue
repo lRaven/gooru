@@ -5,10 +5,7 @@
 		<div class="page-profile__main">
 			<form class="page-profile__change-avatar">
 				<img
-					:src="
-						personal_data.avatar ||
-						'/img/icon/cabinet/no-avatar.svg'
-					"
+					:src="personal_data.avatar || '/img/icons/cabinet/no-avatar.svg'"
 					class="page-profile__form-avatar"
 					alt=""
 				/>
@@ -22,7 +19,7 @@
 						@change="change_avatar($event.target)"
 					/>
 					<div class="page-profile__image-pick-btn">
-						<img src="/img/icon/cabinet/edit.svg" alt="" />
+						<img src="/img/icons/cabinet/edit.svg" alt="" />
 						Изменить
 					</div>
 				</label>
@@ -42,8 +39,8 @@
 						@click="isPersonalDataFormDisabled = false"
 						v-if="isPersonalDataFormDisabled === true"
 					>
-						<img src="/img/icon/cabinet/edit.svg" alt="" />
-						{{ documentWidth <= 425 ? "" : "Редактировать" }}
+						<img src="/img/icons/cabinet/edit.svg" alt="" />
+						{{ documentWidth <= 425 ? '' : 'Редактировать' }}
 					</button>
 				</transition>
 
@@ -88,15 +85,13 @@
 						@click="isPasswordsFormDisabled = false"
 						v-if="isPasswordsFormDisabled === true"
 					>
-						<img src="/img/icon/cabinet/edit.svg" alt="" />
-						{{ documentWidth <= 425 ? "" : "Редактировать" }}
+						<img src="/img/icons/cabinet/edit.svg" alt="" />
+						{{ documentWidth <= 425 ? '' : 'Редактировать' }}
 					</button>
 				</transition>
 
 				<fieldset class="page-profile__form-body">
-					<p class="page-profile__form-input-description">
-						Старый пароль
-					</p>
+					<p class="page-profile__form-input-description">Старый пароль</p>
 					<r-input
 						:spellCheck="false"
 						:isDisabled="isPasswordsFormDisabled"
@@ -104,9 +99,7 @@
 						v-model="passwords.old_password"
 					></r-input>
 
-					<p class="page-profile__form-input-description">
-						Новый пароль
-					</p>
+					<p class="page-profile__form-input-description">Новый пароль</p>
 					<r-input
 						:spellCheck="false"
 						:isDisabled="isPasswordsFormDisabled"
@@ -132,10 +125,7 @@
 				v-else-if="isHasRate && rate.loaded && documentWidth > 767"
 			></rate-info>
 
-			<div
-				class="page-profile__rate"
-				v-else-if="!isHasRate && rate.loaded"
-			>
+			<div class="page-profile__rate" v-else-if="!isHasRate && rate.loaded">
 				<h3 class="page-profile__rate-title">Активировать подписку</h3>
 
 				<r-button
@@ -150,18 +140,18 @@
 </template>
 
 <script>
-	import { mapState, mapMutations, mapActions } from "vuex";
+	import { mapState, mapMutations, mapActions } from 'vuex';
 	import {
 		change_user_data,
 		upload_avatar,
 		change_password,
-	} from "@/api/userApi";
-	import { returnErrorMessages } from "@/js/returnErrorMessages";
-	import RateInfo from "@/components/Rates/RateInfo.vue";
-	import { useToast } from "vue-toastification";
+	} from '@/api/userApi';
+	import { returnErrorMessages } from '@/js/returnErrorMessages';
+	import RateInfo from '@/components/Rates/RateInfo.vue';
+	import { useToast } from 'vue-toastification';
 
 	export default {
-		name: "PageProfile",
+		name: 'PageProfile',
 		components: { RateInfo },
 		watch: {
 			user_data: {
@@ -191,19 +181,14 @@
 			}),
 
 			isUserDataChanged() {
-				if (
-					this.user_data.first_name !== this.personal_data.first_name
-				) {
+				if (this.user_data.first_name !== this.personal_data.first_name) {
 					return true;
 				}
 				if (this.user_data.last_name !== this.personal_data.last_name) {
 					return true;
 				}
 
-				if (
-					this.user_data.phone_number !==
-					this.personal_data.phone_number
-				) {
+				if (this.user_data.phone_number !== this.personal_data.phone_number) {
 					return true;
 				}
 
@@ -238,23 +223,23 @@
 			isDisabledBtn: true,
 
 			personal_data: {
-				avatar: "",
-				first_name: "",
-				last_name: "",
-				phone_number: "",
-				email: "",
+				avatar: '',
+				first_name: '',
+				last_name: '',
+				phone_number: '',
+				email: '',
 			},
 
-			new_avatar: "",
+			new_avatar: '',
 
 			passwords: {
-				password: "",
-				old_password: "",
+				password: '',
+				old_password: '',
 			},
 		}),
 		methods: {
-			...mapMutations(["SET_TAB"]),
-			...mapActions(["getUserData"]),
+			...mapMutations(['SET_TAB']),
+			...mapActions(['getUserData']),
 
 			set_user_data() {
 				this.personal_data = { ...this.user_data };
@@ -266,7 +251,7 @@
 
 				//* функционал предпросмотра загруженной аватарки
 				const fileReader = new FileReader();
-				fileReader.addEventListener("load", () => {
+				fileReader.addEventListener('load', () => {
 					this.personal_data.avatar = fileReader.result;
 					console.log(this.personal_data.avatar);
 				});
@@ -307,8 +292,8 @@
 						email: this.personal_data.email,
 					});
 					if (response.status === 200) {
-						console.log("User data changed");
-						this.toast.success("Пользовательские данные обновлены");
+						console.log('User data changed');
+						this.toast.success('Пользовательские данные обновлены');
 						await this.getUserData();
 					}
 					if (response.status === 400) {
@@ -321,7 +306,7 @@
 					this.isPersonalDataFormDisabled = true;
 				} catch (err) {
 					this.isDisabledBtn = false;
-					this.toast.error("Ошибка обновления контактных данных");
+					this.toast.error('Ошибка обновления контактных данных');
 					throw new Error(err);
 				}
 			},
@@ -334,8 +319,8 @@
 					});
 
 					if (response.status === 200) {
-						console.log("Avatar changed");
-						this.toast.success("Изображение профиля изменено");
+						console.log('Avatar changed');
+						this.toast.success('Изображение профиля изменено');
 						await this.getUserData();
 					}
 					if (response.status === 400) {
@@ -363,8 +348,8 @@
 					});
 
 					if (response.status === 204) {
-						this.toast.success("Пароль изменён");
-						console.log("Password changed");
+						this.toast.success('Пароль изменён');
+						console.log('Password changed');
 
 						this.resetForm();
 						this.isPasswordsFormDisabled = true;
@@ -377,18 +362,18 @@
 					}
 				} catch (err) {
 					this.isDisabledBtn = false;
-					this.toast.error("Ошибка изменения пароля");
+					this.toast.error('Ошибка изменения пароля');
 					throw new Error(err);
 				}
 			},
 
 			resetForm() {
-				this.passwords.old_password = "";
-				this.passwords.password = "";
+				this.passwords.old_password = '';
+				this.passwords.password = '';
 			},
 		},
 		created() {
-			this.SET_TAB("profile");
+			this.SET_TAB('profile');
 			this.set_user_data();
 		},
 
@@ -400,7 +385,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.page-profile {
 		display: grid;

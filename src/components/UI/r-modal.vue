@@ -19,9 +19,9 @@
 
 <script>
 	export default {
-		name: "r-modal",
+		name: 'r-modal',
 		emits: {
-			'close-modal': null
+			'close-modal': null,
 		},
 		props: {},
 		data: () => ({ isModalContentVisible: false }),
@@ -34,7 +34,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.r-modal {
 		display: flex;
@@ -54,7 +54,7 @@
 		}
 
 		&::after {
-			content: "";
+			content: '';
 			position: absolute;
 			width: 100%;
 			height: 100%;
@@ -82,7 +82,7 @@
 			margin-left: auto;
 			height: 2rem;
 			width: 2rem;
-			background: url(/public/img/icon/popupCross.svg) center / contain
+			background: url('/public/img/icons/popupCross.svg') center / contain
 				no-repeat;
 		}
 

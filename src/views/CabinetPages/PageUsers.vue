@@ -11,7 +11,7 @@
 
 			<button class="page-users__control-btn" type="button">
 				<img
-					src="/img/icon/cabinet/lock.svg"
+					src="/img/icons/cabinet/lock.svg"
 					class="page-users__control-btn-icon"
 					alt="icon"
 				/>
@@ -20,13 +20,11 @@
 
 			<button class="page-users__control-btn" type="button">
 				<img
-					src="/img/icon/cabinet/unlock.svg"
+					src="/img/icons/cabinet/unlock.svg"
 					class="page-users__control-btn-icon"
 					alt="icon"
 				/>
-				<p class="page-users__control-btn-description">
-					Разблокировать
-				</p>
+				<p class="page-users__control-btn-description">Разблокировать</p>
 			</button>
 
 			<button
@@ -35,7 +33,7 @@
 				@click="actions.deleteSelected = true"
 			>
 				<img
-					src="/img/icon/cabinet/remove.svg"
+					src="/img/icons/cabinet/remove.svg"
 					class="page-users__control-btn-icon"
 					alt="icon"
 				/>
@@ -47,12 +45,10 @@
 			<button
 				type="button"
 				class="page-users__head-btn"
-				@click="
-					headTab === 'sort' ? (headTab = '') : (headTab = 'sort')
-				"
+				@click="headTab === 'sort' ? (headTab = '') : (headTab = 'sort')"
 			>
 				<img
-					src="/img/icon/cabinet/sort.svg"
+					src="/img/icons/cabinet/sort.svg"
 					class="page-users__head-btn-icon"
 					alt="sort"
 				/>
@@ -60,14 +56,10 @@
 			</button>
 			<button
 				class="page-users__head-btn"
-				@click="
-					headTab === 'actions'
-						? (headTab = '')
-						: (headTab = 'actions')
-				"
+				@click="headTab === 'actions' ? (headTab = '') : (headTab = 'actions')"
 			>
 				<img
-					src="/img/icon/cabinet/tick-bordered.svg"
+					src="/img/icons/cabinet/tick-bordered.svg"
 					class="page-users__head-btn-icon"
 					alt="select"
 				/>
@@ -80,9 +72,7 @@
 					@submit.prevent=""
 					v-show="headTab === 'sort'"
 				>
-					<p class="page-users__head-tab-description">
-						Сортировать по
-					</p>
+					<p class="page-users__head-tab-description">Сортировать по</p>
 					<r-dropdown
 						v-if="userRole === 'AdminCRM'"
 						selected_item="-"
@@ -113,24 +103,20 @@
 
 					<button class="page-users__control-btn" type="button">
 						<img
-							src="/img/icon/cabinet/lock.svg"
+							src="/img/icons/cabinet/lock.svg"
 							class="page-users__control-btn-icon"
 							alt="icon"
 						/>
-						<p class="page-users__control-btn-description">
-							Заблокировать
-						</p>
+						<p class="page-users__control-btn-description">Заблокировать</p>
 					</button>
 
 					<button class="page-users__control-btn" type="button">
 						<img
-							src="/img/icon/cabinet/unlock.svg"
+							src="/img/icons/cabinet/unlock.svg"
 							class="page-users__control-btn-icon"
 							alt="icon"
 						/>
-						<p class="page-users__control-btn-description">
-							Разблокировать
-						</p>
+						<p class="page-users__control-btn-description">Разблокировать</p>
 					</button>
 
 					<button
@@ -139,13 +125,11 @@
 						@click="actions.deleteSelected = true"
 					>
 						<img
-							src="/img/icon/cabinet/remove.svg"
+							src="/img/icons/cabinet/remove.svg"
 							class="page-users__control-btn-icon"
 							alt="icon"
 						/>
-						<p class="page-users__control-btn-description">
-							Удалить
-						</p>
+						<p class="page-users__control-btn-description">Удалить</p>
 					</button>
 				</div>
 			</transition>
@@ -223,24 +207,24 @@
 </template>
 
 <script>
-	import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-	import UserCard from "@/components/Cabinet/Users/UserCard.vue";
-	import SortButton from "@/components/Cabinet/Parsources/SortButton";
+	import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+	import UserCard from '@/components/Cabinet/Users/UserCard.vue';
+	import SortButton from '@/components/Cabinet/Parsources/SortButton';
 
-	import { sortCards, sortUsers } from "@/mixins/sortingMixins";
-	import { paginationMixin } from "@/mixins/paginationMixins";
-	import { returnErrorMessages } from "@/js/returnErrorMessages";
-	import { useToast } from "vue-toastification";
+	import { sortCards, sortUsers } from '@/mixins/sortingMixins';
+	import { paginationMixin } from '@/mixins/paginationMixins';
+	import { returnErrorMessages } from '@/js/returnErrorMessages';
+	import { useToast } from 'vue-toastification';
 
 	export default {
-		name: "PageUsers",
+		name: 'PageUsers',
 		mixins: [sortCards, sortUsers, paginationMixin],
 		components: {
 			UserCard,
 			SortButton,
 		},
 		watch: {
-			"actions.selectAll": {
+			'actions.selectAll': {
 				handler() {
 					this.actions.selectAll === true
 						? this.SELECT_ALL_USERS()
@@ -249,19 +233,17 @@
 				deep: true,
 			},
 
-			async "actions.deleteSelected"() {
+			async 'actions.deleteSelected'() {
 				if (this.actions.deleteSelected === true) {
 					try {
 						const response = await this.deleteSelectedUsers();
 
 						if (response.status === 200) {
-							this.toast.success(
-								"Выбранные пользователи удалены"
-							);
+							this.toast.success('Выбранные пользователи удалены');
 
 							//* редирект на 1 страницу
 							this.$router.push({
-								name: "users",
+								name: 'users',
 								query: { page: 1 },
 							});
 
@@ -272,9 +254,7 @@
 							});
 						}
 						if (response.status === 400) {
-							const error_list = returnErrorMessages(
-								response.data
-							);
+							const error_list = returnErrorMessages(response.data);
 							error_list.forEach((el) => {
 								this.toast.error(el);
 							});
@@ -283,7 +263,7 @@
 							this.actions.deleteSelected = false;
 						}, 1000);
 					} catch (err) {
-						this.toast.error("Ошибка удаления пользователей");
+						this.toast.error('Ошибка удаления пользователей');
 						setTimeout(() => {
 							this.actions.deleteSelected = false;
 						}, 1000);
@@ -322,7 +302,7 @@
 
 				document_width: (state) => state.document_width,
 			}),
-			...mapGetters(["user_notifications"]),
+			...mapGetters(['user_notifications']),
 		},
 		data() {
 			return {
@@ -339,18 +319,18 @@
 		},
 		methods: {
 			...mapMutations([
-				"SET_TAB",
-				"SELECT_ALL_USERS",
-				"UNSELECT_ALL_USERS",
-				"ADD_USERS",
+				'SET_TAB',
+				'SELECT_ALL_USERS',
+				'UNSELECT_ALL_USERS',
+				'ADD_USERS',
 			]),
 			...mapActions([
-				"getUsers",
-				"getAllUsers",
-				"getUsersManagers",
-				"getAllParsources",
-				"getAllParsers",
-				"deleteSelectedUsers",
+				'getUsers',
+				'getAllUsers',
+				'getUsersManagers',
+				'getAllParsources',
+				'getAllParsers',
+				'deleteSelectedUsers',
 			]),
 
 			async getCards(params) {
@@ -365,9 +345,7 @@
 					const response = await this.getUsers(params);
 
 					if (response.status === 200) {
-						this.pagination.cards_list.push(
-							...response.data.results
-						);
+						this.pagination.cards_list.push(...response.data.results);
 						this.ADD_USERS(this.pagination.cards_list);
 					}
 				} catch (err) {
@@ -382,13 +360,13 @@
 					this.pagination.load_next_cards = false;
 				}
 				this.$router.push({
-					name: "users",
+					name: 'users',
 					query: { page: page_number },
 				});
 			},
 		},
 		created() {
-			this.SET_TAB("users");
+			this.SET_TAB('users');
 
 			this.getCards({
 				page_size: this.pagination.cards_in_page,
@@ -409,7 +387,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "@/assets/scss/variables";
+	@import '@/assets/scss/variables';
 
 	.page-users {
 		display: grid;
