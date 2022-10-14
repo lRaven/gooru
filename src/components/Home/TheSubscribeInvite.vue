@@ -1,7 +1,11 @@
 <template>
 	<section class="subscribe-invite">
 		<div class="subscribe-invite__descriptions">
-			<p class="subscribe-invite__text" v-for="(text, index) in texts" :key="index">
+			<p
+				class="subscribe-invite__text"
+				v-for="(text, index) in texts"
+				:key="index"
+			>
 				{{ text }}
 			</p>
 		</div>
@@ -13,27 +17,24 @@
 					<div
 						class="subscribe-invite__mark"
 						:class="{
-							'subscribe-invite__mark_blue':
-								appContext === 'busines',
+							'subscribe-invite__mark_blue': appContext === 'busines',
 						}"
 					></div>
 				</div>
 
-				<p class="subscribe-invite__pitch-point">Экономь свое время</p>
-				<p class="subscribe-invite__pitch-point">
-					Сфокусируйся на работе
-				</p>
-				<p class="subscribe-invite__pitch-point">
-					Распределяй обязанности
-				</p>
+				<p class="subscribe-invite__pitch-point">Экономьте своё время</p>
+				<p class="subscribe-invite__pitch-point">Сфокусируйтесь на работе</p>
+				<p class="subscribe-invite__pitch-point">Распределяйте обязанности</p>
 			</div>
 			<div class="subscribe-invite__offer">
-				<r-button class="subscribe-invite__free-button"
-				@click="handleRedirectToGooru('registration')"
+				<r-button
+					class="subscribe-invite__free-button"
+					@click="handleRedirectToGooru('registration')"
 					>Бесплатный период</r-button
 				>
-				<r-button class="subscribe-invite__subscribe-button"
-				@click="handleRedirectToGooru('#rates')"
+				<r-button
+					class="subscribe-invite__subscribe-button"
+					@click="handleRedirectToGooru('#rates')"
 					>ОФОРМИТЬ ПОДПИСКУ</r-button
 				>
 				<p
@@ -54,33 +55,29 @@
 					<div
 						class="subscribe-invite__mark"
 						:class="{
-							'subscribe-invite__mark_blue':
-								appContext === 'busines',
+							'subscribe-invite__mark_blue': appContext === 'busines',
 						}"
 					></div>
 				</div>
 
 				<p class="subscribe-invite__pitch-point">Экономь свое время</p>
-				<p class="subscribe-invite__pitch-point">
-					Сфокусируйся на работе
-				</p>
-				<p class="subscribe-invite__pitch-point">
-					Распределяй обязанности
-				</p>
+				<p class="subscribe-invite__pitch-point">Сфокусируйся на работе</p>
+				<p class="subscribe-invite__pitch-point">Распределяй обязанности</p>
 				<div class="subscribe-invite__offer">
-					<r-button class="subscribe-invite__free-button"
-					@click="handleRedirectToGooru('registration')"
+					<r-button
+						class="subscribe-invite__free-button"
+						@click="handleRedirectToGooru('registration')"
 						>Бесплатный период</r-button
 					>
-					<r-button class="subscribe-invite__subscribe-button"
-					@click="handleRedirectToGooru('#rates')"
+					<r-button
+						class="subscribe-invite__subscribe-button"
+						@click="handleRedirectToGooru('#rates')"
 						>ОФОРМИТЬ ПОДПИСКУ</r-button
 					>
 					<p
 						class="subscribe-invite__sale"
 						:class="{
-							'subscribe-invite__sale_blue':
-								appContext === 'busines',
+							'subscribe-invite__sale_blue': appContext === 'busines',
 						}"
 					>
 						10%
@@ -92,22 +89,22 @@
 </template>
 
 <script>
-	import texts from "@/assets/textData.json";
+	import texts from '@/assets/textData.json';
 
 	export default {
-		name: "TheSubscribeInvite",
-		inject: ["documentWidth", "appContext", "gooruFrontendUrl"],
+		name: 'TheSubscribeInvite',
+		inject: ['documentWidth', 'appContext', 'gooruFrontendUrl'],
 		computed: {
 			texts() {
 				const currentContext = this.appContext;
 				return texts[currentContext].subscribeInvite;
-			}
+			},
 		},
 		methods: {
 			handleRedirectToGooru(targetEndPoint) {
-				window.open(this.gooruFrontendUrl+`/${targetEndPoint}`, 'blank');
-			}
-		}
+				window.open(this.gooruFrontendUrl + `/${targetEndPoint}`, 'blank');
+			},
+		},
 	};
 </script>
 
@@ -136,7 +133,7 @@
 			flex-wrap: wrap;
 			gap: 2rem 20rem;
 			margin: 0 0 10.4rem 0;
-			
+
 			@media (max-width: 1375px) {
 				grid-column: 1/3;
 				margin: 0 0 8.4rem 0;

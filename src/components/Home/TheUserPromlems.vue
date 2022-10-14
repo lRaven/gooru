@@ -1,7 +1,9 @@
 <template>
 	<section class="user-problem">
-		<h2 class="user-problem__title">Сталкивался с этим?</h2>
-		<action-card v-for="(card, index) in cards" :key="index"
+		<h2 class="user-problem__title">Сталкивались с этим?</h2>
+		<action-card
+			v-for="(card, index) in cards"
+			:key="index"
 			:textBlocks="card"
 		/>
 		<img
@@ -13,18 +15,20 @@
 </template>
 
 <script>
-	import texts from "@/assets/textData.json";
-	import ActionCard from "@/components/Home/ActionCard.vue";
+	import texts from '@/assets/textData.json';
+	import ActionCard from '@/components/Home/ActionCard.vue';
 
 	export default {
-		name: "TheUserPromlems",
+		name: 'TheUserPromlems',
 		components: {
 			ActionCard,
 		},
-		inject: ["appContext"],
+		inject: ['appContext'],
 		computed: {
 			argeeImageSrc() {
-				return this.appContext === "busines" ? `/busines/blueAgreePic.png`	: `/cursor/redAgreePic.png`;
+				return this.appContext === 'busines'
+					? `/busines/blueAgreePic.png`
+					: `/cursor/redAgreePic.png`;
 			},
 			cards() {
 				const currentContext = this.appContext;
